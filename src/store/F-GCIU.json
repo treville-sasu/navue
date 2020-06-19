@@ -1,0 +1,96 @@
+{
+  "id": "F-GCIU",
+  "paces": [
+    {
+      "name": "cruise",
+      "unit": "kt",
+      "value": 92
+    },
+    {
+      "name": "eco",
+      "unit": "kt",
+      "value": 81
+    },
+    {
+      "name": "waiting",
+      "unit": "kt",
+      "value": 73
+    }
+  ],
+  "balance": {
+    "date": null,
+    "weights": [
+      {
+        "name": "empty_mass",
+        "value": 563,
+        "arm": 0.317
+      },
+      {
+        "name": "crew",
+        "arm": 0.41,
+        "max": 300
+      },
+      {
+        "name": "passengers",
+        "arm": 1.19,
+        "max": 300
+      },
+      {
+        "name": "fuel",
+        "arm": 1.12,
+        "density": 0.7,
+        "min": 10,
+        "max": 110
+      },
+      {
+        "name": "cargo",
+        "arm": 1.9,
+        "max": 40
+      }
+    ]
+  },
+  "envelopes": [
+    {
+      "name": "N",
+      "values": [
+        {
+          "x": 0.205,
+          "y": 0
+        },
+        {
+          "x": 0.205,
+          "y": 750
+        },
+        {
+          "x": 0.428,
+          "y": 900
+        },
+        {
+          "x": 0.564,
+          "y": 900
+        },
+        {
+          "x": 0.564,
+          "y": 0
+        }
+      ]
+    }
+  ],
+  "consumptions": [
+    {
+      "name": "cruise",
+      "value": 22,
+      "unit": "/h"
+    },
+    {
+      "name": "climb",
+      "value": 22,
+      "unit": "/1000ft"
+    },
+    {
+      "name": "procedure",
+      "value": 3,
+      "unit": "each"
+    }
+  ]
+}
