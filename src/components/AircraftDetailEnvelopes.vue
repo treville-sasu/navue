@@ -5,7 +5,7 @@
         Envelopes
         <b-tooltip type="is-dark" label="Create an envelope">
           <b-button
-            v-on:click="prependItem(envelopes, proto.envelopes)"
+            v-on:click="prependItem(envelopes, proto.envelopes[0])"
             type="is-secondary"
             icon-right="plus"
           />
@@ -55,7 +55,7 @@
               <b-tooltip type="is-dark" label="Add a point">
                 <b-button
                   v-on:click="
-                    appendItem(envelope.values, proto.envelopes.values[0])
+                    appendItem(envelope.values, proto.envelopes[0].values[0])
                   "
                   type="is-secondary"
                   icon-right="plus"
@@ -80,21 +80,21 @@ import BalanceChart from "@/components/BalanceChart.vue";
 import { editDetails } from "@/mixins/casting";
 
 export default {
-  name: "AircraftDetailPaces",
+  name: "AircraftDetailEnvelopes",
   props: ["envelopes"],
   mixins: [editDetails],
   components: { BalanceChart },
   methods: {
-    BuildDataset(envelopes) {
+    BuildDataset(envlps) {
       return {
-        datasets: envelopes.map(l =>
+        datasets: envlps.map((e) =>
           Object.assign(
-            { label: l.name, data: l.values },
+            { label: e.name, data: e.values },
             this.envelopesDataset
           )
-        )
+        ),
       };
-    }
-  }
+    },
+  },
 };
 </script>

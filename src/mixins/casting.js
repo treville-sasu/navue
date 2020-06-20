@@ -22,10 +22,10 @@ export const editDetails = {
             }
           ]
         },
-        envelopes: {
+        envelopes: [{
           name: null,
           values: [{ x: null, y: null }]
-        },
+        }],
         consumptions: [
           {
             name: null,
@@ -49,6 +49,7 @@ export const editDetails = {
       }
     };
   },
+  // TODO: Fix alteration of proto, make a better copy.
   methods: {
     removeItem(array, index) {
       array.splice(index, 1);
