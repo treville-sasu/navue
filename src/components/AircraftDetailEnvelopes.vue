@@ -87,14 +87,14 @@ export default {
   methods: {
     BuildDataset(envlps) {
       return {
-        datasets: envlps.map((e) =>
+        datasets: envlps.map(e =>
           Object.assign(
             { label: e.name, data: e.values },
             this.envelopesDataset
           )
-        ),
+        )
       };
-    },
-  },
+    }
+  }
 };
 </script>

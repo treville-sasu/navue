@@ -1,73 +1,82 @@
 <template>
-  <section class="section">
-    <div class="columns">
-      <div class="column is-narrow">
-        <b-field label="Choose an Aircraft">
-          <b-autocomplete
-            v-model="search"
-            placeholder="F-xxxx"
-            :keep-first="true"
-            :open-on-focus="true"
-            :data="filteredDataObj"
-            icon="magnify"
-            field="id"
-            @select="selectAircraft"
-          >
-            <template slot="footer">
-              <a @click="createAircraft">
-                <span>Add new Aircraft</span>
-              </a>
-            </template>
-            <template slot="empty">No results for {{ search }}</template>
-          </b-autocomplete>
-        </b-field>
-        <section>
-          <b-button
-            v-if="aircraft"
-            @click="downloadJSON(aircraft, `${aircraft.id}.json`)"
-            size="is-large"
-            icon-left="download"
-            type="is-primary"
-            expanded
-            outlined
-            >Download aircraft data</b-button
-          >
-          <b-field class="file">
-            <b-upload
-              v-model="upload"
-              accept="application/json"
-              @input="uploadJSON"
-              drag-drop
-              expanded
-            >
-              <a class="button is-primary is-large is-fullwidth">
-                <b-icon icon="upload"></b-icon>
-                <span>Upload Aircraft data</span>
-              </a>
-            </b-upload>
-          </b-field>
-        </section>
-      </div>
-      <div class="column">
-        <AircraftDetail v-if="aircraft" :aircraft="aircraft" />
-        <section v-else class="hero is-success is-fullheight">
-          <div class="hero-body">
-            <div class="container">
-              <h1 class="title">Choose, edit & manage your aircrafts</h1>
-              <h2 class="subtitle">
-                aircrafts are stored in browser and synced online
-              </h2>
-            </div>
+  <section class="container">
+    <AircraftDetail
+      v-if="aircraft"
+      :aircraft="aircraft"
+      v-on:discard="aircraft = null"
+      v-on:aircraftUpdated="aircraft = null"
+    />
+    <section v-else class="section">
+      <div class="hero">
+        <div class="hero-body">
+          <div class="container">
+            <h1 class="title">Choose, edit & manage your aircrafts</h1>
+            <h2 class="subtitle">aircrafts are stored in browser and synced online</h2>
           </div>
-        </section>
+        </div>
       </div>
-    </div>
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <div class="tile is-child box">
+            <b-field label="Choose an Aircraft">
+              <b-autocomplete
+                placeholder="F-xxxx"
+                v-model="search"
+                :data="aircrafts"
+                @select="selectAircraft"
+                icon="magnify"
+                field="registration"
+                open-on-focus
+                keep-first
+                clear-on-select
+                clearable
+              >
+                <template slot="empty">No results for {{ search }}</template>
+              </b-autocomplete>
+            </b-field>
+          </div>
+        </div>
+        <div class="tile is-parent">
+          <div class="tile is-child box">
+            <b-button
+              @click="newAircraft"
+              size="is-large"
+              icon-left="folder-plus"
+              type="is-primary"
+              expanded
+            >Create a new Aircraft</b-button>
+          </div>
+        </div>
+        <div class="tile is-parent">
+          <div class="tile is-child box">
+            <b-field class="file">
+              <b-upload
+                v-model="upload"
+                accept="application/json"
+                @input="uploadJSON"
+                drag-drop
+                expanded
+              >
+                <section class="section">
+                  <div class="content has-text-centered">
+                    <p>
+                      <b-icon icon="upload" size="is-large"></b-icon>
+                    </p>
+                    <p>Upload Aircraft data</p>
+                  </div>
+                </section>
+              </b-upload>
+            </b-field>
+          </div>
+        </div>
+      </div>
+    </section>
   </section>
 </template>
 
 <script>
 import AircraftDetail from "@/components/AircraftDetail.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { editDetails } from "@/mixins/casting";
 
 export default {
@@ -85,44 +94,27 @@ export default {
   },
   methods: {
     selectAircraft(option) {
-      this.aircraft = option;
-      this.search = "";
+      this.aircraft = { ...option };
     },
-    createAircraft() {
-      this.aircraft = this.proto;
-    },
-    downloadJSON(data, fileName) {
-      let fileToSave = new Blob([JSON.stringify(data, undefined, 2)], {
-        type: "application/json",
-        name: fileName
-      });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(fileToSave);
-      a.download = fileName;
-      a.click();
-    },
-    uploadJSON(files) {
-      files.forEach(file => {
-        let fr = new FileReader();
-        fr.onload = txt => {
-          this.aircraft = JSON.parse(txt.target.result);
-        };
-        fr.readAsText(file);
-      });
+    newAircraft() {
+      this.aircraft = { ...this.proto };
     }
   },
   computed: {
-    filteredDataObj() {
-      return this.aircrafts.filter(option => {
-        return (
-          option.id
-            .toString()
-            .toLowerCase()
-            .indexOf(this.search.toLowerCase()) >= 0
-        );
-      });
+    aircraftFilteredList() {
+      return this.searchAircraft(this.search);
     },
-    ...mapState(["aircrafts"])
+    ...mapState(["selectedAircraft"]), //, "aircrafts"
+    ...mapGetters(["searchAircraft"])
+  },
+  pouch: {
+    aircrafts() {
+      return {
+        database: "navue",
+        selector: { registration: { $regex: RegExp(this.search, "i") } },
+        fields: ["registration"]
+      };
+    }
   }
 };
 </script>

@@ -2,7 +2,7 @@ export const editDetails = {
   data() {
     return {
       proto: {
-        id: null,
+        registration: null,
         paces: [
           {
             name: null,
@@ -22,10 +22,12 @@ export const editDetails = {
             }
           ]
         },
-        envelopes: [{
-          name: null,
-          values: [{ x: null, y: null }]
-        }],
+        envelopes: [
+          {
+            name: null,
+            values: [{ x: null, y: null }]
+          }
+        ],
         consumptions: [
           {
             name: null,
@@ -59,6 +61,25 @@ export const editDetails = {
     },
     appendItem(array, proto) {
       array.push({ ...proto });
+    },
+    downloadJSON(data, fileName) {
+      let fileToSave = new Blob([JSON.stringify(data, undefined, 2)], {
+        type: "application/json",
+        name: fileName
+      });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(fileToSave);
+      a.download = fileName;
+      a.click();
+    },
+    uploadJSON(file) {
+      // files.forEach(file => {
+      let fr = new FileReader();
+      fr.onload = txt => {
+        this.aircraft = JSON.parse(txt.target.result);
+      };
+      fr.readAsText(file);
+      // });
     }
   }
 };
