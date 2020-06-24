@@ -32,11 +32,7 @@
             <b-input v-model="weight.name" />
           </b-field>
           <b-field label="Arm" label-position="on-border">
-            <b-numberinput
-              v-model="weight.arm"
-              :controls="false"
-              :step="0.001"
-            />
+            <b-numberinput v-model="weight.arm" :controls="false" :step="0.001" />
           </b-field>
           <b-field label="Minimum" label-position="on-border">
             <b-numberinput v-model="weight.min" :controls="false" :step="0.1" />
@@ -45,18 +41,10 @@
             <b-numberinput v-model="weight.max" :controls="false" :step="0.1" />
           </b-field>
           <b-field label="Weight" label-position="on-border">
-            <b-numberinput
-              v-model="weight.value"
-              :controls="false"
-              :step="0.1"
-            />
+            <b-numberinput v-model="weight.value" :controls="false" :step="0.1" />
           </b-field>
           <b-field label="Density" label-position="on-border">
-            <b-numberinput
-              v-model="weight.density"
-              :controls="false"
-              :step="0.001"
-            />
+            <b-numberinput v-model="weight.density" :controls="false" :step="0.001" />
           </b-field>
         </b-field>
       </div>

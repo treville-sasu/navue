@@ -3,31 +3,18 @@
     <b-navbar fixed-top>
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          <img
-            src="favicon.png"
-            alt="Navue, a navigation tool for general aviation."
-          />
+          <img src="favicon.png" alt="Navue, a navigation tool for general aviation." />
         </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-item tag="router-link" to="/aircraft">Aircraft</b-navbar-item>
+        <b-navbar-item tag="router-link" to="/aircraft">Aircrafts</b-navbar-item>
         <b-navbar-dropdown label="Prepare a Flight">
-          <b-navbar-item tag="router-link" to="trace"
-            >Trace route</b-navbar-item
-          >
+          <b-navbar-item tag="router-link" to="/route">Trace a route</b-navbar-item>
           <b-navbar-item tag="router-link" to="logbook">Edit Log</b-navbar-item>
-          <b-navbar-item tag="router-link" to="getNOTAM"
-            >Get NOTAMs</b-navbar-item
-          >
-          <b-navbar-item tag="router-link" to="getMETAR"
-            >Get METAR & TAF</b-navbar-item
-          >
-          <b-navbar-item tag="router-link" to="weatherMap"
-            >Weather Map</b-navbar-item
-          >
-          <b-navbar-item tag="router-link" to="balance"
-            >Weight and Balance</b-navbar-item
-          >
+          <b-navbar-item tag="router-link" to="getNOTAM">Get NOTAMs</b-navbar-item>
+          <b-navbar-item tag="router-link" to="getMETAR">Get METAR & TAF</b-navbar-item>
+          <b-navbar-item tag="router-link" to="weatherMap">Weather Map</b-navbar-item>
+          <b-navbar-item tag="router-link" to="balance">Weight and Balance</b-navbar-item>
         </b-navbar-dropdown>
         <b-navbar-dropdown label="Take Off !">
           <b-navbar-item tag="router-link" to="/about">About</b-navbar-item>
@@ -35,6 +22,11 @@
       </template>
 
       <template slot="end">
+        <b-navbar-item tag="h3">
+          {{
+          selectedAircraft.registration
+          }}
+        </b-navbar-item>
         <b-navbar-item tag="div">
           <div class="buttons">
             <a class="button is-primary">
@@ -51,6 +43,8 @@
 <style lang="scss">
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
+
+$navbar-fixed-z: 3000;
 
 // Set your colors
 $primary: #5172dd;
@@ -111,3 +105,12 @@ $link-focus-border: $primary;
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 </style>
+<script>
+import { mapState } from "vuex";
+
+export default {
+  computed: {
+    ...mapState(["selectedAircraft"])
+  }
+};
+</script>

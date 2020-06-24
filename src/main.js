@@ -4,6 +4,8 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 
+import 'leaflet/dist/leaflet.css';
+
 import Buefy from "buefy";
 Vue.use(Buefy);
 

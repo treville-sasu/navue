@@ -11,29 +11,15 @@
         <div class="hero-body">
           <div class="container">
             <h1 class="title">Choose, edit & manage your aircrafts</h1>
-            <h2 class="subtitle">aircrafts are stored in browser and synced online</h2>
+            <h2 class="subtitle">aircrafts are stored in browser and synced online.</h2>
+            <p>Be sure to signup and login to operate synchronisation.</p>
           </div>
         </div>
       </div>
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <div class="tile is-child box">
-            <b-field label="Choose an Aircraft">
-              <b-autocomplete
-                placeholder="F-xxxx"
-                v-model="search"
-                :data="aircrafts"
-                @select="selectAircraft"
-                icon="magnify"
-                field="registration"
-                open-on-focus
-                keep-first
-                clear-on-select
-                clearable
-              >
-                <template slot="empty">No results for {{ search }}</template>
-              </b-autocomplete>
-            </b-field>
+            <AircraftSelect v-on:select="aircraft = $event" />
           </div>
         </div>
         <div class="tile is-parent">
@@ -76,44 +62,25 @@
 
 <script>
 import AircraftDetail from "@/components/AircraftDetail.vue";
-import { mapState, mapGetters } from "vuex";
+import AircraftSelect from "@/components/AircraftSelect.vue";
 import { editDetails } from "@/mixins/casting";
 
 export default {
   name: "Aircraft",
   components: {
-    AircraftDetail
+    AircraftDetail,
+    AircraftSelect
   },
   mixins: [editDetails],
   data() {
     return {
       aircraft: null,
-      search: "",
       upload: []
     };
   },
   methods: {
-    selectAircraft(option) {
-      this.aircraft = { ...option };
-    },
     newAircraft() {
       this.aircraft = { ...this.proto };
-    }
-  },
-  computed: {
-    aircraftFilteredList() {
-      return this.searchAircraft(this.search);
-    },
-    ...mapState(["selectedAircraft"]), //, "aircrafts"
-    ...mapGetters(["searchAircraft"])
-  },
-  pouch: {
-    aircrafts() {
-      return {
-        database: "navue",
-        selector: { registration: { $regex: RegExp(this.search, "i") } },
-        fields: ["registration"]
-      };
     }
   }
 };
