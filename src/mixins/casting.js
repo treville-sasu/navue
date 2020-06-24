@@ -48,7 +48,12 @@ export const editDetails = {
         pointRadius: 5,
         pointHoverRadius: 5,
         tension: 0
-      }
+      },
+      cgDataset: {
+        borderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 5,
+      },
     };
   },
   // TODO: Fix alteration of proto, make a better copy.
@@ -73,7 +78,7 @@ export const editDetails = {
       a.click();
     },
     uploadJSON(file) {
-      // files.forEach(file => {
+      // files.forEach(file => { // we only need single file upload for now
       let fr = new FileReader();
       fr.onload = txt => {
         this.aircraft = JSON.parse(txt.target.result);

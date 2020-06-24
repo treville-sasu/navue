@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Aircraft from "../views/Aircraft.vue";
 import Route from "../views/Route.vue";
+import Balance from "../views/Balance.vue";
 
 Vue.use(VueRouter);
 
@@ -18,9 +19,9 @@ const routes = [
     component: Aircraft
   },
   {
-    path: "/route",
-    name: "Route",
-    component: Route
+    path: "/balance",
+    name: "Balance",
+    component: Balance
   },
   {
     path: "/about",

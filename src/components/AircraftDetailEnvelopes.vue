@@ -66,10 +66,7 @@
         </b-field>
       </div>
     </b-field>
-    <BalanceChart
-      :chartData="BuildDataset(envelopes)"
-      v-if="envelopes.length > 0"
-    />
+    <BalanceChart :chartData="datasets" v-if="envelopes.length > 0" />
   </section>
 </template>
 
@@ -84,17 +81,16 @@ export default {
   props: ["envelopes"],
   mixins: [editDetails],
   components: { BalanceChart },
-  methods: {
-    BuildDataset(envlps) {
+  computed: {
+    datasets() {
       return {
-        datasets: envlps.map(e =>
-          Object.assign(
-            { label: e.name, data: e.values },
-            this.envelopesDataset
-          )
-        )
+        datasets: [
+          ...this.envelopes.map((e) => {
+            return { ...this.envelopesDataset, label: e.name, data: e.values };
+          }),
+        ],
       };
-    }
-  }
+    },
+  },
 };
 </script>
