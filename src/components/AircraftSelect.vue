@@ -3,7 +3,7 @@
     <b-autocomplete
       placeholder="F-xxxx"
       v-model="search"
-      :data="aircrafts"
+      :data="aircrafts || []"
       @select="$emit('select', $event)"
       icon="magnify"
       field="registration"
@@ -21,7 +21,7 @@ export default {
   name: "AircraftSelect",
   data() {
     return {
-      search: "",
+      search: ""
     };
   },
   pouch: {
@@ -29,9 +29,9 @@ export default {
       return {
         database: "navue",
         selector: { registration: { $regex: RegExp(this.search, "i") } },
-        fields: ["registration"],
+        fields: ["registration"]
       };
-    },
-  },
+    }
+  }
 };
 </script>
