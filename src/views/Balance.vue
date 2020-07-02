@@ -4,9 +4,10 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">Weight & Balance</h1>
-          <h2 class="subtitle">Hero subtitle</h2>
-          Here you can compute center of gravity and assert a suffisat margin
-          within the aircraft limits
+          <h2 class="subtitle">
+            Here you can compute center of gravity and assert a correct margin
+            within the aircraft limits
+          </h2>
         </div>
       </div>
     </section>
@@ -15,14 +16,11 @@
       <AircraftSelect v-on:select="setAircraft" />
     </div>
     <div v-else class="columns">
-      <div class="column is-full">
+      <div class="column is-centered">
         <h2 class="title">{{ aircraft.registration }}</h2>
         <div class="columns">
           <div class="column">
-            <b-field
-              v-for="(weight, index) in aircraft.balance.weights"
-              :key="index"
-            >
+            <b-field v-for="(weight, index) in aircraft.balance.weights" :key="index">
               <b-field :label="weight.name" horizontal>
                 <b-slider
                   v-model="weight.value"
@@ -37,10 +35,7 @@
             </b-field>
           </div>
           <div class="column">
-            <BalanceChart
-              :chartData="datasets"
-              v-if="aircraft.envelopes.length > 0"
-            />
+            <BalanceChart :chartData="datasets" v-if="aircraft.envelopes.length > 0" />
           </div>
         </div>
       </div>
@@ -51,23 +46,23 @@
 <script>
 import AircraftSelect from "@/components/AircraftSelect.vue";
 import BalanceChart from "@/components/BalanceChart.vue";
-import { editDetails } from "@/mixins/casting";
+import { ChartSettings } from "@/mixins/apputils";
 import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "Balance",
   components: {
     AircraftSelect,
-    BalanceChart,
+    BalanceChart
   },
-  mixins: [editDetails],
+  mixins: [ChartSettings],
   data() {
     return {
-      aircraft: null,
+      aircraft: null
     };
   },
   mounted() {
-    this.aircraft = this.setAircraft(this.selectedAircraft);
+    this.setAircraft(this.selectedAircraft);
   },
   methods: {
     getCenterGravity(weights) {
@@ -76,7 +71,7 @@ export default {
           let weight = i.value * (i.densitiy || 1);
           return {
             x: acc.x + weight * i.arm,
-            y: acc.y + weight,
+            y: acc.y + weight
           };
         },
         { x: 0, y: 0 }
@@ -87,10 +82,10 @@ export default {
     ...mapMutations(["selectAircraft"]),
     setAircraft(option) {
       this.aircraft = { ...option };
-      this.aircraft.balance.weights.forEach((w) => {
+      this.aircraft.balance.weights.forEach(w => {
         if (w.value) w.disabled = true;
       });
-    },
+    }
   },
   computed: {
     isBalanceable() {
@@ -103,21 +98,21 @@ export default {
     },
     cgEmptyTank() {
       return this.getCenterGravity(
-        this.aircraft.balance.weights.filter((w) => !w.name.match(/fuel|tank/i))
+        this.aircraft.balance.weights.filter(w => !w.tank)
       );
     },
     ...mapState(["selectedAircraft"]),
     datasets() {
       return {
         datasets: [
-          ...this.aircraft.envelopes.map((e) => {
+          ...this.aircraft.envelopes.map(e => {
             return { ...this.envelopesDataset, label: e.name, data: e.values };
           }),
           { ...this.cgDataset, data: [this.cgFullTank], label: "Full tank" },
-          { ...this.cgDataset, data: [this.cgEmptyTank], label: "Emtpy tank" },
-        ],
+          { ...this.cgDataset, data: [this.cgEmptyTank], label: "Empty tank" }
+        ]
       };
-    },
-  },
+    }
+  }
 };
 </script>

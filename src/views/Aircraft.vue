@@ -63,7 +63,7 @@
 <script>
 import AircraftDetail from "@/components/AircraftDetail.vue";
 import AircraftSelect from "@/components/AircraftSelect.vue";
-import { editDetails } from "@/mixins/casting";
+import { ImportExport, TypeCasting } from "@/mixins/apputils";
 
 export default {
   name: "Aircraft",
@@ -71,7 +71,7 @@ export default {
     AircraftDetail,
     AircraftSelect
   },
-  mixins: [editDetails],
+  mixins: [ImportExport, TypeCasting],
   data() {
     return {
       aircraft: null,

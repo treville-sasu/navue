@@ -12,32 +12,28 @@
         </b-tooltip>
       </template>
       <div class="control">
-        <b-field v-for="(fuel, index) in consumptions" :key="index">
-          <b-field label="Name" label-position="on-border">
-            <b-input v-model="fuel.name" />
+        <b-field v-for="(consumption, index) in consumptions" :key="index" grouped>
+          <b-field label="Name" label-position="on-border" expanded>
+            <b-input v-model="consumption.name" />
           </b-field>
           <b-field label="Fuel" label-position="on-border">
-            <b-numberinput
-              v-model="fuel.value"
-              :controls="false"
-              :step="0.01"
-            />
-            <b-select placeholder="unit" v-model="fuel.unit">
+            <b-select placeholder="vol." v-model="consumption.volume">
+              <option v-for="(ratio, name) in units.volume" :value="name" :key="name">{{ name }}</option>
+            </b-select>
+            <b-select placeholder="cons." v-model="consumption.unit">
               <option
-                v-for="option in units.fuel"
+                v-for="option in units.consumptions"
                 :value="option"
                 :key="option"
-                >{{ option }}</option
-              >
+              >{{ option }}</option>
             </b-select>
-            <p class="control">
-              <b-button
-                v-on:click="removeItem(consumptions, index)"
-                type="is-secondary"
-                icon-right="close"
-              />
-            </p>
+            <b-numberinput v-model="consumption.value" :controls="false" :step="0.01" />
           </b-field>
+          <b-button
+            v-on:click="removeItem(consumptions, index)"
+            type="is-secondary"
+            icon-right="close"
+          />
         </b-field>
       </div>
     </b-field>
@@ -47,11 +43,11 @@
 <style scoped lang="scss"></style>
 
 <script>
-import { editDetails } from "@/mixins/casting";
+import { TypeCasting, UnitSystem } from "@/mixins/apputils";
 
 export default {
   name: "AircraftDetailConsumptions",
   props: ["consumptions"],
-  mixins: [editDetails]
+  mixins: [TypeCasting, UnitSystem]
 };
 </script>

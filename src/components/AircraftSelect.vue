@@ -16,6 +16,7 @@
     </b-autocomplete>
   </b-field>
 </template>
+
 <script>
 export default {
   name: "AircraftSelect",

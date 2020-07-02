@@ -12,32 +12,17 @@
         </b-tooltip>
       </template>
       <div class="control">
-        <b-field v-for="(speed, index) in paces" :key="index">
-          <b-field label="Name" label-position="on-border">
+        <b-field v-for="(speed, index) in paces" :key="index" grouped>
+          <b-field label="Name" label-position="on-border" expanded>
             <b-input v-model="speed.name" />
           </b-field>
           <b-field label="Speed" label-position="on-border">
-            <b-numberinput
-              v-model="speed.value"
-              :controls="false"
-              :step="0.01"
-            />
-            <b-select placeholder="unit" v-model="units.speed">
-              <option
-                v-for="option in units.speed"
-                :value="option"
-                :key="option"
-                >{{ option }}</option
-              >
+            <b-select placeholder="unit" v-model="speed.unit">
+              <option v-for="(ratio, name) in units.speed" :value="name" :key="name">{{ name }}</option>
             </b-select>
-            <p class="control">
-              <b-button
-                v-on:click="removeItem(paces, index)"
-                type="is-secondary"
-                icon-right="close"
-              />
-            </p>
+            <b-numberinput v-model="speed.value" :controls="false" :step="0.01" />
           </b-field>
+          <b-button v-on:click="removeItem(paces, index)" type="is-secondary" icon-right="close" />
         </b-field>
       </div>
     </b-field>
@@ -47,11 +32,11 @@
 <style scoped lang="scss"></style>
 
 <script>
-import { editDetails } from "@/mixins/casting";
+import { TypeCasting, UnitSystem } from "@/mixins/apputils";
 
 export default {
   name: "AircraftDetailPaces",
   props: ["paces"],
-  mixins: [editDetails]
+  mixins: [TypeCasting, UnitSystem]
 };
 </script>
