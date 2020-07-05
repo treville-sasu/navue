@@ -12,6 +12,11 @@
       clear-on-select
       clearable
     >
+      <template slot="header">
+        <a>
+          <span> Add new... </span>
+        </a>
+      </template>
       <template slot="empty">No results for {{ search }}</template>
     </b-autocomplete>
   </b-field>
@@ -22,7 +27,7 @@ export default {
   name: "AircraftSelect",
   data() {
     return {
-      search: ""
+      search: "",
     };
   },
   pouch: {
@@ -30,9 +35,9 @@ export default {
       return {
         database: "navue",
         selector: { registration: { $regex: RegExp(this.search, "i") } },
-        fields: ["registration"]
+        fields: ["registration"],
       };
-    }
-  }
+    },
+  },
 };
 </script>
