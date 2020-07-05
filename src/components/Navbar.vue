@@ -37,7 +37,7 @@
         >
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Fly" hoverable collapsible>
-        <b-navbar-item tag="router-link" to="checklist"
+        <b-navbar-item tag="router-link" to="checklists"
           >Checklists</b-navbar-item
         >
         <b-navbar-item tag="router-link" to="logbook"
@@ -61,16 +61,13 @@
     </template>
 
     <template slot="end">
-      <b-navbar-item tag="h3">{{
-        selectedAircraft.registration
+      <b-navbar-item tag="router-link" to="aircraft">{{
+        selectedAircraft ? selectedAircraft.registration : "Aircrafts"
       }}</b-navbar-item>
       <b-navbar-dropdown hoverable collapsible right>
         <template slot="label">
           <b-icon icon="settings" />
         </template>
-        <b-navbar-item tag="router-link" to="/aircraft"
-          >Aircrafts</b-navbar-item
-        >
         <b-navbar-item tag="router-link" to="/about">About</b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-dropdown hoverable collapsible right>
@@ -92,7 +89,7 @@ export default {
   name: "Navbar",
   components: { Login },
   computed: {
-    ...mapState(["selectedAircraft"])
-  }
+    ...mapState(["selectedAircraft"]),
+  },
 };
 </script>
