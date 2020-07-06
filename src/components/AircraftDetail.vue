@@ -1,54 +1,76 @@
 <template>
-  <form class="section">
-    <div class="level">
-      <div class="level-left">
-        <div class="level-item">
-          <b-button type="is-secondary" icon-left="arrow-left" @click="$emit('discard')"></b-button>
-        </div>
-        <div class="level-item">
-          <b-field v-if="canEdit" label="Registration" horizontal>
-            <b-input v-model="aircraft.registration" placeholder="F-...." required />
-          </b-field>
-          <h2 v-else class="title">{{ aircraft.registration }}</h2>
-        </div>
-      </div>
-      <div class="level-right">
-        <div v-if="canEdit" class="buttons is-grouped is-centered">
-          <b-button
-            type="is-primary"
-            icon-left="content-save"
-            native-type="submit"
-            @click="updateA(aircraft)"
-            :disabled="!unlockSave"
-            outlined
-          >{{ !aircraft._id ? "Create" : "Save" }}</b-button>
-          <b-button type="is-warning" icon-left="close" outlined @click="$emit('discard')">Discard</b-button>
-          <b-button
-            v-if="!!aircraft._id"
-            type="is-danger"
-            icon-left="delete"
-            @click="deleteA(aircraft)"
-            outlined
-          >Delete</b-button>
-        </div>
-        <div v-else class="buttons">
-          <b-button type="is-secondary" icon-left="pencil" @click="unlockEdit = true"></b-button>
-          <b-button type="is-primary" icon-left="check" @click="selectAircraft(aircraft)">Select</b-button>
-          <b-button
-            @click="downloadJSON(aircraft, `${aircraft.registration}.json`)"
-            icon-left="download"
-            type="is-secondary"
-            outlined
-          >Download</b-button>
-        </div>
-      </div>
+  <form>
+    <div v-if="canEdit" class="buttons is-grouped is-centered">
+      <b-button
+        type="is-primary"
+        icon-left="content-save"
+        native-type="submit"
+        @click="updateA(aircraft)"
+        :disabled="!unlockSave"
+        outlined
+        >{{ !aircraft._id ? "Create" : "Save" }}</b-button
+      >
+      <b-button
+        type="is-warning"
+        icon-left="close"
+        outlined
+        @click="$emit('discard')"
+        >Discard</b-button
+      >
+      <b-button
+        v-if="!!aircraft._id"
+        type="is-danger"
+        icon-left="delete"
+        @click="deleteA(aircraft)"
+        outlined
+        >Delete</b-button
+      >
     </div>
-
-    <div></div>
+    <div v-else class="buttons is-grouped is-centered">
+      <b-button
+        type="is-secondary"
+        icon-left="pencil"
+        @click="unlockEdit = true"
+      ></b-button>
+      <b-button
+        type="is-primary"
+        icon-left="check"
+        @click="selectAircraft(aircraft)"
+        >Select</b-button
+      >
+      <b-button
+        @click="downloadJSON(aircraft, `${aircraft.registration}.json`)"
+        icon-left="download"
+        type="is-secondary"
+        outlined
+        >Download</b-button
+      >
+    </div>
 
     <fieldset :disabled="!canEdit">
       <b-tabs position="is-centered" multiline expanded>
-        <b-tab-item label="Généralités">in progress</b-tab-item>
+        <b-tab-item label="Identification">
+          <section class="section">
+            <b-field label="Registration" horizontal>
+              <b-input
+                v-model="aircraft.registration"
+                placeholder="F-...."
+                required
+              />
+            </b-field>
+            <b-field label="Type" horizontal>
+              <b-input v-model="aircraft.type" placeholder="DA40" />
+            </b-field>
+            <b-field label="Airworthiness Certificate" horizontal>
+              <b-input
+                v-model="aircraft.cn"
+                maxlength="200"
+                type="textarea"
+                placeholder="CNRA.. 12/12/1983"
+              />
+            </b-field>
+          </section>
+        </b-tab-item>
         <b-tab-item label="Paces">
           <AircraftDetailPaces :paces="aircraft.paces" />
         </b-tab-item>
@@ -61,7 +83,9 @@
         <b-tab-item label="Envelopes">
           <AircraftDetailEnvelopes :envelopes="aircraft.envelopes" />
         </b-tab-item>
-        <b-tab-item label="Checklists">in progress</b-tab-item>
+        <b-tab-item label="Checklists">
+          <AircraftDetailChecklists :checklists="aircraft.checklists" />
+        </b-tab-item>
       </b-tabs>
     </fieldset>
   </form>
@@ -74,30 +98,36 @@ import AircraftDetailPaces from "@/components/AircraftDetailPaces.vue";
 import AircraftDetailBalance from "@/components/AircraftDetailBalance.vue";
 import AircraftDetailEnvelopes from "@/components/AircraftDetailEnvelopes.vue";
 import AircraftDetailConsumptions from "@/components/AircraftDetailConsumptions.vue";
+import AircraftDetailChecklists from "@/components/AircraftDetailChecklists.vue";
 import { mapActions, mapMutations } from "vuex";
-import { editDetails } from "@/mixins/casting";
+import { ImportExport, TypeCasting } from "@/mixins/apputils";
 
 export default {
   name: "AircraftDetail",
   props: ["aircraft"],
-  mixins: [editDetails],
+  mixins: [ImportExport, TypeCasting],
   data() {
     return {
       unlockEdit: false,
       //      TODO: unlock save only if form changed
-      unlockSave: true
+      unlockSave: true,
     };
+  },
+  mounted() {
+    if (!this.aircraft.checklists)
+      this.aircraft.checklists = this.proto.checklists;
   },
   components: {
     AircraftDetailPaces,
     AircraftDetailBalance,
     AircraftDetailEnvelopes,
-    AircraftDetailConsumptions
+    AircraftDetailConsumptions,
+    AircraftDetailChecklists,
   },
   computed: {
     canEdit() {
       return this.unlockEdit || !this.aircraft._id;
-    }
+    },
   },
   methods: {
     updateA(payload) {
@@ -116,7 +146,7 @@ export default {
       });
     },
     ...mapMutations(["selectAircraft"]),
-    ...mapActions(["updateAircraft", "deleteAircraft"])
-  }
+    ...mapActions(["updateAircraft", "deleteAircraft"]),
+  },
 };
 </script>

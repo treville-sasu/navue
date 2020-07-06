@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    selectedAircraft: {},
+    selectedAircraft: null,
     aircrafts: []
   },
   mutations: {

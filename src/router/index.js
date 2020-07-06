@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Aircraft from "../views/Aircraft.vue";
 import Route from "../views/Route.vue";
 import Balance from "../views/Balance.vue";
+import Checklists from "../views/Checklists.vue";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,11 @@ const routes = [
     component: Balance
   },
   {
+    path: "/checklists",
+    name: "Checklists",
+    component: Checklists,
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting
@@ -35,7 +41,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  linkActiveClass: "is-active"
 });
 
 export default router;
