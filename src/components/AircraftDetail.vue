@@ -29,6 +29,12 @@
     <div v-else class="buttons is-grouped is-centered">
       <b-button
         type="is-secondary"
+        icon-left="arrow-left"
+        outlined
+        @click="$emit('discard')"
+      ></b-button>
+      <b-button
+        type="is-secondary"
         icon-left="pencil"
         @click="unlockEdit = true"
       ></b-button>
@@ -58,8 +64,11 @@
                 required
               />
             </b-field>
-            <b-field label="Type" horizontal>
-              <b-input v-model="aircraft.type" placeholder="DA40" />
+            <b-field label="Manufacturer" horizontal>
+              <b-input v-model="aircraft.manufacturer" placeholder="Robin" />
+            </b-field>
+            <b-field label="Model" horizontal>
+              <b-input v-model="aircraft.model" placeholder="DR40" />
             </b-field>
             <b-field label="Airworthiness Certificate" horizontal>
               <b-input
@@ -99,7 +108,6 @@ import AircraftDetailBalance from "@/components/AircraftDetailBalance.vue";
 import AircraftDetailEnvelopes from "@/components/AircraftDetailEnvelopes.vue";
 import AircraftDetailConsumptions from "@/components/AircraftDetailConsumptions.vue";
 import AircraftDetailChecklists from "@/components/AircraftDetailChecklists.vue";
-import { mapActions, mapMutations } from "vuex";
 import { ImportExport, TypeCasting } from "@/mixins/apputils";
 
 export default {
@@ -110,7 +118,7 @@ export default {
     return {
       unlockEdit: false,
       //      TODO: unlock save only if form changed
-      unlockSave: true,
+      unlockSave: true
     };
   },
   mounted() {
@@ -122,12 +130,12 @@ export default {
     AircraftDetailBalance,
     AircraftDetailEnvelopes,
     AircraftDetailConsumptions,
-    AircraftDetailChecklists,
+    AircraftDetailChecklists
   },
   computed: {
     canEdit() {
       return this.unlockEdit || !this.aircraft._id;
-    },
+    }
   },
   methods: {
     updateA(payload) {
@@ -144,9 +152,7 @@ export default {
       this.$store.dispatch("deleteAircraft", payload).then(() => {
         this.$emit("discard");
       });
-    },
-    ...mapMutations(["selectAircraft"]),
-    ...mapActions(["updateAircraft", "deleteAircraft"]),
-  },
+    }
+  }
 };
 </script>

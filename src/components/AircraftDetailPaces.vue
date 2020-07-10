@@ -45,6 +45,6 @@ import { TypeCasting, UnitSystem } from "@/mixins/apputils";
 export default {
   name: "AircraftDetailPaces",
   props: ["paces"],
-  mixins: [TypeCasting, UnitSystem],
+  mixins: [TypeCasting, UnitSystem]
 };
 </script>

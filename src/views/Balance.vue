@@ -48,12 +48,12 @@ export default {
   name: "Balance",
   components: {
     EnsureAircraft,
-    BalanceChart,
+    BalanceChart
   },
   mixins: [ChartSettings],
   data() {
     return {
-      aircraft: null,
+      aircraft: null
     };
   },
   methods: {
@@ -63,14 +63,14 @@ export default {
           let weight = i.value * (i.densitiy || 1);
           return {
             x: acc.x + weight * i.arm,
-            y: acc.y + weight,
+            y: acc.y + weight
           };
         },
         { x: 0, y: 0 }
       );
       cg.x = Math.round((cg.x / cg.y + Number.EPSILON) * 1000) / 1000;
       return cg;
-    },
+    }
   },
   computed: {
     cgFullTank() {
@@ -78,20 +78,20 @@ export default {
     },
     cgEmptyTank() {
       return this.getCenterGravity(
-        this.aircraft.balance.weights.filter((w) => !w.tank)
+        this.aircraft.balance.weights.filter(w => !w.tank)
       );
     },
     datasets() {
       return {
         datasets: [
-          ...this.aircraft.envelopes.map((e) => {
+          ...this.aircraft.envelopes.map(e => {
             return { ...this.envelopesDataset, label: e.name, data: e.values };
           }),
           { ...this.cgDataset, data: [this.cgFullTank], label: "Full tank" },
-          { ...this.cgDataset, data: [this.cgEmptyTank], label: "Empty tank" },
-        ],
+          { ...this.cgDataset, data: [this.cgEmptyTank], label: "Empty tank" }
+        ]
       };
-    },
-  },
+    }
+  }
 };
 </script>

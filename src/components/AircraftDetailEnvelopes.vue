@@ -77,12 +77,12 @@ export default {
     datasets() {
       return {
         datasets: [
-          ...this.envelopes.map((e) => {
+          ...this.envelopes.map(e => {
             return { ...this.envelopesDataset, label: e.name, data: e.values };
-          }),
-        ],
+          })
+        ]
       };
-    },
-  },
+    }
+  }
 };
 </script>

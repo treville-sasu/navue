@@ -91,7 +91,7 @@ export default {
   name: "Navbar",
   components: { Login },
   computed: {
-    ...mapState(["selectedAircraft"]),
-  },
+    ...mapState(["selectedAircraft"])
+  }
 };
 </script>

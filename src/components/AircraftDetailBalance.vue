@@ -99,8 +99,8 @@ export default {
       },
       set(value) {
         this.balance.date = value;
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

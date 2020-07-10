@@ -56,6 +56,6 @@ import { TypeCasting, UnitSystem } from "@/mixins/apputils";
 export default {
   name: "AircraftDetailConsumptions",
   props: ["consumptions"],
-  mixins: [TypeCasting, UnitSystem],
+  mixins: [TypeCasting, UnitSystem]
 };
 </script>

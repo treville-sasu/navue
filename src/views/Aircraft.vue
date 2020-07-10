@@ -11,7 +11,9 @@
         <div class="hero-body">
           <div class="container">
             <h1 class="title">Choose, edit & manage your aircrafts</h1>
-            <h2 class="subtitle">aircrafts are stored in browser and synced online.</h2>
+            <h2 class="subtitle">
+              aircrafts are stored in browser and synced online.
+            </h2>
             <p>Be sure to signup and login to operate synchronisation.</p>
           </div>
         </div>
@@ -30,7 +32,8 @@
               icon-left="folder-plus"
               type="is-primary"
               expanded
-            >Create a new Aircraft</b-button>
+              >Create a new Aircraft</b-button
+            >
           </div>
         </div>
         <div class="tile is-parent">

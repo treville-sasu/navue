@@ -27,17 +27,20 @@ export default {
   name: "AircraftSelect",
   data() {
     return {
-      search: "",
+      search: ""
     };
   },
   pouch: {
     aircrafts() {
       return {
         database: "navue",
-        selector: { registration: { $regex: RegExp(this.search, "i") } },
-        fields: ["registration"],
+        selector: {
+          type: "aircraft",
+          registration: { $regex: RegExp(this.search, "i") }
+        },
+        fields: ["registration"]
       };
-    },
-  },
+    }
+  }
 };
 </script>
