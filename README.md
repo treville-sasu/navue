@@ -1,4 +1,4 @@
-# navue
+# naVue
 
 ## Project setup
 

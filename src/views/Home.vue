@@ -1,31 +1,40 @@
 <template>
-  <div class="container">
-    <section class="hero is-primary">
+  <section class="hero is-primary is-fullheight-with-navbar">
+    <div class="hero-head"></div>
+
+    <div class="hero-body">
       <div class="container">
-        <h1 class="title">NaVue</h1>
-        <h2 class="subtitle">
-          A simple flight tool, for preparation, navigation, and monitoring a
-          flight.
-        </h2>
-        <div class="container">
-          <figure class="image is-128x128">
-            <img src="favicon.png" />
-          </figure>
+        <div class="columns is-vcentered">
+          <div class="column">
+            <figure class="image is-square">
+              <img src="@/assets/logo-transparent.svg" />
+            </figure>
+          </div>
+          <div class="column is-two-thirds has-text-centered">
+            <h1 class="title">naVue</h1>
+            <h2 class="subtitle">
+              Easy, Secure & Free. Just fly !
+            </h2>
+          </div>
         </div>
       </div>
-    </section>
-    <Step msg="Welcome to Your Vue.js App" />
-  </div>
+    </div>
+    <div class="hero-foot">
+      <nav class="tabs">
+        <div class="container">
+          <ul>
+            <li><a>Get help</a></li>
+            <li><a>About</a></li>
+            <li><a>Source Code</a></li>
+            <li><a>Legal</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </section>
 </template>
-
 <script>
-// @ is an alias to /src
-import Step from "@/components/Step.vue";
-
 export default {
   name: "Home",
-  components: {
-    Step
-  }
 };
 </script>

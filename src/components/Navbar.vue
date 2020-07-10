@@ -3,7 +3,7 @@
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
         <img
-          src="favicon.png"
+          src="img/icons/android-chrome-192x192.png"
           alt="Navue, a navigation tool for general aviation."
         />
       </b-navbar-item>
@@ -68,12 +68,6 @@
       }}</b-navbar-item>
       <b-navbar-dropdown hoverable collapsible right>
         <template slot="label">
-          <b-icon icon="settings" />
-        </template>
-        <b-navbar-item tag="router-link" to="/about">About</b-navbar-item>
-      </b-navbar-dropdown>
-      <b-navbar-dropdown hoverable collapsible right>
-        <template slot="label">
           <b-icon icon="account" />
         </template>
         <div class="navbar-item">
@@ -91,7 +85,7 @@ export default {
   name: "Navbar",
   components: { Login },
   computed: {
-    ...mapState(["selectedAircraft"])
-  }
+    ...mapState(["selectedAircraft"]),
+  },
 };
 </script>
