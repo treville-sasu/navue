@@ -5,6 +5,7 @@ import Aircraft from "../views/Aircraft.vue";
 import Route from "../views/Route.vue";
 import Balance from "../views/Balance.vue";
 import Checklists from "../views/Checklists.vue";
+import MovingMap from "../views/MovingMap.vue";
 
 Vue.use(VueRouter);
 
@@ -27,7 +28,12 @@ const routes = [
   {
     path: "/checklists",
     name: "Checklists",
-    component: Checklists,
+    component: Checklists
+  },
+  {
+    path: "/moving-map",
+    name: "MovingMap",
+    component: MovingMap
   },
   {
     path: "/about",

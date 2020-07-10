@@ -43,7 +43,9 @@
         <b-navbar-item tag="router-link" to="logbook"
           >Navigation Log</b-navbar-item
         >
-        <b-navbar-item tag="router-link" to="enroute">Moving Map</b-navbar-item>
+        <b-navbar-item tag="router-link" to="moving-map"
+          >Moving Map</b-navbar-item
+        >
         <hr class="navbar-divider" />
         <div class="control navbar-item">
           <b-switch>Broadcast Position</b-switch>

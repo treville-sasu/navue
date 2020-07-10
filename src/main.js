@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css';
 
 import Buefy from "buefy";
 Vue.use(Buefy);
+import "leaflet-minimap/dist/Control.MiniMap.min.css";
 
 Vue.config.productionTip = false;
 

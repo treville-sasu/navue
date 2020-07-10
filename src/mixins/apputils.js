@@ -70,40 +70,80 @@ export const UnitSystem = {
   data() {
     return {
       units: {
-        //TODO add conversion value.
         speed: {
           "m/s": 1,
-          "km/h": 0.277778,
-          "ft/min": 18.288,
-          "kt": 0.514444,
+          "km/h": 3.6,
+          "ft/min": 196.85,
+          kt: 1.94384,
           // "Mach": 343, // changes with T° and Pressure
-          "mph": 0.44704
+          mph: 2.23694
         },
         consumptions: ["/h", "/1000ft", "each"],
         volume: {
-          "L": 1,
-          "gal US": 3.78541,
-          "gal Imp": 4.54609
+          L: 1,
+          "gal US": 0.264172,
+          "gal Imp": 0.219969
         },
         altitude: {
-          "m": 1,
-          "ft": 0.3048,
-          "FL": 30.48
+          m: 1,
+          ft: 3.28084,
+          FL: 328.084
         },
         distance: {
-          "m": 1,
-          "Km": 1000,
-          "NM": 1852,
-          "Mile": 1609.34,
-          "Yard": 0.9143977272588
+          m: 1,
+          Km: 0.001,
+          NM: 0.000539957,
+          Mile: 0.000621371,
+          Yard: 1.09361
         }
       }
     };
   },
-  methods: {
-    // convert(value, from, to) {
-    //   return value / this.units.fuel[from] * this.units.consumptions[to]
-    // }
+  filters: {
+    convert(value, kind, from, to) {
+      return (value * this.units[kind][from]) / this.units[kind][to];
+    },
+    asSpeed(value, to = "kt", from = "m/s") {
+      let speed = {
+        "m/s": 1,
+        "km/h": 3.6,
+        "ft/min": 196.85,
+        kt: 1.94384,
+        // "Mach": 343, // changes with T° and Pressure
+        mph: 2.23694
+      };
+      return (value / speed[from]) * speed[to];
+      // return this.convert(value, "speed", from, to)
+    },
+    asAltitude(value, to = "ft", from = "m") {
+      let altitude = {
+        m: 1,
+        ft: 3.28084,
+        FL: 328.084
+      };
+      return (value / altitude[from]) * altitude[to];
+      // return this.convert(value, "altitude", from, to)
+    },
+    asDistance(value, to = "ft", from = "m") {
+      let distance = {
+        m: 1,
+        Km: 0.001,
+        NM: 0.000539957,
+        Mile: 0.000621371,
+        Yard: 1.09361
+      };
+      return (value / distance[from]) * distance[to];
+      // return this.convert(value, "distance", from, to)
+    },
+    asHeading(value) {
+      return (value + 360) % 360;
+    },
+    precision(value, precision = 2) {
+      return (
+        Math.round(value * 10 ** precision + Number.EPSILON) /
+          10 ** precision || "-"
+      );
+    }
   }
 };
 
