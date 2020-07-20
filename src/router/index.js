@@ -18,7 +18,11 @@ const routes = [
   {
     path: "/aircraft",
     name: "Aircraft",
-    component: Aircraft
+  {
+    path: "/weather",
+    name: "Weather",
+    component: () => import("../views/Weather.vue")
+  },
   },
   {
     path: "/balance",

@@ -4,9 +4,10 @@
     <router-view />
   </div>
 </template>
+
 <style lang="scss">
 $navbar-fixed-z: 3000;
-
+$modal-z: $navbar-fixed-z + 1;
 // .navbar {
 //   border-radius: 0;
 //   z-index: 3000;

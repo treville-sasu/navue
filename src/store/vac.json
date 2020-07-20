@@ -1,0 +1,1682 @@
+[
+  {
+    "id": "LFOI",
+    "name": "ABBEVILLE"
+  },
+  {
+    "id": "LFBA",
+    "name": "AGEN LA GARENNE"
+  },
+  {
+    "id": "LFDA",
+    "name": "AIRE SUR L'ADOUR"
+  },
+  {
+    "id": "LFMA",
+    "name": "AIX LES MILLES"
+  },
+  {
+    "id": "LFKJ",
+    "name": "AJACCIO NAPOLEON BONAPARTE"
+  },
+  {
+    "id": "LFAQ",
+    "name": "ALBERT BRAY"
+  },
+  {
+    "id": "LFKA",
+    "name": "ALBERTVILLE GÃ©nÃ©ral Pierre Delachenal"
+  },
+  {
+    "id": "LFCI",
+    "name": "ALBI LE SEQUESTRE"
+  },
+  {
+    "id": "LFOF",
+    "name": "ALENCON VALFRAMBERT"
+  },
+  {
+    "id": "LFMS",
+    "name": "ALES CEVENNES"
+  },
+  {
+    "id": "LFXA",
+    "name": "AMBERIEU"
+  },
+  {
+    "id": "LFHT",
+    "name": "AMBERT LE POYET"
+  },
+  {
+    "id": "LFEF",
+    "name": "AMBOISE DIERRE"
+  },
+  {
+    "id": "LFAY",
+    "name": "AMIENS-GLISY"
+  },
+  {
+    "id": "LFFI",
+    "name": "ANCENIS"
+  },
+  {
+    "id": "LFCD",
+    "name": "ANDERNOS LES BAINS"
+  },
+  {
+    "id": "LFJR",
+    "name": "ANGERS MARCE"
+  },
+  {
+    "id": "LFBU",
+    "name": "ANGOULEME BRIE CHAMPNIERS"
+  },
+  {
+    "id": "LFLP",
+    "name": "ANNECY MEYTHET"
+  },
+  {
+    "id": "LFLI",
+    "name": "ANNEMASSE"
+  },
+  {
+    "id": "LFCH",
+    "name": "ARCACHON LA TESTE DE BUCH"
+  },
+  {
+    "id": "LFAJ",
+    "name": "ARGENTAN"
+  },
+  {
+    "id": "LFEG",
+    "name": "ARGENTON SUR CREUSE"
+  },
+  {
+    "id": "LFQD",
+    "name": "ARRAS ROCLINCOURT"
+  },
+  {
+    "id": "LFNJ",
+    "name": "ASPRES SUR BUECH"
+  },
+  {
+    "id": "LFHO",
+    "name": "AUBENAS ARDECHE MERIDIONALE"
+  },
+  {
+    "id": "LFJF",
+    "name": "AUBENASSON"
+  },
+  {
+    "id": "LFEH",
+    "name": "AUBIGNY SUR NERE"
+  },
+  {
+    "id": "LFDH",
+    "name": "AUCH GERS"
+  },
+  {
+    "id": "LFLW",
+    "name": "AURILLAC"
+  },
+  {
+    "id": "LFQF",
+    "name": "AUTUN BELLEVUE"
+  },
+  {
+    "id": "LFLA",
+    "name": "AUXERRE BRANCHES"
+  },
+  {
+    "id": "LFGE",
+    "name": "AVALLON"
+  },
+  {
+    "id": "LFMV",
+    "name": "AVIGNON CAUMONT"
+  },
+  {
+    "id": "LFNT",
+    "name": "AVIGNON PUJAUT"
+  },
+  {
+    "id": "LFRW",
+    "name": "AVRANCHES LE VAL SAINT PERE"
+  },
+  {
+    "id": "LFCB",
+    "name": "BAGNERES DE LUCHON"
+  },
+  {
+    "id": "LFAO",
+    "name": "BAGNOLES DE L'ORNE COUTERNE"
+  },
+  {
+    "id": "LFFL",
+    "name": "BAILLEAU ARMENONVILLE"
+  },
+  {
+    "id": "LFSB",
+    "name": "BALE-MULHOUSE"
+  },
+  {
+    "id": "LFEU",
+    "name": "BAR LE DUC LES HAUTS DE CHEE"
+  },
+  {
+    "id": "LFFR",
+    "name": "BAR SUR SEINE"
+  },
+  {
+    "id": "LFMR",
+    "name": "BARCELONNETTE SAINT PONS"
+  },
+  {
+    "id": "LFKB",
+    "name": "BASTIA PORETTA"
+  },
+  {
+    "id": "LFGF",
+    "name": "BEAUNE CHALLANGES"
+  },
+  {
+    "id": "LFOB",
+    "name": "BEAUVAIS TILLE"
+  },
+  {
+    "id": "LFFO",
+    "name": "BEAUVOIR FROMENTINE"
+  },
+  {
+    "id": "LFNX",
+    "name": "BEDARIEUX LA TOUR SUR ORB"
+  },
+  {
+    "id": "LFGG",
+    "name": "BELFORT CHAUX"
+  },
+  {
+    "id": "LFEA",
+    "name": "BELLE ILE"
+  },
+  {
+    "id": "LFHN",
+    "name": "BELLEGARDE VOUVRAY"
+  },
+  {
+    "id": "LFHW",
+    "name": "BELLEVILLE VILLIE MORGON"
+  },
+  {
+    "id": "LFKY",
+    "name": "BELLEY-PEYRIEU"
+  },
+  {
+    "id": "LFIB",
+    "name": "BELVES SAINT PARDOUX"
+  },
+  {
+    "id": "LFAM",
+    "name": "BERCK SUR MER"
+  },
+  {
+    "id": "LFBE",
+    "name": "BERGERAC DORDOGNE PERIGORD"
+  },
+  {
+    "id": "LFPD",
+    "name": "BERNAY SAINT MARTIN"
+  },
+  {
+    "id": "LFNR",
+    "name": "BERRE LA FARE"
+  },
+  {
+    "id": "LFQM",
+    "name": "BESANCON LA VEZE"
+  },
+  {
+    "id": "LFSA",
+    "name": "BESANCON THISE"
+  },
+  {
+    "id": "LFPF",
+    "name": "BEYNES THIVERVAL"
+  },
+  {
+    "id": "LFMU",
+    "name": "BEZIERS VIAS"
+  },
+  {
+    "id": "LFBZ",
+    "name": "BIARRITZ PAYS BASQUE"
+  },
+  {
+    "id": "LFBS",
+    "name": "BISCARROSSE PARENTIS"
+  },
+  {
+    "id": "LFOQ",
+    "name": "BLOIS LE BREUIL"
+  },
+  {
+    "id": "LFCS",
+    "name": "BORDEAUX LEOGNAN SAUCATS"
+  },
+  {
+    "id": "LFBD",
+    "name": "BORDEAUX MERIGNAC"
+  },
+  {
+    "id": "LFDY",
+    "name": "BORDEAUX YVRAC"
+  },
+  {
+    "id": "LFHS",
+    "name": "BOURG CEYZERIAT"
+  },
+  {
+    "id": "LFLD",
+    "name": "BOURGES"
+  },
+  {
+    "id": "LFRB",
+    "name": "BREST BRETAGNE"
+  },
+  {
+    "id": "LFEI",
+    "name": "BRIARE CHATILLON"
+  },
+  {
+    "id": "LFFN",
+    "name": "BRIENNE LE CHATEAU"
+  },
+  {
+    "id": "LFHR",
+    "name": "BRIOUDE BEAUMONT"
+  },
+  {
+    "id": "LFSL",
+    "name": "BRIVE SOUILLAC"
+  },
+  {
+    "id": "LFFB",
+    "name": "BUNO BONNEVAUX"
+  },
+  {
+    "id": "LFRK",
+    "name": "CAEN CARPIQUET"
+  },
+  {
+    "id": "LFCC",
+    "name": "CAHORS LALBENQUE"
+  },
+  {
+    "id": "LFAC",
+    "name": "CALAIS MARCK"
+  },
+  {
+    "id": "LFKC",
+    "name": "CALVI SAINTE CATHERINE"
+  },
+  {
+    "id": "LFYG",
+    "name": "CAMBRAI NIERGNIES"
+  },
+  {
+    "id": "LFMD",
+    "name": "CANNES MANDELIEU"
+  },
+  {
+    "id": "LFMK",
+    "name": "CARCASSONNE SALVAZA"
+  },
+  {
+    "id": "LFNH",
+    "name": "CARPENTRAS"
+  },
+  {
+    "id": "LFIG",
+    "name": "CASSAGNES BEGONHES"
+  },
+  {
+    "id": "LFDQ",
+    "name": "CASTELNAU MAGNOAC"
+  },
+  {
+    "id": "LFMW",
+    "name": "CASTELNAUDARY VILLENEUVE"
+  },
+  {
+    "id": "LFCX",
+    "name": "CASTELSARRASIN MOISSAC"
+  },
+  {
+    "id": "LFCK",
+    "name": "CASTRES MAZAMET"
+  },
+  {
+    "id": "LFJH",
+    "name": "CAZERES PALAMINY"
+  },
+  {
+    "id": "LFIH",
+    "name": "CHALAIS"
+  },
+  {
+    "id": "LFLH",
+    "name": "CHALON CHAMPFORGEUIL"
+  },
+  {
+    "id": "LFQK",
+    "name": "CHALONS ECURY SUR COOLE"
+  },
+  {
+    "id": "LFOK",
+    "name": "CHALONS VATRY"
+  },
+  {
+    "id": "LFLB",
+    "name": "CHAMBERY AIX LES BAINS"
+  },
+  {
+    "id": "LFLE",
+    "name": "CHAMBERY CHALLES LES EAUX"
+  },
+  {
+    "id": "LFJY",
+    "name": "CHAMBLEY"
+  },
+  {
+    "id": "LFGX",
+    "name": "CHAMPAGNOLE CROTENAY"
+  },
+  {
+    "id": "LFQV",
+    "name": "CHARLEVILLE MEZIERES"
+  },
+  {
+    "id": "LFOR",
+    "name": "CHARTRES METROPOLE"
+  },
+  {
+    "id": "LFMX",
+    "name": "CHATEAU ARNOUX SAINT AUBAN"
+  },
+  {
+    "id": "LFFH",
+    "name": "CHATEAU THIERRY BELLEAU"
+  },
+  {
+    "id": "LFTQ",
+    "name": "CHATEAUBRIANT POUANCE"
+  },
+  {
+    "id": "LFOC",
+    "name": "CHATEAUDUN"
+  },
+  {
+    "id": "LFFU",
+    "name": "CHATEAUNEUF SUR CHER"
+  },
+  {
+    "id": "LFLX",
+    "name": "CHATEAUROUX DEOLS"
+  },
+  {
+    "id": "LFEJ",
+    "name": "CHATEAUROUX VILLERS"
+  },
+  {
+    "id": "LFCA",
+    "name": "CHATELLERAULT TARGE"
+  },
+  {
+    "id": "LFQH",
+    "name": "CHATILLON SUR SEINE"
+  },
+  {
+    "id": "LFJA",
+    "name": "CHAUMONT SEMOUTIERS"
+  },
+  {
+    "id": "LFDW",
+    "name": "CHAUVIGNY"
+  },
+  {
+    "id": "LFPX",
+    "name": "CHAVENAY VILLEPREUX"
+  },
+  {
+    "id": "LFPH",
+    "name": "CHELLES LE PIN"
+  },
+  {
+    "id": "LFRC",
+    "name": "CHERBOURG MAUPERTUS"
+  },
+  {
+    "id": "LFOU",
+    "name": "CHOLET LE PONTREAU"
+  },
+  {
+    "id": "LFJC",
+    "name": "CLAMECY"
+  },
+  {
+    "id": "LFLC",
+    "name": "CLERMONT FERRAND AUVERGNE"
+  },
+  {
+    "id": "LFBG",
+    "name": "COGNAC CHATEAUBERNARD"
+  },
+  {
+    "id": "LFGA",
+    "name": "COLMAR HOUSSEN"
+  },
+  {
+    "id": "LFAD",
+    "name": "COMPIEGNE MARGNY"
+  },
+  {
+    "id": "LFID",
+    "name": "CONDOM VALENCE SUR BAISE"
+  },
+  {
+    "id": "LFJD",
+    "name": "CORLIER"
+  },
+  {
+    "id": "LFKT",
+    "name": "CORTE"
+  },
+  {
+    "id": "LFGH",
+    "name": "COSNE SUR LOIRE"
+  },
+  {
+    "id": "LFDV",
+    "name": "COUHE VERAC"
+  },
+  {
+    "id": "LFPK",
+    "name": "COULOMMIERS VOISINS"
+  },
+  {
+    "id": "LFLJ",
+    "name": "COURCHEVEL"
+  },
+  {
+    "id": "LFTF",
+    "name": "CUERS PIERREFEU"
+  },
+  {
+    "id": "LFBY",
+    "name": "DAX SEYRESSE"
+  },
+  {
+    "id": "LFRG",
+    "name": "DEAUVILLE NORMANDIE"
+  },
+  {
+    "id": "LFAB",
+    "name": "DIEPPE SAINT AUBIN"
+  },
+  {
+    "id": "LFQZ",
+    "name": "DIEUZE GUEBLANGE"
+  },
+  {
+    "id": "LFGI",
+    "name": "DIJON DAROIS"
+  },
+  {
+    "id": "LFSD",
+    "name": "DIJON LONGVIC"
+  },
+  {
+    "id": "LFEB",
+    "name": "DINAN TRELIVAN"
+  },
+  {
+    "id": "LFRD",
+    "name": "DINARD PLEURTUIT SAINT MALO"
+  },
+  {
+    "id": "LFGJ",
+    "name": "DOLE TAVAUX"
+  },
+  {
+    "id": "LFGR",
+    "name": "DONCOURT LES CONFLANS"
+  },
+  {
+    "id": "LFON",
+    "name": "DREUX VERNOUILLET"
+  },
+  {
+    "id": "LFAK",
+    "name": "DUNKERQUE LES MOERES"
+  },
+  {
+    "id": "LFDE",
+    "name": "EGLETONS"
+  },
+  {
+    "id": "LFFE",
+    "name": "ENGHIEN MOISSELLES"
+  },
+  {
+    "id": "LFSW",
+    "name": "EPERNAY PLIVOT"
+  },
+  {
+    "id": "LFSE",
+    "name": "EPINAL DOGNEVILLE"
+  },
+  {
+    "id": "LFSG",
+    "name": "EPINAL MIRECOURT"
+  },
+  {
+    "id": "LFQE",
+    "name": "ETAIN ROUVRES"
+  },
+  {
+    "id": "LFOX",
+    "name": "ETAMPES MONDESIR"
+  },
+  {
+    "id": "LFFY",
+    "name": "ETREPAGNY"
+  },
+  {
+    "id": "LFAE",
+    "name": "EU MERS LE TREPORT"
+  },
+  {
+    "id": "LFAS",
+    "name": "FALAISE MONTS D'ERAINES"
+  },
+  {
+    "id": "LFMF",
+    "name": "FAYENCE"
+  },
+  {
+    "id": "LFLZ",
+    "name": "FEURS CHAMBEON"
+  },
+  {
+    "id": "LFKF",
+    "name": "FIGARI SUD CORSE"
+  },
+  {
+    "id": "LFCF",
+    "name": "FIGEAC LIVERNON"
+  },
+  {
+    "id": "LFOG",
+    "name": "FLERS SAINT PAUL"
+  },
+  {
+    "id": "LFNO",
+    "name": "FLORAC SAINTE ENIMIE"
+  },
+  {
+    "id": "LFFK",
+    "name": "FONTENAY LE COMTE"
+  },
+  {
+    "id": "LFPQ",
+    "name": "FONTENAY TRESIGNY"
+  },
+  {
+    "id": "LFDX",
+    "name": "FUMEL MONTAYRAL"
+  },
+  {
+    "id": "LFDG",
+    "name": "GAILLAC LISLE SUR TARN"
+  },
+  {
+    "id": "LFNA",
+    "name": "GAP TALLARD"
+  },
+  {
+    "id": "LFKG",
+    "name": "GHISONACCIA ALZITONE"
+  },
+  {
+    "id": "LFRF",
+    "name": "GRANVILLE MONT SAINT MICHEL"
+  },
+  {
+    "id": "LFCQ",
+    "name": "GRAULHET MONTDRAGON"
+  },
+  {
+    "id": "LFEV",
+    "name": "GRAY SAINT ADRIEN"
+  },
+  {
+    "id": "LFLS",
+    "name": "GRENOBLE ALPES ISERE"
+  },
+  {
+    "id": "LFLG",
+    "name": "GRENOBLE LE VERSOUD"
+  },
+  {
+    "id": "LFCE",
+    "name": "GUERET SAINT LAURENT"
+  },
+  {
+    "id": "LFES",
+    "name": "GUISCRIFF SCAER"
+  },
+  {
+    "id": "LFSH",
+    "name": "HAGUENAU"
+  },
+  {
+    "id": "LFTH",
+    "name": "HYERES LE PALYVESTRE"
+  },
+  {
+    "id": "LFEY",
+    "name": "ILE D'YEU"
+  },
+  {
+    "id": "LFHA",
+    "name": "ISSOIRE LE BROC"
+  },
+  {
+    "id": "LFEK",
+    "name": "ISSOUDUN LE FAY"
+  },
+  {
+    "id": "LFMI",
+    "name": "ISTRES LE TUBE"
+  },
+  {
+    "id": "LFIX",
+    "name": "ITXASSOU"
+  },
+  {
+    "id": "LFGK",
+    "name": "JOIGNY"
+  },
+  {
+    "id": "LFFJ",
+    "name": "JOINVILLE MUSSEY"
+  },
+  {
+    "id": "LFCJ",
+    "name": "JONZAC NEULLES"
+  },
+  {
+    "id": "LFQX",
+    "name": "JUVANCOURT"
+  },
+  {
+    "id": "LFOL",
+    "name": "L'AIGLE SAINT MICHEL"
+  },
+  {
+    "id": "LFHU",
+    "name": "L'ALPE D'HUEZ"
+  },
+  {
+    "id": "LFRE",
+    "name": "LA BAULE ESCOUBLAC"
+  },
+  {
+    "id": "LFFQ",
+    "name": "LA FERTE ALAIS"
+  },
+  {
+    "id": "LFFG",
+    "name": "LA FERTE GAUCHER"
+  },
+  {
+    "id": "LFAL",
+    "name": "LA FLECHE THOREE LES PINS"
+  },
+  {
+    "id": "LFTN",
+    "name": "LA GRAND'COMBE"
+  },
+  {
+    "id": "LFNQ",
+    "name": "LA LLAGONNE LA QUILLANE"
+  },
+  {
+    "id": "LFTZ",
+    "name": "LA MOLE"
+  },
+  {
+    "id": "LFJE",
+    "name": "LA MOTTE CHALANCON"
+  },
+  {
+    "id": "LFDR",
+    "name": "LA REOLE FLOUDES"
+  },
+  {
+    "id": "LFRI",
+    "name": "LA ROCHE SUR YON LES AJONCS"
+  },
+  {
+    "id": "LFBH",
+    "name": "LA ROCHELLE ILE DE RE"
+  },
+  {
+    "id": "LFKP",
+    "name": "LA TOUR DU PIN CESSIEU"
+  },
+  {
+    "id": "LFRJ",
+    "name": "LANDIVISIAU"
+  },
+  {
+    "id": "LFHL",
+    "name": "LANGOGNE LESPERON"
+  },
+  {
+    "id": "LFSU",
+    "name": "LANGRES ROLAMPONT"
+  },
+  {
+    "id": "LFRO",
+    "name": "LANNION"
+  },
+  {
+    "id": "LFRL",
+    "name": "LANVEOC POULMIC"
+  },
+  {
+    "id": "LFAF",
+    "name": "LAON CHAMBRY"
+  },
+  {
+    "id": "LFHX",
+    "name": "LAPALISSE PERIGNY"
+  },
+  {
+    "id": "LFJV",
+    "name": "LASCLAVERIES"
+  },
+  {
+    "id": "LFOV",
+    "name": "LAVAL ENTRAMMES"
+  },
+  {
+    "id": "LFEL",
+    "name": "LE BLANC"
+  },
+  {
+    "id": "LFMQ",
+    "name": "LE CASTELLET"
+  },
+  {
+    "id": "LFOH",
+    "name": "LE HAVRE OCTEVILLE"
+  },
+  {
+    "id": "LFOY",
+    "name": "LE HAVRE SAINT ROMAIN"
+  },
+  {
+    "id": "LFMC",
+    "name": "LE LUC LE CANNET"
+  },
+  {
+    "id": "LFRM",
+    "name": "LE MANS ARNAGE"
+  },
+  {
+    "id": "LFNZ",
+    "name": "LE MAZET DE ROMANIN"
+  },
+  {
+    "id": "LFPP",
+    "name": "LE PLESSIS BELLEVILLE"
+  },
+  {
+    "id": "LFHP",
+    "name": "LE PUY LOUDES"
+  },
+  {
+    "id": "LFAT",
+    "name": "LE TOUQUET COTE D'OPALE"
+  },
+  {
+    "id": "LFQL",
+    "name": "LENS BENIFONTAINE"
+  },
+  {
+    "id": "LFXU",
+    "name": "LES MUREAUX"
+  },
+  {
+    "id": "LFOO",
+    "name": "LES SABLES D'OLONNE TALMONT"
+  },
+  {
+    "id": "LFDU",
+    "name": "LESPARRE SAINT LAURENT MEDOC"
+  },
+  {
+    "id": "LFOM",
+    "name": "LESSAY"
+  },
+  {
+    "id": "LFMZ",
+    "name": "LEZIGNAN CORBIERES"
+  },
+  {
+    "id": "LFDI",
+    "name": "LIBOURNE ARTIGUES DE LUSSAC"
+  },
+  {
+    "id": "LFQQ",
+    "name": "LILLE LESQUIN"
+  },
+  {
+    "id": "LFQO",
+    "name": "LILLE MARCQ EN BAROEUL"
+  },
+  {
+    "id": "LFBL",
+    "name": "LIMOGES BELLEGARDE"
+  },
+  {
+    "id": "LFPL",
+    "name": "LOGNES EMERAINVILLE"
+  },
+  {
+    "id": "LFGS",
+    "name": "LONGUYON VILLETTE"
+  },
+  {
+    "id": "LFGL",
+    "name": "LONS LE SAUNIER COURLAOUX"
+  },
+  {
+    "id": "LFRH",
+    "name": "LORIENT LANN BIHOUE"
+  },
+  {
+    "id": "LFDL",
+    "name": "LOUDUN"
+  },
+  {
+    "id": "LFQC",
+    "name": "LUNEVILLE CROISMARE"
+  },
+  {
+    "id": "LFJU",
+    "name": "LURCY LEVIS"
+  },
+  {
+    "id": "LFKL",
+    "name": "LYON BRINDAS"
+  },
+  {
+    "id": "LFLY",
+    "name": "LYON BRON"
+  },
+  {
+    "id": "LFHJ",
+    "name": "LYON CORBAS"
+  },
+  {
+    "id": "LFLL",
+    "name": "LYON SAINT EXUPERY"
+  },
+  {
+    "id": "LFLM",
+    "name": "MACON CHARNAY"
+  },
+  {
+    "id": "LFFC",
+    "name": "MANTES CHERENCE"
+  },
+  {
+    "id": "LFJI",
+    "name": "MARENNES"
+  },
+  {
+    "id": "LFTB",
+    "name": "MARIGNANE BERRE"
+  },
+  {
+    "id": "LFDM",
+    "name": "MARMANDE VIRAZEIL"
+  },
+  {
+    "id": "LFML",
+    "name": "MARSEILLE PROVENCE"
+  },
+  {
+    "id": "LFQJ",
+    "name": "MAUBEUGE ELESMES"
+  },
+  {
+    "id": "LFJB",
+    "name": "MAULEON"
+  },
+  {
+    "id": "LFPE",
+    "name": "MEAUX ESBLY"
+  },
+  {
+    "id": "LFHM",
+    "name": "MEGEVE"
+  },
+  {
+    "id": "LFPM",
+    "name": "MELUN VILLAROCHE"
+  },
+  {
+    "id": "LFNB",
+    "name": "MENDE BRENOUX"
+  },
+  {
+    "id": "LFKX",
+    "name": "MERIBEL ROBERT MERLOZ"
+  },
+  {
+    "id": "LFQT",
+    "name": "MERVILLE CALONNE"
+  },
+  {
+    "id": "LFJL",
+    "name": "METZ NANCY LORRAINE"
+  },
+  {
+    "id": "LFCM",
+    "name": "MILLAU LARZAC"
+  },
+  {
+    "id": "LFCZ",
+    "name": "MIMIZAN"
+  },
+  {
+    "id": "LFNC",
+    "name": "MONT DAUPHIN SAINT CREPIN"
+  },
+  {
+    "id": "LFMG",
+    "name": "MONTAGNE NOIRE"
+  },
+  {
+    "id": "LFFW",
+    "name": "MONTAIGU SAINT GEORGES"
+  },
+  {
+    "id": "LFEM",
+    "name": "MONTARGIS VIMORY"
+  },
+  {
+    "id": "LFDB",
+    "name": "MONTAUBAN"
+  },
+  {
+    "id": "LFSM",
+    "name": "MONTBELIARD COURCELLES"
+  },
+  {
+    "id": "LFGM",
+    "name": "MONTCEAU LES MINES POUILLOUX"
+  },
+  {
+    "id": "LFAR",
+    "name": "MONTDIDIER"
+  },
+  {
+    "id": "LFLQ",
+    "name": "MONTELIMAR ANCONE"
+  },
+  {
+    "id": "LFDC",
+    "name": "MONTENDRE MARCILLAC"
+  },
+  {
+    "id": "LFLT",
+    "name": "MONTLUCON DOMERAT"
+  },
+  {
+    "id": "LFBK",
+    "name": "MONTLUCON GUERET"
+  },
+  {
+    "id": "LFNG",
+    "name": "MONTPELLIER CANDILLARGUES"
+  },
+  {
+    "id": "LFMT",
+    "name": "MONTPELLIER MEDITERRANEE"
+  },
+  {
+    "id": "LFHI",
+    "name": "MORESTEL"
+  },
+  {
+    "id": "LFPU",
+    "name": "MORET EPISY"
+  },
+  {
+    "id": "LFRU",
+    "name": "MORLAIX PLOUJEAN"
+  },
+  {
+    "id": "LFAX",
+    "name": "MORTAGNE AU PERCHE"
+  },
+  {
+    "id": "LFHY",
+    "name": "MOULINS MONTBEUGNY"
+  },
+  {
+    "id": "LFGB",
+    "name": "MULHOUSE HABSHEIM"
+  },
+  {
+    "id": "LFBR",
+    "name": "MURET LHERM"
+  },
+  {
+    "id": "LFEX",
+    "name": "NANCY AZELOT"
+  },
+  {
+    "id": "LFSN",
+    "name": "NANCY ESSEY"
+  },
+  {
+    "id": "LFEZ",
+    "name": "NANCY MALZEVILLE"
+  },
+  {
+    "id": "LFAI",
+    "name": "NANGIS LES LOGES"
+  },
+  {
+    "id": "LFRS",
+    "name": "NANTES ATLANTIQUE"
+  },
+  {
+    "id": "LFNN",
+    "name": "NARBONNE"
+  },
+  {
+    "id": "LFFT",
+    "name": "NEUFCHATEAU"
+  },
+  {
+    "id": "LFQG",
+    "name": "NEVERS FOURCHAMBAULT"
+  },
+  {
+    "id": "LFMN",
+    "name": "NICE COTE D'AZUR"
+  },
+  {
+    "id": "LFME",
+    "name": "NIMES COURBESSAC"
+  },
+  {
+    "id": "LFTW",
+    "name": "NIMES GARONS"
+  },
+  {
+    "id": "LFBN",
+    "name": "NIORT MARAIS POITEVIN"
+  },
+  {
+    "id": "LFCN",
+    "name": "NOGARO"
+  },
+  {
+    "id": "LFGZ",
+    "name": "NUITS SAINT GEORGES"
+  },
+  {
+    "id": "LFCO",
+    "name": "OLORON HERRERE"
+  },
+  {
+    "id": "LFOJ",
+    "name": "ORLEANS BRICY"
+  },
+  {
+    "id": "LFOZ",
+    "name": "ORLEANS SAINT DENIS DE L'HOTEL"
+  },
+  {
+    "id": "LFEC",
+    "name": "OUESSANT"
+  },
+  {
+    "id": "LFLK",
+    "name": "OYONNAX ARBENT"
+  },
+  {
+    "id": "LFDJ",
+    "name": "PAMIERS LES PUJOLS"
+  },
+  {
+    "id": "LFGN",
+    "name": "PARAY LE MONIAL"
+  },
+  {
+    "id": "LFPG",
+    "name": "PARIS CHARLES DE GAULLE"
+  },
+  {
+    "id": "LFPB",
+    "name": "PARIS LE BOURGET"
+  },
+  {
+    "id": "LFPO",
+    "name": "PARIS ORLY"
+  },
+  {
+    "id": "LFBP",
+    "name": "PAU PYRENEES"
+  },
+  {
+    "id": "LFBX",
+    "name": "PERIGUEUX BASSILLAC"
+  },
+  {
+    "id": "LFAG",
+    "name": "PERONNE SAINT QUENTIN"
+  },
+  {
+    "id": "LFHC",
+    "name": "PEROUGES MEXIMIEUX"
+  },
+  {
+    "id": "LFMP",
+    "name": "PERPIGNAN RIVESALTES"
+  },
+  {
+    "id": "LFPA",
+    "name": "PERSAN BEAUMONT"
+  },
+  {
+    "id": "LFIP",
+    "name": "PEYRESOURDE BALESTAS"
+  },
+  {
+    "id": "LFQP",
+    "name": "PHALSBOURG BOURSCHEID"
+  },
+  {
+    "id": "LFHD",
+    "name": "PIERRELATTE"
+  },
+  {
+    "id": "LFFP",
+    "name": "PITHIVIERS"
+  },
+  {
+    "id": "LFRP",
+    "name": "PLOERMEL LOYAT"
+  },
+  {
+    "id": "LFBI",
+    "name": "POITIERS BIARD"
+  },
+  {
+    "id": "LFCP",
+    "name": "PONS AVY"
+  },
+  {
+    "id": "LFSV",
+    "name": "PONT SAINT VINCENT"
+  },
+  {
+    "id": "LFGO",
+    "name": "PONT SUR YONNE"
+  },
+  {
+    "id": "LFSP",
+    "name": "PONTARLIER"
+  },
+  {
+    "id": "LFED",
+    "name": "PONTIVY"
+  },
+  {
+    "id": "LFPT",
+    "name": "PONTOISE CORMEILLES EN VEXIN"
+  },
+  {
+    "id": "LFEP",
+    "name": "POUILLY MACONGE"
+  },
+  {
+    "id": "LFKO",
+    "name": "PROPRIANO"
+  },
+  {
+    "id": "LFTP",
+    "name": "PUIMOISSON"
+  },
+  {
+    "id": "LFNW",
+    "name": "PUIVERT"
+  },
+  {
+    "id": "LFEQ",
+    "name": "QUIBERON"
+  },
+  {
+    "id": "LFRQ",
+    "name": "QUIMPER PLUGUFFAN"
+  },
+  {
+    "id": "LFER",
+    "name": "REDON BAINS SUR OUST"
+  },
+  {
+    "id": "LFQA",
+    "name": "REIMS PRUNAY"
+  },
+  {
+    "id": "LFRN",
+    "name": "RENNES SAINT JACQUES"
+  },
+  {
+    "id": "LFAP",
+    "name": "RETHEL PERTHES"
+  },
+  {
+    "id": "LFIR",
+    "name": "REVEL MONTGEY"
+  },
+  {
+    "id": "LFIK",
+    "name": "RIBERAC TOURETTE"
+  },
+  {
+    "id": "LFIL",
+    "name": "RION DES LANDES"
+  },
+  {
+    "id": "LFLO",
+    "name": "ROANNE"
+  },
+  {
+    "id": "LFDN",
+    "name": "ROCHEFORT CHARENTE-MARITIME"
+  },
+  {
+    "id": "LFCR",
+    "name": "RODEZ AVEYRON"
+  },
+  {
+    "id": "LFHE",
+    "name": "ROMANS SAINT PAUL"
+  },
+  {
+    "id": "LFYR",
+    "name": "ROMORANTIN PRUNIERS"
+  },
+  {
+    "id": "LFOP",
+    "name": "ROUEN VALLEE DE SEINE"
+  },
+  {
+    "id": "LFCY",
+    "name": "ROYAN MEDIS"
+  },
+  {
+    "id": "LFHF",
+    "name": "RUOMS"
+  },
+  {
+    "id": "LFIF",
+    "name": "SAINT AFFRIQUE BELMONT"
+  },
+  {
+    "id": "LFFD",
+    "name": "SAINT ANDRE DE L'EURE"
+  },
+  {
+    "id": "LFRT",
+    "name": "SAINT BRIEUC ARMOR"
+  },
+  {
+    "id": "LFHG",
+    "name": "SAINT CHAMOND L'HORME"
+  },
+  {
+    "id": "LFPZ",
+    "name": "SAINT CYR L'ECOLE"
+  },
+  {
+    "id": "LFGY",
+    "name": "SAINT DIE REMOMEIX"
+  },
+  {
+    "id": "LFMH",
+    "name": "SAINT ETIENNE LOIRE"
+  },
+  {
+    "id": "LFGP",
+    "name": "SAINT FLORENTIN CHEU"
+  },
+  {
+    "id": "LFHQ",
+    "name": "SAINT FLOUR COLTINES"
+  },
+  {
+    "id": "LFKM",
+    "name": "SAINT GALMIER"
+  },
+  {
+    "id": "LFIM",
+    "name": "SAINT GAUDENS MONTREJEAU"
+  },
+  {
+    "id": "LFCG",
+    "name": "SAINT GIRONS ANTICHAN"
+  },
+  {
+    "id": "LFIS",
+    "name": "SAINT INGLEVERT LES DEUX CAPS"
+  },
+  {
+    "id": "LFIY",
+    "name": "SAINT JEAN D'ANGELY SAINT DENIS DU PIN"
+  },
+  {
+    "id": "LFKH",
+    "name": "SAINT JEAN D'AVELANNE"
+  },
+  {
+    "id": "LFKE",
+    "name": "SAINT JEAN EN ROYANS"
+  },
+  {
+    "id": "LFBJ",
+    "name": "SAINT JUNIEN"
+  },
+  {
+    "id": "LFNL",
+    "name": "SAINT MARTIN DE LONDRES"
+  },
+  {
+    "id": "LFRZ",
+    "name": "SAINT NAZAIRE MONTOIR"
+  },
+  {
+    "id": "LFQN",
+    "name": "SAINT OMER WIZERNES"
+  },
+  {
+    "id": "LFDP",
+    "name": "SAINT PIERRE D'OLERON"
+  },
+  {
+    "id": "LFOW",
+    "name": "SAINT QUENTIN ROUPY"
+  },
+  {
+    "id": "LFLR",
+    "name": "SAINT RAMBERT D'ALBON"
+  },
+  {
+    "id": "LFKR",
+    "name": "SAINT REMY DE MAURIENNE"
+  },
+  {
+    "id": "LFSS",
+    "name": "SAINT SULPICE DES LANDES"
+  },
+  {
+    "id": "LFOS",
+    "name": "SAINT VALERY VITTEFLEUR"
+  },
+  {
+    "id": "LFLN",
+    "name": "SAINT YAN"
+  },
+  {
+    "id": "LFDF",
+    "name": "SAINTE FOY LA GRANDE"
+  },
+  {
+    "id": "LFYS",
+    "name": "SAINTE LEOCADIE"
+  },
+  {
+    "id": "LFXB",
+    "name": "SAINTES THENAC"
+  },
+  {
+    "id": "LFHZ",
+    "name": "SALLANCHES MONT BLANC"
+  },
+  {
+    "id": "LFMY",
+    "name": "SALON DE PROVENCE"
+  },
+  {
+    "id": "LFNE",
+    "name": "SALON EYGUIERES"
+  },
+  {
+    "id": "LFDS",
+    "name": "SARLAT DOMME"
+  },
+  {
+    "id": "LFQU",
+    "name": "SARRE UNION"
+  },
+  {
+    "id": "LFGT",
+    "name": "SARREBOURG BUHL"
+  },
+  {
+    "id": "LFGU",
+    "name": "SARREGUEMINES NEUNKIRCH"
+  },
+  {
+    "id": "LFEW",
+    "name": "SAULIEU LIERNAIS"
+  },
+  {
+    "id": "LFOD",
+    "name": "SAUMUR SAINT FLORENT"
+  },
+  {
+    "id": "LFQY",
+    "name": "SAVERNE STEINBOURG"
+  },
+  {
+    "id": "LFSJ",
+    "name": "SEDAN DOUZY"
+  },
+  {
+    "id": "LFGQ",
+    "name": "SEMUR EN AUXOIS"
+  },
+  {
+    "id": "LFTM",
+    "name": "SERRES LA BATIE MONTSALEON"
+  },
+  {
+    "id": "LFFZ",
+    "name": "SEZANNE SAINT REMY"
+  },
+  {
+    "id": "LFNS",
+    "name": "SISTERON VAUMEILH"
+  },
+  {
+    "id": "LFJS",
+    "name": "SOISSONS COURMELLES"
+  },
+  {
+    "id": "LFKD",
+    "name": "SOLLIERES SARDIERES"
+  },
+  {
+    "id": "LFDK",
+    "name": "SOULAC SUR MER"
+  },
+  {
+    "id": "LFST",
+    "name": "STRASBOURG ENTZHEIM"
+  },
+  {
+    "id": "LFGC",
+    "name": "STRASBOURG NEUHOF"
+  },
+  {
+    "id": "LFDT",
+    "name": "TARBES LALOUBERE"
+  },
+  {
+    "id": "LFBT",
+    "name": "TARBES LOURDES PYRENEES"
+  },
+  {
+    "id": "LFCT",
+    "name": "THOUARS"
+  },
+  {
+    "id": "LFET",
+    "name": "TIL CHATEL"
+  },
+  {
+    "id": "LFBO",
+    "name": "TOULOUSE BLAGNAC"
+  },
+  {
+    "id": "LFIT",
+    "name": "TOULOUSE BOURG SAINT BERNARD"
+  },
+  {
+    "id": "LFBF",
+    "name": "TOULOUSE FRANCAZAL"
+  },
+  {
+    "id": "LFCL",
+    "name": "TOULOUSE LASBORDES"
+  },
+  {
+    "id": "LFFX",
+    "name": "TOURNUS CUISERY"
+  },
+  {
+    "id": "LFJT",
+    "name": "TOURS LE LOUROUX"
+  },
+  {
+    "id": "LFEN",
+    "name": "TOURS SORIGNY"
+  },
+  {
+    "id": "LFOT",
+    "name": "TOURS VAL DE LOIRE"
+  },
+  {
+    "id": "LFPN",
+    "name": "TOUSSUS LE NOBLE"
+  },
+  {
+    "id": "LFQB",
+    "name": "TROYES BARBEREY"
+  },
+  {
+    "id": "LFCU",
+    "name": "USSEL THALAMY"
+  },
+  {
+    "id": "LFNU",
+    "name": "UZES"
+  },
+  {
+    "id": "LFLU",
+    "name": "VALENCE CHABEUIL"
+  },
+  {
+    "id": "LFAV",
+    "name": "VALENCIENNES DENAIN"
+  },
+  {
+    "id": "LFNV",
+    "name": "VALREAS VISAN"
+  },
+  {
+    "id": "LFRV",
+    "name": "VANNES MEUCON"
+  },
+  {
+    "id": "LFAU",
+    "name": "VAUVILLE"
+  },
+  {
+    "id": "LFIV",
+    "name": "VENDAYS MONTALIVET"
+  },
+  {
+    "id": "LFGW",
+    "name": "VERDUN SOMMEDIEUE"
+  },
+  {
+    "id": "LFQW",
+    "name": "VESOUL FROTEY"
+  },
+  {
+    "id": "LFLV",
+    "name": "VICHY CHARMEIL"
+  },
+  {
+    "id": "LFHH",
+    "name": "VIENNE REVENTIN"
+  },
+  {
+    "id": "LFFV",
+    "name": "VIERZON MEREAU"
+  },
+  {
+    "id": "LFCV",
+    "name": "VILLEFRANCHE DE ROUERGUE"
+  },
+  {
+    "id": "LFHV",
+    "name": "VILLEFRANCHE TARARE"
+  },
+  {
+    "id": "LFCW",
+    "name": "VILLENEUVE SUR LOT"
+  },
+  {
+    "id": "LFAW",
+    "name": "VILLERUPT"
+  },
+  {
+    "id": "LFNF",
+    "name": "VINON"
+  },
+  {
+    "id": "LFQS",
+    "name": "VITRY EN ARTOIS"
+  },
+  {
+    "id": "LFSK",
+    "name": "VITRY LE FRANCOIS VAUCLERC"
+  },
+  {
+    "id": "LFYV",
+    "name": "YVETOT BAONS LE COMTE"
+  }
+]

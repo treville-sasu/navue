@@ -12,13 +12,7 @@ module.exports = {
   },
 
   rules: {
-    'no-console': 'off',
-    'no-debugger': 'off'
-  },
-
-  'extends': [
-    'plugin:vue/strongly-recommended',
-    'eslint:recommended',
-    '@vue/prettier'
-  ]
+    "no-console": "off",
+    "no-debugger": "off"
+  }
 };
