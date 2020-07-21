@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <b-button
-      v-on:click="prependItem(consumptions, proto.consumptions[0])"
+      @click="prependItem(consumptions, proto.consumptions[0])"
       type="is-primary"
       rounded
       >Add a consumption rate</b-button
@@ -39,7 +39,7 @@
           />
         </b-field>
         <b-button
-          v-on:click="removeItem(consumptions, index)"
+          @click="removeItem(consumptions, index)"
           type="is-secondary"
           icon-right="close"
         />

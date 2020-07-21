@@ -3,7 +3,7 @@
     <l-map
       ref="routeMap"
       :options="{
-        zoomSnap: 0.5,
+        zoomSnap: 0.5
       }"
       @ready="setupMap"
       @contextmenu="nextDestination = $event.latlng"
@@ -38,7 +38,7 @@
         :options="{
           toggleDisplay: true,
           minimized: true,
-          position: 'bottomright',
+          position: 'bottomright'
         }"
       ></vue-leaflet-minimap>
     </l-map>
@@ -56,11 +56,14 @@ body,
 
 <script>
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
 import "@/mixins/leaflet.patch";
 import "leaflet-textpath";
 
 import { LMap, LPolyline, LMarker } from "vue2-leaflet";
 import VueLeafletMinimap from "vue-leaflet-minimap";
+import "leaflet-minimap/dist/Control.MiniMap.min.css";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
 import NoSleep from "nosleep.js";
@@ -80,7 +83,7 @@ export default {
     MovingMapSettings,
     MovingMapInstruments,
     LocationMarker,
-    VueLeafletMinimap,
+    VueLeafletMinimap
   },
   mixins: [MapHandlers],
   data() {
@@ -92,21 +95,22 @@ export default {
       settings: {
         getLocation: true,
         setView: true,
-        allowWarning: true,
+        recordLocation: false,
+        allowWarning: true
       },
       miniMap: {
         layer: new L.TileLayer(
           "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
           {
-            subdomains: ["server", "services"],
+            subdomains: ["server", "services"]
           }
         ),
         options: {
           toggleDisplay: true,
           minimized: true,
-          position: "bottomright",
-        },
-      },
+          position: "bottomright"
+        }
+      }
     };
   },
   mounted() {
@@ -125,12 +129,12 @@ export default {
     },
     trace() {
       return (this.reportedLocations || [])
-        .filter((p) => !!p.latlng)
-        .map((p) => p.latlng);
+        .filter(p => !!p.latlng)
+        .map(p => p.latlng);
     },
     nextDestinationRoute() {
       return [this.lastKnowLocation.latlng, this.nextDestination];
-    },
+    }
   },
   watch: {
     "settings.setView": function(val) {
@@ -140,18 +144,24 @@ export default {
     "settings.getLocation": {
       handler(val) {
         val ? this.startLocate() : this.stopLocate();
-      },
-    },
+      }
+    }
+    // nextDestinationRoute: {
+    //   deep: true,
+    //   handler() {
+    //     this.$refs.nextDestination.mapObject.setText(Date.now, { offset: -5 });
+    //   },
+    // },
   },
   pouch: {
     reportedLocations() {
       return {
         database: "navue",
         selector: {
-          type: "location",
-        },
+          type: "location"
+        }
       };
-    },
+    }
   },
   methods: {
     setupMap() {
@@ -161,6 +171,13 @@ export default {
 
       if (this.settings.getLocation) this.startLocate();
     },
+    // addLocation(payload) {
+    //   return this.$store.dispatch("updateDB", {
+    //     ...payload,
+    //     type: "location",
+    //     _id: payload.timestamp.toString(),
+    //   });
+    // },
     openWarning(e) {
       this.$buefy.snackbar.open({
         message:
@@ -174,9 +191,9 @@ export default {
           this.settings.allowWarning = false;
           this.$buefy.toast.open({
             message: "Warnings Deactivated",
-            queue: false,
+            queue: false
           });
-        },
+        }
       });
     },
     _locationFound: function(e) {
@@ -192,6 +209,7 @@ export default {
         delete e.type;
 
         this.lastKnowLocation = { ...e };
+        // if (this.settings.recordLocation) this.addLocation(e);
         if (this.settings.setView) this.map.fitBounds(this.bestBounds(e));
       } else if (e.type == "locationerror") {
         this._locationError(e);
@@ -202,9 +220,15 @@ export default {
       delete e.target;
       e.timestamp = Date.now();
 
+      if (true && e.code == 2) {
+        // set a debug Flag ???
+        this._locationFound(this._fakeLocation());
+        return;
+      }
+
       if (this.settings.allowWarning) this.openWarning(e);
       this.lastKnowError = { ...e };
-    },
-  },
+    }
+  }
 };
 </script>

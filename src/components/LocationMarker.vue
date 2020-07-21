@@ -67,7 +67,7 @@ import {
   LIcon,
   LPolyline,
   LCircle,
-  LPopup,
+  LPopup
 } from "vue2-leaflet";
 
 export default {
@@ -78,15 +78,15 @@ export default {
     LIcon,
     LPolyline,
     LCircle,
-    LPopup,
+    LPopup
   },
   props: {
     value: {
       type: Object,
       default: () => {
         return { latlng: null, speed: null, heading: null, accuracy: null };
-      },
-    },
+      }
+    }
   },
   computed: {
     speedVector() {
@@ -97,9 +97,9 @@ export default {
           this.value.latlng,
           this.value.heading,
           this.value.speed * 60
-        ),
+        )
       ];
-    },
-  },
+    }
+  }
 };
 </script>

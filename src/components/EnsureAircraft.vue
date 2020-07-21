@@ -9,7 +9,7 @@
   >
     <div class="modal-card">
       <div class="modal-card-body">
-        <AircraftSelect v-on:select="onSelectAircraft" />
+        <AircraftSelect @select="onSelectAircraft" />
       </div>
     </div>
   </b-modal>

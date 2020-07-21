@@ -30,7 +30,7 @@
         </div>
         <div class="column">
           <BalanceChart
-            :chartData="datasets"
+            :chart-data="datasets"
             v-if="aircraft.envelopes.length > 0"
           />
         </div>

@@ -12,11 +12,11 @@
       clear-on-select
       clearable
     >
-      <template slot="header">
+      <!-- <template slot="header">
         <a>
           <span> Add new... </span>
         </a>
-      </template>
+      </template> -->
       <template slot="empty">No results for {{ search }}</template>
     </b-autocomplete>
   </b-field>

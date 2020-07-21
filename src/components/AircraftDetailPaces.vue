@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <b-button
-      v-on:click="prependItem(paces, proto.paces[0])"
+      @click="prependItem(paces, proto.paces[0])"
       type="is-primary"
       rounded
       >Add a pace</b-button
@@ -28,7 +28,7 @@
           <b-numberinput v-model="speed.value" :controls="false" :step="0.01" />
         </b-field>
         <b-button
-          v-on:click="removeItem(paces, index)"
+          @click="removeItem(paces, index)"
           type="is-secondary"
           icon-right="close"
         />

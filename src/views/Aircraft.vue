@@ -3,8 +3,8 @@
     <AircraftDetail
       v-if="aircraft"
       :aircraft="aircraft"
-      v-on:discard="aircraft = null"
-      v-on:aircraftUpdated="aircraft = null"
+      @discard="aircraft = null"
+      @aircraftUpdated="aircraft = null"
     />
     <section v-else class="section">
       <div class="hero">
@@ -21,7 +21,7 @@
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <div class="tile is-child box">
-            <AircraftSelect v-on:select="aircraft = $event" />
+            <AircraftSelect @select="aircraft = $event" />
           </div>
         </div>
         <div class="tile is-parent">

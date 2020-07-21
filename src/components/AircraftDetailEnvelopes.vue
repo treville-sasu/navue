@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <b-button
-      v-on:click="appendItem(envelopes, proto.envelopes[0])"
+      @click="appendItem(envelopes, proto.envelopes[0])"
       type="is-primary"
       rounded
       >Add an envelope</b-button
@@ -13,7 +13,7 @@
             <b-input v-model="envelope.name" />
             <div class="control">
               <b-button
-                v-on:click="removeItem(envelopes, index)"
+                @click="removeItem(envelopes, index)"
                 icon-right="close"
               />
             </div>
@@ -38,16 +38,14 @@
             />
             <p class="control">
               <b-button
-                v-on:click="removeItem(envelope.values, index)"
+                @click="removeItem(envelope.values, index)"
                 icon-right="close"
               />
             </p>
           </b-field>
           <b-field>
             <b-button
-              v-on:click="
-                appendItem(envelope.values, proto.envelopes[0].values[0])
-              "
+              @click="appendItem(envelope.values, proto.envelopes[0].values[0])"
               icon-right="plus"
               type="is-primary"
               rounded
@@ -56,7 +54,7 @@
         </div>
       </div>
       <div class="column">
-        <BalanceChart :chartData="datasets" v-if="envelopes.length > 0" />
+        <BalanceChart :chart-data="datasets" v-if="envelopes.length > 0" />
       </div>
     </div>
   </section>

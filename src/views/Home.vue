@@ -23,10 +23,10 @@
       <nav class="tabs">
         <div class="container">
           <ul>
-            <li><a>Get help</a></li>
-            <li><a>About</a></li>
+            <li><router-link to="/help">Get Help</router-link></li>
+            <li><router-link to="/about">About</router-link></li>
             <li><a>Source Code</a></li>
-            <li><a>Legal</a></li>
+            <li><router-link to="/legal">Legal</router-link></li>
           </ul>
         </div>
       </nav>
@@ -35,6 +35,6 @@
 </template>
 <script>
 export default {
-  name: "Home",
+  name: "Home"
 };
 </script>

@@ -31,7 +31,7 @@ import { LControl } from "vue2-leaflet";
 export default {
   name: "MovingMapsSettings",
   components: {
-    LControl,
+    LControl
   },
   props: {
     value: {
@@ -41,14 +41,15 @@ export default {
           getLocation: true,
           setView: true,
           allowWarning: true,
+          allowWarning: true
         };
-      },
-    },
+      }
+    }
   },
   methods: {
     forwardEvent() {
       this.$emit("input", this.value);
-    },
-  },
+    }
+  }
 };
 </script>

@@ -9,7 +9,7 @@
       />
     </b-field>
     <b-button
-      v-on:click="prependItem(balance.weights, proto.balance.weights[0])"
+      @click="prependItem(balance.weights, proto.balance.weights[0])"
       type="is-primary"
       rounded
       >Add a mass</b-button
@@ -72,7 +72,7 @@
           >
         </b-field>
         <b-button
-          v-on:click="removeItem(balance.weights, index)"
+          @click="removeItem(balance.weights, index)"
           type="is-secondary"
           icon-right="close"
         />

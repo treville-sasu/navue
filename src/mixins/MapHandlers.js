@@ -19,7 +19,7 @@ export const MapHandlers = {
       e.speed =
         e.speed ||
         GeometryUtils.distance(this.map, last.latlng, e.latlng) /
-        Math.floor((e.timestamp - last.timestamp) / 1000);
+          Math.floor((e.timestamp - last.timestamp) / 1000);
       e.vario =
         (last.altitude - e.altitude) /
         Math.floor((e.timestamp - last.timestamp) / 1000);
@@ -67,9 +67,9 @@ export const MapHandlers = {
           lat: center.lat + rand(),
           lng: center.lng + rand()
         },
-        accuracy: accuracy + rand(accuracy * spread / 100),
-        altitude: altitude + rand(altitude * spread / 100),
-        altitudeAccuracy: accuracy + rand(accuracy * spread / 100),
+        accuracy: accuracy + rand((accuracy * spread) / 100),
+        altitude: altitude + rand((altitude * spread) / 100),
+        altitudeAccuracy: accuracy + rand((accuracy * spread) / 100),
         timestamp: Date.now()
       };
     }
