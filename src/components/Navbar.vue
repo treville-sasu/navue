@@ -19,7 +19,7 @@
         <b-navbar-item tag="router-link" to="route"
           >Trace a route</b-navbar-item
         >
-        <b-navbar-item tag="router-link" to="vac"
+        <b-navbar-item tag="router-link" to="approach"
           >Approach Charts</b-navbar-item
         >
         <b-navbar-item tag="router-link" to="weather">Weather</b-navbar-item>
@@ -84,7 +84,7 @@ export default {
   name: "Navbar",
   components: { Login },
   computed: {
-    ...mapState(["selectedAircraft"])
-  }
+    ...mapState(["selectedAircraft"]),
+  },
 };
 </script>

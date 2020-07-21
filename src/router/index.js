@@ -32,9 +32,9 @@ const routes = [
     component: () => import("../views/Weather.vue")
   },
   {
-    path: "/vac",
-    name: "Vac",
-    component: () => import("../views/Vac.vue")
+    path: "/approach",
+    name: "approach",
+    component: () => import("../views/ApproachChart.vue")
   },
   {
     path: "/balance",
