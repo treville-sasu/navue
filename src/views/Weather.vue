@@ -17,7 +17,7 @@
           autocomplete
           allow-new
           :data="filteredTags"
-          @typing="getFilteredTags"
+          @typing="getFilteredCodes"
           icon="label"
           placeholder="Type a code"
           maxtags="50"
@@ -85,7 +85,7 @@
 
     <div class="columns">
       <div class="column">
-        <Opmet :stations="[...this.OPMET, ...this.SIGMET]" />
+        <Opmet :stations="[...this.results.opmet, ...this.results.sigmet]" />
       </div>
       <div class="column">
         <WeatherMap
@@ -108,56 +108,63 @@ import WeatherMap from "@/components/WeatherMap.vue";
 export default {
   components: {
     Opmet,
-    WeatherMap
+    WeatherMap,
   },
   data() {
     return {
       codes: [],
       filteredTags: data,
-      carte: { zone: null, type: null, altitude: null },
+      carte: {
+        zone: null,
+        type: null,
+        altitude: null,
+      },
       server: new Aeroweb("IBAUJYXSHD", {
-        cors_proxy: "https://cors.treville.workers.dev"
+        cors_proxy: "https://cors.treville.workers.dev",
       }),
       avaliableMaps: Aeroweb.CARTES,
-      OPMET: [],
-      SIGMET: [],
-      results: { opmet: [], sigmet: [], maps: [] }
+      results: { opmet: [], sigmet: [], maps: [] },
     };
   },
+  // mounted() {
+  //   this.server.VAG(Object.keys(Aeroweb.VAG)).then((res) => console.log(res));
+  // },
   computed: {
     codesList() {
-      return this.codes.map(c => c.id || c);
+      return this.codes.map((c) => c.id || c);
     },
     carteParams() {
       return [this.carte.zone, this.carte.type, this.carte.altitude];
-    }
+    },
   },
-  // watched: {
-  //   codes() {},
-  // },
   methods: {
-    // trigger(id, func, delay = 2000) {
-    //   clearTimeout(id);
-    //   setTimeout(func, delay);
-    // },
     getMessages() {
       this.server
         .OPMET(this.codesList)
-        .then(res => (this.OPMET = res.data))
-        .catch(this.openWarning);
+        .then((res) => (this.results.opmet = res.data))
+        .catch((err) => {
+          this.openWarning(err);
+          this.results.opmet = [];
+        });
       this.server
         .SIGMET(this.codesList)
-        .then(res => (this.SIGMET = res.data))
-        .catch(this.openWarning);
+        .then((res) => (this.results.sigmet = res.data))
+        .catch((err) => {
+          this.openWarning(err);
+          this.results.sigmet = [];
+        });
     },
     getMaps() {
       this.server
         .CARTES(...this.carteParams)
-        .then(res => (this.results.maps = res.data))
-        .catch(this.openWarning);
+        .then((res) => (this.results.maps = res.data))
+        .catch((err) => {
+          this.openWarning(err);
+          this.results.maps = [];
+        });
     },
-    getFilteredTags(text) {
-      this.filteredTags = data.filter(option => {
+    getFilteredCodes(text) {
+      this.filteredTags = data.filter((option) => {
         return (
           option.name
             .toString()
@@ -176,14 +183,14 @@ export default {
         message: error.message || "Can't get info from AeroWeb.",
         position: "is-bottom",
         type: "is-danger",
-        duration: 5000
+        duration: 2500,
       });
-    }
+    },
   },
   filters: {
     FL(num) {
       return `FL${num.toString().padStart(3, "0")}`;
-    }
-  }
+    },
+  },
 };
 </script>

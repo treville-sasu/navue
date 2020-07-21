@@ -22,11 +22,9 @@
         <b-navbar-item tag="router-link" to="vac"
           >Approach Charts</b-navbar-item
         >
-        <b-navbar-item tag="router-link" to="weather"
-          >Weather Maps</b-navbar-item
-        >
-        <b-navbar-item tag="router-link" to="messages"
-          >NOTAM, METAR, TAF, SIGMET</b-navbar-item
+        <b-navbar-item tag="router-link" to="weather">Weather</b-navbar-item>
+        <b-navbar-item tag="router-link" to="notam"
+          >NOTAM & Sup AIP</b-navbar-item
         >
         <b-navbar-item tag="router-link" to="balance"
           >Weight and Balance</b-navbar-item
@@ -77,6 +75,7 @@
     </template>
   </b-navbar>
 </template>
+
 <script>
 import Login from "@/components/Login.vue";
 import { mapState } from "vuex";
@@ -85,7 +84,7 @@ export default {
   name: "Navbar",
   components: { Login },
   computed: {
-    ...mapState(["selectedAircraft"]),
-  },
+    ...mapState(["selectedAircraft"])
+  }
 };
 </script>

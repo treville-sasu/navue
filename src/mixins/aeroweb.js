@@ -26,19 +26,19 @@ export default class AeroWeb {
     };
     this.axiosInstance = axios.create({ ...this.options });
 
-    // this.axiosInstance.interceptors.response.use(response => {
-    //   if (response.data.access && response.data.access.code == "NOK")
-    //     return Promise.reject({
-    //       message: "Aeroweb : Wrong Credential",
-    //       ...response
-    //     });
-    //   else if (response.data.ERREUR)
-    //     return Promise.reject({
-    //       message: "Aeroweb : Wrong query",
-    //       ...response
-    //     });
-    //   return response;
-    // }, Promise.reject);
+    this.axiosInstance.interceptors.response.use(response => {
+      if (response.data.access && response.data.access.code == "NOK")
+        return Promise.reject({
+          message: "Aeroweb : Wrong Credential",
+          ...response
+        });
+      else if (response.data.ERREUR)
+        return Promise.reject({
+          message: "Aeroweb : Wrong query",
+          ...response
+        });
+      return response;
+    }, (error) => { return Promise.reject(error); });
   }
 
   OPMET(codes, options) {
@@ -79,7 +79,13 @@ export default class AeroWeb {
       {
         LIEUID: this.pipe(...codes)
       },
-      options
+      {
+        transformResponse: [
+          ...this.axiosInstance.defaults.transformResponse,
+          this.groupByMessage
+        ],
+        ...options
+      }
     );
   }
   VAG(codes, options) {
@@ -88,7 +94,13 @@ export default class AeroWeb {
       {
         LIEUID: this.pipe(...codes)
       },
-      options
+      {
+        transformResponse: [
+          ...this.axiosInstance.defaults.transformResponse,
+          this.flattenMaps
+        ],
+        ...options
+      }
     );
   }
   TCA(codes, options) {
@@ -97,7 +109,13 @@ export default class AeroWeb {
       {
         LIEUID: this.pipe(...codes)
       },
-      options
+      {
+        transformResponse: [
+          ...this.axiosInstance.defaults.transformResponse,
+          this.groupByMessage
+        ],
+        ...options
+      }
     );
   }
   TCAG(codes, options) {
@@ -188,7 +206,7 @@ export default class AeroWeb {
 
   groupByMessage(data) {
     if (!data.groupe) return data;
-    return [data.groupe.messages].flat().map(function(station) {
+    return [data.groupe.messages].flat().map(function (station) {
       return {
         ...{ oaci: station.oaci, nom: station.nom },
         ...AeroWeb.groupeBy([station.message].flat(), "type", m => m.texte)
@@ -224,7 +242,7 @@ export default class AeroWeb {
   }
 
   static groupeBy(xs, key, callback) {
-    return xs.reduce(function(rv, x) {
+    return xs.reduce(function (rv, x) {
       if (x) (rv[x[key]] = rv[x[key]] || []).push(callback.call(null, x));
       return rv;
     }, {});
