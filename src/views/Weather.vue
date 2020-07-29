@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <section class="hero is-primary">
+    <section class="hero is-primary is-hidden-mobile">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">Weather</h1>
@@ -119,15 +119,15 @@ export default {
         type: null,
         altitude: null,
       },
-      server: new Aeroweb("IBAUJYXSHD", {
-        cors_proxy: "https://cors.treville.workers.dev",
-      }),
+      server: new Aeroweb("IBAUJYXSHD"),
       avaliableMaps: Aeroweb.CARTES,
       results: { opmet: [], sigmet: [], maps: [] },
     };
   },
   // mounted() {
-  //   this.server.VAG(Object.keys(Aeroweb.VAG)).then((res) => console.log(res));
+  //   navigator.serviceWorker.ready.then(() => {
+  //     this.server.VAG(Object.keys(Aeroweb.VAG)).then((res) => console.log(res));
+  //   });
   // },
   computed: {
     codesList() {

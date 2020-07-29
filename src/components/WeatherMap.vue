@@ -27,7 +27,7 @@
       trap-focus
       :destroy-on-hide="true"
     >
-      <pdf :src="mapSrc" />
+      <pdf :src="value.lien" />
     </b-modal>
   </div>
 </template>
@@ -57,11 +57,6 @@ export default {
     return {
       isComponentModalActive: false,
     };
-  },
-  computed: {
-    mapSrc() {
-      return "https://cors.treville.workers.dev/" + this.value.lien;
-    },
   },
 };
 </script>

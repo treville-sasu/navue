@@ -39,8 +39,9 @@ export default {
             maxZoom: 17,
             minZoom: 13,
             format: "image/jpeg",
-            style: "normal"
-          }
+            style: "normal",
+            crossOrigin: true,
+          },
         },
         {
           name: "Fond Géographique",
@@ -51,8 +52,9 @@ export default {
           // "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
           subdomains: ["server", "services"],
           options: {
-            maxZoom: 13
-          }
+            maxZoom: 13,
+            crossOrigin: true,
+        },
         },
         {
           name: "Carte IGN OACI",
@@ -66,11 +68,12 @@ export default {
             maxZoom: 11,
             minZoom: 8,
             format: "image/jpeg",
-            style: "normal"
-          }
-        }
-      ]
+            style: "normal",
+            crossOrigin: true,
+          },
+        },
+      ],
     };
-  }
+  },
 };
 </script>

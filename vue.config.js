@@ -7,6 +7,10 @@ module.exports = {
 
   pwa: {
     name: "naVue",
+    workboxPluginMode: 'InjectManifest',
+    workboxOptions: {
+      swSrc: 'src/service-worker.js',
+    },
     themeColor: "#34495e",
     msTileColor: "#34495e",
     manifestOptions: {
@@ -31,9 +35,13 @@ module.exports = {
     ],
     splash_pages: null
   },
+
   chainWebpack: config => {
+    config.plugin('workbox');
     config.externals({
       L: "leaflet"
     });
-  }
+  },
+
+  productionSourceMap: false
 };

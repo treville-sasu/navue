@@ -11,8 +11,8 @@ import xmljs from "xml-js";
 export default class AeroWeb {
   constructor(key, options) {
     this.options = {
-      baseURL: options.cors_proxy || this.constructor.baseURL,
-      url: options.cors_proxy ? this.constructor.baseURL : undefined,
+      baseURL: this.constructor.baseURL,
+      url: this.constructor.pathname,
       method: "get",
       responseType: "text",
       params: { ID: key }, // CODE_METEO to be sent par request.
@@ -255,7 +255,7 @@ export default class AeroWeb {
       }
       if (data[property]._text) data[property] = data[property]._text;
       if (data[property]._cdata) data[property] = data[property]._cdata;
-      if (property == "lien") data[property] = AeroWeb.fileURL + data[property];
+      if (property == "lien") data[property] = AeroWeb.baseURL + data[property];
       if (
         data[property] &&
         (typeof data[property] === "object" || Array.isArray(data[property]))
@@ -266,11 +266,12 @@ export default class AeroWeb {
   }
 
   static get baseURL() {
-    return "aviation.meteo.fr/FR/aviation/serveur_donnees.jsp";
+    return "https://aviation.meteo.fr/";
   }
-  static get fileURL() {
-    return "aviation.meteo.fr";
+  static get pathname() {
+    return "FR/aviation/serveur_donnees.jsp";
   }
+
   static get VAA() {
     return {
       PAWU: "Anchorage",
