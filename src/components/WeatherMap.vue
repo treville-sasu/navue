@@ -1,33 +1,35 @@
 <template>
   <div class="box">
-    <article class="media">
-      <div class="media-left">
-        <figure class="image is-64x64">
-          <a href="#" @click="isComponentModalActive = true">
-            <img
-              src="https://bulma.io/images/placeholders/128x128.png"
-              alt="Image"
-            />
-          </a>
-        </figure>
-      </div>
-      <div class="media-content">
-        <div class="content">
-          <h4 class="title">{{ value.zone_carte }}</h4>
-          <b-taglist>
-            <b-tag type="is-primary">{{ value.type }}</b-tag>
-            <b-tag type="is-info">{{ value.niveau }}</b-tag>
-            <b-tag type="is-warning">{{ value.echeance }}</b-tag>
-          </b-taglist>
+    <a href="#" @click="isComponentModalActive = true">
+      <article class="media level-item">
+        <div class="media-left">
+          <b-icon
+            :icon="
+              data.type == 'TEMSI' ? 'weather-partly-cloudy' : 'weather-windy'
+            "
+            size="is-large"
+            type="is-primary"
+          >
+          </b-icon>
         </div>
-      </div>
-    </article>
+        <div class="media-content">
+          <div class="content">
+            <h4 class="title">{{ data.zone_carte }}</h4>
+            <b-taglist>
+              <b-tag type="is-primary">{{ data.type }}</b-tag>
+              <b-tag type="is-info">{{ data.niveau }}</b-tag>
+              <b-tag type="is-warning">{{ data.echeance }}</b-tag>
+            </b-taglist>
+          </div>
+        </div>
+      </article>
+    </a>
     <b-modal
       :active.sync="isComponentModalActive"
       trap-focus
       :destroy-on-hide="true"
     >
-      <pdf :src="value.lien" />
+      <pdf :src="src" />
     </b-modal>
   </div>
 </template>
@@ -51,7 +53,8 @@ export default {
     pdf,
   },
   props: {
-    value: Object,
+    data: Object,
+    src: String,
   },
   data() {
     return {

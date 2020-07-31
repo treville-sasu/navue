@@ -10,161 +10,224 @@
         </div>
       </div>
     </section>
-    <div class="notification">
-      <b-field label="ICAO Code for FIR or Airports" expanded>
-        <b-taginput
-          v-model="codes"
-          autocomplete
-          allow-new
-          :data="filteredTags"
-          @typing="getFilteredCodes"
-          icon="label"
-          placeholder="Type a code"
-          maxtags="50"
-          maxlength="4"
-          field="id"
-          @input="getMessages"
-        >
-          <template slot-scope="props">
-            <strong>{{ props.option.id }}</strong
-            >: <i>{{ props.option.name }}</i>
-          </template>
-          <template slot="empty">
-            Code not found.
-          </template>
-        </b-taginput>
-      </b-field>
-      <b-field grouped group-multiline>
-        <b-field label="Zone">
-          <b-select
-            placeholder="Select a zone"
-            v-model="carte.zone"
-            @input="getMaps"
-          >
-            <option
-              v-for="(option, key) in avaliableMaps.zones"
-              :value="key"
-              :key="key"
-              >{{ option }}</option
-            >
-          </b-select>
-        </b-field>
-        <b-field label="Type">
-          <b-select
-            placeholder="Select a type"
-            v-model="carte.type"
-            @input="getMaps"
-          >
-            <option
-              v-for="(option, key) in avaliableMaps.types"
-              :value="key"
-              :key="key"
-              >{{ option }}</option
-            >
-          </b-select>
-        </b-field>
-        <b-field label="Altitude" expanded>
-          <b-slider
-            size="is-medium"
-            :min="Math.min(...avaliableMaps.altitudes)"
-            :max="Math.max(...avaliableMaps.altitudes)"
-            v-model="carte.altitude"
-            :tooltip="false"
-            @input="getMaps"
-            lazy
-          >
-            <template v-for="val in avaliableMaps.altitudes">
-              <b-slider-tick :value="val" :key="val">{{
-                val | FL
-              }}</b-slider-tick>
-            </template>
-          </b-slider>
-        </b-field>
-      </b-field>
-    </div>
-
     <div class="columns">
-      <div class="column">
-        <Opmet :stations="[...this.results.opmet, ...this.results.sigmet]" />
+      <div class="column is-half">
+        <div class="notification">
+          <b-field label="ICAO Code for FIR or Airports" expanded>
+            <b-taginput
+              v-model="selectedCodes"
+              :data="filteredCodes"
+              @typing="getFilteredCodes"
+              @input="getMessages"
+              autocomplete
+              allow-new
+              icon="label"
+              placeholder="Type a code"
+              maxtags="50"
+              maxlength="4"
+              field="id"
+            >
+              <template slot-scope="props">
+                <strong>{{ props.option.id }}</strong
+                >: <i>{{ props.option.name }}</i>
+              </template>
+              <template slot="empty">
+                Code unknown, validate to check it.
+              </template>
+            </b-taginput>
+          </b-field>
+          <b-field position="is-centered" expanded>
+            <div
+              class="control"
+              v-for="category in avaliableMessagesCategories"
+              :key="category"
+            >
+              <b-checkbox-button
+                v-model="selectedMessagesCategories"
+                :native-value="category"
+                type="is-success"
+              >
+                {{ category }}
+              </b-checkbox-button>
+            </div>
+          </b-field>
+        </div>
+        <section
+          class="section"
+          v-for="(stations, category) in messages"
+          :key="category"
+        >
+          <WeatherMessage
+            v-for="station in stations"
+            :key="category + station.oaci"
+            :station="station"
+            :type="category"
+          />
+        </section>
       </div>
-      <div class="column">
-        <WeatherMap
-          v-for="(map, key) in results.maps"
-          :value="map"
-          :key="key"
-        />
+      <div class="column is-half">
+        <div class="notification">
+          <b-field label="Meteorological Zone" expanded>
+            <b-select
+              placeholder="Select a zone"
+              v-model="selectedMapsZone"
+              @input="getMaps"
+            >
+              <option
+                v-for="(option, key) in avaliableMaps.zones"
+                :value="key"
+                :key="key"
+                >{{ option }}</option
+              >
+            </b-select>
+          </b-field>
+          <b-field position="is-centered" expanded>
+            <div
+              class="control"
+              v-for="(name, type) in avaliableMaps.types"
+              :key="type"
+            >
+              <b-checkbox-button
+                v-model="selectedMapsTypes"
+                :native-value="type"
+                type="is-success"
+              >
+                {{ name }}
+              </b-checkbox-button>
+            </div>
+          </b-field>
+        </div>
+        <section class="section" v-for="(mapsSet, type) in maps" :key="type">
+          <WeatherMap
+            v-for="(map, key) in mapsSet"
+            :key="key"
+            :data="map"
+            :src="proxyUrl(map.lien)"
+          />
+        </section>
       </div>
     </div>
   </section>
 </template>
 
-<script>
-const data = require("@/store/vac.json");
+<style>
+.select select {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+</style>
 
+<script>
 import Aeroweb from "@/mixins/aeroweb.js";
-import Opmet from "@/components/Opmet.vue";
+import WeatherMessage from "@/components/WeatherMessage.vue";
 import WeatherMap from "@/components/WeatherMap.vue";
 
 export default {
   components: {
-    Opmet,
+    WeatherMessage,
     WeatherMap,
   },
   data() {
     return {
-      codes: [],
-      filteredTags: data,
-      carte: {
-        zone: null,
-        type: null,
-        altitude: null,
-      },
-      server: new Aeroweb("IBAUJYXSHD"),
+      avaliableCodes: [
+        ...Array.from(
+          Object.entries({
+            ...Aeroweb.VAA,
+            ...Aeroweb.TCA,
+            ...Aeroweb.PREDEC,
+          }),
+          (station) => {
+            return { id: station[0], name: station[1] };
+          }
+        ),
+        ...require("@/store/vac.json"),
+      ],
+      filteredCodes: [],
+      selectedCodes: [],
+      avaliableMessagesCategories: [
+        "OPMET",
+        "SIGMET",
+        // "VAA",
+        // "TCA",
+        // "MAA",
+        // "SW",
+        // "PREDEC",
+      ],
+      selectedMessagesCategories: ["OPMET", "SIGMET"],
       avaliableMaps: Aeroweb.CARTES,
-      results: { opmet: [], sigmet: [], maps: [] },
+      selectedMapsZone: null,
+      selectedMapsTypes: ["AERO_TEMSI", "AERO_WINTEM"],
+
+      server: new Aeroweb("IBAUJYXSHD", {
+        cors_proxy: this.proxyUrl,
+      }),
+      messages: {},
+      maps: {},
     };
   },
   // mounted() {
   //   navigator.serviceWorker.ready.then(() => {
-  //     this.server.VAG(Object.keys(Aeroweb.VAG)).then((res) => console.log(res));
   //   });
   // },
-  computed: {
-    codesList() {
-      return this.codes.map((c) => c.id || c);
+  watch: {
+    selectedMessagesCategories(newVal, oldVal) {
+      oldVal
+        .filter((x) => !newVal.includes(x))
+        .forEach((op) => {
+          this.messages[op] = [];
+        });
+
+      this.getMessages(
+        this.selectedCodes,
+        newVal.filter((x) => !oldVal.includes(x))
+      );
     },
-    carteParams() {
-      return [this.carte.zone, this.carte.type, this.carte.altitude];
+    selectedMapsTypes(newVal, oldVal) {
+      oldVal
+        .filter((x) => !newVal.includes(x))
+        .forEach((op) => {
+          this.maps[op] = [];
+        });
+
+      this.getMaps(
+        this.selectedMapsZone,
+        newVal.filter((x) => !oldVal.includes(x))
+      );
     },
   },
   methods: {
-    getMessages() {
-      this.server
-        .OPMET(this.codesList)
-        .then((res) => (this.results.opmet = res.data))
-        .catch((err) => {
-          this.openWarning(err);
-          this.results.opmet = [];
-        });
-      this.server
-        .SIGMET(this.codesList)
-        .then((res) => (this.results.sigmet = res.data))
-        .catch((err) => {
-          this.openWarning(err);
-          this.results.sigmet = [];
-        });
+    proxyUrl(url) {
+      return process.env.NODE_ENV != "production"
+        ? "https://cors.treville.workers.dev/" + url
+        : url;
     },
-    getMaps() {
-      this.server
-        .CARTES(...this.carteParams)
-        .then((res) => (this.results.maps = res.data))
-        .catch((err) => {
-          this.openWarning(err);
-          this.results.maps = [];
-        });
+    getMessages(codes, categories) {
+      (categories || this.selectedMessagesCategories).forEach((category) => {
+        this.server[category](codes.map((c) => c.id || c))
+          .then((data) => {
+            this.$set(this.messages, category, data);
+          })
+          .catch((err) => {
+            this.openWarning(err);
+            this.messages[category] = [];
+          });
+      });
+    },
+    getMaps(zone, types) {
+      (types || this.selectedMapsTypes).forEach((type) => {
+        this.server
+          .CARTES(zone || this.selectedMapsZone, type)
+          .then((data) => {
+            this.$set(this.maps, type, data);
+          })
+          .catch((err) => {
+            this.openWarning(err);
+            this.maps[type] = [];
+          });
+      });
     },
     getFilteredCodes(text) {
-      this.filteredTags = data.filter((option) => {
+      this.filteredCodes = this.avaliableCodes.filter((option) => {
         return (
           option.name
             .toString()
@@ -180,7 +243,7 @@ export default {
     openWarning(error) {
       console.error(error);
       this.$buefy.snackbar.open({
-        message: error.message || "Can't get info from AeroWeb.",
+        message: "Can't get info from AeroWeb.",
         position: "is-bottom",
         type: "is-danger",
         duration: 2500,

@@ -1,4 +1,3 @@
-import axios from "axios";
 import xmljs from "xml-js";
 
 // Build with :
@@ -13,137 +12,73 @@ export default class AeroWeb {
     this.options = {
       baseURL: this.constructor.baseURL,
       url: this.constructor.pathname,
-      method: "get",
-      responseType: "text",
-      params: { ID: key }, // CODE_METEO to be sent par request.
-      transformResponse: [
-        data => {
-          return xmljs.xml2js(data, { compact: true, ignoreDeclaration: true });
-        },
-        AeroWeb.sanitizeAttributes
-      ],
+      login: key,
       ...options
     };
-    this.axiosInstance = axios.create({ ...this.options });
-
-    this.axiosInstance.interceptors.response.use(response => {
-      if (response.data.access && response.data.access.code == "NOK")
-        return Promise.reject({
-          message: "Aeroweb : Wrong Credential",
-          ...response
-        });
-      else if (response.data.ERREUR)
-        return Promise.reject({
-          message: "Aeroweb : Wrong query",
-          ...response
-        });
-      return response;
-    }, (error) => { return Promise.reject(error); });
   }
 
   OPMET(codes, options) {
-    return this.request(
-      "OPMET",
+    return this.request("OPMET2",
       {
-        METAR: "oui",
-        TAF: "deux",
         LIEUID: this.pipe(...codes)
       },
-      {
-        transformResponse: [
-          ...this.axiosInstance.defaults.transformResponse,
-          this.groupByMessage
-        ],
-        ...options
-      }
-    );
+      options)
+      .then(data => { return data.root ? this.sanitizeStations(data.root.opmet) : [] })
   }
   SIGMET(codes, options) {
-    return this.request(
-      "SIGMET",
+    return this.request("SIGMET2",
       {
         LIEUID: this.pipe(...codes)
       },
-      {
-        transformResponse: [
-          ...this.axiosInstance.defaults.transformResponse,
-          this.groupByMessage
-        ],
-        ...options
-      }
-    );
+      options)
+      .then(data => { return data.root ? this.sanitizeStations(data.root.FIR) : [] })
   }
   VAA(codes, options) {
-    return this.request(
-      "VAA",
+    return this.request("VAA",
       {
         LIEUID: this.pipe(...codes)
       },
-      {
-        transformResponse: [
-          ...this.axiosInstance.defaults.transformResponse,
-          this.groupByMessage
-        ],
-        ...options
-      }
-    );
+      options)
+      .then(this.groupByMessage);
   }
   VAG(codes, options) {
-    return this.request(
-      "VAG",
+    return this.request("VAG",
       {
         LIEUID: this.pipe(...codes)
       },
-      {
-        transformResponse: [
-          ...this.axiosInstance.defaults.transformResponse,
-          this.flattenMaps
-        ],
-        ...options
-      }
-    );
+      options)
+      .then(this.flattenMaps);
+
   }
   TCA(codes, options) {
-    return this.request(
-      "TCA",
+    return this.request("TCA",
       {
         LIEUID: this.pipe(...codes)
       },
-      {
-        transformResponse: [
-          ...this.axiosInstance.defaults.transformResponse,
-          this.groupByMessage
-        ],
-        ...options
-      }
-    );
+      options)
+      .then(this.groupByMessage);
   }
   TCAG(codes, options) {
-    return this.request(
-      "TCAG",
+    return this.request("TCAG",
       {
         LIEUID: this.pipe(...codes)
       },
-      options
-    );
+      options)
+      .then(this.flattenMaps);
   }
   MAA(codes, options) {
-    return this.request(
-      "MAA",
+    return this.request("MAA",
       {
         LIEUID: this.pipe(...codes)
       },
-      options
-    );
+      options);
   }
   PREDEC(codes, options) {
-    return this.request(
-      "PREDEC",
+    return this.request("PREDEC",
       {
         LIEUID: this.pipe(...codes)
       },
-      options
-    );
+      options);
   }
   CARTES(zone, type, alt, options) {
     let params = {};
@@ -154,99 +89,58 @@ export default class AeroWeb {
       if (alt) params.ALTITUDE = alt;
     }
 
-    return this.request("CARTES", params, {
-      transformResponse: [
-        ...this.axiosInstance.defaults.transformResponse,
-        this.flattenMaps
-      ],
-      ...options
-    });
+    return this.request("CARTES", params, options)
+      .then(this.flattenMaps);
   }
   DOSSIER(destination, options) {
-    return this.request(
-      "DOSSIER",
+    return this.request("DOSSIER",
       {
         DESTINATION: destination
       },
-      options
-    );
+      options);
   }
   SW(options) {
-    return this.request("SW", {}, options);
+    return this.request("SW", {}, options)
   }
   VALIDATION(code) {
-    return this.request(
-      "VALIDATION",
+    return this.request("VALIDATION",
       {
         CODE_METEO: code
-      },
-      {
-        transformResponse: [
-          ...this.axiosInstance.defaults.transformResponse,
-          data => (data.validation.resultat == "OK" ? true : false)
-        ]
       }
-    );
+    ).then(data => (data.validation.resultat == "OK" ? true : false));
   }
 
   request(type, params, options) {
-    return this.axiosInstance.request({
-      params: {
-        ...this.axiosInstance.defaults.params, // Could be removed with axios 0.20 https://github.com/axios/axios/pull/2656
-        TYPE_DONNEES: type,
-        ...params
-      },
-      ...options
+    let url = new URL(this.options.url, this.options.baseURL);
+
+    url.search = new URLSearchParams({
+      ID: this.options.login,
+      TYPE_DONNEES: type,
+      ...params
     });
+
+    if (this.options.cors_proxy) url = this.options.cors_proxy(url);
+
+    return fetch(url, options)
+      .then(response => response.text())
+      .then(this.parser)
+      .then(data => {
+        if (data.ERREUR) return {};
+        if (data.acces && data.acces.code) throw new Error("Aeroweb: login unknown");
+        return data
+      })
+      // .then(data => { console.debug(data); return data })
+      .then(AeroWeb.sanitizeAttributes)
   }
 
   pipe(...codes) {
     return codes.join("|");
   }
 
-  groupByMessage(data) {
-    if (!data.groupe) return data;
-    return [data.groupe.messages].flat().map(function (station) {
-      return {
-        ...{ oaci: station.oaci, nom: station.nom },
-        ...AeroWeb.groupeBy([station.message].flat(), "type", m => m.texte)
-      };
-    });
-  }
-  flattenMaps(data) {
-    if (!data.cartes) return data;
-    return [data.cartes.bloc_zone]
-      .flat()
-      .map(z => z.carte)
-      .flat();
-  }
-  extractZones(data) {
-    return data.cartes.bloc_zone.map(bz => {
-      return { id: bz.idz, name: bz.nom };
-    });
-  }
-  extractMaps(data) {
-    let zones = AeroWeb.groupeBy(data.cartes.bloc_zone, "idz", bz => bz.carte);
-    for (const property in zones) {
-      zones[property] = zones[property].flat();
-      zones[property] = AeroWeb.groupeBy(
-        zones[property],
-        "type",
-        c => c.niveau
-      );
-      for (const type in zones[property]) {
-        zones[property][type] = [...new Set(zones[property][type])];
-      }
-    }
-    return zones;
+  parser(data) {
+    return xmljs.xml2js(data, { compact: true, ignoreDeclaration: true })
   }
 
-  static groupeBy(xs, key, callback) {
-    return xs.reduce(function (rv, x) {
-      if (x) (rv[x[key]] = rv[x[key]] || []).push(callback.call(null, x));
-      return rv;
-    }, {});
-  }
   static sanitizeAttributes(data) {
     for (const property in data) {
       if (data[property]._attributes) {
@@ -265,8 +159,71 @@ export default class AeroWeb {
     return data;
   }
 
+  sanitizeStations(data) {
+    return [data].flat()
+      .map(station => {
+        let obj = { messages: [] };
+        for (const prop in station) {
+          if (['nom', 'oaci'].includes(prop)) obj[prop] = station[prop];
+          else if (station[prop] != "NODATA") obj.messages.push(station[prop])
+        }
+        obj.messages = obj.messages.flat();
+        return obj
+      })
+  }
+
+  groupByMessage(data) {
+    if (!data.groupe) return data;
+    return [data.groupe.messages].flat()
+      .map(function (station) {
+        return {
+          ...{ oaci: station.oaci, nom: station.nom },
+          ...AeroWeb.groupBy([station.message].flat(), "type", m => m.texte)
+        };
+      });
+  }
+
+  flattenMaps(data) {
+    if (!data.cartes) return data;
+    return [data.cartes.bloc_zone]
+      .flat()
+      .flatMap(z => z.carte)
+      .filter(Boolean)
+  }
+
+
+  // Utility fonctions gessing constants from API request. 
+  extractZones(data) {
+    return data.cartes.bloc_zone.map(bz => {
+      return { id: bz.idz, name: bz.nom };
+    });
+  }
+  extractMaps(data) {
+    let zones = AeroWeb.groupBy(data.cartes.bloc_zone, "idz", bz => bz.carte);
+    for (const property in zones) {
+      zones[property] = zones[property].flat();
+      zones[property] = AeroWeb.groupBy(
+        zones[property],
+        "type",
+        c => c.niveau
+      );
+      for (const type in zones[property]) {
+        zones[property][type] = [...new Set(zones[property][type])];
+      }
+    }
+    return zones;
+  }
+
+  static groupBy(xs, key, callback) {
+    return xs.reduce(function (rv, x) {
+      if (x) (rv[x[key]] = rv[x[key]] || []).push(callback.call(null, x));
+      return rv;
+    }, {});
+  }
+
+  // Constants used when building a request
   static get baseURL() {
-    return "https://aviation.meteo.fr/";
+    return "https://aviation.meteo.fr";
   }
   static get pathname() {
     return "FR/aviation/serveur_donnees.jsp";
@@ -372,8 +329,8 @@ export default class AeroWeb {
         AERO_SOUTH_POL: "SOUTH POLAR J"
       },
       types: {
-        AERO_TEMSI: "Temps Significatif (TEMSI)",
-        AERO_WINTEM: "Vent & Température (WINTEM)"
+        AERO_TEMSI: "Temps Significatif",
+        AERO_WINTEM: "Vent & Température"
       },
       altitudes: [
         20,
