@@ -1,5 +1,5 @@
 <template>
-  <l-control position="topright">
+  <l-control v-bind="$attrs">
     <b-field grouped group-multiline>
       <div class="control">
         <b-taglist attached>
@@ -42,7 +42,7 @@ import { UnitSystem } from "@/mixins/apputils";
 import { LControl } from "vue2-leaflet";
 
 export default {
-  name: "MovingMapInstruments",
+  name: "LMovingMapInstrumentsControl",
   components: {
     LControl
   },

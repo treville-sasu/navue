@@ -1,17 +1,24 @@
 <template>
   <section style="height: 100%;">
     <l-map
-      ref="routeMap"
+      ref="movingMap"
       :options="{
-        zoomSnap: 0.5
+        zoomSnap: 0.5,
       }"
       @ready="setupMap"
-      @contextmenu="nextDestination = $event.latlng"
+      @contextmenu="nextDestination = { latlng: $event.latlng }"
     >
-      <BaseMapsLayers />
-      <MovingMapInstruments v-model="lastKnowLocation" />
-      <LocationMarker v-model="lastKnowLocation" />
-      <MovingMapSettings v-model="settings" />
+      <l-base-layer-group />
+      <l-moving-map-settings-control
+        v-model="settings"
+        position="topleft"
+        @action="removeLocations"
+      />
+      <l-moving-map-instruments-control
+        v-model="lastKnownLocation"
+        position="topright"
+      />
+      <l-location-marker v-model="lastKnownLocation" :futur="60" />
 
       <l-polyline
         v-if="!!trace"
@@ -20,25 +27,17 @@
         :opacity="0.5"
         :weight="5"
       />
-      <l-marker
-        v-if="!!nextDestination"
-        :lat-lng="nextDestination"
-        @contextmenu="nextDestination = undefined"
-      />
 
-      <l-polyline
-        ref="nextDestination"
-        v-if="!!nextDestination"
-        :lat-lngs="nextDestinationRoute"
-        color="blue"
-        :weight="5"
+      <l-destination-marker
+        v-model="nextDestination"
+        :origin="lastKnownLocation"
       />
       <vue-leaflet-minimap
         :layer="miniMap.layer"
         :options="{
           toggleDisplay: true,
           minimized: true,
-          position: 'bottomright'
+          position: 'bottomright',
         }"
       ></vue-leaflet-minimap>
     </l-map>
@@ -46,6 +45,8 @@
 </template>
 
 <style>
+@import "~leaflet-minimap/dist/Control.MiniMap.min.css";
+
 html,
 body,
 #app {
@@ -59,130 +60,152 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 import "@/mixins/leaflet.patch";
-import "leaflet-textpath";
 
-import { LMap, LPolyline, LMarker } from "vue2-leaflet";
+import { LMap, LPolyline } from "vue2-leaflet";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 import "leaflet-minimap/dist/Control.MiniMap.min.css";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
-import NoSleep from "nosleep.js";
 
-import BaseMapsLayers from "@/components/BaseMapsLayers.vue";
-import MovingMapSettings from "@/components/MovingMapSettings.vue";
-import MovingMapInstruments from "@/components/MovingMapInstruments.vue";
-import LocationMarker from "@/components/LocationMarker.vue";
+import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
+import LMovingMapSettingsControl from "@/components/LMovingMapSettingsControl.vue";
+import LMovingMapInstrumentsControl from "@/components/LMovingMapInstrumentsControl.vue";
+import LLocationMarker from "@/components/LLocationMarker.vue";
+import LDestinationMarker from "@/components/LDestinationMarker.vue";
 
 export default {
   name: "MovingMap",
   components: {
     LMap,
-    LMarker,
     LPolyline,
-    BaseMapsLayers,
-    MovingMapSettings,
-    MovingMapInstruments,
-    LocationMarker,
-    VueLeafletMinimap
+    LBaseLayerGroup,
+    LMovingMapSettingsControl,
+    LMovingMapInstrumentsControl,
+    LLocationMarker,
+    LDestinationMarker,
+    VueLeafletMinimap,
   },
   mixins: [MapHandlers],
   data() {
     return {
-      lastKnowLocation: undefined,
-      lastKnowError: undefined,
+      lastKnownLocation: undefined,
+      lastKnownError: undefined,
       nextDestination: undefined,
-      noSleep: new NoSleep(),
+      wakeLock: null,
       settings: {
         getLocation: true,
         setView: true,
-        recordLocation: false,
-        allowWarning: true
+        recordLocation: true,
+        allowWarning: true,
       },
       miniMap: {
         layer: new L.TileLayer(
           "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
           {
-            subdomains: ["server", "services"]
+            subdomains: ["server", "services"],
           }
         ),
         options: {
           toggleDisplay: true,
           minimized: true,
-          position: "bottomright"
-        }
-      }
+          position: "bottomright",
+        },
+      },
     };
   },
   mounted() {
-    this.noSleep.noSleepVideo.muted = true;
-    this.noSleep.enable();
+    this.requestWakeLock();
+    document.addEventListener("visibilitychange", this.requestWakeLock);
   },
   beforeDestroy() {
     this.stopLocate();
-  },
-  destroyed() {
-    this.noSleep.disable();
+    document.removeEventListener("visibilitychange", this.requestWakeLock);
+    if (this.wakeLock) this.wakeLock.release();
   },
   computed: {
     map() {
-      return this.$refs.routeMap.mapObject;
+      return this.$refs.movingMap.mapObject;
     },
     trace() {
       return (this.reportedLocations || [])
-        .filter(p => !!p.latlng)
-        .map(p => p.latlng);
+        .filter((p) => !!p.latlng)
+        .map((p) => p.latlng);
     },
-    nextDestinationRoute() {
-      return [this.lastKnowLocation.latlng, this.nextDestination];
-    }
   },
   watch: {
     "settings.setView": function(val) {
-      if (val && this.lastKnowLocation)
-        this.map.fitBounds(this.bestBounds(this.lastKnowLocation));
+      if (val && this.lastKnownLocation) this.bestView(this.lastKnownLocation);
     },
     "settings.getLocation": {
       handler(val) {
         val ? this.startLocate() : this.stopLocate();
-      }
-    }
-    // nextDestinationRoute: {
-    //   deep: true,
-    //   handler() {
-    //     this.$refs.nextDestination.mapObject.setText(Date.now, { offset: -5 });
-    //   },
-    // },
+      },
+    },
   },
   pouch: {
     reportedLocations() {
       return {
         database: "navue",
         selector: {
-          type: "location"
-        }
+          type: "location",
+        },
       };
-    }
+    },
   },
   methods: {
-    setupMap() {
-      this.map
+    setupMap(map) {
+      map
         .on("locationfound", this._locationFound, this)
         .on("locationerror", this._locationError, this);
 
       if (this.settings.getLocation) this.startLocate();
     },
-    // addLocation(payload) {
-    //   return this.$store.dispatch("updateDB", {
-    //     ...payload,
-    //     type: "location",
-    //     _id: payload.timestamp.toString(),
-    //   });
+    bestView(e) {
+      this.map.flyToBounds(
+        e.latlng.toBounds(e.speed ? e.speed * 60 : e.accuracy)
+      );
+    },
+    addLocation(e) {
+      return this.$pouch.post({
+        ...e,
+        type: "location",
+        _id: e.timestamp.toString(),
+      });
+    },
+    removeLocations() {
+      this.$pouch.bulkDocs(
+        this.reportedLocations.map((loc) => {
+          return { ...loc, _deleted: true };
+        })
+      );
+    },
+    // requestWakeLock() { // Promised version
+    //   if ("wakeLock" in navigator && document.visibilityState === "visible") {
+    //     navigator.wakeLock
+    //       .request("screen")
+    //       .then((wakeLockSentinel) => {
+    //         this.wakeLock = wakeLockSentinel;
+    //       })
+    //       .catch((err) => {
+    //         console.error(err);
+    //       });
+    //   }
     // },
+    async requestWakeLock() {
+      try {
+        if ("wakeLock" in navigator && document.visibilityState === "visible") {
+          this.wakeLock = await navigator.wakeLock.request("screen");
+        } else throw "wakelock unavaliable";
+      } catch (err) {
+        this.openWarning({
+          message: "Caution : Not able to keep screen on, try another browser",
+        });
+        console.error(err);
+      }
+    },
     openWarning(e) {
       this.$buefy.snackbar.open({
-        message:
-          e.message ||
-          "Can't get location. check your GPS settings & browser Permission.",
+        message: e.message,
         position: "is-bottom",
         type: "is-danger",
         duration: 5000,
@@ -191,44 +214,43 @@ export default {
           this.settings.allowWarning = false;
           this.$buefy.toast.open({
             message: "Warnings Deactivated",
-            queue: false
+            queue: false,
           });
-        }
+        },
       });
     },
     _locationFound: function(e) {
-      if (this._debounceLocation(e, this.lastKnowLocation)) {
-        if (this.lastKnowLocation) {
-          this._computeFromLastLocation(e, this.lastKnowLocation);
+      if (this._debounceLocation(e, this.lastKnownLocation)) {
+        if (this.lastKnownLocation) {
+          this._computeFromLastLocation(e, this.lastKnownLocation);
         }
         delete e.sourceTarget;
         delete e.target;
         delete e.bounds;
         delete e.latitude;
         delete e.longitude;
-        delete e.type;
+        // delete e.type;
 
-        this.lastKnowLocation = { ...e };
-        // if (this.settings.recordLocation) this.addLocation(e);
-        if (this.settings.setView) this.map.fitBounds(this.bestBounds(e));
-      } else if (e.type == "locationerror") {
-        this._locationError(e);
-      }
+        this.lastKnownLocation = { ...e };
+        if (this.settings.recordLocation) this.addLocation(e);
+        if (this.settings.setView) this.bestView(e);
+      } else if (e.type == "locationerror") this._locationError(e);
     },
     _locationError: function(e) {
       delete e.sourceTarget;
       delete e.target;
       e.timestamp = Date.now();
 
-      if (true && e.code == 2) {
-        // set a debug Flag ???
-        this._locationFound(this._fakeLocation());
+      if (process.env.NODE_ENV == "development") {
+        //&& e.code == 2
+        console.error(e.message);
+        this._locationFound(this._fakeLocation({ ...e, accuracy: 10 }));
         return;
       }
 
       if (this.settings.allowWarning) this.openWarning(e);
-      this.lastKnowError = { ...e };
-    }
-  }
+      this.lastKnownError = { ...e };
+    },
+  },
 };
 </script>

@@ -3,7 +3,10 @@ export const TypeCasting = {
   data() {
     return {
       proto: {
+        type: "aircraft",
         registration: null,
+        manufacturer: null,
+        model: null,
         paces: [
           {
             name: null,
@@ -51,6 +54,18 @@ export const TypeCasting = {
             ]
           }
         ]
+      },
+      location: {
+        type: "location",
+        latlng: { lat: null, lng: null },
+        accuracy: null,
+        timestamp: null,
+        altitude: null,
+        altitudeAccuracy: null,
+        speed: null,
+        heading: null
+
+        // ...
       }
     };
   },
@@ -70,39 +85,39 @@ export const UnitSystem = {
   data() {
     return {
       units: {
-        speed: {
-          "m/s": 1,
-          "km/h": 3.6,
-          "ft/min": 196.85,
-          kt: 1.94384,
-          // "Mach": 343, // changes with T° and Pressure
-          mph: 2.23694
-        },
+        // speed: {
+        //   "m/s": 1,
+        //   "km/h": 3.6,
+        //   "ft/min": 196.85,
+        //   kt: 1.94384,
+        //   // "Mach": 343, // changes with T° and Pressure
+        //   mph: 2.23694
+        // },
         consumptions: ["/h", "/1000ft", "each"],
         volume: {
           L: 1,
           "gal US": 0.264172,
           "gal Imp": 0.219969
-        },
-        altitude: {
-          m: 1,
-          ft: 3.28084,
-          FL: 328.084
-        },
-        distance: {
-          m: 1,
-          Km: 0.001,
-          NM: 0.000539957,
-          Mile: 0.000621371,
-          Yard: 1.09361
         }
+        // altitude: {
+        //   m: 1,
+        //   ft: 3.28084,
+        //   FL: 328.084
+        // },
+        // distance: {
+        //   m: 1,
+        //   Km: 0.001,
+        //   NM: 0.000539957,
+        //   Mile: 0.000621371,
+        //   Yard: 1.09361
+        // }
       }
     };
   },
   filters: {
-    convert(value, kind, from, to) {
-      return (value * this.units[kind][from]) / this.units[kind][to];
-    },
+    // convert(value, kind, from, to) {
+    //   return (value * this.units[kind][from]) / this.units[kind][to];
+    // },
     asSpeed(value, to = "kt", from = "m/s") {
       let speed = {
         "m/s": 1,
@@ -137,6 +152,15 @@ export const UnitSystem = {
     },
     asHeading(value) {
       return (value + 360) % 360;
+    },
+    asDirection(value) {
+      return ((value + 540) % 360) - 180;
+    },
+    asDuration(value) {
+      if (value) {
+        let date = new Date(value * 1000);
+        return `${date.getUTCHours()}:${date.getUTCMinutes()}:${date.getSeconds()}`;
+      } else return "-";
     },
     precision(value, precision = 2) {
       return (
