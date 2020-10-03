@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-widescreen">
+  <section class="section">
     <EnsureAircraft v-model="aircraft" />
 
     <section class="hero is-primary is-hidden-mobile">
@@ -36,7 +36,7 @@
         </div>
       </div>
     </section>
-  </div>
+  </section>
 </template>
 
 <script>

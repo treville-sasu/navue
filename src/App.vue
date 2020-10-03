@@ -18,6 +18,6 @@ $modal-z: $navbar-fixed-z + 1;
 import Navbar from "@/components/Navbar.vue";
 
 export default {
-  components: { Navbar },
+  components: { Navbar }
 };
 </script>

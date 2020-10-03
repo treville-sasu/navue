@@ -1,5 +1,5 @@
 <template>
-  <div class="container is-widescreen">
+  <section class="section">
     <EnsureAircraft v-model="aircraft" />
 
     <section class="hero is-primary is-hidden-mobile">
@@ -63,7 +63,7 @@
         </b-tab-item>
       </b-tabs>
     </section>
-  </div>
+  </section>
 </template>
 <style lang="scss">
 @import "~bulma/sass/utilities/_all";

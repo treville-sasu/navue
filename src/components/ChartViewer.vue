@@ -19,7 +19,7 @@
                 'info',
                 'warning',
                 'succes',
-                'danger',
+                'danger'
               ]"
               :key="label"
               @click="isComponentModalActive = true"
@@ -61,19 +61,19 @@ import pdf from "vue-pdf";
 export default {
   name: "ChartViewer",
   components: {
-    pdf,
+    pdf
   },
   props: {
-    value: Object,
+    value: Object
   },
   data() {
     return {
       numPages: undefined,
-      isComponentModalActive: false,
+      isComponentModalActive: false
     };
   },
   mounted() {
-    this.loadingtask.promise.then((pdf) => {
+    this.loadingtask.promise.then(pdf => {
       this.numPages = pdf.numPages;
     });
   },
@@ -84,7 +84,7 @@ export default {
     },
     loadingtask() {
       return pdf.createLoadingTask(this.vacUrl);
-    },
-  },
+    }
+  }
 };
 </script>

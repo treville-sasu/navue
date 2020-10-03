@@ -50,16 +50,16 @@ import pdf from "vue-pdf";
 export default {
   name: "WeatherMaps",
   components: {
-    pdf,
+    pdf
   },
   props: {
     data: Object,
-    src: String,
+    src: String
   },
   data() {
     return {
-      isComponentModalActive: false,
+      isComponentModalActive: false
     };
-  },
+  }
 };
 </script>

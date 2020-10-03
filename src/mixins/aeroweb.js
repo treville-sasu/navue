@@ -18,67 +18,80 @@ export default class AeroWeb {
   }
 
   OPMET(codes, options) {
-    return this.request("OPMET2",
+    return this.request(
+      "OPMET2",
       {
         LIEUID: this.pipe(...codes)
       },
-      options)
-      .then(data => { return data.root ? this.sanitizeStations(data.root.opmet) : [] })
+      options
+    ).then(data => {
+      return data.root ? this.sanitizeStations(data.root.opmet) : [];
+    });
   }
   SIGMET(codes, options) {
-    return this.request("SIGMET2",
+    return this.request(
+      "SIGMET2",
       {
         LIEUID: this.pipe(...codes)
       },
-      options)
-      .then(data => { return data.root ? this.sanitizeStations(data.root.FIR) : [] })
+      options
+    ).then(data => {
+      return data.root ? this.sanitizeStations(data.root.FIR) : [];
+    });
   }
   VAA(codes, options) {
-    return this.request("VAA",
+    return this.request(
+      "VAA",
       {
         LIEUID: this.pipe(...codes)
       },
-      options)
-      .then(this.groupByMessage);
+      options
+    ).then(this.groupByMessage);
   }
   VAG(codes, options) {
-    return this.request("VAG",
+    return this.request(
+      "VAG",
       {
         LIEUID: this.pipe(...codes)
       },
-      options)
-      .then(this.flattenMaps);
-
+      options
+    ).then(this.flattenMaps);
   }
   TCA(codes, options) {
-    return this.request("TCA",
+    return this.request(
+      "TCA",
       {
         LIEUID: this.pipe(...codes)
       },
-      options)
-      .then(this.groupByMessage);
+      options
+    ).then(this.groupByMessage);
   }
   TCAG(codes, options) {
-    return this.request("TCAG",
+    return this.request(
+      "TCAG",
       {
         LIEUID: this.pipe(...codes)
       },
-      options)
-      .then(this.flattenMaps);
+      options
+    ).then(this.flattenMaps);
   }
   MAA(codes, options) {
-    return this.request("MAA",
+    return this.request(
+      "MAA",
       {
         LIEUID: this.pipe(...codes)
       },
-      options);
+      options
+    );
   }
   PREDEC(codes, options) {
-    return this.request("PREDEC",
+    return this.request(
+      "PREDEC",
       {
         LIEUID: this.pipe(...codes)
       },
-      options);
+      options
+    );
   }
   CARTES(zone, type, alt, options) {
     let params = {};
@@ -89,25 +102,24 @@ export default class AeroWeb {
       if (alt) params.ALTITUDE = alt;
     }
 
-    return this.request("CARTES", params, options)
-      .then(this.flattenMaps);
+    return this.request("CARTES", params, options).then(this.flattenMaps);
   }
   DOSSIER(destination, options) {
-    return this.request("DOSSIER",
+    return this.request(
+      "DOSSIER",
       {
         DESTINATION: destination
       },
-      options);
+      options
+    );
   }
   SW(options) {
-    return this.request("SW", {}, options)
+    return this.request("SW", {}, options);
   }
   VALIDATION(code) {
-    return this.request("VALIDATION",
-      {
-        CODE_METEO: code
-      }
-    ).then(data => (data.validation.resultat == "OK" ? true : false));
+    return this.request("VALIDATION", {
+      CODE_METEO: code
+    }).then(data => (data.validation.resultat == "OK" ? true : false));
   }
 
   request(type, params, options) {
@@ -121,16 +133,19 @@ export default class AeroWeb {
 
     if (this.options.cors_proxy) url = this.options.cors_proxy(url);
 
-    return fetch(url, options)
-      .then(response => response.text())
-      .then(this.parser)
-      .then(data => {
-        if (data.ERREUR) return {};
-        if (data.acces && data.acces.code) throw new Error("Aeroweb: login unknown");
-        return data
-      })
-      // .then(data => { console.debug(data); return data })
-      .then(AeroWeb.sanitizeAttributes)
+    return (
+      fetch(url, options)
+        .then(response => response.text())
+        .then(this.parser)
+        .then(data => {
+          if (data.ERREUR) return {};
+          if (data.acces && data.acces.code)
+            throw new Error("Aeroweb: login unknown");
+          return data;
+        })
+        // .then(data => { console.debug(data); return data })
+        .then(AeroWeb.sanitizeAttributes)
+    );
   }
 
   pipe(...codes) {
@@ -138,7 +153,7 @@ export default class AeroWeb {
   }
 
   parser(data) {
-    return xmljs.xml2js(data, { compact: true, ignoreDeclaration: true })
+    return xmljs.xml2js(data, { compact: true, ignoreDeclaration: true });
   }
 
   static sanitizeAttributes(data) {
@@ -160,27 +175,25 @@ export default class AeroWeb {
   }
 
   sanitizeStations(data) {
-    return [data].flat()
-      .map(station => {
-        let obj = { messages: [] };
-        for (const prop in station) {
-          if (['nom', 'oaci'].includes(prop)) obj[prop] = station[prop];
-          else if (station[prop] != "NODATA") obj.messages.push(station[prop])
-        }
-        obj.messages = obj.messages.flat();
-        return obj
-      })
+    return [data].flat().map(station => {
+      let obj = { messages: [] };
+      for (const prop in station) {
+        if (["nom", "oaci"].includes(prop)) obj[prop] = station[prop];
+        else if (station[prop] != "NODATA") obj.messages.push(station[prop]);
+      }
+      obj.messages = obj.messages.flat();
+      return obj;
+    });
   }
 
   groupByMessage(data) {
     if (!data.groupe) return data;
-    return [data.groupe.messages].flat()
-      .map(function (station) {
-        return {
-          ...{ oaci: station.oaci, nom: station.nom },
-          ...AeroWeb.groupBy([station.message].flat(), "type", m => m.texte)
-        };
-      });
+    return [data.groupe.messages].flat().map(function(station) {
+      return {
+        ...{ oaci: station.oaci, nom: station.nom },
+        ...AeroWeb.groupBy([station.message].flat(), "type", m => m.texte)
+      };
+    });
   }
 
   flattenMaps(data) {
@@ -188,11 +201,10 @@ export default class AeroWeb {
     return [data.cartes.bloc_zone]
       .flat()
       .flatMap(z => z.carte)
-      .filter(Boolean)
+      .filter(Boolean);
   }
 
-
-  // Utility fonctions gessing constants from API request. 
+  // Utility fonctions gessing constants from API request.
   extractZones(data) {
     return data.cartes.bloc_zone.map(bz => {
       return { id: bz.idz, name: bz.nom };
@@ -202,11 +214,7 @@ export default class AeroWeb {
     let zones = AeroWeb.groupBy(data.cartes.bloc_zone, "idz", bz => bz.carte);
     for (const property in zones) {
       zones[property] = zones[property].flat();
-      zones[property] = AeroWeb.groupBy(
-        zones[property],
-        "type",
-        c => c.niveau
-      );
+      zones[property] = AeroWeb.groupBy(zones[property], "type", c => c.niveau);
       for (const type in zones[property]) {
         zones[property][type] = [...new Set(zones[property][type])];
       }
@@ -215,7 +223,7 @@ export default class AeroWeb {
   }
 
   static groupBy(xs, key, callback) {
-    return xs.reduce(function (rv, x) {
+    return xs.reduce(function(rv, x) {
       if (x) (rv[x[key]] = rv[x[key]] || []).push(callback.call(null, x));
       return rv;
     }, {});
