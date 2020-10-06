@@ -11,10 +11,25 @@
             </figure>
           </div>
           <div class="column is-two-thirds has-text-centered">
-            <h1 class="title">naVue</h1>
-            <h2 class="subtitle">
+            <h1 class="title is-1">naVue</h1>
+            <h2 class="subtitle is-2">
               Easy, Secure & Free. Just fly !
             </h2>
+            <div class="notification is-warning">
+              <!-- <button class="delete"></button> -->
+              <h1 class="title">Liability.</h1>
+              <h2 class="subtitle">Always use offical documentation.</h2>
+              As a pilot in command you will be the only liable person of your
+              flight and aircraft. You are responsible for the documents and
+              informations you use in flight.
+            </div>
+
+            <div class="notification is-danger">
+              <!-- <button class="delete"></button> -->
+              <h1 class="title">Work in progress</h1>
+              <h2 class="subtitle">Evaluation only</h2>
+              Do not use this sofware
+            </div>
           </div>
         </div>
       </div>
@@ -35,6 +50,6 @@
 </template>
 <script>
 export default {
-  name: "Home"
+  name: "Home",
 };
 </script>

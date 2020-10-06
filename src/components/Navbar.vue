@@ -19,45 +19,45 @@
         <b-navbar-item tag="router-link" to="route"
           >Trace a route</b-navbar-item
         >
-        <b-navbar-item tag="router-link" to="approach"
+        <!-- <b-navbar-item tag="router-link" to="approach"
           >Approach Charts</b-navbar-item
-        >
+        > -->
         <b-navbar-item tag="router-link" to="weather">Weather</b-navbar-item>
-        <b-navbar-item tag="router-link" to="notam"
+        <!-- <b-navbar-item tag="router-link" to="notam"
           >NOTAM & Sup AIP</b-navbar-item
-        >
+        > -->
         <b-navbar-item tag="router-link" to="balance"
           >Weight and Balance</b-navbar-item
         >
         <hr class="navbar-divider" />
-        <b-navbar-item tag="router-link" to="logbook"
+        <!-- <b-navbar-item tag="router-link" to="logbook"
           >Edit Nav Log</b-navbar-item
-        >
+        > -->
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Fly" hoverable collapsible>
         <b-navbar-item tag="router-link" to="checklists"
           >Checklists</b-navbar-item
         >
-        <b-navbar-item tag="router-link" to="logbook"
+        <!-- <b-navbar-item tag="router-link" to="logbook"
           >Navigation Log</b-navbar-item
-        >
+        > -->
         <b-navbar-item tag="router-link" to="moving-map"
           >Moving Map</b-navbar-item
         >
         <hr class="navbar-divider" />
-        <div class="control navbar-item">
+        <!-- <div class="control navbar-item">
           <b-switch>Broadcast Position</b-switch>
-        </div>
-        <b-navbar-item tag="router-link" to="enroute"
+        </div> -->
+        <!-- <b-navbar-item tag="router-link" to="enroute"
           >Follow aircrafts</b-navbar-item
-        >
+        > -->
       </b-navbar-dropdown>
-      <b-navbar-dropdown label="Debriefing" hoverable collapsible>
+      <!-- <b-navbar-dropdown label="Debriefing" hoverable collapsible>
         <b-navbar-item tag="router-link" to="stats">Stats</b-navbar-item>
         <b-navbar-item tag="router-link" to="replay">Replay</b-navbar-item>
         <hr class="navbar-divider" />
         <b-navbar-item tag="router-link" to="trace">Save trace</b-navbar-item>
-      </b-navbar-dropdown>
+      </b-navbar-dropdown> -->
     </template>
 
     <template slot="end">
@@ -84,7 +84,7 @@ export default {
   name: "Navbar",
   components: { Login },
   computed: {
-    ...mapState(["selectedAircraft"])
-  }
+    ...mapState(["selectedAircraft"]),
+  },
 };
 </script>

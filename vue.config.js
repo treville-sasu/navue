@@ -1,5 +1,7 @@
 module.exports = {
   devServer: {
+    disableHostCheck: true,
+    bonjour: true,
     https: true,
     open: true,
     openPage: ["index.html"]
@@ -7,9 +9,9 @@ module.exports = {
 
   pwa: {
     name: "naVue",
-    workboxPluginMode: 'InjectManifest',
+    workboxPluginMode: "InjectManifest",
     workboxOptions: {
-      swSrc: 'src/service-worker.js',
+      swSrc: "src/service-worker.js"
     },
     themeColor: "#34495e",
     msTileColor: "#34495e",
@@ -37,7 +39,6 @@ module.exports = {
   },
 
   chainWebpack: config => {
-    config.plugin('workbox');
     config.externals({
       L: "leaflet"
     });
