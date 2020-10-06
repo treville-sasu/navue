@@ -56,14 +56,10 @@ import "leaflet/dist/leaflet.css";
 import { LMap, LPolyline } from "vue2-leaflet";
 import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
 
-
-<<<<<<< HEAD
 import LControlGeocoder from "@/components/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 import LControlFullscreen from "vue2-leaflet-fullscreen";
 
-=======
->>>>>>> 3bb65d11225670eefa28d8f7575a5da6de032c2a
 import "@/mixins/leaflet.patch";
 import { UnitSystem } from "@/mixins/apputils";
 
@@ -114,7 +110,7 @@ export default {
       let defaultEvents = {
         ready: this.setupMap,
       };
-          return defaultEvents;
+      return defaultEvents;
     },
   },
   methods: {
