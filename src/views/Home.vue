@@ -16,7 +16,6 @@
               Easy, Secure & Free. Just fly !
             </h2>
             <div class="notification is-warning">
-              <!-- <button class="delete"></button> -->
               <h1 class="title">Liability.</h1>
               <h2 class="subtitle">Always use offical documentation.</h2>
               As a pilot in command you will be the only liable person of your
@@ -25,7 +24,6 @@
             </div>
 
             <div class="notification is-danger">
-              <!-- <button class="delete"></button> -->
               <h1 class="title">Work in progress</h1>
               <h2 class="subtitle">Evaluation only</h2>
               Do not use this sofware
@@ -38,10 +36,20 @@
       <nav class="tabs">
         <div class="container">
           <ul>
-            <li><router-link to="/help">Get Help</router-link></li>
             <li><router-link to="/about">About</router-link></li>
-            <li><a>Source Code</a></li>
-            <li><router-link to="/legal">Legal</router-link></li>
+            <li><router-link to="/about#legal">Legal</router-link></li>
+            <li>
+              <a
+                target="_blank"
+                href="https://github.com/treville-sasu/navue/issues"
+                >Get Help</a
+              >
+            </li>
+            <li>
+              <a target="_blank" href="https://github.com/treville-sasu/navue"
+                >Source Code</a
+              >
+            </li>
           </ul>
         </div>
       </nav>
