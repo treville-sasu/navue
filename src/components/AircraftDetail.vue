@@ -5,7 +5,7 @@
         type="is-primary"
         icon-left="content-save"
         native-type="submit"
-        @click="updateA(aircraft)"
+        @click="updateAircraft(aircraft)"
         :disabled="!unlockSave"
         outlined
         >{{ !aircraft._id ? "Create" : "Save" }}</b-button
@@ -21,7 +21,7 @@
         v-if="!!aircraft._id"
         type="is-danger"
         icon-left="delete"
-        @click="deleteA(aircraft)"
+        @click="deleteAircraft(aircraft)"
         outlined
         >Delete</b-button
       >
@@ -114,6 +114,13 @@ export default {
   name: "AircraftDetail",
   props: ["aircraft"],
   mixins: [ImportExport, TypeCasting],
+  components: {
+    AircraftDetailPaces,
+    AircraftDetailBalance,
+    AircraftDetailEnvelopes,
+    AircraftDetailConsumptions,
+    AircraftDetailChecklists,
+  },
   data() {
     return {
       unlockEdit: false,
@@ -125,34 +132,39 @@ export default {
     if (!this.aircraft.checklists)
       this.aircraft.checklists = this.proto.checklists;
   },
-  components: {
-    AircraftDetailPaces,
-    AircraftDetailBalance,
-    AircraftDetailEnvelopes,
-    AircraftDetailConsumptions,
-    AircraftDetailChecklists
-  },
   computed: {
     canEdit() {
       return this.unlockEdit || !this.aircraft._id;
     }
   },
   methods: {
-    updateA(payload) {
-      this.$store.dispatch("updateAircraft", payload).then(() => {
-        this.unlockEdit = false;
-      });
+    selectAircraft(arcft) {
+      this.$store.commit("currentAircraft", arcft);
+      // .then(() => {
+      this.$emit("discard");
+      // });
     },
-    selectA(payload) {
-      this.$store.commit("selectAircraft", payload).then(() => {
-        this.$emit("discard");
-      });
+    updateAircraft(arcft) {
+      this.$pouch
+        .put({
+          _id: `${arcft.registration}-${Date.now()}`,
+          ...arcft,
+          type: "aircraft",
+        })
+        .then((res) => {
+          this.unlockEdit = false;
+          this.selectAircraft({ ...arcft, ...res });
+        })
+        .catch(console.error);
     },
-    deleteA(payload) {
-      this.$store.dispatch("deleteAircraft", payload).then(() => {
-        this.$emit("discard");
-      });
-    }
-  }
+    deleteAircraft(arcft) {
+      this.$pouch
+        .remove(arcft)
+        .then(() => {
+          this.$emit("discard");
+        })
+        .catch(console.error);
+    },
+  },
 };
 </script>

@@ -53,7 +53,7 @@ export const TypeCasting = {
               }
             ]
           }
-        ]
+        ],
       },
       location: {
         type: "location",
@@ -85,14 +85,14 @@ export const UnitSystem = {
   data() {
     return {
       units: {
-        // speed: {
-        //   "m/s": 1,
-        //   "km/h": 3.6,
-        //   "ft/min": 196.85,
-        //   kt: 1.94384,
-        //   // "Mach": 343, // changes with T° and Pressure
-        //   mph: 2.23694
-        // },
+        speed: {
+          "m/s": 1,
+          "km/h": 3.6,
+          "ft/min": 196.85,
+          kt: 1.94384,
+          // "Mach": 343, // changes with T° and Pressure
+          mph: 2.23694
+        },
         consumptions: ["/h", "/1000ft", "each"],
         volume: {
           L: 1,
@@ -165,7 +165,7 @@ export const UnitSystem = {
     precision(value, precision = 2) {
       return (
         Math.round(value * 10 ** precision + Number.EPSILON) /
-          10 ** precision || "-"
+        10 ** precision || "-"
       );
     }
   }

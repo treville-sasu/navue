@@ -9,24 +9,20 @@
       </b-navbar-item>
     </template>
     <template slot="start">
-      <b-navbar-dropdown
-        label="Briefing Room"
-        tag="router-link"
-        to="/route"
-        collapsible
-        hoverable
-      >
-        <b-navbar-item tag="router-link" to="route"
+      <b-navbar-dropdown label="Briefing Room" collapsible hoverable>
+        <b-navbar-item tag="router-link" :to="{ name: 'Route' }"
           >Trace a route</b-navbar-item
         >
         <!-- <b-navbar-item tag="router-link" to="approach"
           >Approach Charts</b-navbar-item
         > -->
-        <b-navbar-item tag="router-link" to="weather">Weather</b-navbar-item>
+        <b-navbar-item tag="router-link" :to="{ name: 'Weather' }"
+          >Weather</b-navbar-item
+        >
         <!-- <b-navbar-item tag="router-link" to="notam"
           >NOTAM & Sup AIP</b-navbar-item
         > -->
-        <b-navbar-item tag="router-link" to="balance"
+        <b-navbar-item tag="router-link" :to="{ name: 'Balance' }"
           >Weight and Balance</b-navbar-item
         >
         <hr class="navbar-divider" />
@@ -35,13 +31,13 @@
         > -->
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Fly" hoverable collapsible>
-        <b-navbar-item tag="router-link" to="checklists"
+        <b-navbar-item tag="router-link" :to="{ name: 'Checklists' }"
           >Checklists</b-navbar-item
         >
         <!-- <b-navbar-item tag="router-link" to="logbook"
           >Navigation Log</b-navbar-item
         > -->
-        <b-navbar-item tag="router-link" to="moving-map"
+        <b-navbar-item tag="router-link" :to="{ name: 'MovingMap' }"
           >Moving Map</b-navbar-item
         >
         <hr class="navbar-divider" />
@@ -61,9 +57,16 @@
     </template>
 
     <template slot="end">
-      <b-navbar-item tag="router-link" to="aircraft">{{
-        selectedAircraft ? selectedAircraft.registration : "Aircrafts"
-      }}</b-navbar-item>
+      <b-navbar-item
+        tag="router-link"
+        :to="{
+          name: 'Aircrafts',
+          params: { id: currentAircraft ? currentAircraft._id : null },
+        }"
+        >{{
+          currentAircraft ? currentAircraft.registration : "Aircrafts"
+        }}</b-navbar-item
+      >
       <b-navbar-dropdown hoverable collapsible right>
         <template slot="label">
           <b-icon icon="account" />
@@ -78,13 +81,14 @@
 
 <script>
 import Login from "@/components/Login.vue";
-import { mapState } from "vuex";
 
 export default {
   name: "Navbar",
   components: { Login },
   computed: {
-    ...mapState(["selectedAircraft"]),
+    currentAircraft() {
+      return this.$store.state.currentAircraft;
+    },
   },
 };
 </script>

@@ -12,9 +12,9 @@ const routes = [
     component: () => import("../views/Home.vue")
   },
   {
-    path: "/aircraft",
-    name: "Aircraft",
-    component: () => import("../views/Aircraft.vue")
+    path: "/aircrafts/:id?",
+    name: "Aircrafts",
+    component: () => import("../views/Aircrafts.vue")
   },
   {
     path: "/moving-map",
@@ -54,8 +54,17 @@ const routes = [
 ];
 
 const router = new VueRouter({
+  mode: "history",
   routes,
-  linkActiveClass: "is-active"
+  linkActiveClass: "is-active",
+  scrollBehavior(to) {
+    if (to.hash) {
+      return {
+        selector: to.hash
+        // , offset: { x: 0, y: 10 }
+      }
+    }
+  }
 });
 
 export default router;

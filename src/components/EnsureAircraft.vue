@@ -32,32 +32,32 @@ export default {
   name: "EnsureAircraft",
   props: ["value"],
   components: {
-    AircraftSelect
+    AircraftSelect,
   },
   mounted() {
-    if (this.$store.state.selectedAircraft)
-      this.onSelectAircraft(this.$store.state.selectedAircraft);
+    if (this.$store.state.currentAircraft)
+      this.onSelectAircraft(this.$store.state.currentAircraft);
   },
   methods: {
     onSelectAircraft(e) {
       //TODO : Cast the type of payload to aircraft
       this.$store.commit("selectAircraft", e);
       this.$emit("input", e);
-    }
+    },
   },
   computed: {
     modalActive() {
       return !this.value;
-    }
+    },
   },
   pouch: {
     aircrafts() {
       return {
         database: "navue",
         selector: { registration: { $regex: RegExp(this.search, "i") } },
-        fields: ["registration"]
+        fields: ["registration"],
       };
-    }
-  }
+    },
+  },
 };
 </script>
