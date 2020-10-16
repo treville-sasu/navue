@@ -41,22 +41,13 @@ export default {
   methods: {
     onSelectAircraft(e) {
       //TODO : Cast the type of payload to aircraft
-      this.$store.commit("selectAircraft", e);
+      this.$store.commit("currentAircraft", e);
       this.$emit("input", e);
     },
   },
   computed: {
     modalActive() {
       return !this.value;
-    },
-  },
-  pouch: {
-    aircrafts() {
-      return {
-        database: "navue",
-        selector: { registration: { $regex: RegExp(this.search, "i") } },
-        fields: ["registration"],
-      };
     },
   },
 };
