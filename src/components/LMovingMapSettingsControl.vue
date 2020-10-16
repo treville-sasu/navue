@@ -12,6 +12,11 @@
         >
       </b-dropdown-item>
       <b-dropdown-item aria-role="listitem" custom>
+        <b-switch v-model="value.wakeLock" :disabled="!wakeLockable"
+          >Keep screen On</b-switch
+        >
+      </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem" custom>
         <b-switch v-model="value.recordLocation" :disabled="!value.getLocation"
           >Record track
         </b-switch>
@@ -48,10 +53,16 @@ export default {
         return {
           getLocation: true,
           setView: true,
+          wakeLock: true,
           recordLocation: false,
           allowWarning: true,
         };
       },
+    },
+  },
+  computed: {
+    wakeLockable() {
+      return "wakeLock" in navigator && document.visibilityState === "visible";
     },
   },
   watch: {

@@ -81,7 +81,7 @@ import {
   LIcon,
   LPolyline,
   LCircle,
-  LPopup,
+  LPopup
 } from "vue2-leaflet";
 
 export default {
@@ -92,21 +92,21 @@ export default {
     LIcon,
     LPolyline,
     LCircle,
-    LPopup,
+    LPopup
   },
   props: {
     value: {
       type: Object,
       default: () => {
         return { latlng: null, speed: null, heading: null, accuracy: null };
-      },
+      }
     },
     futur: {
       type: Number,
       default: () => {
         return 60;
-      },
-    },
+      }
+    }
   },
   computed: {
     speedVector() {
@@ -119,9 +119,9 @@ export default {
         ).rhumbDestinationPoint(
           this.value.speed * this.futur,
           this.value.heading
-        ),
+        )
       ];
-    },
-  },
+    }
+  }
 };
 </script>

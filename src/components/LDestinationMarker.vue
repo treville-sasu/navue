@@ -46,7 +46,7 @@ import {
   LIcon,
   LPolyline,
   LPopup,
-  findRealParent,
+  findRealParent
 } from "vue2-leaflet";
 
 import LMovingMapDestinationControl from "@/components/LMovingMapDestinationControl.vue";
@@ -59,7 +59,7 @@ export default {
     LIcon,
     LPolyline,
     LPopup,
-    LMovingMapDestinationControl,
+    LMovingMapDestinationControl
   },
   props: ["value", "origin"],
   mounted() {
@@ -83,9 +83,9 @@ export default {
         heading,
         ETE,
         relative_bearing: heading - this.origin.heading,
-        vertical_speed: (this.value.altitude - this.origin.altitude) / ETE,
+        vertical_speed: (this.value.altitude - this.origin.altitude) / ETE
       };
-    },
-  },
+    }
+  }
 };
 </script>

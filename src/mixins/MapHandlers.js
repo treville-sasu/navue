@@ -29,22 +29,23 @@ export const MapHandlers = {
     _debounceLocation(e, last) {
       if (e.accuracy > 100) {
         e.type = "locationerror";
-        e.message = "Geolocation error: low accuracy.";
+        e.message = `Geolocation error: low accuracy. ${e.accuracy}m`;
         return false;
       } else if (e.altitudeAccuracy > 15) {
         delete e.altitude;
         delete e.altitudeAccuracy;
         return true;
-      } else if (last && new LatLon(last.latlng.lat, last.latlng.lng).rhumbDistanceTo(new LatLon(e.latlng.lat, e.latlng.lng)) <= 1)
+      } else if (
+        last &&
+        new LatLon(last.latlng.lat, last.latlng.lng).rhumbDistanceTo(
+          new LatLon(e.latlng.lat, e.latlng.lng)
+        ) <= 1
+      )
         return false;
       else return true;
     },
     _fakeLocation(
-      {
-        latlng = { lat: 0, lng: 0 },
-        accuracy = 20,
-        altitude = 1000,
-      },
+      { latlng = { lat: 0, lng: 0 }, accuracy = 20, altitude = 1000 },
       spread = 5
     ) {
       let rand = (s = spread) => {

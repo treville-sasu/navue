@@ -9,6 +9,7 @@
       @contextmenu="nextDestination = { latlng: $event.latlng }"
     >
       <l-base-layer-group />
+      <l-control-fullscreen position="topleft" />
       <l-moving-map-settings-control
         v-model="settings"
         position="topleft"
@@ -64,6 +65,7 @@ import "@/mixins/leaflet.patch";
 import { LMap, LPolyline } from "vue2-leaflet";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 import "leaflet-minimap/dist/Control.MiniMap.min.css";
+import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
 
@@ -77,6 +79,7 @@ export default {
   name: "MovingMap",
   components: {
     LMap,
+    LControlFullscreen,
     LPolyline,
     LBaseLayerGroup,
     LMovingMapSettingsControl,
@@ -95,7 +98,8 @@ export default {
       settings: {
         getLocation: true,
         setView: true,
-        recordLocation: true,
+        wakeLock: true,
+        recordLocation: false,
         allowWarning: true,
       },
       miniMap: {
@@ -135,6 +139,10 @@ export default {
   watch: {
     "settings.setView": function(val) {
       if (val && this.lastKnownLocation) this.bestView(this.lastKnownLocation);
+    },
+    "settings.wakeLock": function(val) {
+      if (val) this.requestWakeLock();
+      if (!val && this.wakeLock) this.wakeLock.release();
     },
     "settings.getLocation": {
       handler(val) {
@@ -179,27 +187,16 @@ export default {
         })
       );
     },
-    // requestWakeLock() { // Promised version
-    //   if ("wakeLock" in navigator && document.visibilityState === "visible") {
-    //     navigator.wakeLock
-    //       .request("screen")
-    //       .then((wakeLockSentinel) => {
-    //         this.wakeLock = wakeLockSentinel;
-    //       })
-    //       .catch((err) => {
-    //         console.error(err);
-    //       });
-    //   }
-    // },
     async requestWakeLock() {
       try {
         if ("wakeLock" in navigator && document.visibilityState === "visible") {
           this.wakeLock = await navigator.wakeLock.request("screen");
         } else throw "wakelock unavaliable";
       } catch (err) {
-        this.openWarning({
-          message: "Caution : Not able to keep screen on, try another browser",
-        });
+        this.settings.wakeLock = false;
+        // this.openWarning({
+        //   message: "Caution : Not able to keep screen on, try another browser",
+        // });
         console.error(err);
       }
     },
@@ -229,7 +226,6 @@ export default {
         delete e.bounds;
         delete e.latitude;
         delete e.longitude;
-        // delete e.type;
 
         this.lastKnownLocation = { ...e };
         if (this.settings.recordLocation) this.addLocation(e);
