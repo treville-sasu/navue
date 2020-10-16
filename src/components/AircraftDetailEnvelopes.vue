@@ -1,21 +1,18 @@
 <template>
-  <section class="section">
+  <section>
     <b-button
-      @click="appendItem(envelopes, proto.envelopes[0])"
+      @click="value.unshift(JSON.parse(JSON.stringify(proto)))"
       type="is-primary"
       rounded
       >Add an envelope</b-button
     >
     <div class="columns">
       <div class="column">
-        <div v-for="(envelope, index) in envelopes" :key="index">
+        <div v-for="(envelope, index) in value" :key="index">
           <b-field label="Name" horizontal>
             <b-input v-model="envelope.name" />
             <div class="control">
-              <b-button
-                @click="removeItem(envelopes, index)"
-                icon-right="close"
-              />
+              <b-button @click="value.splice(index, 1)" icon-right="close" />
             </div>
           </b-field>
 
@@ -38,14 +35,16 @@
             />
             <p class="control">
               <b-button
-                @click="removeItem(envelope.values, index)"
+                @click="envelope.values.splice(index, 1)"
                 icon-right="close"
               />
             </p>
           </b-field>
           <b-field>
             <b-button
-              @click="appendItem(envelope.values, proto.envelopes[0].values[0])"
+              @click="
+                envelope.values.unshift(JSON.parse(JSON.stringify(proto_item)))
+              "
               icon-right="plus"
               type="is-primary"
               rounded
@@ -54,7 +53,7 @@
         </div>
       </div>
       <div class="column">
-        <BalanceChart :chart-data="datasets" v-if="envelopes.length > 0" />
+        <BalanceChart :chart-data="datasets" v-if="value.length > 0" />
       </div>
     </div>
   </section>
@@ -64,23 +63,51 @@
 
 <script>
 import BalanceChart from "@/components/BalanceChart.vue";
-import { TypeCasting, ChartSettings } from "@/mixins/apputils";
+import { ChartSettings } from "@/mixins/apputils";
 
 export default {
   name: "AircraftDetailEnvelopes",
-  props: ["envelopes"],
-  mixins: [TypeCasting, ChartSettings],
   components: { BalanceChart },
+  props: {
+    value: {
+      default() {
+        return [
+          {
+            name: undefined,
+            values: [{ x: undefined, y: undefined }],
+          },
+        ];
+      },
+    },
+  },
+  mixins: [ChartSettings],
+  data() {
+    return {
+      proto: {
+        name: undefined,
+        values: [{ ...this.proto_item }],
+      },
+      proto_item: { x: undefined, y: undefined },
+    };
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler(oldVal, newVal) {
+        this.$emit("input", newVal);
+      },
+    },
+  },
   computed: {
     datasets() {
       return {
         datasets: [
-          ...this.envelopes.map(e => {
+          ...this.value.map((e) => {
             return { ...this.envelopesDataset, label: e.name, data: e.values };
-          })
-        ]
+          }),
+        ],
       };
-    }
-  }
+    },
+  },
 };
 </script>

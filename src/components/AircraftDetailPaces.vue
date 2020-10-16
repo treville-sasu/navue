@@ -1,14 +1,11 @@
 <template>
-  <section class="section">
-    <b-button
-      @click="prependItem(paces, proto.paces[0])"
-      type="is-primary"
-      rounded
+  <section>
+    <b-button @click="value.unshift({ ...proto })" type="is-primary" rounded
       >Add a pace</b-button
     >
     <div class="control">
       <b-field
-        v-for="(speed, index) in paces"
+        v-for="(speed, index) in value"
         :key="index"
         horizontal
         group-multiline
@@ -17,6 +14,7 @@
           <b-input v-model="speed.name" />
         </b-field>
         <b-field label="Speed" label-position="on-border">
+          <b-numberinput v-model="speed.value" :controls="false" :step="0.01" />
           <b-select placeholder="unit" v-model="speed.unit">
             <option
               v-for="(ratio, name) in units.speed"
@@ -25,10 +23,9 @@
               >{{ name }}</option
             >
           </b-select>
-          <b-numberinput v-model="speed.value" :controls="false" :step="0.01" />
         </b-field>
         <b-button
-          @click="removeItem(paces, index)"
+          @click="value.splice(index, 1)"
           type="is-secondary"
           icon-right="close"
         />
@@ -40,11 +37,40 @@
 <style scoped lang="scss"></style>
 
 <script>
-import { TypeCasting, UnitSystem } from "@/mixins/apputils";
+import { UnitSystem } from "@/mixins/apputils";
 
 export default {
   name: "AircraftDetailPaces",
-  props: ["paces"],
-  mixins: [TypeCasting, UnitSystem]
+  props: {
+    value: {
+      default() {
+        return [
+          {
+            name: undefined,
+            value: undefined,
+            unit: "kt",
+          },
+        ];
+      },
+    },
+  },
+  mixins: [UnitSystem],
+  data() {
+    return {
+      proto: {
+        name: undefined,
+        value: undefined,
+        unit: "kt",
+      },
+    };
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler(oldVal, newVal) {
+        this.$emit("input", newVal);
+      },
+    },
+  },
 };
 </script>

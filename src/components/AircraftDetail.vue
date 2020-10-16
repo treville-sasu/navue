@@ -5,10 +5,10 @@
         type="is-primary"
         icon-left="content-save"
         native-type="submit"
-        @click="updateAircraft(aircraft)"
-        :disabled="!unlockSave"
+        @click="updateAircraft(value)"
+        :disabled="!canSave"
         outlined
-        >{{ !aircraft._id ? "Create" : "Save" }}</b-button
+        >{{ !value._id ? "Create" : "Save" }}</b-button
       >
       <b-button
         type="is-warning"
@@ -18,10 +18,10 @@
         >Discard</b-button
       >
       <b-button
-        v-if="!!aircraft._id"
+        v-if="!!value._id"
         type="is-danger"
         icon-left="delete"
-        @click="deleteAircraft(aircraft)"
+        @click="deleteAircraft(value)"
         outlined
         >Delete</b-button
       >
@@ -31,7 +31,7 @@
         type="is-secondary"
         icon-left="arrow-left"
         outlined
-        @click="$emit('discard')"
+        @click="$emit('input', null)"
       ></b-button>
       <b-button
         type="is-secondary"
@@ -41,11 +41,11 @@
       <b-button
         type="is-primary"
         icon-left="check"
-        @click="selectAircraft(aircraft)"
+        @click="selectAircraft(value)"
         >Select</b-button
       >
       <b-button
-        @click="downloadJSON(aircraft, `${aircraft.registration}.json`)"
+        @click="downloadJSON(value, `${value.registration}.json`)"
         icon-left="download"
         type="is-secondary"
         outlined
@@ -56,44 +56,42 @@
     <fieldset :disabled="!canEdit">
       <b-tabs position="is-centered" multiline expanded>
         <b-tab-item label="Identification">
-          <section class="section">
-            <b-field label="Registration" horizontal>
-              <b-input
-                v-model="aircraft.registration"
-                placeholder="F-...."
-                required
-              />
-            </b-field>
-            <b-field label="Manufacturer" horizontal>
-              <b-input v-model="aircraft.manufacturer" placeholder="Robin" />
-            </b-field>
-            <b-field label="Model" horizontal>
-              <b-input v-model="aircraft.model" placeholder="DR40" />
-            </b-field>
-            <b-field label="Airworthiness Certificate" horizontal>
-              <b-input
-                v-model="aircraft.cn"
-                maxlength="200"
-                type="textarea"
-                placeholder="CNRA.. 12/12/1983"
-              />
-            </b-field>
-          </section>
+          <b-field label="Registration" horizontal>
+            <b-input
+              v-model="value.registration"
+              placeholder="F-...."
+              required
+            />
+          </b-field>
+          <b-field label="Manufacturer" horizontal>
+            <b-input v-model="value.manufacturer" placeholder="Robin" />
+          </b-field>
+          <b-field label="Model" horizontal>
+            <b-input v-model="value.model" placeholder="DR40" />
+          </b-field>
+          <b-field label="Airworthiness Certificate" horizontal>
+            <b-input
+              v-model="value.cn"
+              maxlength="200"
+              type="textarea"
+              placeholder="CNRA.. 12/12/1983"
+            />
+          </b-field>
         </b-tab-item>
         <b-tab-item label="Paces">
-          <AircraftDetailPaces :paces="aircraft.paces" />
+          <AircraftDetailPaces v-model="value.paces" />
         </b-tab-item>
         <b-tab-item label="Fuel">
-          <AircraftDetailConsumptions :consumptions="aircraft.consumptions" />
+          <AircraftDetailConsumptions v-model="value.consumptions" />
         </b-tab-item>
         <b-tab-item label="Balance & Weight">
-          <AircraftDetailBalance :balance="aircraft.balance" />
+          <AircraftDetailBalance v-model="value.balance" />
         </b-tab-item>
         <b-tab-item label="Envelopes">
-          <AircraftDetailEnvelopes :envelopes="aircraft.envelopes" />
+          <AircraftDetailEnvelopes v-model="value.envelopes" />
         </b-tab-item>
         <b-tab-item label="Checklists">
-          <AircraftDetailChecklists :checklists="aircraft.checklists" />
+          <AircraftDetailChecklists v-model="value.checklists" />
         </b-tab-item>
       </b-tabs>
     </fieldset>
@@ -108,12 +106,29 @@ import AircraftDetailBalance from "@/components/AircraftDetailBalance.vue";
 import AircraftDetailEnvelopes from "@/components/AircraftDetailEnvelopes.vue";
 import AircraftDetailConsumptions from "@/components/AircraftDetailConsumptions.vue";
 import AircraftDetailChecklists from "@/components/AircraftDetailChecklists.vue";
-import { ImportExport, TypeCasting } from "@/mixins/apputils";
+import { ImportExport } from "@/mixins/apputils";
 
 export default {
   name: "AircraftDetail",
-  props: ["aircraft"],
-  mixins: [ImportExport, TypeCasting],
+  props: {
+    value: {
+      type: Object,
+      default() {
+        return {
+          type: "aircraft",
+          registration: undefined,
+          manufacturer: undefined,
+          model: undefined,
+          paces: undefined,
+          balance: undefined,
+          envelopes: undefined,
+          consumptions: undefined,
+          checklists: undefined,
+        };
+      },
+    },
+  },
+  mixins: [ImportExport],
   components: {
     AircraftDetailPaces,
     AircraftDetailBalance,
@@ -123,33 +138,33 @@ export default {
   },
   data() {
     return {
+      canSave: false,
       unlockEdit: false,
-      //      TODO: unlock save only if form changed
-      unlockSave: true
     };
-  },
-  mounted() {
-    if (!this.aircraft.checklists)
-      this.aircraft.checklists = this.proto.checklists;
   },
   computed: {
     canEdit() {
-      return this.unlockEdit || !this.aircraft._id;
-    }
+      return this.unlockEdit || !this.value._id;
+    },
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler() {
+        this.canSave = true;
+      },
+    },
   },
   methods: {
     selectAircraft(arcft) {
       this.$store.commit("currentAircraft", arcft);
-      // .then(() => {
-      this.$emit("discard");
-      // });
+      this.$emit("input", null);
     },
     updateAircraft(arcft) {
       this.$pouch
         .put({
           _id: `${arcft.registration}-${Date.now()}`,
           ...arcft,
-          type: "aircraft",
         })
         .then((res) => {
           this.unlockEdit = false;
@@ -161,7 +176,7 @@ export default {
       this.$pouch
         .remove(arcft)
         .then(() => {
-          this.$emit("discard");
+          this.$emit("input", null);
         })
         .catch(console.error);
     },

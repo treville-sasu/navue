@@ -1,20 +1,17 @@
 <template>
-  <section class="section">
+  <section>
     <b-button
-      @click="appendItem(checklists, proto.checklists[0])"
+      @click="value.unshift(JSON.parse(JSON.stringify(proto)))"
       type="is-primary"
       rounded
       >Create a checklist</b-button
     >
     <div class="control">
-      <div v-for="(checklist, index) in checklists" :key="index">
+      <div v-for="(checklist, index) in value" :key="index">
         <b-field label="Name" label-position="on-border" horizontal>
           <b-input v-model="checklist.name" />
           <p class="control">
-            <b-button
-              @click="removeItem(checklists, index)"
-              icon-right="close"
-            />
+            <b-button @click="value.splice(index, 1)" icon-right="close" />
           </p>
         </b-field>
         <b-field
@@ -34,7 +31,7 @@
           </b-field>
           <p class="control">
             <b-button
-              @click="removeItem(checklist.items, index)"
+              @click="checklist.items.splice(index, 1)"
               type="is-secondary"
               icon-right="close"
             />
@@ -42,7 +39,9 @@
         </b-field>
         <b-field position="is-centered">
           <b-button
-            @click="appendItem(checklist.items, proto.checklists[0].items[0])"
+            @click="
+              checklist.items.push(JSON.parse(JSON.stringify(proto_item)))
+            "
             type="is-primary"
             rounded
             icon-right="plus"
@@ -54,11 +53,46 @@
 </template>
 
 <script>
-import { TypeCasting } from "@/mixins/apputils";
-
 export default {
   name: "AircraftDetailChecklists",
-  props: ["checklists"],
-  mixins: [TypeCasting]
+  props: {
+    value: {
+      default() {
+        return [
+          {
+            name: undefined,
+            items: [
+              {
+                name: undefined,
+                expect: undefined,
+                action: false,
+              },
+            ],
+          },
+        ];
+      },
+    },
+  },
+  data() {
+    return {
+      proto: {
+        name: undefined,
+        items: [{ ...this.proto_item }],
+      },
+      proto_item: {
+        name: undefined,
+        expect: undefined,
+        action: false,
+      },
+    };
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler(oldVal, newVal) {
+        this.$emit("input", newVal);
+      },
+    },
+  },
 };
 </script>

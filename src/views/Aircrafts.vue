@@ -10,11 +10,13 @@
         </div>
       </div>
     </section>
-    <section v-if="aircraft" class="section">
-      <AircraftDetail :aircraft="aircraft" @discard="aircraft = null" />
-    </section>
-    <section v-else class="section">
-      <div class="tile is-ancestor">
+    <section class="section">
+      <AircraftDetail
+        v-model="aircraft"
+        v-if="aircraft || aircraft === undefined"
+        @discard="aircraft = null"
+      />
+      <div v-else class="tile is-ancestor">
         <div class="tile is-parent is-6">
           <div class="tile is-child box">
             <AircraftSelect @select="routeAircraft" />
@@ -26,7 +28,7 @@
         <div class="tile is-parent">
           <div class="tile is-child box">
             <b-button
-              @click="newAircraft"
+              @click="aircraft = undefined"
               size="is-large"
               icon-left="folder-plus"
               type="is-primary"
@@ -67,7 +69,7 @@
 <script>
 import AircraftDetail from "@/components/AircraftDetail.vue";
 import AircraftSelect from "@/components/AircraftSelect.vue";
-import { ImportExport, TypeCasting } from "@/mixins/apputils";
+import { ImportExport } from "@/mixins/apputils";
 
 export default {
   name: "Aircrafts",
@@ -75,7 +77,7 @@ export default {
     AircraftDetail,
     AircraftSelect,
   },
-  mixins: [ImportExport, TypeCasting],
+  mixins: [ImportExport],
   mounted() {
     if (this.$route.params.id)
       this.getAircraft(this.$route.params.id).catch(() => {

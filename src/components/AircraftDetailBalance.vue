@@ -1,25 +1,21 @@
 <template>
-  <section class="section">
+  <section>
     <b-field label="Balanced on">
       <b-datepicker
         v-model="curatedDate"
-        placeholder="Select last balance sheet date"
+        placeholder="Select last value sheet date"
         trap-focus
         icon="calendar-today"
       />
     </b-field>
     <b-button
-      @click="prependItem(balance.weights, proto.balance.weights[0])"
+      @click="value.weights.unshift({ ...proto })"
       type="is-primary"
       rounded
       >Add a mass</b-button
     >
     <div class="control">
-      <b-field
-        v-for="(weight, index) in balance.weights"
-        :key="index"
-        horizontal
-      >
+      <b-field v-for="(weight, index) in value.weights" :key="index" horizontal>
         <b-field label="Name" label-position="on-border">
           <b-input v-model="weight.name" />
         </b-field>
@@ -72,7 +68,7 @@
           >
         </b-field>
         <b-button
-          @click="removeItem(balance.weights, index)"
+          @click="value.weights.splice(index, 1)"
           type="is-secondary"
           icon-right="close"
         />
@@ -84,23 +80,59 @@
 <style scoped lang="scss"></style>
 
 <script>
-import { TypeCasting } from "@/mixins/apputils";
-
 export default {
   name: "AircraftDetailBalance",
-  mixins: [TypeCasting],
-  props: ["balance"],
+  props: {
+    value: {
+      default() {
+        return {
+          date: undefined,
+          weights: [
+            {
+              name: undefined,
+              arm: undefined,
+              value: undefined,
+              density: 1,
+              min: undefined,
+              max: undefined,
+              tank: false,
+            },
+          ],
+        };
+      },
+    },
+  },
+  data() {
+    return {
+      proto: {
+        name: undefined,
+        arm: undefined,
+        value: undefined,
+        density: 1,
+        min: undefined,
+        max: undefined,
+        tank: false,
+      },
+    };
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler(oldVal, newVal) {
+        this.$emit("input", newVal);
+      },
+    },
+  },
   computed: {
+    // TODO: check if still needed with buefy 0.9.3
     curatedDate: {
       get() {
-        return this.balance.date
-          ? new Date(this.balance.date)
-          : this.balance.date;
+        return this.value.date ? new Date(this.value.date) : this.value.date;
       },
       set(value) {
-        this.balance.date = value;
-      }
-    }
-  }
+        this.value.date = value;
+      },
+    },
+  },
 };
 </script>
