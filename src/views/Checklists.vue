@@ -20,37 +20,32 @@
           <b-table
             :data="cl.items"
             checkable
-            :is-row-checkable="row => !!row.expect"
+            :is-row-checkable="(row) => !!row.expect"
             checkbox-position="right"
             :checked-rows.sync="checked"
             :header-checkable="false"
             :mobile-cards="false"
             :row-class="(row, index) => row.action && 'is-selected'"
           >
-            <template slot-scope="props">
-              <b-table-column
-                field="name"
-                label="Name"
-                :colspan="!props.row.expect ? 2 : 1"
-                :centered="!props.row.expect"
-                >{{ props.row.name }}</b-table-column
-              >
+            <b-table-column field="name" label="Name" v-slot="props">{{
+              props.row.name
+            }}</b-table-column>
+            <!-- TODO: fix visisble, centerd and colspan https://github.com/buefy/buefy/issues/2980 -->
+            <!-- :centered="!props.row.expect" -->
+            <!-- :colspan="!props.row.expect ? 2 : 1" -->
 
-              <b-table-column
-                :visible="!!props.row.expect"
-                field="expect"
-                label="Expectation"
-                >{{ props.row.expect }}</b-table-column
-              >
-            </template>
-            <template slot="empty">
+            <b-table-column field="expect" label="Expectation" v-slot="props">{{
+              props.row.expect
+            }}</b-table-column>
+            <!-- :visible="!!props.row.expect" -->
+            <template v-slot:empty>
               <section class="section">
                 <div class="content has-text-grey has-text-centered">
-                  <p>Nothing here. Configure your aircraft first.</p>
+                  <p>Nothing here. Configure the aircraft first.</p>
                 </div>
               </section>
             </template>
-            <template slot="bottom-left">
+            <template v-slot:bottom-left>
               <b-button
                 type="is-primary"
                 @click="
@@ -79,14 +74,14 @@ import EnsureAircraft from "@/components/EnsureAircraft.vue";
 export default {
   name: "Checklists",
   components: {
-    EnsureAircraft
+    EnsureAircraft,
   },
   data() {
     return {
       aircraft: null,
       currentCL: 0,
-      checked: []
+      checked: [],
     };
-  }
+  },
 };
 </script>
