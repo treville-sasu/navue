@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section>
     <section class="hero is-primary is-hidden-mobile">
       <div class="hero-body">
         <div class="container">
@@ -53,7 +53,7 @@
           </b-field>
         </div>
         <section
-          class="section"
+          class="block"
           v-for="(stations, category) in messages"
           :key="category"
         >
@@ -97,7 +97,7 @@
             </div>
           </b-field>
         </div>
-        <section class="section" v-for="(mapsSet, type) in maps" :key="type">
+        <section class="block" v-for="(mapsSet, type) in maps" :key="type">
           <WeatherMap
             v-for="(map, key) in mapsSet"
             :key="key"
@@ -110,7 +110,7 @@
   </section>
 </template>
 
-<style>
+<style scoped>
 .select select {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -125,7 +125,7 @@ import WeatherMap from "@/components/WeatherMap.vue";
 export default {
   components: {
     WeatherMessage,
-    WeatherMap
+    WeatherMap,
   },
   data() {
     return {
@@ -134,19 +134,19 @@ export default {
           Object.entries({
             ...Aeroweb.VAA,
             ...Aeroweb.TCA,
-            ...Aeroweb.PREDEC
+            ...Aeroweb.PREDEC,
           }),
-          station => {
+          (station) => {
             return { id: station[0], name: station[1] };
           }
         ),
-        ...require("@/store/vac.json")
+        ...require("@/store/vac.json"),
       ],
       filteredCodes: [],
       selectedCodes: [],
       avaliableMessagesCategories: [
         "OPMET",
-        "SIGMET"
+        "SIGMET",
         // "VAA",
         // "TCA",
         // "MAA",
@@ -159,41 +159,37 @@ export default {
       selectedMapsTypes: ["AERO_TEMSI", "AERO_WINTEM"],
 
       server: new Aeroweb("IBAUJYXSHD", {
-        cors_proxy: this.proxyUrl
+        cors_proxy: this.proxyUrl,
       }),
       messages: {},
-      maps: {}
+      maps: {},
     };
   },
-  // mounted() {
-  //   navigator.serviceWorker.ready.then(() => {
-  //   });
-  // },
   watch: {
     selectedMessagesCategories(newVal, oldVal) {
       oldVal
-        .filter(x => !newVal.includes(x))
-        .forEach(op => {
+        .filter((x) => !newVal.includes(x))
+        .forEach((op) => {
           this.messages[op] = [];
         });
 
       this.getMessages(
         this.selectedCodes,
-        newVal.filter(x => !oldVal.includes(x))
+        newVal.filter((x) => !oldVal.includes(x))
       );
     },
     selectedMapsTypes(newVal, oldVal) {
       oldVal
-        .filter(x => !newVal.includes(x))
-        .forEach(op => {
+        .filter((x) => !newVal.includes(x))
+        .forEach((op) => {
           this.maps[op] = [];
         });
 
       this.getMaps(
         this.selectedMapsZone,
-        newVal.filter(x => !oldVal.includes(x))
+        newVal.filter((x) => !oldVal.includes(x))
       );
-    }
+    },
   },
   methods: {
     proxyUrl(url) {
@@ -202,32 +198,32 @@ export default {
         : url;
     },
     getMessages(codes, categories) {
-      (categories || this.selectedMessagesCategories).forEach(category => {
-        this.server[category](codes.map(c => c.id || c))
-          .then(data => {
+      (categories || this.selectedMessagesCategories).forEach((category) => {
+        this.server[category](codes.map((c) => c.id || c))
+          .then((data) => {
             this.$set(this.messages, category, data);
           })
-          .catch(err => {
+          .catch((err) => {
             this.openWarning(err);
             this.messages[category] = [];
           });
       });
     },
     getMaps(zone, types) {
-      (types || this.selectedMapsTypes).forEach(type => {
+      (types || this.selectedMapsTypes).forEach((type) => {
         this.server
           .CARTES(zone || this.selectedMapsZone, type)
-          .then(data => {
+          .then((data) => {
             this.$set(this.maps, type, data);
           })
-          .catch(err => {
+          .catch((err) => {
             this.openWarning(err);
             this.maps[type] = [];
           });
       });
     },
     getFilteredCodes(text) {
-      this.filteredCodes = this.avaliableCodes.filter(option => {
+      this.filteredCodes = this.avaliableCodes.filter((option) => {
         return (
           option.name
             .toString()
@@ -246,14 +242,14 @@ export default {
         message: "Can't get info from AeroWeb.",
         position: "is-bottom",
         type: "is-danger",
-        duration: 2500
+        duration: 2500,
       });
-    }
+    },
   },
   filters: {
     FL(num) {
       return `FL${num.toString().padStart(3, "0")}`;
-    }
-  }
+    },
+  },
 };
 </script>

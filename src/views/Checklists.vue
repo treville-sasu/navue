@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section>
     <EnsureAircraft v-model="aircraft" />
 
     <section class="hero is-primary is-hidden-mobile">

@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section>
     <section class="hero is-primary is-hidden-mobile">
       <div class="hero-body">
         <div class="container">
@@ -52,17 +52,17 @@ const data = require("@/store/vac.json");
 import ChartViewer from "@/components/ChartViewer.vue";
 export default {
   components: {
-    ChartViewer
+    ChartViewer,
   },
   data() {
     return {
       codes: [],
-      filteredTags: data
+      filteredTags: data,
     };
   },
   methods: {
     getFilteredCodes(text) {
-      this.filteredTags = data.filter(option => {
+      this.filteredTags = data.filter((option) => {
         return (
           option.name
             .toString()
@@ -74,7 +74,7 @@ export default {
             .indexOf(text.toLowerCase()) >= 0
         );
       });
-    }
-  }
+    },
+  },
 };
 </script>

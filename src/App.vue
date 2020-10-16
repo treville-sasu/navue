@@ -6,12 +6,16 @@
 </template>
 
 <style lang="scss">
+@import "bulmaswatch/flatly/_variables";
+// @import "bulma/sass/utilities/initial-variables";
+// $navbar-breakpoint: $tablet;
 $navbar-fixed-z: 3000;
 $modal-z: $navbar-fixed-z + 1;
 
-// https://jenil.github.io/bulmaswatch/flatly/
-@import "bulmaswatch/flatly/bulmaswatch.scss";
+@import "bulma";
 @import "buefy/src/scss/buefy";
+
+@import "bulmaswatch/flatly/_overrides";
 </style>
 
 <script>

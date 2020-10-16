@@ -1,23 +1,21 @@
 <template>
-  <section class="section">
-    <AircraftDetail
-      v-if="aircraft"
-      :aircraft="aircraft"
-      @discard="aircraft = null"
-    />
-    <section v-else class="section">
-      <div class="hero">
-        <div class="hero-body">
-          <div class="container">
-            <h1 class="title">Choose, edit & manage your aircrafts</h1>
-            <h2 class="subtitle">
-              aircrafts are stored in browser and synced online.
-            </h2>
-          </div>
+  <section>
+    <section class="hero is-primary is-hidden-mobile">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Choose, edit & manage your aircrafts</h1>
+          <h2 class="subtitle">
+            aircrafts are stored in browser and synced online.
+          </h2>
         </div>
       </div>
+    </section>
+    <section v-if="aircraft" class="section">
+      <AircraftDetail :aircraft="aircraft" @discard="aircraft = null" />
+    </section>
+    <section v-else class="section">
       <div class="tile is-ancestor">
-        <div class="tile is-parent">
+        <div class="tile is-parent is-6">
           <div class="tile is-child box">
             <AircraftSelect @select="routeAircraft" />
             <p class="block">
@@ -33,7 +31,7 @@
               icon-left="folder-plus"
               type="is-primary"
               expanded
-              >Create a new Aircraft</b-button
+              >New Aircraft</b-button
             >
             <p class="block">
               This will create a local aircraft, which will be synchronised when
@@ -51,14 +49,12 @@
                 drag-drop
                 expanded
               >
-                <section class="section">
-                  <div class="content has-text-centered">
-                    <p>
-                      <b-icon icon="upload" size="is-large"></b-icon>
-                    </p>
-                    <p>Upload Aircraft data</p>
-                  </div>
-                </section>
+                <div class="content has-text-centered">
+                  <p>
+                    <b-icon icon="upload" size="is-large"></b-icon>
+                  </p>
+                  <p>Upload Aircraft data</p>
+                </div>
               </b-upload>
             </b-field>
           </div>
