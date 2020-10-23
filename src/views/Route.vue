@@ -1,13 +1,19 @@
 <template>
   <section style="height: 100%;">
+    <NavigationSelect
+      v-model="navigation"
+      :activate="!navigation || tool == 'select'"
+      :can-cancel="!!navigation"
+      @close="tool = undefined"
+    />
     <l-map
+      v-if="navigation"
       :zoom="6"
       :center="{ lat: 43.34911845652575, lng: -0.012370347976684572 }"
       :options="{
         zoomSnap: 0.5,
       }"
-      ref="routeMap"
-      v-on="mapEventsHandlers"
+      v-on="mapEvents"
     >
       <l-base-layer-group />
 
@@ -22,10 +28,30 @@
       />
       <l-control-fullscreen position="topleft" />
 
+      <l-route-toolbox-control v-model="tool" position="bottomleft" />
+
+      <l-route-layer-group
+        v-if="currentRoute"
+        v-model="currentRoute"
+        :active="true"
+        @contextmenu-waypoint="removeMarker"
+        @click-midpoint="addMarker"
+      />
+
+      <l-route-layer-group
+        v-for="(route, id) in inactiveRoutes"
+        :value="route"
+        :key="id"
+        :active="false"
+        @click-waypoint="selectRoute(id)"
+        @click-trace="selectRoute(id)"
+        @click-midpoint="selectRoute(id)"
+      />
       <l-polyline
         v-if="pointerVector.every((i) => i && i.lat && i.lng)"
         :lat-lngs="pointerVector"
         className="pointerVector"
+        dashArray="40, 30, 10, 30"
       />
     </l-map>
   </section>
@@ -42,43 +68,47 @@ body,
 }
 
 .pointerVector {
-  stroke: $turquoise;
-  stroke-dasharray: "4, 3, 1, 3";
+  stroke: $red;
   fill: none;
-  opacity: 0.5;
+  opacity: 0.8;
 }
 </style>
 
 <script>
+import NavigationSelect from "@/components/NavigationSelect.vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 import { LMap, LPolyline } from "vue2-leaflet";
 import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
 
+import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
+import LRouteToolboxControl from "@/components/LRouteToolboxControl.vue";
+
 import LControlGeocoder from "@/components/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import "@/mixins/leaflet.patch";
-import { UnitSystem } from "@/mixins/apputils";
+import { MapTools } from "@/mixins/MapTools";
 
 export default {
   name: "Route",
   components: {
+    NavigationSelect,
     LMap,
     LPolyline,
     LBaseLayerGroup,
 
+    LRouteLayerGroup,
+    LRouteToolboxControl,
     VueLeafletMinimap,
     LControlGeocoder,
     LControlFullscreen,
   },
-  mixins: [UnitSystem],
+  mixins: [MapTools],
   data() {
     return {
-      pointerVector: [null, null],
-
       elevationLayer: {
         url:
           "https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token={token}",
@@ -104,23 +134,6 @@ export default {
         },
       },
     };
-  },
-  computed: {
-    mapEventsHandlers() {
-      let defaultEvents = {
-        ready: this.setupMap,
-      };
-      return defaultEvents;
-    },
-  },
-  methods: {
-    setupMap(e) {
-      this.map = e;
-      // this.map = this.$refs.routeMap.mapObject;
-    },
-    updatePointer(e) {
-      this.pointerVector.splice(1, 1, e ? e.latlng : null);
-    },
   },
 };
 

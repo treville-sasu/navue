@@ -111,24 +111,32 @@ export const ChartSettings = {
 
 export const ImportExport = {
   methods: {
+    readTextFileAsync(file) {
+      return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onload = () => {
+          resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsText(file);
+      })
+    },
     downloadJSON(data, fileName) {
-      let fileToSave = new Blob([JSON.stringify(data, undefined, 2)], {
+      let file = new Blob([JSON.stringify(data, undefined, 2)], {
         type: "application/json",
         name: fileName
       });
       const a = document.createElement("a");
-      a.href = URL.createObjectURL(fileToSave);
+      a.href = URL.createObjectURL(file);
       a.download = fileName;
       a.click();
     },
-    uploadJSON(file) {
+    async uploadJSON(file) {
+      let data;
       // files.forEach(file => { // we only need single file upload for now
-      let fr = new FileReader();
-      fr.onload = txt => {
-        this.aircraft = JSON.parse(txt.target.result);
-      };
-      fr.readAsText(file);
+      data = JSON.parse(await this.readTextFileAsync(file));
       // });
+      return data;
     }
   }
 };

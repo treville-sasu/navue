@@ -5,9 +5,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentAircraft: null
+    currentAircraft: null,
+    currentNavigation: null,
   },
   mutations: {
     currentAircraft: (state, payload) => (state.currentAircraft = payload),
+    currentNavigation: (state, payload) => (state.currentNavigation = payload),
   }
 });

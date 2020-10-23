@@ -47,7 +47,7 @@
               <b-upload
                 v-model="upload"
                 accept="application/json"
-                @input="uploadJSON"
+                @input="importAircraft"
                 drag-drop
                 expanded
               >
@@ -107,6 +107,9 @@ export default {
       return this.$pouch.get(id).then((doc) => {
         this.aircraft = doc;
       });
+    },
+    importAircraft(file) {
+      this.uploadJSON(file).then((res) => (this.aircraft = res));
     },
     routeAircraft(aircraft) {
       this.$router.push({
