@@ -61,7 +61,7 @@
                   @click="saveNavigation(value)"
                   icon-left="cloud-upload-outline"
                   :type="!value.id ? 'is-warning' : 'is-primary'"
-                ></b-button>
+                />
               </p>
             </b-field>
           </div>
@@ -112,6 +112,7 @@
 }
 </style>
 <script>
+// TODO : add Start a new navigation (discard), delete a Navigation, Save as. (clone), enable Download and Upload
 import { ImportExport } from "@/mixins/apputils";
 
 export default {
@@ -161,7 +162,7 @@ export default {
       this.downloadJSON(this.value, `${this.value.name}.json`);
     },
     saveNavigation(nav) {
-      //TODO Allow for clone navigation
+      //TODO Allow for save as navigation & delete navigation
       this.$pouch
         .put({
           _id: `nav-${Date.now()}`,

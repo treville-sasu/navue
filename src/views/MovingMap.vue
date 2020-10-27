@@ -6,7 +6,7 @@
         zoomSnap: 0.5,
       }"
       @ready="setupMap"
-      @contextmenu="nextDestination = { latlng: $event.latlng }"
+      @contextmenu="setDestination"
     >
       <l-base-layer-group />
       <l-control-fullscreen position="topleft" />
@@ -29,25 +29,22 @@
         :weight="5"
       />
 
+      <l-route-layer-group
+        v-for="(route, id) in routes"
+        :value="route"
+        :key="id"
+        :active="false"
+        @contextmenu-waypoint="setDestination(route[$event])"
+      />
       <l-destination-marker
         v-model="nextDestination"
         :origin="lastKnownLocation"
       />
-      <vue-leaflet-minimap
-        :layer="miniMap.layer"
-        :options="{
-          toggleDisplay: true,
-          minimized: true,
-          position: 'bottomright',
-        }"
-      ></vue-leaflet-minimap>
     </l-map>
   </section>
 </template>
 
 <style>
-@import "~leaflet-minimap/dist/Control.MiniMap.min.css";
-
 html,
 body,
 #app {
@@ -57,14 +54,10 @@ body,
 </style>
 
 <script>
-import L from "leaflet";
+import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
-import "@/mixins/leaflet.patch";
-
 import { LMap, LPolyline } from "vue2-leaflet";
-import VueLeafletMinimap from "vue-leaflet-minimap";
-import "leaflet-minimap/dist/Control.MiniMap.min.css";
 import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
@@ -74,6 +67,7 @@ import LMovingMapSettingsControl from "@/components/LMovingMapSettingsControl.vu
 import LMovingMapInstrumentsControl from "@/components/LMovingMapInstrumentsControl.vue";
 import LLocationMarker from "@/components/LLocationMarker.vue";
 import LDestinationMarker from "@/components/LDestinationMarker.vue";
+import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 
 export default {
   name: "MovingMap",
@@ -85,8 +79,8 @@ export default {
     LMovingMapSettingsControl,
     LMovingMapInstrumentsControl,
     LLocationMarker,
+    LRouteLayerGroup,
     LDestinationMarker,
-    VueLeafletMinimap,
   },
   mixins: [MapHandlers],
   data() {
@@ -102,19 +96,6 @@ export default {
         recordLocation: false,
         allowWarning: true,
       },
-      miniMap: {
-        layer: new L.TileLayer(
-          "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-          {
-            subdomains: ["server", "services"],
-          }
-        ),
-        options: {
-          toggleDisplay: true,
-          minimized: true,
-          position: "bottomright",
-        },
-      },
     };
   },
   mounted() {
@@ -129,6 +110,13 @@ export default {
   computed: {
     map() {
       return this.$refs.movingMap.mapObject;
+    },
+    routes() {
+      try {
+        return this.$store.state.currentNavigation.routes;
+      } catch {
+        return [];
+      }
     },
     trace() {
       return (this.reportedLocations || [])
@@ -187,6 +175,9 @@ export default {
         })
       );
     },
+    setDestination(e) {
+      this.nextDestination = { latlng: e.latlng, altitude: e.altitude };
+    },
     async requestWakeLock() {
       try {
         if ("wakeLock" in navigator && document.visibilityState === "visible") {
@@ -194,10 +185,6 @@ export default {
         } else throw "wakelock unavaliable";
       } catch (err) {
         this.settings.wakeLock = false;
-        // this.openWarning({
-        //   message: "Caution : Not able to keep screen on, try another browser",
-        // });
-        console.error(err);
       }
     },
     openWarning(e) {

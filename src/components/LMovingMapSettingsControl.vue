@@ -1,7 +1,10 @@
 <template>
   <l-control v-bind="$attrs">
     <b-dropdown hoverable aria-role="list" position="is-bottom-right">
-      <b-button slot="trigger" icon-left="cog" />
+      <!-- <a slot="trigger" href="#" title="Open Settings" class="leaflet-bar-part">
+        <b-icon icon="cog" />
+      </a> -->
+      <b-button slot="trigger" tag="a" icon-left="cog" class="leaflet-bar" />
 
       <b-dropdown-item aria-role="listitem" custom>
         <b-switch v-model="value.getLocation">Use GNSS</b-switch>

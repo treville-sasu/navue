@@ -21,6 +21,7 @@
 
       <l-control-geocoder
         :options="{
+          position: 'topleft',
           showResultIcons: true,
           showUniqueResult: true,
           defaultMarkGeocode: false,
@@ -35,7 +36,7 @@
         v-model="currentRoute"
         :active="true"
         @contextmenu-waypoint="removeMarker"
-        @click-midpoint="addMarker"
+        @click-trace="addMarker"
       />
 
       <l-route-layer-group
@@ -45,7 +46,6 @@
         :active="false"
         @click-waypoint="selectRoute(id)"
         @click-trace="selectRoute(id)"
-        @click-midpoint="selectRoute(id)"
       />
       <l-polyline
         v-if="pointerVector.every((i) => i && i.lat && i.lng)"
@@ -53,6 +53,13 @@
         className="pointerVector"
         dashArray="40, 30, 10, 30"
       />
+      <l-control position="topright">
+        <NavigationSummary
+          v-bind="navigation"
+          :selected="navigation.routes.indexOf(currentRoute)"
+          @select="selectRoute"
+        />
+      </l-control>
     </l-map>
   </section>
 </template>
@@ -76,28 +83,31 @@ body,
 
 <script>
 import NavigationSelect from "@/components/NavigationSelect.vue";
+import NavigationSummary from "@/components/NavigationSummary.vue";
 import L from "leaflet";
+import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
-import { LMap, LPolyline } from "vue2-leaflet";
+import { LMap, LPolyline, LControl } from "vue2-leaflet";
 import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
 
-import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 import LRouteToolboxControl from "@/components/LRouteToolboxControl.vue";
+import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 
 import LControlGeocoder from "@/components/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 import LControlFullscreen from "vue2-leaflet-fullscreen";
 
-import "@/mixins/leaflet.patch";
 import { MapTools } from "@/mixins/MapTools";
 
 export default {
   name: "Route",
   components: {
     NavigationSelect,
+    NavigationSummary,
     LMap,
     LPolyline,
+    LControl,
     LBaseLayerGroup,
 
     LRouteLayerGroup,
@@ -109,27 +119,21 @@ export default {
   mixins: [MapTools],
   data() {
     return {
-      elevationLayer: {
-        url:
-          "https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token={token}",
-        attribution: '© <a href="https://www.mapbox.com/">Mapbox</a>',
-        options: {
-          crossOrigin: true,
-          token:
-            "pk.eyJ1IjoibWFicmVuYWMiLCJhIjoiY2sxbm1ueWhjMDd6aTNvcWZhNWVzejEyZiJ9.y6D5gNxGbMDJnzd0CSW9xQ",
-        },
-        decoder: (r, g, b) => -10000 + (r * 256 * 256 + g * 256 + b) * 0.1,
-      },
+      navigation: { name: undefined, routes: [] },
       miniMap: {
         layer: new L.TileLayer(
-          "https://{s}.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+          "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
           {
-            subdomains: ["server", "services"],
+            username: "mabrenac",
+            style_id: "ckflgd4gu1gv519ocwjauheyd",
+            token:
+              "pk.eyJ1IjoibWFicmVuYWMiLCJhIjoiY2sxbm1ueWhjMDd6aTNvcWZhNWVzejEyZiJ9.y6D5gNxGbMDJnzd0CSW9xQ",
+            crossOrigin: true,
           }
         ),
         options: {
           toggleDisplay: true,
-          minimized: true,
+          minimized: false,
           position: "bottomright",
         },
       },

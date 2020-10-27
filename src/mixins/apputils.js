@@ -15,12 +15,12 @@ export const UnitSystem = {
           L: 1,
           "gal US": 0.264172,
           "gal Imp": 0.219969
-        }
-        // altitude: {
-        //   m: 1,
-        //   ft: 3.28084,
-        //   FL: 328.084
-        // },
+        },
+        altitude: {
+          m: 1,
+          ft: 3.28084,
+          FL: 328.084
+        },
         // distance: {
         //   m: 1,
         //   Km: 0.001,

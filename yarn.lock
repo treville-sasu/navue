@@ -4515,9 +4515,9 @@ leaflet-control-geocoder@^1.13.0:
   optionalDependencies:
     open-location-code "^1.0.0"
 
-"leaflet-fullscreen@git+https://github.com/Leaflet/Leaflet.fullscreen.git":
+"leaflet-fullscreen@https://github.com/Leaflet/Leaflet.fullscreen":
   version "1.0.2"
-  resolved "git+https://github.com/Leaflet/Leaflet.fullscreen.git#91c9745c712981942499f14f7a347c80fab41096"
+  resolved "https://github.com/Leaflet/Leaflet.fullscreen#91c9745c712981942499f14f7a347c80fab41096"
 
 leaflet-minimap@^3.6.1:
   version "3.6.1"
@@ -4528,16 +4528,6 @@ leaflet-rotatedmarker@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/leaflet-rotatedmarker/-/leaflet-rotatedmarker-0.2.0.tgz#4467f49f98d1bfd56959bd9c6705203dd2601277"
   integrity sha1-RGf0n5jRv9VpWb2cZwUgPdJgEnc=
-
-leaflet-textpath@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/leaflet-textpath/-/leaflet-textpath-1.2.3.tgz#0adef3a2d438c1c781f4e1154b8fa2f963cfd8a7"
-  integrity sha512-mPb5m2MlihNkLlo762j8S8FJCUyLvDU2fJTjjmDWKfqqyUQkV3ca3IzrxwsfzYz2DXrV2ytCVHb5+DjQymF+8w==
-
-leaflet.geodesic@^2.5.2:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/leaflet.geodesic/-/leaflet.geodesic-2.5.4.tgz#c28e64c9ea120bef2b31691b604a44e4647b6271"
-  integrity sha512-aHptjI3Ctmv7jaLJK0wYxbrBelYH1Ih9woqLHZnlJpZVIi7pau91ojK12+vIsaBbR5x2sWACy1rMHZu/ZGJKoQ==
 
 leaflet@^1.4.0, leaflet@^1.6.0:
   version "1.7.1"

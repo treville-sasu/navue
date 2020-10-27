@@ -20,8 +20,6 @@
     "leaflet": "^1.6.0",
     "leaflet-control-geocoder": "^1.13.0",
     "leaflet-minimap": "^3.6.1",
-    "leaflet-textpath": "^1.2.3",
-    "leaflet.geodesic": "^2.5.2",
     "pouch-vue": "^0.3.5",
     "pouchdb": "^7.2.2",
     "pouchdb-authentication": "^1.1.3",
