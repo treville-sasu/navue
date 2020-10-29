@@ -1,6 +1,6 @@
 <template>
   <section>
-    <EnsureAircraft v-model="aircraft" />
+    <AircraftSelect v-model="aircraft" required />
 
     <section class="hero is-primary is-hidden-mobile">
       <div class="hero-body">
@@ -40,14 +40,14 @@
 </template>
 
 <script>
-import EnsureAircraft from "@/components/EnsureAircraft.vue";
+import AircraftSelect from "@/components/AircraftSelect.vue";
 import BalanceChart from "@/components/BalanceChart.vue";
 import { ChartSettings } from "@/mixins/apputils";
 
 export default {
   name: "Balance",
   components: {
-    EnsureAircraft,
+    AircraftSelect,
     BalanceChart,
   },
   mixins: [ChartSettings],

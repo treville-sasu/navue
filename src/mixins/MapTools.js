@@ -1,7 +1,6 @@
 export const MapTools = {
   data() {
     return {
-      navigation: { name: undefined, routes: [] },
       tool: null,
       pointerVector: [null, null],
       currentRoute: null,
@@ -48,7 +47,12 @@ export const MapTools = {
             ...pointerEvents,
             ...defaultEvents
           };
-
+        case "bearing":
+          return {
+            click: this.addBearing,
+            ...pointerEvents,
+            ...defaultEvents
+          };
         default:
           return defaultEvents;
       }
@@ -92,6 +96,9 @@ export const MapTools = {
           if (this.currentRoute && this.currentRoute.length == 0)
             this.clearRoute(this.currentRoute);
           break;
+        case "select":
+          this.$store.commit("navigationSelect", false);
+          break;
         default:
           this.map._container.style.cursor = null;
       }
@@ -100,8 +107,8 @@ export const MapTools = {
           if (!this.currentRoute) this.currentRoute = this.navigation.routes[this.navigation.routes.push([]) - 1];
           this.map._container.style.cursor = "crosshair";
           break;
-        case "getinfo":
-          this.map._container.style.cursor = "help";
+        case "select":
+          this.$store.commit("navigationSelect", true);
           break;
         case "clear":
           this.clearRoute(this.currentRoute);

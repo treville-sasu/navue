@@ -1,7 +1,6 @@
 <template>
   <section>
-    <EnsureAircraft v-model="aircraft" />
-
+    <AircraftSelect v-model="aircraft" required />
     <section class="hero is-primary is-hidden-mobile">
       <div class="hero-body">
         <h1 class="title">Checklists</h1>
@@ -69,12 +68,12 @@
 </style>
 
 <script>
-import EnsureAircraft from "@/components/EnsureAircraft.vue";
+import AircraftSelect from "@/components/AircraftSelect.vue";
 
 export default {
   name: "Checklists",
   components: {
-    EnsureAircraft,
+    AircraftSelect,
   },
   data() {
     return {

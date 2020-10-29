@@ -58,15 +58,20 @@
 
     <template slot="end">
       <b-navbar-item
+        v-if="aircraftSelect === null"
         tag="router-link"
         :to="{
-          name: 'Aircrafts',
+          name: 'Aircraft',
           params: { id: currentAircraft ? currentAircraft._id : null },
         }"
         >{{
-          currentAircraft ? currentAircraft.registration : "Aircrafts"
+          currentAircraft ? currentAircraft.registration : "Aircraft"
         }}</b-navbar-item
       >
+      <b-navbar-item v-else tag="a" @click="aircraftSelect = true">{{
+        currentAircraft ? currentAircraft.registration : "Aircraft"
+      }}</b-navbar-item>
+
       <b-navbar-dropdown hoverable collapsible right>
         <template slot="label">
           <b-icon icon="account" />
@@ -88,6 +93,14 @@ export default {
   computed: {
     currentAircraft() {
       return this.$store.state.currentAircraft;
+    },
+    aircraftSelect: {
+      get() {
+        return this.$store.state.aircraftSelect;
+      },
+      set(val) {
+        this.$store.commit("aircraftSelect", val);
+      },
     },
   },
 };

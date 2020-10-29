@@ -12,17 +12,17 @@ const routes = [
     component: () => import("../views/Home.vue")
   },
   {
-    path: "/aircrafts/:id?",
-    name: "Aircrafts",
-    component: () => import("../views/Aircrafts.vue")
+    path: "/aircraft/:id?",
+    name: "Aircraft",
+    component: () => import("../views/Aircraft.vue")
   },
   {
-    path: "/moving-map",
+    path: "/moving-map/:id?",
     name: "MovingMap",
     component: () => import("../views/MovingMap.vue")
   },
   {
-    path: "/route",
+    path: "/route/:id?",
     name: "Route",
     component: () => import("../views/Route.vue")
   },
@@ -37,12 +37,12 @@ const routes = [
     component: () => import("../views/ApproachChart.vue")
   },
   {
-    path: "/balance",
+    path: "/balance/:id?",
     name: "Balance",
     component: Balance
   },
   {
-    path: "/checklists",
+    path: "/checklists/:id?",
     name: "Checklists",
     component: Checklists
   },

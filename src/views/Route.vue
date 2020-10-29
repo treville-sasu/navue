@@ -2,8 +2,8 @@
   <section style="height: 100%;">
     <NavigationSelect
       v-model="navigation"
-      :activate="!navigation || tool == 'select'"
-      :can-cancel="!!navigation"
+      required
+      allowNew
       @close="tool = undefined"
     />
     <l-map
@@ -119,7 +119,7 @@ export default {
   mixins: [MapTools],
   data() {
     return {
-      navigation: { name: undefined, routes: [] },
+      navigation: { type: "navigation", name: undefined, routes: [] },
       miniMap: {
         layer: new L.TileLayer(
           "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
@@ -138,6 +138,12 @@ export default {
         },
       },
     };
+  },
+  watch: {
+    navigation(val) {
+      if (val === undefined)
+        this.navigation = { type: "navigation", name: undefined, routes: [] };
+    },
   },
 };
 
