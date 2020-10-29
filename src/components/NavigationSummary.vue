@@ -1,65 +1,51 @@
 <template>
-  <b-collapse class="card" animation="fade">
-    <div
+  <b-dropdown hoverable aria-role="list" position="is-bottom-left">
+    <b-button
       slot="trigger"
-      slot-scope="props"
-      class="card-header"
-      role="button"
-      aria-controls="contentIdForA11y3"
+      tag="a"
+      icon-left="clipboard-list-outline"
+      class="leaflet-bar"
+    />
+    <b-table
+      :data="routesSummaries"
+      narrowed
+      striped
+      :selected.sync="selectedSummaries"
     >
-      <p class="card-header-title">
-        {{ name }}
-      </p>
-      <a class="card-header-icon">
-        <b-icon :icon="props.open ? 'menu-down' : 'menu-up'"> </b-icon>
-      </a>
-    </div>
-    <div class="card-content">
-      <b-table
-        :data="routesSummaries"
-        draggable
-        narrowed
-        striped
-        :selected.sync="selectedSummaries"
-      >
-        <!-- @dragstart="dragstart" @drop="drop" @dragover="dragover"
-        @dragleave="dragleave" -->
-        <b-table-column field="id" label="Dist." v-slot="props">
-          {{ props.row.distance | asDistance("NM") | precision(0) }}
-          NM
-        </b-table-column>
-        <b-table-column field="id" label="ETE" v-slot="props">
-          {{ props.row.duration | asDuration }}
-        </b-table-column>
-        <template v-slot:empty>
-          <div class="content has-text-grey has-text-centered">
-            <p>No route yet</p>
+      <b-table-column field="distance" label="Dist." numeric v-slot="props">
+        {{ props.row.distance | asDistance("NM") | precision(0) }}
+        NM
+      </b-table-column>
+      <b-table-column field="duration" label="ETE" numeric v-slot="props">
+        {{ props.row.duration | asDuration }}
+      </b-table-column>
+      <template v-slot:empty>
+        <div class="content has-text-grey has-text-centered">
+          <p>No route yet</p>
+        </div>
+      </template>
+      <template slot="footer">
+        <th>
+          <div class="th-wrap is-numeric">
+            {{ totalDistance | asDistance("NM") | precision(0) }} NM
           </div>
-        </template>
-      </b-table>
-    </div>
-    <footer class="card-footer">
-      <span class="card-footer-item"
-        >{{ totalDistance | asDistance("NM") | precision(0) }} NM</span
-      >
-      <span class="card-footer-item">{{ totalDuration | asDuration }} </span>
-    </footer>
-  </b-collapse>
+        </th>
+        <th>
+          <div class="th-wrap is-numeric">{{ totalDuration | asDuration }}</div>
+        </th>
+      </template>
+    </b-table>
+  </b-dropdown>
 </template>
 
 <script>
 import { UnitSystem } from "@/mixins/apputils";
+import LatLon from "geodesy/latlon-spherical.js";
 
 export default {
   name: "NavigationSummary",
   mixins: [UnitSystem],
   props: {
-    name: {
-      type: String,
-      default() {
-        return "unnamed";
-      },
-    },
     routes: Array,
     selected: Number,
     speed: Number,
@@ -84,13 +70,13 @@ export default {
     },
     totalDuration() {
       return this.routesSummaries.reduce(
-        (total, current) => (total += current.duration),
+        (ttl, crt) => (ttl += crt.duration),
         0
       );
     },
     totalDistance() {
       return this.routesSummaries.reduce(
-        (total, current) => (total += current.distance),
+        (ttl, crt) => (ttl += crt.distance),
         0
       );
     },
@@ -100,7 +86,10 @@ export default {
       let total = 0;
       waypoints.reduce((previous, current) => {
         if (previous) {
-          total += previous.latlng.distanceTo(current.latlng);
+          total += new LatLon(
+            previous.latlng.lat,
+            previous.latlng.lng
+          ).rhumbDistanceTo(new LatLon(current.latlng.lat, current.latlng.lng));
         }
         return current;
       }, null);
