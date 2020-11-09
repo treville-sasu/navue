@@ -54,11 +54,11 @@ export default {
             name: undefined,
             value: undefined,
             volume: "L",
-            unit: undefined,
-          },
+            unit: undefined
+          }
         ];
-      },
-    },
+      }
+    }
   },
   mixins: [UnitSystem],
   data() {
@@ -67,8 +67,8 @@ export default {
         name: undefined,
         value: undefined,
         volume: "L",
-        unit: undefined,
-      },
+        unit: undefined
+      }
     };
   },
   watch: {
@@ -76,8 +76,8 @@ export default {
       deep: true,
       handler(oldVal, newVal) {
         this.$emit("input", newVal);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

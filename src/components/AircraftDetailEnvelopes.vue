@@ -74,40 +74,40 @@ export default {
         return [
           {
             name: undefined,
-            values: [{ x: undefined, y: undefined }],
-          },
+            values: [{ x: undefined, y: undefined }]
+          }
         ];
-      },
-    },
+      }
+    }
   },
   mixins: [ChartSettings],
   data() {
     return {
       proto: {
         name: undefined,
-        values: [{ ...this.proto_item }],
+        values: [{ ...this.proto_item }]
       },
-      proto_item: { x: undefined, y: undefined },
+      proto_item: { x: undefined, y: undefined }
     };
+  },
+  computed: {
+    datasets() {
+      return {
+        datasets: [
+          ...this.value.map(e => {
+            return { ...this.envelopesDataset, label: e.name, data: e.values };
+          })
+        ]
+      };
+    }
   },
   watch: {
     value: {
       deep: true,
       handler(oldVal, newVal) {
         this.$emit("input", newVal);
-      },
-    },
-  },
-  computed: {
-    datasets() {
-      return {
-        datasets: [
-          ...this.value.map((e) => {
-            return { ...this.envelopesDataset, label: e.name, data: e.values };
-          }),
-        ],
-      };
-    },
-  },
+      }
+    }
+  }
 };
 </script>

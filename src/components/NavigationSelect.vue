@@ -26,8 +26,8 @@
                 clear-on-select
                 clearable
               >
-                <template slot="header">
-                  <a @click="useData(undefined)">
+                <template slot="header" v-if="editable">
+                  <a @click="useData(proto)">
                     <span> Create a new one... </span>
                   </a>
                 </template>
@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <div class="tile is-parent">
+        <div class="tile is-parent" v-if="editable">
           <div class="tile is-child box">
             <b-field class="file">
               <b-upload
@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div class="tile is-ancestor">
+      <div class="tile is-ancestor" v-if="editable">
         <div class="tile is-parent" v-if="value">
           <div class="tile is-child box buttons">
             <b-button
@@ -79,11 +79,11 @@
             />
           </div>
         </div>
-        <div class="tile is-parent" v-if="value">
+        <div class="tile is-parent" v-if="value && editable">
           <div class="tile is-child box buttons">
             <b-button
               v-if="isFromDB"
-              @click="useData({ ...value, _id: undefined, _rev: undefined })"
+              @click="useData(cloneData(value))"
               icon-left="plus-circle-multiple-outline"
               type="is-primary"
               expanded
@@ -116,38 +116,6 @@
             </b-field>
           </div>
         </div>
-        <!-- <div class="tile is-parent">
-          <div class="tile is-child box">
-            <b-field class="file">
-              <b-upload
-                v-model="upload"
-                accept="application/json"
-                @input="importNavigation"
-                drag-drop
-                expanded
-              >
-                <div class="content has-text-centered">
-                  <p>
-                    <b-icon icon="upload" size="is-large"></b-icon>
-                  </p>
-                  <p>Upload Navigation data</p>
-                </div>
-              </b-upload>
-            </b-field>
-          </div>
-        </div> -->
-        <!-- <div class="tile is-parent" v-if="!$attrs['can-cancel']">
-          <div class="tile is-child box">
-            <b-button
-              @click="exportNavigation"
-              size="is-medium"
-              icon-left="download-outline"
-              type="is-primary"
-              expanded
-              >Download Navigation</b-button
-            >
-          </div>
-        </div> -->
       </div>
     </div>
   </b-modal>
@@ -167,17 +135,14 @@ import { DataSelect } from "@/mixins/DataSelect";
 export default {
   name: "NavigationSelect",
   mixins: [DataSelect],
-  props: {
-    value: {
-      type: Object,
-      default() {
-        return { name: undefined, routes: [] };
-      },
-    },
-  },
   data() {
     return {
       dataType: "navigation",
+      proto: {
+        type: "navigation",
+        name: undefined,
+        routes: []
+      }
     };
   },
   pouch: {
@@ -186,10 +151,10 @@ export default {
         database: "navue",
         selector: {
           type: this.dataType,
-          name: { $regex: RegExp(this.search, "i") },
-        },
+          name: { $regex: RegExp(this.search, "i") }
+        }
       };
-    },
+    }
   },
 
   computed: {
@@ -199,7 +164,7 @@ export default {
       },
       set(val) {
         this.$store.commit("currentNavigation", val);
-      },
+      }
     },
     activated: {
       get() {
@@ -207,8 +172,8 @@ export default {
       },
       set(val) {
         this.$store.commit("navigationSelect", val);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

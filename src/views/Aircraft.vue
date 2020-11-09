@@ -1,11 +1,7 @@
 <template>
   <section>
-    <AircraftSelect
-      v-model="aircraft"
-      @update="canSave = false"
-      required
-      allowNew
-    />
+    <AircraftSelect v-model="aircraft" :saved.sync="saved" required editable />
+    <!-- @update="saved = true" -->
     <section class="hero is-primary is-hidden-mobile">
       <div class="hero-body">
         <div class="container">
@@ -16,23 +12,13 @@
         </div>
       </div>
     </section>
-    <section class="section" v-if="aircraft">
+    <section class="section" v-if="!(aircraft === null)">
       <div class="buttons is-grouped is-centered">
         <b-button
-          type="is-warning"
-          :icon-left="canSave ? 'close' : 'arrow-left'"
-          outlined
-          @click="aircraft = null"
-          :label="canSave ? 'Discard' : 'Back'"
-        />
-        <b-button
-          type="is-primary"
+          :type="!saved ? 'is-danger' : 'is-primary'"
+          :disabled="saved"
           icon-left="content-save"
-          @click="
-            $root.$emit('aircraft-select', 'save');
-            canSave = false;
-          "
-          :disabled="!canSave"
+          @click="saved = null"
           outlined
           label="Save"
         />
@@ -44,26 +30,99 @@
           label="Manage"
         />
       </div>
-      <AircraftDetail v-model="aircraft" @update="canSave = true" />
+
+      <b-tabs position="is-centered" multiline expanded v-if="aircraft">
+        <b-tab-item label="Identification">
+          <b-field label="Registration" horizontal>
+            <b-input
+              @input="saved = false"
+              v-model="aircraft.registration"
+              placeholder="F-...."
+              required
+            />
+          </b-field>
+          <b-field label="Manufacturer" horizontal>
+            <b-input
+              @input="saved = false"
+              v-model="aircraft.manufacturer"
+              placeholder="Robin"
+            />
+          </b-field>
+          <b-field label="Model" horizontal>
+            <b-input
+              @input="saved = false"
+              v-model="aircraft.model"
+              placeholder="DR40"
+            />
+          </b-field>
+          <b-field label="Airworthiness Certificate" horizontal>
+            <b-input
+              @input="saved = false"
+              v-model="aircraft.cn"
+              maxlength="200"
+              type="textarea"
+              placeholder="CNRA.. 12/12/1983"
+            />
+          </b-field>
+        </b-tab-item>
+        <b-tab-item label="Paces">
+          <AircraftDetailPaces
+            @input="saved = false"
+            :value.sync="aircraft.paces"
+          />
+        </b-tab-item>
+        <b-tab-item label="Fuel">
+          <AircraftDetailConsumptions
+            @input="saved = false"
+            :value.sync="aircraft.consumptions"
+          />
+        </b-tab-item>
+        <b-tab-item label="Balance & Weight">
+          <AircraftDetailBalance
+            @input="saved = false"
+            :value.sync="aircraft.balance"
+          />
+        </b-tab-item>
+        <b-tab-item label="Envelopes">
+          <AircraftDetailEnvelopes
+            @input="saved = false"
+            :value.sync="aircraft.envelopes"
+          />
+        </b-tab-item>
+        <b-tab-item label="Checklists">
+          <AircraftDetailChecklists
+            @input="saved = false"
+            :value.sync="aircraft.checklists"
+          />
+        </b-tab-item>
+      </b-tabs>
     </section>
   </section>
 </template>
-
 <script>
 import AircraftSelect from "@/components/AircraftSelect.vue";
-import AircraftDetail from "@/components/AircraftDetail.vue";
+
+import AircraftDetailPaces from "@/components/AircraftDetailPaces.vue";
+import AircraftDetailBalance from "@/components/AircraftDetailBalance.vue";
+import AircraftDetailEnvelopes from "@/components/AircraftDetailEnvelopes.vue";
+import AircraftDetailConsumptions from "@/components/AircraftDetailConsumptions.vue";
+import AircraftDetailChecklists from "@/components/AircraftDetailChecklists.vue";
 
 export default {
   name: "Aircraft",
   components: {
-    AircraftDetail,
-    AircraftSelect,
+    AircraftDetailPaces,
+    AircraftDetailBalance,
+    AircraftDetailEnvelopes,
+    AircraftDetailConsumptions,
+    AircraftDetailChecklists,
+    AircraftSelect
   },
   data() {
     return {
       aircraft: null,
-      canSave: false,
+      saved: true
     };
-  },
+  }
 };
 </script>

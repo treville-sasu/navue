@@ -3,15 +3,16 @@
     <NavigationSelect
       v-model="navigation"
       required
-      allowNew
+      editable
       @close="tool = undefined"
     />
+    <AircraftSelect v-model="aircraft" @close="tool = undefined" />
     <l-map
       v-if="navigation"
       :zoom="6"
       :center="{ lat: 43.34911845652575, lng: -0.012370347976684572 }"
       :options="{
-        zoomSnap: 0.5,
+        zoomSnap: 0.5
       }"
       v-on="mapEvents"
     >
@@ -24,7 +25,7 @@
           position: 'topleft',
           showResultIcons: true,
           showUniqueResult: true,
-          defaultMarkGeocode: false,
+          defaultMarkGeocode: false
         }"
       />
       <l-control-fullscreen position="topleft" />
@@ -48,12 +49,12 @@
         @click-trace="selectRoute(id)"
       />
       <l-polyline
-        v-if="pointerVector.every((i) => i && i.lat && i.lng)"
+        v-if="pointerVector.every(i => i && i.lat && i.lng)"
         :lat-lngs="pointerVector"
         className="pointerVector"
         dashArray="40, 30, 10, 30"
       />
-      <l-control position="topright">
+      <l-control position="topright" v-if="navigation.routes.length > 0">
         <NavigationSummary
           v-bind="navigation"
           :selected="navigation.routes.indexOf(currentRoute)"
@@ -82,6 +83,7 @@ body,
 </style>
 
 <script>
+import AircraftSelect from "@/components/AircraftSelect.vue";
 import NavigationSelect from "@/components/NavigationSelect.vue";
 import NavigationSummary from "@/components/NavigationSummary.vue";
 import L from "leaflet";
@@ -103,23 +105,25 @@ import { MapTools } from "@/mixins/MapTools";
 export default {
   name: "Route",
   components: {
+    AircraftSelect,
     NavigationSelect,
     NavigationSummary,
     LMap,
     LPolyline,
     LControl,
     LBaseLayerGroup,
-
+    // LBearingMarker,
     LRouteLayerGroup,
     LRouteToolboxControl,
     VueLeafletMinimap,
     LControlGeocoder,
-    LControlFullscreen,
+    LControlFullscreen
   },
   mixins: [MapTools],
   data() {
     return {
-      navigation: { type: "navigation", name: undefined, routes: [] },
+      navigation: NavigationSelect.data().proto,
+      aircraft: null,
       miniMap: {
         layer: new L.TileLayer(
           "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
@@ -128,23 +132,17 @@ export default {
             style_id: "ckflgd4gu1gv519ocwjauheyd",
             token:
               "pk.eyJ1IjoibWFicmVuYWMiLCJhIjoiY2sxbm1ueWhjMDd6aTNvcWZhNWVzejEyZiJ9.y6D5gNxGbMDJnzd0CSW9xQ",
-            crossOrigin: true,
+            crossOrigin: true
           }
         ),
         options: {
           toggleDisplay: true,
-          minimized: false,
-          position: "bottomright",
-        },
-      },
+          minimized: screen.width < 700,
+          position: "bottomright"
+        }
+      }
     };
-  },
-  watch: {
-    navigation(val) {
-      if (val === undefined)
-        this.navigation = { type: "navigation", name: undefined, routes: [] };
-    },
-  },
+  }
 };
 
 // https://en.wikipedia.org/wiki/Decimal_degrees

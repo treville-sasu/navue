@@ -65,25 +65,25 @@ export default {
               {
                 name: undefined,
                 expect: undefined,
-                action: false,
-              },
-            ],
-          },
+                action: false
+              }
+            ]
+          }
         ];
-      },
-    },
+      }
+    }
   },
   data() {
     return {
       proto: {
         name: undefined,
-        items: [{ ...this.proto_item }],
+        items: [{ ...this.proto_item }]
       },
       proto_item: {
         name: undefined,
         expect: undefined,
-        action: false,
-      },
+        action: false
+      }
     };
   },
   watch: {
@@ -91,8 +91,8 @@ export default {
       deep: true,
       handler(oldVal, newVal) {
         this.$emit("input", newVal);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

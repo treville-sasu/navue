@@ -10,8 +10,12 @@
     </template>
     <template slot="start">
       <b-navbar-dropdown label="Briefing Room" collapsible hoverable>
+        <b-navbar-item tag="router-link" :to="{ name: 'Aircraft' }"
+          >Aircrafts</b-navbar-item
+        >
+
         <b-navbar-item tag="router-link" :to="{ name: 'Route' }"
-          >Trace a route</b-navbar-item
+          >Navigation route</b-navbar-item
         >
         <!-- <b-navbar-item tag="router-link" to="approach"
           >Approach Charts</b-navbar-item
@@ -58,20 +62,16 @@
 
     <template slot="end">
       <b-navbar-item
-        v-if="aircraftSelect === null"
+        v-if="aircraftSelect !== null"
         tag="router-link"
         :to="{
           name: 'Aircraft',
-          params: { id: currentAircraft ? currentAircraft._id : null },
+          params: { id: currentAircraft ? currentAircraft._id : null }
         }"
         >{{
           currentAircraft ? currentAircraft.registration : "Aircraft"
         }}</b-navbar-item
       >
-      <b-navbar-item v-else tag="a" @click="aircraftSelect = true">{{
-        currentAircraft ? currentAircraft.registration : "Aircraft"
-      }}</b-navbar-item>
-
       <b-navbar-dropdown hoverable collapsible right>
         <template slot="label">
           <b-icon icon="account" />
@@ -100,8 +100,8 @@ export default {
       },
       set(val) {
         this.$store.commit("aircraftSelect", val);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

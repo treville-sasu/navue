@@ -30,8 +30,8 @@ F-GNHZ1601992403575 -->
                 clear-on-select
                 clearable
               >
-                <template slot="header">
-                  <a @click="useData(undefined)">
+                <template slot="header" v-if="editable">
+                  <a @click="useData(proto)">
                     <span> Create a new one... </span>
                   </a>
                 </template>
@@ -41,7 +41,7 @@ F-GNHZ1601992403575 -->
           </div>
         </div>
 
-        <div class="tile is-parent">
+        <div class="tile is-parent" v-if="editable">
           <div class="tile is-child box">
             <b-field class="file">
               <b-upload
@@ -83,7 +83,7 @@ F-GNHZ1601992403575 -->
           </div>
         </div>
         <div class="tile is-parent" v-if="value">
-          <div class="tile is-child box buttons">
+          <div class="tile is-child box buttons" v-if="editable">
             <b-button
               @click="saveData(value)"
               icon-left="cloud-upload-outline"
@@ -131,10 +131,21 @@ export default {
   data() {
     return {
       dataType: "aircraft",
+      proto: {
+        type: "aircraft",
+        registration: undefined,
+        manufacturer: undefined,
+        model: undefined,
+        paces: undefined,
+        balance: undefined,
+        envelopes: undefined,
+        consumptions: undefined,
+        checklists: undefined
+      }
     };
   },
   created() {
-    this.$root.$on("aircraft-select", (e) => {
+    this.$root.$on("aircraft-select", e => {
       switch (e) {
         case "save":
           this.saveData(this.value);
@@ -153,10 +164,10 @@ export default {
         database: "navue",
         selector: {
           type: this.dataType,
-          registration: { $regex: RegExp(this.search, "i") },
-        },
+          registration: { $regex: RegExp(this.search, "i") }
+        }
       };
-    },
+    }
   },
 
   computed: {
@@ -166,7 +177,7 @@ export default {
       },
       set(val) {
         this.$store.commit("currentAircraft", val);
-      },
+      }
     },
     activated: {
       get() {
@@ -174,8 +185,8 @@ export default {
       },
       set(val) {
         this.$store.commit("aircraftSelect", val);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

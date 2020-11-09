@@ -95,12 +95,12 @@ export default {
               density: 1,
               min: undefined,
               max: undefined,
-              tank: false,
-            },
-          ],
+              tank: false
+            }
+          ]
         };
-      },
-    },
+      }
+    }
   },
   data() {
     return {
@@ -111,17 +111,9 @@ export default {
         density: 1,
         min: undefined,
         max: undefined,
-        tank: false,
-      },
+        tank: false
+      }
     };
-  },
-  watch: {
-    value: {
-      deep: true,
-      handler(oldVal, newVal) {
-        this.$emit("input", newVal);
-      },
-    },
   },
   computed: {
     // TODO: check if still needed with buefy 0.9.3
@@ -131,8 +123,16 @@ export default {
       },
       set(value) {
         this.value.date = value;
-      },
-    },
+      }
+    }
   },
+  watch: {
+    value: {
+      deep: true,
+      handler(oldVal, newVal) {
+        this.$emit("input", newVal);
+      }
+    }
+  }
 };
 </script>

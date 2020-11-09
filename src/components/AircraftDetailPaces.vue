@@ -48,11 +48,11 @@ export default {
           {
             name: undefined,
             value: undefined,
-            unit: "kt",
-          },
+            unit: "kt"
+          }
         ];
-      },
-    },
+      }
+    }
   },
   mixins: [UnitSystem],
   data() {
@@ -60,8 +60,8 @@ export default {
       proto: {
         name: undefined,
         value: undefined,
-        unit: "kt",
-      },
+        unit: "kt"
+      }
     };
   },
   watch: {
@@ -69,8 +69,8 @@ export default {
       deep: true,
       handler(oldVal, newVal) {
         this.$emit("input", newVal);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>
