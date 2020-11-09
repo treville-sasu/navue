@@ -1,40 +1,47 @@
 <template>
   <section style="height: 100%;">
+    <NavigationSelect />
+    <AircraftSelect />
+
     <l-map
       ref="movingMap"
       :options="{
-        zoomSnap: 0.5,
+        zoomSnap: 0.5
       }"
       @ready="setupMap"
-      @contextmenu="setDestination"
+      @contextmenu="nextDestination = $event"
     >
       <l-base-layer-group />
       <l-control-fullscreen position="topleft" />
-      <l-moving-map-settings-control
+      <l-moving-map-toolbox-control
         v-model="settings"
-        position="topleft"
-        @action="removeLocations"
+        position="bottomleft"
+        @delete-track="removeLocations"
       />
       <l-moving-map-instruments-control
         v-model="lastKnownLocation"
         position="topright"
       />
-      <l-location-marker v-model="lastKnownLocation" :futur="60" />
 
-      <l-polyline
-        v-if="!!trace"
-        :lat-lngs="trace"
-        color="black"
-        :opacity="0.5"
-        :weight="5"
+      <l-moving-map-destination-control
+        v-if="lastKnownLocation && nextDestination"
+        :from="lastKnownLocation"
+        :to="nextDestination"
+        position="bottomright"
       />
+      <l-location-marker
+        v-model="lastKnownLocation"
+        :delay="futurPositionDelay"
+      />
+
+      <l-polyline v-if="!!trace" :lat-lngs="trace" className="traceLine" />
 
       <l-route-layer-group
         v-for="(route, id) in routes"
         :value="route"
         :key="id"
         :active="false"
-        @contextmenu-waypoint="setDestination(route[$event])"
+        @contextmenu-waypoint="nextDestination = route[$event]"
       />
       <l-destination-marker
         v-model="nextDestination"
@@ -44,12 +51,21 @@
   </section>
 </template>
 
-<style>
+<style lang="scss">
+@import "~bulmaswatch/flatly/_variables.scss";
+
 html,
 body,
 #app {
   height: 100%;
   width: 100%;
+}
+
+.traceLine {
+  stroke: $turquoise;
+  fill: none;
+  stroke-width: 5;
+  opacity: 0.8;
 }
 </style>
 
@@ -62,25 +78,35 @@ import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
 
+import NavigationSelect from "@/components/NavigationSelect.vue";
+import AircraftSelect from "@/components/AircraftSelect.vue";
+
 import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
-import LMovingMapSettingsControl from "@/components/LMovingMapSettingsControl.vue";
+
+import LMovingMapToolboxControl from "@/components/LMovingMapToolboxControl.vue";
 import LMovingMapInstrumentsControl from "@/components/LMovingMapInstrumentsControl.vue";
+import LMovingMapDestinationControl from "@/components/LMovingMapDestinationControl.vue";
+
 import LLocationMarker from "@/components/LLocationMarker.vue";
 import LDestinationMarker from "@/components/LDestinationMarker.vue";
 import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 
+// FIXME: Setview with futur and past value
 export default {
   name: "MovingMap",
   components: {
+    NavigationSelect,
+    AircraftSelect,
     LMap,
     LControlFullscreen,
     LPolyline,
     LBaseLayerGroup,
-    LMovingMapSettingsControl,
+    LMovingMapToolboxControl,
     LMovingMapInstrumentsControl,
+    LMovingMapDestinationControl,
     LLocationMarker,
     LRouteLayerGroup,
-    LDestinationMarker,
+    LDestinationMarker
   },
   mixins: [MapHandlers],
   data() {
@@ -89,13 +115,17 @@ export default {
       lastKnownError: undefined,
       nextDestination: undefined,
       wakeLock: null,
+      traceDB: "navue_trace",
+      traceType: "location",
+      futurPositionDelay: 3 * 60,
+      minDestination: 100,
       settings: {
         getLocation: true,
         setView: true,
         wakeLock: true,
-        recordLocation: false,
-        allowWarning: true,
-      },
+        inFlight: false,
+        allowWarning: true
+      }
     };
   },
   mounted() {
@@ -115,14 +145,14 @@ export default {
       try {
         return this.$store.state.currentNavigation.routes;
       } catch {
-        return [];
+        return null;
       }
     },
     trace() {
       return (this.reportedLocations || [])
-        .filter((p) => !!p.latlng)
-        .map((p) => p.latlng);
-    },
+        .filter(p => !!p.latlng)
+        .map(p => p.latlng);
+    }
   },
   watch: {
     "settings.setView": function(val) {
@@ -135,18 +165,18 @@ export default {
     "settings.getLocation": {
       handler(val) {
         val ? this.startLocate() : this.stopLocate();
-      },
-    },
+      }
+    }
   },
   pouch: {
     reportedLocations() {
       return {
-        database: "navue",
+        database: this.traceDB,
         selector: {
-          type: "location",
-        },
+          type: this.traceType
+        }
       };
-    },
+    }
   },
   methods: {
     setupMap(map) {
@@ -158,25 +188,56 @@ export default {
     },
     bestView(e) {
       this.map.flyToBounds(
-        e.latlng.toBounds(e.speed ? e.speed * 60 : e.accuracy)
+        e.latlng
+          .toBounds(e.speed ? e.speed * this.futurPositionDelay : e.accuracy)
+          .pad(0.1)
       );
     },
     addLocation(e) {
-      return this.$pouch.post({
-        ...e,
-        type: "location",
-        _id: e.timestamp.toString(),
-      });
-    },
-    removeLocations() {
-      this.$pouch.bulkDocs(
-        this.reportedLocations.map((loc) => {
-          return { ...loc, _deleted: true };
-        })
+      return this.$pouch.post(
+        {
+          ...e,
+          type: "location",
+          _id: e.timestamp.toString()
+        },
+        {},
+        this.traceDB
       );
     },
-    setDestination(e) {
-      this.nextDestination = { latlng: e.latlng, altitude: e.altitude };
+    removeLocations() {
+      this.$pouch
+        .destroy(this.traceDB)
+        .then(() => {
+          // FIXME: workaround for updating livefeed
+          let keep = this.traceType;
+          this.traceType = null;
+          this.traceType = keep;
+        })
+        .catch(console.error);
+    },
+    setNextDestination(e) {
+      if (
+        this.nextDestination &&
+        e.latlng.distanceTo(this.nextDestination.latlng) < this.minDestination
+      ) {
+        if (this.routes)
+          this.nextDestination = this.getNextWaypoint(
+            this.routes,
+            this.nextDestination
+          );
+        else this.nextDestination = null;
+      } else return;
+    },
+    getNextWaypoint(routes, current) {
+      //TODO should we get to next route or return null ?
+      let routeId = routes.findIndex(rte => rte.indexOf(current) > -1);
+      if (routeId > -1) {
+        let currentRoute = routes[routeId];
+        let waypointId = currentRoute.indexOf(current);
+        if (currentRoute.length - 1 > waypointId)
+          return currentRoute[waypointId + 1];
+      }
+      return null;
     },
     async requestWakeLock() {
       try {
@@ -198,42 +259,11 @@ export default {
           this.settings.allowWarning = false;
           this.$buefy.toast.open({
             message: "Warnings Deactivated",
-            queue: false,
+            queue: false
           });
-        },
-      });
-    },
-    _locationFound: function(e) {
-      if (this._debounceLocation(e, this.lastKnownLocation)) {
-        if (this.lastKnownLocation) {
-          this._computeFromLastLocation(e, this.lastKnownLocation);
         }
-        delete e.sourceTarget;
-        delete e.target;
-        delete e.bounds;
-        delete e.latitude;
-        delete e.longitude;
-
-        this.lastKnownLocation = { ...e };
-        if (this.settings.recordLocation) this.addLocation(e);
-        if (this.settings.setView) this.bestView(e);
-      } else if (e.type == "locationerror") this._locationError(e);
-    },
-    _locationError: function(e) {
-      delete e.sourceTarget;
-      delete e.target;
-      e.timestamp = Date.now();
-
-      if (process.env.NODE_ENV == "development") {
-        //&& e.code == 2
-        console.error(e.message);
-        this._locationFound(this._fakeLocation({ ...e, accuracy: 10 }));
-        return;
-      }
-
-      if (this.settings.allowWarning) this.openWarning(e);
-      this.lastKnownError = { ...e };
-    },
-  },
+      });
+    }
+  }
 };
 </script>

@@ -5,11 +5,13 @@ export const DataSelect = {
   props: {
     value: Object,
     required: Boolean,
+    editable: Boolean,
+    saved: Boolean
   },
   data() {
     return {
       search: "",
-      upload: [],
+      upload: []
     };
   },
   beforeMount() {
@@ -25,7 +27,7 @@ export const DataSelect = {
         .then(() => {
           this.$router.push({
             name: this.$route.name,
-            params: {},
+            params: {}
           });
         });
     else if (this.selectedData) this.useData(this.selectedData);
@@ -38,17 +40,20 @@ export const DataSelect = {
       this.$pouch
         .put({
           _id: `${this.dataType}-${Date.now()}`,
-          ...data,
+          ...data
         })
-        .catch(console.error)
-        .then((res) => {
+        .catch(err => {
+          this.$emit("update:saved", false);
+          console.error(err);
+        })
+        .then(res => {
           this.useData({ ...data, _id: res.id, _rev: res.rev });
         });
     },
     useData(e) {
       this.selectedData = e;
       this.activated = false;
-      this.$emit("update");
+      this.$emit("update:saved", true);
       this.$emit("input", e);
     },
     deleteData() {
@@ -60,7 +65,7 @@ export const DataSelect = {
         .catch(console.error);
     },
     importData(file) {
-      this.uploadJSON(file).then((res) => {
+      this.uploadJSON(file).then(res => {
         this.useData(this.cloneData(res));
       });
     },
@@ -68,9 +73,8 @@ export const DataSelect = {
       if (this.value) this.downloadJSON(this.value, `${this.value.name}.json`);
     },
     cloneData(data) {
-      delete data._id;
-      delete data._rev;
-      return data
+      const { _id, _rev, ...clone } = data; // eslint-disable-line no-unused-vars
+      return clone;
     }
   },
   computed: {
@@ -80,10 +84,15 @@ export const DataSelect = {
       },
       set(val) {
         this.activated = val;
-      },
+      }
     },
     isFromDB() {
       return !!(this.value && this.value._id && this.value._rev);
-    },
+    }
   },
+  watch: {
+    saved(val) {
+      if (val === null) this.saveData(this.value);
+    }
+  }
 };

@@ -29,11 +29,12 @@
 @import "~bulmaswatch/flatly/_variables.scss";
 
 .speedVector {
-  stroke: $turquoise;
-  fill: none;
+  stroke: $blue;
+  stroke-width: 0.5em;
+  // fill: none;
 }
 .accuracyCircle {
-  stroke: $turquoise;
+  stroke: $blue;
 }
 /* Tracker icon */
 .leaflet-diamond-icon {
@@ -101,7 +102,7 @@ export default {
         return { latlng: null, speed: null, heading: null, accuracy: null };
       }
     },
-    futur: {
+    delay: {
       type: Number,
       default: () => {
         return 60;
@@ -110,14 +111,13 @@ export default {
   },
   computed: {
     speedVector() {
-      //show location 60 seconds in the futur
       return [
         this.value.latlng,
         new LatLon(
           this.value.latlng.lat,
           this.value.latlng.lng
         ).rhumbDestinationPoint(
-          this.value.speed * this.futur,
+          this.value.speed * this.delay,
           this.value.heading
         )
       ];

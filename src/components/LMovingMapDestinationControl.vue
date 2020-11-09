@@ -4,7 +4,7 @@
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-success" size="is-medium">{{
-            value.distance | asDistance("NM") | precision(0)
+            distance | asDistance("NM") | precision(0)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">NM</b-tag>
         </b-taglist>
@@ -12,28 +12,28 @@
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-info" size="is-medium">{{
-            value.heading | asHeading | precision(0)
+            heading | asHeading | precision(0)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">°</b-tag>
         </b-taglist>
       </div>
-      <div class="control">
+      <!-- <div class="control">
         <b-taglist attached>
           <b-tag type="is-warning" size="is-medium">{{
-            value.altitude | asAltitude | precision(-1)
+            to.altitude | asAltitude | precision(-1)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">ft</b-tag>
           <b-tag type="is-danger" size="is-medium">{{
-            value.vertical_speed | asSpeed("ft/min") | precision(-1)
+            vertical_speed | asSpeed("ft/min") | precision(-1)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">ft/min</b-tag>
         </b-taglist>
-      </div>
+      </div> -->
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-light" size="is-medium">ETE</b-tag>
           <b-tag type="is-primary" size="is-medium">{{
-            value.ETE | asDuration
+            ETE | asDuration
           }}</b-tag>
         </b-taglist>
       </div>
@@ -44,6 +44,7 @@
 <script>
 import { UnitSystem } from "@/mixins/apputils";
 import { LControl } from "vue2-leaflet";
+import LatLon from "geodesy/latlon-ellipsoidal-vincenty.js";
 
 export default {
   name: "LMovingMapDestinationControl",
@@ -51,19 +52,31 @@ export default {
     LControl
   },
   props: {
-    value: {
-      type: Object,
-      default: () => {
-        return {
-          distance: null,
-          heading: null,
-          altitude: null,
-          vario: null,
-          ETE: null
-        };
-      }
+    from: Object,
+    to: Object
+  },
+  mixins: [UnitSystem],
+  computed: {
+    distance() {
+      return this.from.latlng.distanceTo(this.to.latlng);
+    },
+    ETE() {
+      return this.distance / this.from.speed;
+    },
+    heading() {
+      return this.latlon(this.from).initialBearingTo(this.latlon(this.to));
+    },
+    relative_bearing() {
+      return this.heading - this.from.heading;
+    },
+    vertical_speed() {
+      return (this.to.altitude - this.from.altitude) / this.ETE;
     }
   },
-  mixins: [UnitSystem]
+  methods: {
+    latlon(point) {
+      return new LatLon(point.latlng.lat, point.latlng.lng);
+    }
+  }
 };
 </script>
