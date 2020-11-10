@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <fieldset>
     <b-field grouped>
       <b-field label="Position" label-position="on-border" expanded>
         <b-input v-model="value.position" placeholder="echo" />
@@ -27,7 +27,7 @@
     <b-field label="Notes" label-position="on-border" expanded>
       <b-input v-model="value.notes" maxlength="200" type="textarea"></b-input>
     </b-field>
-  </form>
+  </fieldset>
 </template>
 
 <script>

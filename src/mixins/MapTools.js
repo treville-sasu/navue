@@ -3,13 +3,12 @@ export const MapTools = {
     return {
       tool: null,
       pointerVector: [null, null],
-      currentRoute: null,
-
+      currentRoute: null
     };
   },
   computed: {
     inactiveRoutes() {
-      return this.navigation.routes.filter((rte) => rte != this.currentRoute);
+      return this.navigation.routes.filter(rte => rte != this.currentRoute);
     },
     mapEvents() {
       return [
@@ -18,15 +17,15 @@ export const MapTools = {
         "dblclick",
         "contextmenu",
         "mousemove",
-        "mouseout",
+        "mouseout"
       ].reduce(
         (o, type) => ({
           ...o,
-          [type]: (e) => {
+          [type]: e => {
             if (this.mapEventsHandlers[e.type])
               this.mapEventsHandlers[e.type](e);
             else if (e.type == null) this.mapEventsHandlers["ready"](e);
-          },
+          }
         }),
         {}
       );
@@ -34,11 +33,11 @@ export const MapTools = {
     mapEventsHandlers() {
       let defaultEvents = {
         ready: this.setupMap,
-        contextmenu: () => this.selectRoute(null),
+        contextmenu: () => this.selectRoute(null)
       };
       let pointerEvents = {
         mouseout: () => this.updatePointer(null),
-        mousemove: this.updatePointer,
+        mousemove: this.updatePointer
       };
       switch (this.tool) {
         case "route":
@@ -56,7 +55,6 @@ export const MapTools = {
         default:
           return defaultEvents;
       }
-    },
   },
   methods: {
     setupMap(e) {
@@ -86,7 +84,7 @@ export const MapTools = {
 
     updatePointer(e) {
       this.pointerVector.splice(1, 1, e ? e.latlng : null);
-    },
+    }
   },
   watch: {
     tool(newTool, oldTool) {
@@ -104,7 +102,10 @@ export const MapTools = {
       }
       switch (newTool) {
         case "route":
-          if (!this.currentRoute) this.currentRoute = this.navigation.routes[this.navigation.routes.push([]) - 1];
+          if (!this.currentRoute)
+            this.currentRoute = this.navigation.routes[
+              this.navigation.routes.push([]) - 1
+            ];
           this.map._container.style.cursor = "crosshair";
           break;
         case "select":
@@ -122,6 +123,6 @@ export const MapTools = {
       else this.pointerVector.splice(0, 1, null);
 
       if (!newVal) this.tool = null;
-    },
-  },
+    }
+  }
 };

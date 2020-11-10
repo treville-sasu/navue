@@ -62,7 +62,7 @@ const router = new VueRouter({
       return {
         selector: to.hash
         // , offset: { x: 0, y: 10 }
-      }
+      };
     }
   }
 });

@@ -4,12 +4,6 @@
       <l-icon class-name="leaflet-diamond-icon">
         <div></div>
       </l-icon>
-      <l-popup>
-        <pre>
-          {{ value }}
-            </pre
-        >
-      </l-popup>
     </l-marker>
     <l-circle
       v-if="value.latlng && value.accuracy"
@@ -31,7 +25,6 @@
 .speedVector {
   stroke: $blue;
   stroke-width: 0.5em;
-  // fill: none;
 }
 .accuracyCircle {
   stroke: $blue;
@@ -41,49 +34,12 @@
   background: black;
   border: 2px solid #ffffff;
 }
-
-// .leaflet-airplane-icon {
-//   transform: rotateZ(-90deg);
-// }
-// .leaflet-airplane-icon:before {
-//   content: "✈";
-// }
-
-// .leaflet-helicopter-icon:before {
-//   content: "✇";
-//   /*content: "⊛"; */
-// }
-
-// @keyframes revolution {
-//   from {
-//     transform: rotate(0deg);
-//   }
-//   to {
-//     transform: rotate(360deg);
-//   }
-// }
-// .leaflet-helicopter-icon {
-//   animation-name: revolution;
-//   animation-duration: 1s;
-//   animation-iteration-count: infinite;
-//   animation-timing-function: linear;
-// }
-// .leaflet-helicopter-icon:hover {
-//   animation-play-state: paused;
-// }
 </style>
 
 <script>
 import LatLon from "geodesy/latlon-spherical.js";
 
-import {
-  LLayerGroup,
-  LMarker,
-  LIcon,
-  LPolyline,
-  LCircle,
-  LPopup
-} from "vue2-leaflet";
+import { LLayerGroup, LMarker, LIcon, LPolyline, LCircle } from "vue2-leaflet";
 
 export default {
   name: "LLocationMarker",
@@ -92,8 +48,7 @@ export default {
     LMarker,
     LIcon,
     LPolyline,
-    LCircle,
-    LPopup
+    LCircle
   },
   props: {
     value: {

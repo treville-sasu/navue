@@ -10,15 +10,13 @@
         className: 'routeLabel',
         direction: 'center',
         permanent: true,
-        sticky: true,
+        sticky: true
       }"
     >
-      {{ initialBearing | asHeading | precision(0) }}° -
+      {{ bearing | asHeading | precision(0) }}° -
       {{ distance | asDistance("NM") | precision(0) }}NM
     </l-tooltip>
-
-    <slot></slot
-  ></l-polyline>
+  </l-polyline>
 </template>
 
 <style lang="scss">
@@ -57,13 +55,13 @@ export default {
   name: "LTracePolyline",
   components: {
     LPolyline,
-    LTooltip,
+    LTooltip
   },
   mixins: [UnitSystem],
   props: {
     active: Boolean,
     origin: Object,
-    destination: Object,
+    destination: Object
   },
   computed: {
     originCoord() {
@@ -75,12 +73,12 @@ export default {
         this.destination.latlng.lng
       );
     },
-    initialBearing() {
+    bearing() {
       return this.originCoord.initialBearingTo(this.destinationCoord);
     },
     distance() {
       return this.originCoord.distanceTo(this.destinationCoord);
-    },
-  },
+    }
+  }
 };
 </script>

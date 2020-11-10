@@ -38,18 +38,18 @@ export default {
   components: {
     LLayerGroup,
     LWaypointMarker,
-    LTracePolyline,
+    LTracePolyline
   },
   props: {
     value: Array,
-    active: Boolean,
+    active: Boolean
   },
   mounted() {
     this.map = findRealParent(this.$parent, true).mapObject;
   },
   computed: {
     traceCoord() {
-      return this.value.map((wp) => wp.latlng);
+      return this.value.map(wp => wp.latlng);
     },
     legs() {
       let legsArray = [];
@@ -58,13 +58,13 @@ export default {
           legsArray.push({
             previous,
             current,
-            insertBefore,
+            insertBefore
           });
         }
         return current;
       }, null);
       return legsArray;
-    },
-  },
+    }
+  }
 };
 </script>

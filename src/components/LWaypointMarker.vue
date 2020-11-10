@@ -1,10 +1,5 @@
 <template>
-  <l-marker
-    v-bind="$attrs"
-    v-on="$listeners"
-    :lat-lng.sync="value.latlng"
-    :name="value.position"
-  >
+  <l-marker v-bind="$attrs" v-on="$listeners" :lat-lng.sync="value.latlng">
     <l-icon
       :icon-anchor="[20, 16]"
       :icon-size="[40, 40]"
@@ -17,24 +12,22 @@
       :options="{
         closeButton: true,
         className: 'leaflet-waypoint-popup',
-        maxWidth: '60vw',
+        maxWidth: '60vw'
       }"
     >
       <WaypointContent v-model="value" />
     </l-popup>
     <l-tooltip
-      v-else-if="value.name || value.altitude.value"
+      v-else-if="value.position || value.altitude.value"
       :options="{
         className: 'waypointLabel',
         permanent: true,
-        sticky: true,
+        sticky: true
       }"
     >
-      {{ value.name ? value.name : "-" }}
+      {{ value.position ? value.position : "-" }}
       |
-      {{
-        value.altitude.value | asAltitude(value.altitude.unit) | precision(-1)
-      }}
+      {{ value.altitude.value | precision(-1) }}
       {{ value.altitude.unit }}
     </l-tooltip>
   </l-marker>
@@ -80,16 +73,18 @@
 <script>
 import { LMarker, LIcon, LPopup, LTooltip } from "vue2-leaflet";
 import WaypointContent from "@/components/WaypointContent.vue";
+import { UnitSystem } from "@/mixins/apputils";
 
 export default {
   name: "LWaypointMarker",
+  mixins: [UnitSystem],
   components: {
     LMarker,
     LIcon,
     LPopup,
     LTooltip,
-    WaypointContent,
+    WaypointContent
   },
-  props: ["value"],
+  props: ["value"]
 };
 </script>

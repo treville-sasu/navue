@@ -14,6 +14,6 @@ export default new Vuex.Store({
     currentAircraft: (state, payload) => (state.currentAircraft = payload),
     currentNavigation: (state, payload) => (state.currentNavigation = payload),
     aircraftSelect: (state, payload) => (state.aircraftSelect = payload),
-    navigationSelect: (state, payload) => (state.navigationSelect = payload),
+    navigationSelect: (state, payload) => (state.navigationSelect = payload)
   }
 });
