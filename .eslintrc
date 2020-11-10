@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "extends": [
+    "plugin:compat/recommended",
+    "plugin:vue/essential",
+    "eslint:recommended",
+    "@vue/prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "rules": {
+    "compat/compat": "error",
+    "no-console": "off",
+    "no-debugger": "off"
+  }
+}

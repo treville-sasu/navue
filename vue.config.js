@@ -2,7 +2,6 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     public: "localhost:8080",
-    // bonjour: true,
     https: true,
     open: true,
     openPage: ["index.html"]
