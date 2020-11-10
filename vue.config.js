@@ -1,7 +1,8 @@
 module.exports = {
   devServer: {
     disableHostCheck: true,
-    bonjour: true,
+    public: "localhost:8080",
+    // bonjour: true,
     https: true,
     open: true,
     openPage: ["index.html"]
@@ -38,10 +39,13 @@ module.exports = {
     splash_pages: null
   },
 
-  chainWebpack: config => {
-    config.externals({
+  configureWebpack: {
+    resolve: {
+      symlinks: false
+    },
+    externals: {
       L: "leaflet"
-    });
+    }
   },
 
   productionSourceMap: false

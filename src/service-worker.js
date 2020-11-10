@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 workbox.setConfig({
-  debug: true
+  debug: false
 });
 
 const CACHE_PREFIX = "naVue";
@@ -8,14 +9,14 @@ workbox.core.setCacheNameDetails({
   prefix: CACHE_PREFIX
 });
 
+self.addEventListener("activate", () => {
+  self.clients.claim();
+});
+
 self.addEventListener("message", event => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
-});
-
-self.addEventListener("activate", event => {
-  self.clients.claim();
 });
 
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
@@ -57,6 +58,7 @@ workbox.routing.registerRoute(
   new workbox.strategies.CacheFirst({
     cacheName: `${CACHE_PREFIX}_images`,
     plugins: [
+      //FIXME: use MonthlyExpirationPlugin ?
       new workbox.expiration.Plugin({
         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
         purgeOnQuotaError: true

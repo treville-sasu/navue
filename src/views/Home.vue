@@ -26,7 +26,7 @@
             <div class="notification is-danger">
               <h1 class="title">Work in progress</h1>
               <h2 class="subtitle">Evaluation only</h2>
-              Do not use this sofware
+              Do not use this software
             </div>
           </div>
         </div>
@@ -58,6 +58,6 @@
 </template>
 <script>
 export default {
-  name: "Home",
+  name: "Home"
 };
 </script>

@@ -36,10 +36,12 @@ if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
       }
     });
   });
-  // wb.addEventListener('controlling', event => {
-  //   console.log(event, "controlling");
-  //   // proxy will work know
-  // });
+
+  //https://redfin.engineering/how-to-fix-the-refresh-button-when-using-service-workers-a8e27af6df68
+  wb.addEventListener("controlling", event => {
+    console.log(event, "controlling");
+    window.location.reload();
+  });
 
   wb.addEventListener("activated", () => {
     Snackbar.open({
