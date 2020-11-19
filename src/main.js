@@ -6,22 +6,20 @@ import store from "./store";
 
 import Buefy from "buefy";
 import "@mdi/font/css/materialdesignicons.css";
-Vue.use(Buefy);
+Vue.use(Buefy, {
+  defaultProgrammaticPromise: true
+});
 
 import PouchDB from "pouchdb-browser";
-import PouchFind from "pouchdb-find";
-import PouchLiveFind from "pouchdb-live-find";
+// import PouchFind from "pouchdb-find";
+// PouchDB.plugin(PouchFind);
+// import PouchLiveFind from "pouchdb-live-find";
+// PouchDB.plugin(PouchLiveFind);
 import PouchAuthentication from "pouchdb-authentication";
-PouchDB.plugin(PouchFind);
-PouchDB.plugin(PouchLiveFind);
 PouchDB.plugin(PouchAuthentication);
 
-import PouchVue from "pouch-vue";
-
-Vue.use(PouchVue, {
-  pouch: PouchDB,
-  defaultDB: "navue"
-});
+import VuePouchdbLite from "vue-pouchdb-lite";
+Vue.use(VuePouchdbLite, "navue");
 
 Vue.config.productionTip = false;
 

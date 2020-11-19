@@ -9,13 +9,18 @@
 @import "bulmaswatch/flatly/_variables";
 // @import "bulma/sass/utilities/initial-variables";
 // $navbar-breakpoint: $tablet;
-$navbar-fixed-z: 3000;
-$modal-z: $navbar-fixed-z + 1;
+$navbar-fixed-z: 2000;
+$modal-z: $navbar-fixed-z + 100;
 
 @import "bulma";
 @import "buefy/src/scss/buefy";
 
 @import "bulmaswatch/flatly/_overrides";
+@import "~@creativebulma/bulma-divider";
+
+.notices {
+  z-index: $navbar-fixed-z + 1000;
+}
 </style>
 
 <script>
