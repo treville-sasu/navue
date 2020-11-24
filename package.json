@@ -31,6 +31,7 @@
     "vue-chartjs": "^3.5.0",
     "vue-leaflet-minimap": "^1.0.1",
     "vue-pdf": "^4.1.0",
+    "vue-pouchdb-lite": "^0.9.0",
     "vue-router": "^3.2.0",
     "vue2-leaflet": "^2.5.2",
     "vue2-leaflet-fullscreen": "^1.0.0",
