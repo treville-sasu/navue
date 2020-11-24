@@ -17,9 +17,9 @@
         <b-navbar-item tag="router-link" :to="{ name: 'Route' }"
           >Navigation route</b-navbar-item
         >
-        <!-- <b-navbar-item tag="router-link" to="approach"
+        <b-navbar-item tag="router-link" to="approach"
           >Approach Charts</b-navbar-item
-        > -->
+        >
         <b-navbar-item tag="router-link" :to="{ name: 'Weather' }"
           >Weather</b-navbar-item
         >
