@@ -13,7 +13,7 @@
     <div
       class="notification"
       v-bind:class="{
-        'is-loading': !validated && !error,
+        'is-loading': !validated && !error
       }"
     >
       <div
@@ -124,7 +124,7 @@
             :tags="{
               primary: map.type,
               info: map.niveau,
-              warning: map.echeance,
+              warning: map.echeance
             }"
             @click="openChartUrl = $event"
           >

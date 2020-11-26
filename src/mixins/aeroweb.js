@@ -184,7 +184,7 @@ export default class AeroWeb {
 
   groupByMessage(data) {
     if (!data.groupe) return data;
-    return [data.groupe.messages].flat().map(function (station) {
+    return [data.groupe.messages].flat().map(function(station) {
       return {
         ...{ oaci: station.oaci, nom: station.nom },
         ...AeroWeb.groupBy([station.message].flat(), "type", m => m.texte)
@@ -219,7 +219,7 @@ export default class AeroWeb {
   }
 
   static groupBy(xs, key, callback) {
-    return xs.reduce(function (rv, x) {
+    return xs.reduce(function(rv, x) {
       if (x) (rv[x[key]] = rv[x[key]] || []).push(callback.call(null, x));
       return rv;
     }, {});

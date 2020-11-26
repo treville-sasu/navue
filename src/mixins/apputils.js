@@ -85,7 +85,7 @@ export const UnitSystem = {
     precision(value, precision = 2) {
       return (
         Math.round(value * 10 ** precision + Number.EPSILON) /
-        10 ** precision || "-"
+          10 ** precision || "-"
       );
     }
   }

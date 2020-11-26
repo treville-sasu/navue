@@ -146,7 +146,7 @@
             :tags="{
               danger: 'RTBA',
               warning: $options.filters.asTime(map.start),
-              success: $options.filters.asTime(map.end),
+              success: $options.filters.asTime(map.end)
             }"
             @click="openChartUrl = $event"
             card

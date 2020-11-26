@@ -34,7 +34,7 @@ export default {
   name: "BrowserCheck",
   data() {
     return {
-      search: "",
+      search: ""
     };
   },
   computed: {
@@ -44,61 +44,61 @@ export default {
           api: "Service Worker",
           feature: "Internet request handling",
           test: "serviceWorker" in navigator,
-          required: true,
+          required: true
         },
         {
           api: "Cache",
           feature: "Allow caching for app, charts and weather maps.",
           test: "caches" in self,
-          required: true,
+          required: true
         },
         {
           api: "Geolocation",
           feature: "Get your location with a GNSS",
-          test: "geolocation" in navigator,
+          test: "geolocation" in navigator
         },
         {
           api: "Fullscreen",
           feature: "Set a map fullscreen",
-          test: "requestFullscreen" in document.documentElement,
+          test: "requestFullscreen" in document.documentElement
         },
         {
           api: "WakeLock",
           feature: "Keep your screen on while flying",
           test:
-            "wakeLock" in navigator && document.visibilityState === "visible",
+            "wakeLock" in navigator && document.visibilityState === "visible"
         },
         {
           api: "App Installation",
           feature: "Add the app to your Home screen",
           test:
-            "BeforeInstallPromptEvent" in window || "setAppBadge" in navigator,
+            "BeforeInstallPromptEvent" in window || "setAppBadge" in navigator
         },
         {
           api: "Online State",
           feature: "Better online/offline switch",
-          test: "onLine" in navigator,
+          test: "onLine" in navigator
         },
         {
           api: "IndexedDB",
           feature: "Local database for data synchronisation",
           test: "indexedDB" in window,
-          required: true,
+          required: true
         },
         {
           api: "Storage",
           feature: "In browser storage management",
-          test: "storage" in navigator && "estimate" in navigator.storage,
+          test: "storage" in navigator && "estimate" in navigator.storage
         },
         {
           api: "Device Motion",
           feature: "Get rotation & acceleration measurement",
           test:
             ("LinearAccelerationSensor" in window && "Gyroscope" in window) ||
-            "DeviceMotionEvent" in window,
-        },
+            "DeviceMotionEvent" in window
+        }
       ];
-    },
-  },
+    }
+  }
 };
 </script>

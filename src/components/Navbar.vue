@@ -64,7 +64,7 @@
         tag="router-link"
         :to="{
           name: 'Aircraft',
-          params: { id: currentAircraft ? currentAircraft._id : null },
+          params: { id: currentAircraft ? currentAircraft._id : null }
         }"
         >{{
           currentAircraft ? currentAircraft.registration : "Aircraft"

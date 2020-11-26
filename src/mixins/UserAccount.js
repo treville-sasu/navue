@@ -39,8 +39,8 @@ export const UserAccount = {
             c.charCodeAt(0) < 128
               ? c.charCodeAt(0).toString(16)
               : encodeURIComponent(c)
-                .replace(/%/g, "")
-                .toLowerCase()
+                  .replace(/%/g, "")
+                  .toLowerCase()
           )
           .join("")
       );

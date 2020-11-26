@@ -73,21 +73,21 @@ export const MapHandlers = {
         e.accuracy < this.maxAccuracy
           ? resolve(e)
           : reject({
-            ...e,
-            type: "locationerror",
-            message: `Geolocation error: low accuracy (${e.accuracy}m)`
-          });
+              ...e,
+              type: "locationerror",
+              message: `Geolocation error: low accuracy (${e.accuracy}m)`
+            });
       });
     },
     _checkDistance(e) {
       return new Promise((resolve, reject) => {
         this.lastKnownLocation &&
-          e.latlng.distanceTo(this.lastKnownLocation.latlng) < this.minDistance
+        e.latlng.distanceTo(this.lastKnownLocation.latlng) < this.minDistance
           ? reject({
-            ...e,
-            type: "locationerror",
-            message: `Geolocation error: still fixing.`
-          })
+              ...e,
+              type: "locationerror",
+              message: `Geolocation error: still fixing.`
+            })
           : resolve(e);
       });
     },
@@ -96,12 +96,12 @@ export const MapHandlers = {
         e.altitudeAccuracy < this.maxAccuracy
           ? resolve(e)
           : resolve({
-            ...e,
-            altitude: undefined,
-            altitudeAccuracy: undefined
-            // type: "locationerror",
-            // message: `Geolocation error: low altitude accuracy (${e.altitudeAccuracy}m)`
-          });
+              ...e,
+              altitude: undefined,
+              altitudeAccuracy: undefined
+              // type: "locationerror",
+              // message: `Geolocation error: low altitude accuracy (${e.altitudeAccuracy}m)`
+            });
       });
     },
     _checkSpeed(e) {
@@ -109,12 +109,12 @@ export const MapHandlers = {
         e.speed > this.minSpeed
           ? resolve(e)
           : resolve({
-            ...e,
-            speed: undefined,
-            heading: undefined
-            // type: "locationerror",
-            // message: `Geolocation error: low velocity (${e.speed}m/s)`
-          });
+              ...e,
+              speed: undefined,
+              heading: undefined
+              // type: "locationerror",
+              // message: `Geolocation error: low velocity (${e.speed}m/s)`
+            });
       });
     },
     _fakeLocation(

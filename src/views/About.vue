@@ -113,8 +113,8 @@ export default {
   components: { BrowserCheck },
   data() {
     return {
-      isBrowserCheckActive: false,
+      isBrowserCheckActive: false
     };
-  },
+  }
 };
 </script>

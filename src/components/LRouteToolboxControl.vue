@@ -33,12 +33,12 @@ import { LControl } from "vue2-leaflet";
 export default {
   name: "LRouteToolboxControl",
   components: {
-    LControl,
+    LControl
   },
   props: ["value", "navigationName"],
   data() {
     return {
-      displayNaviationInput: null,
+      displayNaviationInput: null
     };
   },
   computed: {
@@ -48,8 +48,8 @@ export default {
       },
       set: function(newVal) {
         this.$emit("input", newVal);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

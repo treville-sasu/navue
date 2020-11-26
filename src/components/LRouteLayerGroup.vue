@@ -19,7 +19,7 @@
       @click="
         $emit('click-trace', {
           latlng: $event.latlng,
-          insertBefore: leg.insertBefore,
+          insertBefore: leg.insertBefore
         })
       "
     />

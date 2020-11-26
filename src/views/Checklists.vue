@@ -19,7 +19,7 @@
           <b-table
             :data="cl.items"
             checkable
-            :is-row-checkable="(row) => !!row.expect"
+            :is-row-checkable="row => !!row.expect"
             checkbox-position="right"
             :checked-rows.sync="checked"
             :header-checkable="false"
@@ -73,14 +73,14 @@ import AircraftSelect from "@/components/AircraftSelect.vue";
 export default {
   name: "Checklists",
   components: {
-    AircraftSelect,
+    AircraftSelect
   },
   data() {
     return {
       aircraft: null,
       currentCL: 0,
-      checked: [],
+      checked: []
     };
-  },
+  }
 };
 </script>

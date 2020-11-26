@@ -48,7 +48,7 @@ export default {
   props: {
     routes: Array,
     selected: Number,
-    speed: Number,
+    speed: Number
   },
   computed: {
     routesSummaries() {
@@ -56,7 +56,7 @@ export default {
         return {
           id: id,
           distance: this.routeTotalDistance(rte),
-          duration: this.routeTotalDistance(rte) / this.speed,
+          duration: this.routeTotalDistance(rte) / this.speed
         };
       });
     },
@@ -66,7 +66,7 @@ export default {
       },
       set(selected) {
         this.$emit("select", selected.id);
-      },
+      }
     },
     totalDuration() {
       return this.routesSummaries.reduce(
@@ -79,7 +79,7 @@ export default {
         (ttl, crt) => (ttl += crt.distance),
         0
       );
-    },
+    }
   },
   methods: {
     routeTotalDistance(waypoints) {
@@ -94,7 +94,7 @@ export default {
         return current;
       }, null);
       return total;
-    },
-  },
+    }
+  }
 };
 </script>

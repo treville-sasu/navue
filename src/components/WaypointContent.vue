@@ -37,7 +37,7 @@ export default {
   name: "WaypointContent",
   mixins: [UnitSystem],
   props: {
-    value: Object,
-  },
+    value: Object
+  }
 };
 </script>

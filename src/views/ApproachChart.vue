@@ -47,7 +47,7 @@
           v-bind="map"
           :url="map.id | asVACurl(baseURL)"
           :tags="{
-            info: 'Airport',
+            info: 'Airport'
           }"
           @click="openChartUrl = $event"
         >
