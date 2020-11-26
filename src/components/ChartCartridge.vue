@@ -1,17 +1,23 @@
 <template>
-  <article class="media is-clickable" @click="$emit('click', url)">
-    <div class="media-left">
+  <article :class="card ? 'card' : 'media'">
+    <div
+      class="is-clickable"
+      :class="card ? 'card-content' : 'media-left'"
+      @click="$emit('click', url)"
+    >
       <slot></slot>
     </div>
-    <div class="media-content">
-      <div class="content">
-        <h4 class="title">{{ name }}</h4>
-        <b-taglist>
-          <b-tag v-for="(tag, key) in tags" :key="key" :type="'is-' + key">{{
-            tag
-          }}</b-tag>
-        </b-taglist>
-      </div>
+    <div :class="card ? 'card-header' : 'media-content'">
+      <p class="title is-4 heading is-clickable" @click="$emit('click', url)">
+        {{ name }}
+      </p>
+    </div>
+    <div :class="card ? 'card-footer' : 'media-right'">
+      <b-taglist>
+        <b-tag v-for="(tag, key) in tags" :key="key" :type="'is-' + key">{{
+          tag
+        }}</b-tag>
+      </b-taglist>
     </div>
   </article>
 </template>
@@ -24,6 +30,12 @@
 export default {
   name: "ChartCartridge",
   props: {
+    card: {
+      type: Boolean,
+      default() {
+        return false;
+      }
+    },
     name: String,
     url: [String, URL],
     tags: Object

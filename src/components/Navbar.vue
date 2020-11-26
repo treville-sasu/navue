@@ -23,9 +23,7 @@
         <b-navbar-item tag="router-link" :to="{ name: 'Weather' }"
           >Weather</b-navbar-item
         >
-        <!-- <b-navbar-item tag="router-link" to="notam"
-          >NOTAM & Sup AIP</b-navbar-item
-        > -->
+        <b-navbar-item tag="router-link" to="notam">NOTAM, AZBA</b-navbar-item>
         <b-navbar-item tag="router-link" :to="{ name: 'Balance' }"
           >Weight and Balance</b-navbar-item
         >
@@ -66,7 +64,7 @@
         tag="router-link"
         :to="{
           name: 'Aircraft',
-          params: { id: currentAircraft ? currentAircraft._id : null }
+          params: { id: currentAircraft ? currentAircraft._id : null },
         }"
         >{{
           currentAircraft ? currentAircraft.registration : "Aircraft"

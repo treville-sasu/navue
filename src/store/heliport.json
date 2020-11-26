@@ -1,0 +1,1082 @@
+[
+    {
+        "id": "HABB",
+        "name": "ABBEVILLE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAIX",
+        "name": "AIX EN PROVENCE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HALB",
+        "name": "ALBERTVILLE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HALE",
+        "name": "ALENCON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HALS",
+        "name": "ALES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HALP",
+        "name": "ALPES LEMAN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAMB",
+        "name": "AMBOISE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAMI",
+        "name": "AMIENS CENTRE HOSPITALIER SUD",
+        "type": "heliport"
+    },
+    {
+        "id": "HAMY",
+        "name": "AMILLY CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HACH",
+        "name": "ANGERS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HANG",
+        "name": "ANGOULEME CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HANO",
+        "name": "ANNONNAY CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HANT",
+        "name": "ANTIBES PORT VAUBAN",
+        "type": "heliport"
+    },
+    {
+        "id": "HAPT",
+        "name": "APT CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HARC",
+        "name": "ARCACHON POLE SANTE",
+        "type": "heliport"
+    },
+    {
+        "id": "HARG",
+        "name": "ARGENTAN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HARS",
+        "name": "ARRAS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAUB",
+        "name": "AUBENAS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAUC",
+        "name": "AUCH CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAUL",
+        "name": "AULNAY SOUS BOIS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAUX",
+        "name": "AUXERRE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAVI",
+        "name": "AVIGNON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAVR",
+        "name": "AVRANCHES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBAG",
+        "name": "BAGNOLS SUR CEZE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFSB",
+        "name": "BALE MULHOUSE AD",
+        "type": "heliport"
+    },
+    {
+        "id": "LFKB",
+        "name": "BASTIA PORETTA",
+        "type": "heliport"
+    },
+    {
+        "id": "HBAY",
+        "name": "BAYONNE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBEA",
+        "name": "BEAUVAIS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBER",
+        "name": "BERCK SUR MER CENTRE HOSPITALIER HELIO-MARIN",
+        "type": "heliport"
+    },
+    {
+        "id": "HBES",
+        "name": "BESANCON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBEZ",
+        "name": "BEZIERS HOPITAL MONTIMARAN",
+        "type": "heliport"
+    },
+    {
+        "id": "LFBZ",
+        "name": "BIARRITZ PAYS BASQUE",
+        "type": "heliport"
+    },
+    {
+        "id": "HBLA",
+        "name": "BLAYE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBLO",
+        "name": "BLOIS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBHL",
+        "name": "BORDEAUX HAUT LEVEQUE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFBD",
+        "name": "BORDEAUX MERIGNAC AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HBOR",
+        "name": "BORDEAUX PELLEGRIN C.H.U.",
+        "type": "heliport"
+    },
+    {
+        "id": "HBO2",
+        "name": "BORDEAUX ROBERT PICQUE HOPITAL MILITAIRE",
+        "type": "heliport"
+    },
+    {
+        "id": "HBEB",
+        "name": "BOURG EN BRESSE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBGS",
+        "name": "BOURGES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBJA",
+        "name": "BOURGOIN JALLIEU PIERRE OUDOT",
+        "type": "heliport"
+    },
+    {
+        "id": "HBRE",
+        "name": "BREST C.H. LA CAVALE BLANCHE",
+        "type": "heliport"
+    },
+    {
+        "id": "HBRI",
+        "name": "BRIANCON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCAE",
+        "name": "CAEN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCAN",
+        "name": "CANNES BROUSSAILLES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFMD",
+        "name": "CANNES MANDELIEU AD",
+        "type": "heliport"
+    },
+    {
+        "id": "LFTL",
+        "name": "CANNES QUAI DU LARGE",
+        "type": "heliport"
+    },
+    {
+        "id": "HCAM",
+        "name": "CARCASSONNE MONTREDON",
+        "type": "heliport"
+    },
+    {
+        "id": "HCAP",
+        "name": "CARPENTRAS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCAS",
+        "name": "CASTRES HAUTERIVE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCHL",
+        "name": "CHALLANS",
+        "type": "heliport"
+    },
+    {
+        "id": "HCSS",
+        "name": "CHALONS SUR SAONE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCMY",
+        "name": "CHAMBERY CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCMX",
+        "name": "CHAMONIX CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMEZ",
+        "name": "CHARLEVILLE MEZIERES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFWB",
+        "name": "CHARTRES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCTX",
+        "name": "CHATEAUROUX CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCTA",
+        "name": "CHATELLERAULT CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCHS",
+        "name": "CHATILLON SUR SEINE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCHA",
+        "name": "CHAUNY CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCHI",
+        "name": "CHIVA (FOIX) Centre Hospitalier",
+        "type": "heliport"
+    },
+    {
+        "id": "HCHO",
+        "name": "CHOLET CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HEST",
+        "name": "CLERMONT FERRAND ESTAING CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCLE",
+        "name": "CLERMONT FERRAND SAINT JACQUES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCOL",
+        "name": "COLMAR CENTRE HOSPITALIER PASTEUR",
+        "type": "heliport"
+    },
+    {
+        "id": "HCOM",
+        "name": "COMPIEGNE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCOR",
+        "name": "CORBEIL ESSONNE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFLJ",
+        "name": "COURCHEVEL ALTIPORT",
+        "type": "heliport"
+    },
+    {
+        "id": "HDAX",
+        "name": "DAX CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HDPE",
+        "name": "DIEPPE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HDIG",
+        "name": "DIGNES LES BAINS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HDBO",
+        "name": "DIJON BOCAGE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HDOL",
+        "name": "DOLE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HDOI",
+        "name": "DOUAI CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HDUR",
+        "name": "DOUAI USINE RENAULT",
+        "type": "heliport"
+    },
+    {
+        "id": "LFWD",
+        "name": "DREUX CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HDUN",
+        "name": "DUNKERQUE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HEPI",
+        "name": "EPINAL CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HESC",
+        "name": "ESCARY ARAMITS",
+        "type": "heliport"
+    },
+    {
+        "id": "HEVR",
+        "name": "EVREUX CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HFEC",
+        "name": "FECAMP CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HFOR",
+        "name": "FOURMIES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HFRE",
+        "name": "FREJUS ST RAPHAEL BONNET CH INTERCOMMUNAL",
+        "type": "heliport"
+    },
+    {
+        "id": "HGAP",
+        "name": "GAP CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HGIE",
+        "name": "GIEN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HGRV",
+        "name": "GRANVILLE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HGRA",
+        "name": "GRASSE CLAVARY CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HGRE",
+        "name": "GRENOBLE HOPITAL NORD",
+        "type": "heliport"
+    },
+    {
+        "id": "HGRI",
+        "name": "GRIMAUD SARL RCE",
+        "type": "heliport"
+    },
+    {
+        "id": "HGRT",
+        "name": "GUERET CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HISS",
+        "name": "ISSOUDUN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLAI",
+        "name": "L'AIGLE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HROC",
+        "name": "LA ROCHE SUR YON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLRC",
+        "name": "LA ROCHELLE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLAC",
+        "name": "LACANAU LE HUGA",
+        "type": "heliport"
+    },
+    {
+        "id": "HLAN",
+        "name": "LANGON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLNN",
+        "name": "LANNION CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLAO",
+        "name": "LAON SEMILLY CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLBL",
+        "name": "LE BLANC CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HCRE",
+        "name": "LE CREUSOT CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HHAV",
+        "name": "LE HAVRE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLMA",
+        "name": "LE MANS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLEP",
+        "name": "LE PLESSIS ROBINSON CENTRE CHIRURGICAL",
+        "type": "heliport"
+    },
+    {
+        "id": "HPUY",
+        "name": "LE PUY EN VELAY CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLIL",
+        "name": "LILLE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLIM",
+        "name": "LIMOGES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLOC",
+        "name": "LOCHES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLLS",
+        "name": "LONS LE SAUNIER CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HLOR",
+        "name": "LORIENT BRETAGNE SUD CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFLY",
+        "name": "LYON BRON AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HLYS",
+        "name": "LYON CENTRE HOSPITALIER SUD",
+        "type": "heliport"
+    },
+    {
+        "id": "HLYE",
+        "name": "LYON GROUPEMENT HOSPITALIER EST",
+        "type": "heliport"
+    },
+    {
+        "id": "HLYO",
+        "name": "LYON HOPITAL EDOUARD HERRIOT",
+        "type": "heliport"
+    },
+    {
+        "id": "HLYL",
+        "name": "LYON LA SAUVEGARDE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFLL",
+        "name": "LYON SAINT-EXUPERY AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HMAC",
+        "name": "MACON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMAN",
+        "name": "MANOSQUE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HGEF",
+        "name": "MARNE LA VALLEE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HTIM",
+        "name": "MARSEILLE HOPITAL LA TIMONE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMHN",
+        "name": "MARSEILLE HOPITAL NORD CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMLN",
+        "name": "MARSEILLE LAVERAN HOPITAL MILITAIRE",
+        "type": "heliport"
+    },
+    {
+        "id": "LFML",
+        "name": "MARSEILLE PROVENCE AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HMAR",
+        "name": "MARTIGUES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMEL",
+        "name": "MELUN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMEN",
+        "name": "MENDE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMER",
+        "name": "METZ MERCY CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LNMC",
+        "name": "MONACO",
+        "type": "heliport"
+    },
+    {
+        "id": "HMDM",
+        "name": "MONT DE MARSAN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMIN",
+        "name": "MONTCEAU LES MINES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMTL",
+        "name": "MONTLUCON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HMON",
+        "name": "MONTPELLIER LAPEYRONIE",
+        "type": "heliport"
+    },
+    {
+        "id": "LFMT",
+        "name": "MONTPELLIER MEDITERRANEE AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HMUL",
+        "name": "MULHOUSE MOENCHENBERG CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNAB",
+        "name": "NANCY BRABOIS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNAN",
+        "name": "NANCY HOPITAL CENTRAL",
+        "type": "heliport"
+    },
+    {
+        "id": "LFRS",
+        "name": "NANTES ATLANTIQUE AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HNQM",
+        "name": "NANTES QUAI MONCOUSU CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNAR",
+        "name": "NARBONNE SAINT CRESCENT CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNEV",
+        "name": "NEVERS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFMN",
+        "name": "NICE COTE D'AZUR AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HNIC",
+        "name": "NICE L'ARCHET 2 CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNIV",
+        "name": "NICE LENVAL CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNIP",
+        "name": "NICE PASTEUR 2 CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNIM",
+        "name": "NIMES CAREMEAU CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNIO",
+        "name": "NIORT CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNDS",
+        "name": "NORD DEUX SEVRES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HNFC",
+        "name": "NORD FRANCHE COMTE",
+        "type": "heliport"
+    },
+    {
+        "id": "HOLO",
+        "name": "OLORON CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HORA",
+        "name": "ORANGE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HORL",
+        "name": "ORLEANS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HPAR",
+        "name": "PARAY LE MONIAL CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HPLR",
+        "name": "PARIS CENTRE HOSPITALIER LARIBOISIERE",
+        "type": "heliport"
+    },
+    {
+        "id": "LFPG",
+        "name": "PARIS CHARLES DE GAULLE AD",
+        "type": "heliport"
+    },
+    {
+        "id": "LFPI",
+        "name": "PARIS ISSY LES MOULINEAUX HELIPORT",
+        "type": "heliport"
+    },
+    {
+        "id": "LFPB",
+        "name": "PARIS LE BOURGET AD",
+        "type": "heliport"
+    },
+    {
+        "id": "LFPO",
+        "name": "PARIS ORLY AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HPAU",
+        "name": "PAU CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFBP",
+        "name": "PAU PYRENEES AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HPER",
+        "name": "PERIGUEUX CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HPPG",
+        "name": "PERPIGNAN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HPOI",
+        "name": "POITIERS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HPON",
+        "name": "PONTARLIER CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HPOR",
+        "name": "PORTO VECCHIO",
+        "type": "heliport"
+    },
+    {
+        "id": "HPRE",
+        "name": "PRECHAC",
+        "type": "heliport"
+    },
+    {
+        "id": "HQUI",
+        "name": "QUIMPER CORNOUAILLES",
+        "type": "heliport"
+    },
+    {
+        "id": "HRAN",
+        "name": "RANG DU FLIERS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HREM",
+        "name": "REIMS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HREP",
+        "name": "RENNES CENTRE HOSPITALIER UNIVERSITAIRE",
+        "type": "heliport"
+    },
+    {
+        "id": "HREN",
+        "name": "RENNEVILLE",
+        "type": "heliport"
+    },
+    {
+        "id": "HROA",
+        "name": "ROANNE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HBRN",
+        "name": "RODEZ BOURRAN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HROM",
+        "name": "ROMORANTIN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HROU",
+        "name": "ROUEN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HRYN",
+        "name": "ROYAN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAVO",
+        "name": "SAINT AVOLD CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSTB",
+        "name": "SAINT BRIEUC CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSTC",
+        "name": "SAINT CHAMOND CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFPZ",
+        "name": "SAINT CYR L'ECOLE",
+        "type": "heliport"
+    },
+    {
+        "id": "HSDI",
+        "name": "SAINT DIZIER CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSEN",
+        "name": "SAINT ETIENNE HOPITAL NORD",
+        "type": "heliport"
+    },
+    {
+        "id": "HFLO",
+        "name": "SAINT FLOUR CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSTM",
+        "name": "SAINT MALO CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSTN",
+        "name": "SAINT NAZAIRE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HOME",
+        "name": "SAINT OMER CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSTP",
+        "name": "SAINT POL SUR TERNOISE POLYCLINIQUE",
+        "type": "heliport"
+    },
+    {
+        "id": "HSTQ",
+        "name": "SAINT QUENTIN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSTS",
+        "name": "SAINTES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSPS",
+        "name": "SARAN POLE SANTE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSAR",
+        "name": "SARLAT LA CANEDA CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSAU",
+        "name": "SAUMUR CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HVOI",
+        "name": "SAVOIE HELICOPTERES",
+        "type": "heliport"
+    },
+    {
+        "id": "HSEL",
+        "name": "SELESTAT CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSEM",
+        "name": "SEMUR EN AUXOIS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSES",
+        "name": "SENS CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSET",
+        "name": "SETE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HAUT",
+        "name": "STRASBOURG HAUTEPIERRE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HSTR",
+        "name": "STRASBOURG N.H.C. CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HTON",
+        "name": "TONNERRE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HTSA",
+        "name": "TOULON SAINTE ANNE HOPITAL MILITAIRE",
+        "type": "heliport"
+    },
+    {
+        "id": "HTSM",
+        "name": "TOULON SAINTE MUSSE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFBO",
+        "name": "TOULOUSE BLAGNAC AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HTPP",
+        "name": "TOULOUSE PURPAN CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HTRP",
+        "name": "TOULOUSE RANGUEIL PECH DAVID CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HTOU",
+        "name": "TOURS TROUSSEAU CHU",
+        "type": "heliport"
+    },
+    {
+        "id": "LFPN",
+        "name": "TOUSSUS LE NOBLE AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HVDI",
+        "name": "VAL D'ISERE LA DAILLE",
+        "type": "heliport"
+    },
+    {
+        "id": "HVTH",
+        "name": "VAL THORENS",
+        "type": "heliport"
+    },
+    {
+        "id": "HVAL",
+        "name": "VALENCE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HVAC",
+        "name": "VALENCIENNES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HVAN",
+        "name": "VANNES CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HVEN",
+        "name": "VENDOME CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HVER",
+        "name": "VERNEUIL SUR AVRE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HVES",
+        "name": "VESOUL CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "LFPV",
+        "name": "VILLACOUBLAY AD",
+        "type": "heliport"
+    },
+    {
+        "id": "HVIL",
+        "name": "VILLEFRANCHE CENTRE HOSPITALIER",
+        "type": "heliport"
+    },
+    {
+        "id": "HVON",
+        "name": "VONNAS HOTEL GEORGES BLANC",
+        "type": "heliport"
+    }
+]

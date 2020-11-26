@@ -1,0 +1,1826 @@
+[
+    {
+        "id": "AGGG",
+        "type": "FIR",
+        "name": "Honiara",
+        "country": "Solomon Islands"
+    },
+    {
+        "id": "ANAU",
+        "type": "FIR",
+        "name": "Nauru",
+        "country": "Nauru"
+    },
+    {
+        "id": "AYPM",
+        "type": "FIR",
+        "name": "Port Moresby",
+        "country": "Papua New Guinea"
+    },
+    {
+        "id": "BGGL",
+        "type": "FIR",
+        "name": "Nuuk",
+        "country": "Greenland"
+    },
+    {
+        "id": "BIRD",
+        "type": "FIR",
+        "name": "Reykjavik",
+        "country": "Iceland"
+    },
+    {
+        "id": "CZEG",
+        "type": "FIR",
+        "name": "Edmonton",
+        "country": "Canada"
+    },
+    {
+        "id": "CZQM",
+        "type": "FIR",
+        "name": "Moncton Southern",
+        "country": "Canada"
+    },
+    {
+        "id": "CZQX",
+        "type": "FIR",
+        "name": "Gander Domestic",
+        "country": "Canada"
+    },
+    {
+        "id": "CZUL",
+        "type": "FIR",
+        "name": "Montreal",
+        "country": "Canada"
+    },
+    {
+        "id": "CZVR",
+        "type": "FIR",
+        "name": "Vancouver",
+        "country": "Canada"
+    },
+    {
+        "id": "CZWG",
+        "type": "FIR",
+        "name": "Winnipeg",
+        "country": "Canada"
+    },
+    {
+        "id": "CZYZ",
+        "type": "FIR",
+        "name": "Toronto",
+        "country": "Canada"
+    },
+    {
+        "id": "DAAA",
+        "type": "FIR",
+        "name": "Alger",
+        "country": "Algeria"
+    },
+    {
+        "id": "DGAC",
+        "type": "FIR",
+        "name": "Accra",
+        "country": "Ghana"
+    },
+    {
+        "id": "DIII",
+        "type": "FIR",
+        "name": "Abidjan",
+        "country": "Ivory Coast"
+    },
+    {
+        "id": "DNKK",
+        "type": "FIR",
+        "name": "Kano",
+        "country": "Nigeria"
+    },
+    {
+        "id": "DRRR",
+        "type": "FIR",
+        "name": "Niamey",
+        "country": "Niger"
+    },
+    {
+        "id": "DTTC",
+        "type": "FIR",
+        "name": "Tunis",
+        "country": "Tunisia"
+    },
+    {
+        "id": "EZZZ",
+        "type": "FIR",
+        "name": "Eurocontrol",
+        "country": "Belgium"
+    },
+    {
+        "id": "EBBU",
+        "type": "FIR",
+        "name": "Brussels",
+        "country": "Belgium"
+    },
+    {
+        "id": "EDGG",
+        "type": "FIR",
+        "name": "Langen",
+        "country": "Germany"
+    },
+    {
+        "id": "EDMM",
+        "type": "FIR",
+        "name": "Munich",
+        "country": "Germany"
+    },
+    {
+        "id": "EDUU",
+        "type": "FIR",
+        "name": "Rhein",
+        "country": "Germany"
+    },
+    {
+        "id": "EDVV",
+        "type": "FIR",
+        "name": "Hannover",
+        "country": "Germany"
+    },
+    {
+        "id": "EDWW",
+        "type": "FIR",
+        "name": "Bremen",
+        "country": "Germany"
+    },
+    {
+        "id": "EDYY",
+        "type": "FIR",
+        "name": "Maastricht",
+        "country": "Belgium, Germany, Netherlands"
+    },
+    {
+        "id": "EETT",
+        "type": "FIR",
+        "name": "Tallinn",
+        "country": "Estonia"
+    },
+    {
+        "id": "EFIN",
+        "type": "FIR",
+        "name": "Helsinki",
+        "country": "Finland"
+    },
+    {
+        "id": "EGGX",
+        "type": "FIR",
+        "name": "Shanwick Oceanic",
+        "country": "UK"
+    },
+    {
+        "id": "EGPX",
+        "type": "FIR",
+        "name": "Scottish",
+        "country": "UK"
+    },
+    {
+        "id": "EGQQ",
+        "type": "FIR",
+        "name": "Scottish ACC (Mil)",
+        "country": "UK"
+    },
+    {
+        "id": "EGTT",
+        "type": "FIR",
+        "name": "London",
+        "country": "UK"
+    },
+    {
+        "id": "EHAA",
+        "type": "FIR",
+        "name": "Amsterdam",
+        "country": "Netherlands"
+    },
+    {
+        "id": "EISN",
+        "type": "FIR",
+        "name": "Shannon",
+        "country": "Ireland"
+    },
+    {
+        "id": "EKDK",
+        "type": "FIR",
+        "name": "Copenhagen",
+        "country": "Denmark"
+    },
+    {
+        "id": "ENOB",
+        "type": "FIR",
+        "name": "Bodo Oceanic",
+        "country": "Norway"
+    },
+    {
+        "id": "ENOR",
+        "type": "FIR",
+        "name": "Polaris",
+        "country": "Norway"
+    },
+    {
+        "id": "EPWW",
+        "type": "FIR",
+        "name": "Warszawa",
+        "country": "Poland"
+    },
+    {
+        "id": "ESAA",
+        "type": "FIR",
+        "name": "Suecia",
+        "country": "Sweden"
+    },
+    {
+        "id": "ESMM",
+        "type": "FIR",
+        "name": "Malmo",
+        "country": "Sweden"
+    },
+    {
+        "id": "ESOS",
+        "type": "FIR",
+        "name": "Stockholm",
+        "country": "Sweden"
+    },
+    {
+        "id": "EVRR",
+        "type": "FIR",
+        "name": "Riga",
+        "country": "Latvia"
+    },
+    {
+        "id": "EYVL",
+        "type": "FIR",
+        "name": "Vilnius",
+        "country": "Lithuania"
+    },
+    {
+        "id": "FABL",
+        "type": "FIR",
+        "name": "Bloemfontein",
+        "country": "South Africa"
+    },
+    {
+        "id": "FACA",
+        "type": "FIR",
+        "name": "Capetown",
+        "country": "South Africa"
+    },
+    {
+        "id": "FACT",
+        "type": "FIR",
+        "name": "Capetown",
+        "country": "South Africa"
+    },
+    {
+        "id": "FADN",
+        "type": "FIR",
+        "name": "Durban",
+        "country": "South Africa"
+    },
+    {
+        "id": "FAJO",
+        "type": "FIR",
+        "name": "Johannesburg Oceanic",
+        "country": "South Africa"
+    },
+    {
+        "id": "FAJX",
+        "type": "FIR",
+        "name": "Johannesburg",
+        "country": "South Africa"
+    },
+    {
+        "id": "FAPX",
+        "type": "FIR",
+        "name": "Port Elizabeth",
+        "country": "South Africa"
+    },
+    {
+        "id": "FBGR",
+        "type": "FIR",
+        "name": "Gaborone",
+        "country": "Botswana"
+    },
+    {
+        "id": "FCCC",
+        "type": "FIR",
+        "name": "Brazzaville",
+        "country": "Congo Brazzaville"
+    },
+    {
+        "id": "FIMM",
+        "type": "FIR",
+        "name": "Mauritius",
+        "country": "Mauritius"
+    },
+    {
+        "id": "FKKK",
+        "type": "FIR",
+        "name": "Douala",
+        "country": "Cameroon"
+    },
+    {
+        "id": "FLFI",
+        "type": "FIR",
+        "name": "Lusaka",
+        "country": "Zambia"
+    },
+    {
+        "id": "FMCX",
+        "type": "FIR",
+        "name": "Comoros",
+        "country": "Comoros"
+    },
+    {
+        "id": "FMMM",
+        "type": "FIR",
+        "name": "Antananarivo",
+        "country": "Madagascar"
+    },
+    {
+        "id": "FNAN",
+        "type": "FIR",
+        "name": "Luanda",
+        "country": "Angola"
+    },
+    {
+        "id": "FOOO",
+        "type": "FIR",
+        "name": "Libreville",
+        "country": "Gabon"
+    },
+    {
+        "id": "FQBE",
+        "type": "FIR",
+        "name": "Beira",
+        "country": "Mozambique"
+    },
+    {
+        "id": "FSSS",
+        "type": "FIR",
+        "name": "Seychelles",
+        "country": "Seychelles"
+    },
+    {
+        "id": "FTTT",
+        "type": "FIR",
+        "name": "N'Djamena",
+        "country": "Chad"
+    },
+    {
+        "id": "FVHF",
+        "type": "FIR",
+        "name": "Harare",
+        "country": "Zimbabwe"
+    },
+    {
+        "id": "FWLL",
+        "type": "FIR",
+        "name": "Lilongwe",
+        "country": "Malawi"
+    },
+    {
+        "id": "FYWF",
+        "type": "FIR",
+        "name": "Windhoek",
+        "country": "Namibia"
+    },
+    {
+        "id": "FZZA",
+        "type": "FIR",
+        "name": "Kinshasa",
+        "country": "Congo DRC"
+    },
+    {
+        "id": "GCCC",
+        "type": "FIR",
+        "name": "Canarias",
+        "country": "Spain"
+    },
+    {
+        "id": "GLRB",
+        "type": "FIR",
+        "name": "Roberts",
+        "country": "Liberia"
+    },
+    {
+        "id": "GMMM",
+        "type": "FIR",
+        "name": "Casablanca",
+        "country": "Morocco"
+    },
+    {
+        "id": "GOOO",
+        "type": "FIR",
+        "name": "Dakar Oceanic",
+        "country": "Senegal"
+    },
+    {
+        "id": "GVSC",
+        "type": "FIR",
+        "name": "Sal Oceanic",
+        "country": "Cabo Verde"
+    },
+    {
+        "id": "HAAA",
+        "type": "FIR",
+        "name": "Addis Ababa",
+        "country": "Ethiopia"
+    },
+    {
+        "id": "HBBA",
+        "type": "FIR",
+        "name": "Bujumbura",
+        "country": "Burundi"
+    },
+    {
+        "id": "HCSM",
+        "type": "FIR",
+        "name": "Mogadishu",
+        "country": "Somalia"
+    },
+    {
+        "id": "HECC",
+        "type": "FIR",
+        "name": "Cairo",
+        "country": "Egypt"
+    },
+    {
+        "id": "HHAA",
+        "type": "FIR",
+        "name": "Asmara",
+        "country": "Egypt"
+    },
+    {
+        "id": "HKNA",
+        "type": "FIR",
+        "name": "Nairobi",
+        "country": "Kenya"
+    },
+    {
+        "id": "HLLL",
+        "type": "FIR",
+        "name": "Tripoli",
+        "country": "Libya"
+    },
+    {
+        "id": "HRYR",
+        "type": "FIR",
+        "name": "Kigali",
+        "country": "Rwanda"
+    },
+    {
+        "id": "HSSX",
+        "type": "FIR",
+        "name": "Khartoum",
+        "country": "Sudan"
+    },
+    {
+        "id": "HTDC",
+        "type": "FIR",
+        "name": "Dar Es Salaam",
+        "country": "Tanzania"
+    },
+    {
+        "id": "HUEC",
+        "type": "FIR",
+        "name": "Entebbe",
+        "country": "Uganda"
+    },
+    {
+        "id": "KZAB",
+        "type": "FIR",
+        "name": "Albuquerque",
+        "country": "USA"
+    },
+    {
+        "id": "KZAK",
+        "type": "FIR",
+        "name": "Oakland Oceanic",
+        "country": "USA"
+    },
+    {
+        "id": "KZAU",
+        "type": "FIR",
+        "name": "Chicago",
+        "country": "USA"
+    },
+    {
+        "id": "KZBW",
+        "type": "FIR",
+        "name": "Boston",
+        "country": "USA"
+    },
+    {
+        "id": "KZDC",
+        "type": "FIR",
+        "name": "Washington",
+        "country": "USA"
+    },
+    {
+        "id": "KZDV",
+        "type": "FIR",
+        "name": "Denver",
+        "country": "USA"
+    },
+    {
+        "id": "KZFW",
+        "type": "FIR",
+        "name": "Ft Worth",
+        "country": "USA"
+    },
+    {
+        "id": "KZHU",
+        "type": "FIR",
+        "name": "Houston",
+        "country": "USA"
+    },
+    {
+        "id": "KZID",
+        "type": "FIR",
+        "name": "Indianapolis",
+        "country": "USA"
+    },
+    {
+        "id": "KZJX",
+        "type": "FIR",
+        "name": "Jacksonville",
+        "country": "USA"
+    },
+    {
+        "id": "KZKC",
+        "type": "FIR",
+        "name": "Kansas City",
+        "country": "USA"
+    },
+    {
+        "id": "KZLA",
+        "type": "FIR",
+        "name": "Los Angeles",
+        "country": "USA"
+    },
+    {
+        "id": "KZLC",
+        "type": "FIR",
+        "name": "Salt Lake",
+        "country": "USA"
+    },
+    {
+        "id": "KZMA",
+        "type": "FIR",
+        "name": "Miami",
+        "country": "USA"
+    },
+    {
+        "id": "KZME",
+        "type": "FIR",
+        "name": "Memphis",
+        "country": "USA"
+    },
+    {
+        "id": "KZMP",
+        "type": "FIR",
+        "name": "Minneapolis",
+        "country": "USA"
+    },
+    {
+        "id": "KZNY",
+        "type": "FIR",
+        "name": "New York",
+        "country": "USA"
+    },
+    {
+        "id": "KZOA",
+        "type": "FIR",
+        "name": "Oakland",
+        "country": "USA"
+    },
+    {
+        "id": "KZOB",
+        "type": "FIR",
+        "name": "Cleveland",
+        "country": "USA"
+    },
+    {
+        "id": "KZSE",
+        "type": "FIR",
+        "name": "Seattle",
+        "country": "USA"
+    },
+    {
+        "id": "KZTL",
+        "type": "FIR",
+        "name": "Atlanta",
+        "country": "USA"
+    },
+    {
+        "id": "KZWY",
+        "type": "FIR",
+        "name": "New York Oceanic",
+        "country": "USA"
+    },
+    {
+        "id": "LAAA",
+        "type": "FIR",
+        "name": "Tirana",
+        "country": "Albania"
+    },
+    {
+        "id": "LBSR",
+        "type": "FIR",
+        "name": "Sofia",
+        "country": "Bulgaria"
+    },
+    {
+        "id": "LBWR",
+        "type": "FIR",
+        "name": "Varna",
+        "country": "Bulgaria"
+    },
+    {
+        "id": "LCCC",
+        "type": "FIR",
+        "name": "Nicosia",
+        "country": "Cyprus"
+    },
+    {
+        "id": "LDZO",
+        "type": "FIR",
+        "name": "Zagreb",
+        "country": "Croatia"
+    },
+    {
+        "id": "LECB",
+        "type": "FIR",
+        "name": "Barcelona",
+        "country": "Spain"
+    },
+    {
+        "id": "LECM",
+        "type": "FIR",
+        "name": "Madrid",
+        "country": "Spain"
+    },
+    {
+        "id": "LECS",
+        "type": "FIR",
+        "name": "Sevilla",
+        "country": "Spain"
+    },
+    {
+        "id": "LFBB",
+        "type": "FIR",
+        "name": "Bordeaux",
+        "country": "France"
+    },
+    {
+        "id": "LFEE",
+        "type": "FIR",
+        "name": "Reims",
+        "country": "France"
+    },
+    {
+        "id": "LFFF",
+        "type": "FIR",
+        "name": "Paris",
+        "country": "France"
+    },
+    {
+        "id": "LFMM",
+        "type": "FIR",
+        "name": "Marseille",
+        "country": "France"
+    },
+    {
+        "id": "LFRR",
+        "type": "FIR",
+        "name": "Brest",
+        "country": "France"
+    },
+    {
+        "id": "LGGG",
+        "type": "FIR",
+        "name": "Athens",
+        "country": "Greece"
+    },
+    {
+        "id": "LHCC",
+        "type": "FIR",
+        "name": "Budapest",
+        "country": "Hungary"
+    },
+    {
+        "id": "LIBB",
+        "type": "FIR",
+        "name": "Brindisi",
+        "country": "Italy"
+    },
+    {
+        "id": "LIMM",
+        "type": "FIR",
+        "name": "Milano",
+        "country": "Italy"
+    },
+    {
+        "id": "LIRR",
+        "type": "FIR",
+        "name": "Roma",
+        "country": "Italy"
+    },
+    {
+        "id": "LJLA",
+        "type": "FIR",
+        "name": "Ljubljana",
+        "country": "Slovenia"
+    },
+    {
+        "id": "LKAA",
+        "type": "FIR",
+        "name": "Praha",
+        "country": "Czech Republic"
+    },
+    {
+        "id": "LLLL",
+        "type": "FIR",
+        "name": "Tel-Aviv",
+        "country": "Israel"
+    },
+    {
+        "id": "LMMM",
+        "type": "FIR",
+        "name": "Malta",
+        "country": "Malta"
+    },
+    {
+        "id": "LOVV",
+        "type": "FIR",
+        "name": "Wien",
+        "country": "Austria"
+    },
+    {
+        "id": "LPPC",
+        "type": "FIR",
+        "name": "Lisboa",
+        "country": "Portugal"
+    },
+    {
+        "id": "LPPO",
+        "type": "FIR",
+        "name": "Santa Maria Oceanic",
+        "country": "Portugal"
+    },
+    {
+        "id": "LQSB",
+        "type": "FIR",
+        "name": "Sarajevo",
+        "country": "Bosnia and Herzegovina"
+    },
+    {
+        "id": "LRBB",
+        "type": "FIR",
+        "name": "Bucuresti",
+        "country": "Romania"
+    },
+    {
+        "id": "LSAG",
+        "type": "FIR",
+        "name": "Geneve",
+        "country": "Switzerland"
+    },
+    {
+        "id": "LSAS",
+        "type": "FIR",
+        "name": "Switzerland",
+        "country": "Switzerland"
+    },
+    {
+        "id": "LSAZ",
+        "type": "FIR",
+        "name": "Zurich",
+        "country": "Switzerland"
+    },
+    {
+        "id": "LTAA",
+        "type": "FIR",
+        "name": "Ankara",
+        "country": "Turkey"
+    },
+    {
+        "id": "LTBB",
+        "type": "FIR",
+        "name": "Istanbul",
+        "country": "Turkey"
+    },
+    {
+        "id": "LUUU",
+        "type": "FIR",
+        "name": "Chisinau",
+        "country": "Moldova"
+    },
+    {
+        "id": "LWSS",
+        "type": "FIR",
+        "name": "Skopje",
+        "country": "North Macedonia"
+    },
+    {
+        "id": "LYBA",
+        "type": "FIR",
+        "name": "Beograd",
+        "country": "Serbia"
+    },
+    {
+        "id": "LZBB",
+        "type": "FIR",
+        "name": "Bratislava",
+        "country": "Slovakia"
+    },
+    {
+        "id": "MDCS",
+        "type": "FIR",
+        "name": "Santo Domingo",
+        "country": "Dominican Republic"
+    },
+    {
+        "id": "MHTG",
+        "type": "FIR",
+        "name": "Central American",
+        "country": "Honduras"
+    },
+    {
+        "id": "MKJK",
+        "type": "FIR",
+        "name": "Kingston",
+        "country": "Jamaica"
+    },
+    {
+        "id": "MMFO",
+        "type": "FIR",
+        "name": "Mazatlan Oceanic",
+        "country": "Mexico"
+    },
+    {
+        "id": "MMFR",
+        "type": "FIR",
+        "name": "Mexico",
+        "country": "Mexico"
+    },
+    {
+        "id": "MPZL",
+        "type": "FIR",
+        "name": "Panama",
+        "country": "Panama"
+    },
+    {
+        "id": "MTEG",
+        "type": "FIR",
+        "name": "Port-Au-Prince",
+        "country": "Haiti"
+    },
+    {
+        "id": "MUFH",
+        "type": "FIR",
+        "name": "Habana",
+        "country": "Cuba"
+    },
+    {
+        "id": "MYNA",
+        "type": "FIR",
+        "name": "Nassau",
+        "country": "Bahamas"
+    },
+    {
+        "id": "NFFF",
+        "type": "FIR",
+        "name": "Nadi",
+        "country": "Fiji"
+    },
+    {
+        "id": "NTTT",
+        "type": "FIR",
+        "name": "Tahiti",
+        "country": "French Polynesia"
+    },
+    {
+        "id": "NWWX",
+        "type": "FIR",
+        "name": "Noumea",
+        "country": "New Caledonia"
+    },
+    {
+        "id": "NZZC",
+        "type": "FIR",
+        "name": "New Zealand",
+        "country": "New Zealand"
+    },
+    {
+        "id": "NZZO",
+        "type": "FIR",
+        "name": "Auckland Oceanic",
+        "country": "New Zealand"
+    },
+    {
+        "id": "OAKX",
+        "type": "FIR",
+        "name": "Kabul",
+        "country": "Afghanistan"
+    },
+    {
+        "id": "OBBB",
+        "type": "FIR",
+        "name": "Bahrain",
+        "country": "Bahrain"
+    },
+    {
+        "id": "OEJD",
+        "type": "FIR",
+        "name": "Jeddah",
+        "country": "Saudi Arabia"
+    },
+    {
+        "id": "OIIX",
+        "type": "FIR",
+        "name": "Tehran",
+        "country": "Iran"
+    },
+    {
+        "id": "OJAC",
+        "type": "FIR",
+        "name": "Amman",
+        "country": "Jordan"
+    },
+    {
+        "id": "OKAC",
+        "type": "FIR",
+        "name": "Kuwait",
+        "country": "Kuwait"
+    },
+    {
+        "id": "OLBB",
+        "type": "FIR",
+        "name": "Beirut",
+        "country": "Lebanon"
+    },
+    {
+        "id": "OMAE",
+        "type": "FIR",
+        "name": "Emirates",
+        "country": "United Arab Emirates"
+    },
+    {
+        "id": "OOMM",
+        "type": "FIR",
+        "name": "Muscat",
+        "country": "Oman"
+    },
+    {
+        "id": "OPKR",
+        "type": "FIR",
+        "name": "Karachi",
+        "country": "Pakistan"
+    },
+    {
+        "id": "OPLR",
+        "type": "FIR",
+        "name": "Lahore",
+        "country": "Pakistan"
+    },
+    {
+        "id": "ORBB",
+        "type": "FIR",
+        "name": "Baghdad",
+        "country": "Iraq"
+    },
+    {
+        "id": "ORMM",
+        "type": "FIR",
+        "name": "ORMM",
+        "country": "Iraq"
+    },
+    {
+        "id": "OSTT",
+        "type": "FIR",
+        "name": "Damascus",
+        "country": "Syria"
+    },
+    {
+        "id": "OYSC",
+        "type": "FIR",
+        "name": "Sanaa",
+        "country": "Yemen"
+    },
+    {
+        "id": "PAZA",
+        "type": "FIR",
+        "name": "Anchorage",
+        "country": "USA"
+    },
+    {
+        "id": "PAZN",
+        "type": "FIR",
+        "name": "Anchorage Oceanic",
+        "country": "USA"
+    },
+    {
+        "id": "PHZH",
+        "type": "FIR",
+        "name": "Honolulu",
+        "country": "USA"
+    },
+    {
+        "id": "RCAA",
+        "type": "FIR",
+        "name": "Taipei",
+        "country": "Taiwan"
+    },
+    {
+        "id": "RJJJ",
+        "type": "FIR",
+        "name": "Fukuoka",
+        "country": "Japan"
+    },
+    {
+        "id": "RKRR",
+        "type": "FIR",
+        "name": "Incheon",
+        "country": "South Korea"
+    },
+    {
+        "id": "RPHI",
+        "type": "FIR",
+        "name": "Manila",
+        "country": "Philippines"
+    },
+    {
+        "id": "SACF",
+        "type": "FIR",
+        "name": "Cordoba",
+        "country": "Argentina"
+    },
+    {
+        "id": "SACU",
+        "type": "FIR",
+        "name": "Cordoba",
+        "country": "Argentina"
+    },
+    {
+        "id": "SAEF",
+        "type": "FIR",
+        "name": "Ezeiza",
+        "country": "Argentina"
+    },
+    {
+        "id": "SAEU",
+        "type": "FIR",
+        "name": "Ezeiza",
+        "country": "Argentina"
+    },
+    {
+        "id": "SAMF",
+        "type": "FIR",
+        "name": "Mendoza",
+        "country": "Argentina"
+    },
+    {
+        "id": "SAMV",
+        "type": "FIR",
+        "name": "Mendoza",
+        "country": "Argentina"
+    },
+    {
+        "id": "SARR",
+        "type": "FIR",
+        "name": "Resistencia",
+        "country": "Argentina"
+    },
+    {
+        "id": "SAVF",
+        "type": "FIR",
+        "name": "Comodoro Rivadavia",
+        "country": "Argentina"
+    },
+    {
+        "id": "SAVU",
+        "type": "FIR",
+        "name": "Comodoro Rivadavia",
+        "country": "Argentina"
+    },
+    {
+        "id": "SBAO",
+        "type": "FIR",
+        "name": "Atlantico",
+        "country": "Brazil"
+    },
+    {
+        "id": "SBAZ",
+        "type": "FIR",
+        "name": "Amazonica",
+        "country": "Brazil"
+    },
+    {
+        "id": "SBBS",
+        "type": "FIR",
+        "name": "Brasilia",
+        "country": "Brazil"
+    },
+    {
+        "id": "SBCW",
+        "type": "FIR",
+        "name": "Curitiba",
+        "country": "Brazil"
+    },
+    {
+        "id": "SBRE",
+        "type": "FIR",
+        "name": "Recife",
+        "country": "Brazil"
+    },
+    {
+        "id": "SCCZ",
+        "type": "FIR",
+        "name": "Punta Arenas",
+        "country": "Chile"
+    },
+    {
+        "id": "SCEZ",
+        "type": "FIR",
+        "name": "Santiago",
+        "country": "Chile"
+    },
+    {
+        "id": "SCFZ",
+        "type": "FIR",
+        "name": "Antofagasta",
+        "country": "Chile"
+    },
+    {
+        "id": "SCIZ",
+        "type": "FIR",
+        "name": "Easter I.",
+        "country": "Chile"
+    },
+    {
+        "id": "SCTZ",
+        "type": "FIR",
+        "name": "Puerto Montt",
+        "country": "Chile"
+    },
+    {
+        "id": "SEFG",
+        "type": "FIR",
+        "name": "Guayaquil",
+        "country": "Ecuador"
+    },
+    {
+        "id": "SGFA",
+        "type": "FIR",
+        "name": "Asuncion",
+        "country": "Paraguay"
+    },
+    {
+        "id": "SKEC",
+        "type": "FIR",
+        "name": "Barranquilla",
+        "country": "Colombia"
+    },
+    {
+        "id": "SKED",
+        "type": "FIR",
+        "name": "Bogota",
+        "country": "Colombia"
+    },
+    {
+        "id": "SLLF",
+        "type": "FIR",
+        "name": "La Paz",
+        "country": "Bolivia"
+    },
+    {
+        "id": "SMPM",
+        "type": "FIR",
+        "name": "Paramaribo",
+        "country": "Suriname"
+    },
+    {
+        "id": "SOOO",
+        "type": "FIR",
+        "name": "Rochambeau",
+        "country": "French Guiana"
+    },
+    {
+        "id": "SPIM",
+        "type": "FIR",
+        "name": "Lima",
+        "country": "Peru"
+    },
+    {
+        "id": "SUEO",
+        "type": "FIR",
+        "name": "Montevideo",
+        "country": "Uruguay"
+    },
+    {
+        "id": "SVZM",
+        "type": "FIR",
+        "name": "Maiquetia",
+        "country": "Venezuela"
+    },
+    {
+        "id": "SYGC",
+        "type": "FIR",
+        "name": "Georgetown",
+        "country": "Guyana"
+    },
+    {
+        "id": "TJZS",
+        "type": "FIR",
+        "name": "San Juan",
+        "country": "USA"
+    },
+    {
+        "id": "TNCF",
+        "type": "FIR",
+        "name": "Curacao",
+        "country": "Netherlands Antilles"
+    },
+    {
+        "id": "TTZP",
+        "type": "FIR",
+        "name": "Piarco",
+        "country": "Trinidad and Tobago"
+    },
+    {
+        "id": "UAAX",
+        "type": "FIR",
+        "name": "Almaty",
+        "country": "Kazakhstan"
+    },
+    {
+        "id": "UACX",
+        "type": "FIR",
+        "name": "Astana",
+        "country": "Kazakhstan"
+    },
+    {
+        "id": "UAFX",
+        "type": "FIR",
+        "name": "Bishkek",
+        "country": "Kyrgyzstan"
+    },
+    {
+        "id": "UASS",
+        "type": "FIR",
+        "name": "Semipalatinsk",
+        "country": "Kazakhstan"
+    },
+    {
+        "id": "UDDD",
+        "type": "FIR",
+        "name": "Yerevan",
+        "country": "Armenia"
+    },
+    {
+        "id": "UEMH",
+        "type": "FIR",
+        "name": "Tyoply Klyuch",
+        "country": "Russia"
+    },
+    {
+        "id": "UENN",
+        "type": "FIR",
+        "name": "Nyurba",
+        "country": "Russia"
+    },
+    {
+        "id": "UESS",
+        "type": "FIR",
+        "name": "Chersky",
+        "country": "Russia"
+    },
+    {
+        "id": "UESU",
+        "type": "FIR",
+        "name": "Zyryanka",
+        "country": "Russia"
+    },
+    {
+        "id": "UEVV",
+        "type": "FIR",
+        "name": "Gigansk",
+        "country": "Russia"
+    },
+    {
+        "id": "UGEE",
+        "type": "FIR",
+        "name": "Yerevan/Zvartnots",
+        "country": "Russia"
+    },
+    {
+        "id": "UGGG",
+        "type": "FIR",
+        "name": "Tbilisi",
+        "country": "Georgia"
+    },
+    {
+        "id": "UHBI",
+        "type": "FIR",
+        "name": "Magdagachi",
+        "country": "Russia"
+    },
+    {
+        "id": "UHMI",
+        "type": "FIR",
+        "name": "Mys Shmidta",
+        "country": "Russia"
+    },
+    {
+        "id": "UHMP",
+        "type": "FIR",
+        "name": "Pevek",
+        "country": "Russia"
+    },
+    {
+        "id": "UHNN",
+        "type": "FIR",
+        "name": "Nikolayevsk-na-Amure",
+        "country": "Russia"
+    },
+    {
+        "id": "UHPT",
+        "type": "FIR",
+        "name": "Tilichiki",
+        "country": "Russia"
+    },
+    {
+        "id": "UHPU",
+        "type": "FIR",
+        "name": "Ust-Khairyozovo",
+        "country": "Russia"
+    },
+    {
+        "id": "UHSH",
+        "type": "FIR",
+        "name": "Okha",
+        "country": "Russia"
+    },
+    {
+        "id": "UIKB",
+        "type": "FIR",
+        "name": "Bodaybo",
+        "country": "Russia"
+    },
+    {
+        "id": "UIKK",
+        "type": "FIR",
+        "name": "Kirensk",
+        "country": "Russia"
+    },
+    {
+        "id": "UKBV",
+        "type": "FIR",
+        "name": "Kyiv",
+        "country": "Ukraine"
+    },
+    {
+        "id": "UKCV",
+        "type": "FIR",
+        "name": "Donetsk",
+        "country": "Ukraine"
+    },
+    {
+        "id": "UKDV",
+        "type": "FIR",
+        "name": "Dnepropetrovsk",
+        "country": "Ukraine"
+    },
+    {
+        "id": "UKFV",
+        "type": "FIR",
+        "name": "Simferopol",
+        "country": "Ukraine"
+    },
+    {
+        "id": "UKHV",
+        "type": "FIR",
+        "name": "Kharkiv",
+        "country": "Ukraine"
+    },
+    {
+        "id": "UKLV",
+        "type": "FIR",
+        "name": "Lviv",
+        "country": "Ukraine"
+    },
+    {
+        "id": "UKOV",
+        "type": "FIR",
+        "name": "Odesa",
+        "country": "Ukraine"
+    },
+    {
+        "id": "ULLL",
+        "type": "FIR",
+        "name": "Sankt Peterburg",
+        "country": "Russia"
+    },
+    {
+        "id": "ULOL",
+        "type": "FIR",
+        "name": "Velikiye Luki",
+        "country": "Russia"
+    },
+    {
+        "id": "UMKD",
+        "type": "FIR",
+        "name": "Kazan",
+        "country": "Russia"
+    },
+    {
+        "id": "UMMV",
+        "type": "FIR",
+        "name": "Minsk",
+        "country": "Belarus"
+    },
+    {
+        "id": "UNLL",
+        "type": "FIR",
+        "name": "Kolpashevo",
+        "country": "Russia"
+    },
+    {
+        "id": "UOTT",
+        "type": "FIR",
+        "name": "Turukhansk",
+        "country": "Russia"
+    },
+    {
+        "id": "URRV",
+        "type": "FIR",
+        "name": "Rostov-Na-Donu",
+        "country": "Russia"
+    },
+    {
+        "id": "USDK",
+        "type": "FIR",
+        "name": "Mys Kamenny",
+        "country": "Russia"
+    },
+    {
+        "id": "USHB",
+        "type": "FIR",
+        "name": "Beryozovo",
+        "country": "Russia"
+    },
+    {
+        "id": "USHH",
+        "type": "FIR",
+        "name": "Khanty-Mansiysk",
+        "country": "Russia"
+    },
+    {
+        "id": "UTAK",
+        "type": "FIR",
+        "name": "Turkmenbashi",
+        "country": "Turkmenistan"
+    },
+    {
+        "id": "UTNR",
+        "type": "FIR",
+        "name": "Nukus",
+        "country": "Uzbekistan"
+    },
+    {
+        "id": "UTSD",
+        "type": "FIR",
+        "name": "Samarkand",
+        "country": "Uzbekistan"
+    },
+    {
+        "id": "UTTR",
+        "type": "FIR",
+        "name": "Tashkent",
+        "country": "Uzbekistan"
+    },
+    {
+        "id": "UUWV",
+        "type": "FIR",
+        "name": "Moscow",
+        "country": "Russia"
+    },
+    {
+        "id": "UUYW",
+        "type": "FIR",
+        "name": "Vorkuta",
+        "country": "Russia"
+    },
+    {
+        "id": "UUYY",
+        "type": "FIR",
+        "name": "Syktyvkar",
+        "country": "Russia"
+    },
+    {
+        "id": "UWOO",
+        "type": "FIR",
+        "name": "Orenburg/Tsentralny",
+        "country": "Russia"
+    },
+    {
+        "id": "VABF",
+        "type": "FIR",
+        "name": "Mumbai",
+        "country": "India"
+    },
+    {
+        "id": "VCCC",
+        "type": "FIR",
+        "name": "Colombo",
+        "country": "Sri Lanka"
+    },
+    {
+        "id": "VECF",
+        "type": "FIR",
+        "name": "Kolkata",
+        "country": "India"
+    },
+    {
+        "id": "VGFR",
+        "type": "FIR",
+        "name": "Dhaka",
+        "country": "Bangladesh"
+    },
+    {
+        "id": "VHHK",
+        "type": "FIR",
+        "name": "Hong Kong",
+        "country": "Hong Kong"
+    },
+    {
+        "id": "VIDF",
+        "type": "FIR",
+        "name": "Delhi",
+        "country": "India"
+    },
+    {
+        "id": "VLIV",
+        "type": "FIR",
+        "name": "Vientiane",
+        "country": "Laos"
+    },
+    {
+        "id": "VLVT",
+        "type": "FIR",
+        "name": "Vientiane",
+        "country": "Laos"
+    },
+    {
+        "id": "VNSM",
+        "type": "FIR",
+        "name": "Kathmandu",
+        "country": "Nepal"
+    },
+    {
+        "id": "VOMF",
+        "type": "FIR",
+        "name": "Chennai",
+        "country": "India"
+    },
+    {
+        "id": "VRMF",
+        "type": "FIR",
+        "name": "Male",
+        "country": "Maldives"
+    },
+    {
+        "id": "VTBB",
+        "type": "FIR",
+        "name": "Bangkok",
+        "country": "Thailand"
+    },
+    {
+        "id": "VVTS",
+        "type": "FIR",
+        "name": "Ho-Chi-Minh",
+        "country": "Vietnam"
+    },
+    {
+        "id": "VVVV",
+        "type": "FIR",
+        "name": "Hanoi",
+        "country": "Vietnam"
+    },
+    {
+        "id": "VYMD",
+        "type": "FIR",
+        "name": "",
+        "country": "Myanmar"
+    },
+    {
+        "id": "VYYF",
+        "type": "FIR",
+        "name": "Yangon",
+        "country": "Myanmar"
+    },
+    {
+        "id": "WAAF",
+        "type": "FIR",
+        "name": "Ujung Pandang",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WAAZ",
+        "type": "FIR",
+        "name": "Ujung Pandang",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WABZ",
+        "type": "FIR",
+        "name": "Biak",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WADZ",
+        "type": "FIR",
+        "name": "Bali",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WAJZ",
+        "type": "FIR",
+        "name": "",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WAKZ",
+        "type": "FIR",
+        "name": "Merauke",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WALZ",
+        "type": "FIR",
+        "name": "Balikpapan",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WAMZ",
+        "type": "FIR",
+        "name": "Manado",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WAOZ",
+        "type": "FIR",
+        "name": "Banjarmasin",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WAPZ",
+        "type": "FIR",
+        "name": "Ambon",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WATZ",
+        "type": "FIR",
+        "name": "Kupang",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WBFC",
+        "type": "FIR",
+        "name": "Kota Kinabalu",
+        "country": "Brunei / Malaysia"
+    },
+    {
+        "id": "WIIF",
+        "type": "FIR",
+        "name": "Jakarta",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WIIZ",
+        "type": "FIR",
+        "name": "Jakarta",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WIMZ",
+        "type": "FIR",
+        "name": "Medan",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WIOZ",
+        "type": "FIR",
+        "name": "Pontianak",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WIPZ",
+        "type": "FIR",
+        "name": "Palembang",
+        "country": "Indonesia"
+    },
+    {
+        "id": "WMFC",
+        "type": "FIR",
+        "name": "Kuala Lumpur",
+        "country": "Malaysia"
+    },
+    {
+        "id": "WSJC",
+        "type": "FIR",
+        "name": "Singapore",
+        "country": "Singapore"
+    },
+    {
+        "id": "YBBB",
+        "type": "FIR",
+        "name": "Brisbane",
+        "country": "Australia"
+    },
+    {
+        "id": "YMMM",
+        "type": "FIR",
+        "name": "Melbourne",
+        "country": "Australia"
+    },
+    {
+        "id": "ZBPE",
+        "type": "FIR",
+        "name": "Beijing",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZGJD",
+        "type": "FIR",
+        "name": "Zhuhai",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZGZU",
+        "type": "FIR",
+        "name": "Guangzhou",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZHWH",
+        "type": "FIR",
+        "name": "Wuhan",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZJSA",
+        "type": "FIR",
+        "name": "Sanya",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZKKP",
+        "type": "FIR",
+        "name": "Pyongyang",
+        "country": "North Korea"
+    },
+    {
+        "id": "ZLHW",
+        "type": "FIR",
+        "name": "Lanzhou",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZMUB",
+        "type": "FIR",
+        "name": "Ulan Bator",
+        "country": "Mongolia"
+    },
+    {
+        "id": "ZPKM",
+        "type": "FIR",
+        "name": "Kunming",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZSHA",
+        "type": "FIR",
+        "name": "Shanghai",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZWUQ",
+        "type": "FIR",
+        "name": "Urumqi",
+        "country": "China Mainland"
+    },
+    {
+        "id": "ZYSH",
+        "type": "FIR",
+        "name": "Shenyang",
+        "country": "China Mainland"
+    }
+]

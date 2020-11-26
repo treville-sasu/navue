@@ -1,6 +1,6 @@
 <template>
   <section>
-    <section class="hero is-primary is-hidden-mobile">
+    <section class="hero is-primary is-hidden-mobile" v-if="codes.length == 0">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">Approach Charts</h1>
@@ -10,25 +10,34 @@
         </div>
       </div>
     </section>
-    <div class="notification">
+    <div
+      class="notification"
+      v-bind:class="{ 'is-loading': baseURL === null && !error }"
+    >
+      <div
+        class="message level is-warning is-overlay"
+        v-bind:class="{ 'is-hidden': !error }"
+        style="z-index: 6; margin-bottom: 0"
+      >
+        <div class="level-item has-text-centered" style="display: inline-block">
+          <h4 class="title">
+            <b-icon
+              icon="alert-circle-outline"
+              type="is-danger"
+              size="is-large"
+            />
+            SIA Server Unavailable
+          </h4>
+          <p class="heading">
+            Check your connection or use SIA server directly
+          </p>
+          <a href="https://www.sia.aviation-civile.gouv.fr/" target="_blank"
+            >https://www.sia.aviation-civile.gouv.fr/</a
+          >
+        </div>
+      </div>
       <b-field label="ICAO Code for Airports" expanded>
-        <b-taginput
-          v-model="codes"
-          autocomplete
-          :data="filteredTags"
-          @typing="getFilteredCodes"
-          icon="label"
-          placeholder="LFxx, ..., tar..."
-          maxtags="50"
-          maxlength="4"
-          field="id"
-        >
-          <template slot-scope="props">
-            <strong>{{ props.option.id }}</strong
-            >: <i>{{ props.option.name }}</i>
-          </template>
-          <template slot="empty"> Code not found. </template>
-        </b-taginput>
+        <b-icao v-model="codes" />
       </b-field>
     </div>
 
@@ -51,7 +60,7 @@
 </template>
 
 <script>
-const data = require("@/store/vac.json");
+import BIcao from "@/components/BIcao.vue";
 
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";
@@ -60,20 +69,25 @@ import Sia from "@/mixins/Sia";
 export default {
   name: "ApproachChart",
   components: {
+    BIcao,
     ChartCartridge,
     PDFModal
   },
   mixins: [Sia],
   data() {
     return {
-      baseURL: null,
+      error: false,
       codes: [],
-      openChartUrl: null,
-      filteredTags: data
+      baseURL: null,
+      openChartUrl: null
     };
   },
   async mounted() {
-    this.baseURL = await this.getVACbaseUrl(this.VACSourceUrl);
+    try {
+      this.baseURL = await this.getVACbaseUrl(this.VACSourceUrl);
+    } catch {
+      this.error = true;
+    }
   },
   computed: {
     proxyChartUrl: {
@@ -83,22 +97,6 @@ export default {
       set(val) {
         this.openChartUrl = val;
       }
-    }
-  },
-  methods: {
-    getFilteredCodes(text) {
-      this.filteredTags = data.filter(option => {
-        return (
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(text.toLowerCase()) >= 0 ||
-          option.id
-            .toString()
-            .toLowerCase()
-            .indexOf(text.toLowerCase()) >= 0
-        );
-      });
     }
   },
   filters: {

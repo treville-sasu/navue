@@ -1,1679 +1,2098 @@
 [
   {
     "id": "LFOI",
-    "name": "ABBEVILLE"
+    "name": "ABBEVILLE",
+    "type": "airport"
   },
   {
     "id": "LFBA",
-    "name": "AGEN LA GARENNE"
+    "name": "AGEN LA GARENNE",
+    "type": "airport"
   },
   {
     "id": "LFDA",
-    "name": "AIRE SUR L'ADOUR"
+    "name": "AIRE SUR L'ADOUR",
+    "type": "airport"
   },
   {
     "id": "LFMA",
-    "name": "AIX LES MILLES"
+    "name": "AIX LES MILLES",
+    "type": "airport"
   },
   {
     "id": "LFKJ",
-    "name": "AJACCIO NAPOLEON BONAPARTE"
+    "name": "AJACCIO NAPOLEON BONAPARTE",
+    "type": "airport"
   },
   {
     "id": "LFAQ",
-    "name": "ALBERT BRAY"
+    "name": "ALBERT BRAY",
+    "type": "airport"
   },
   {
     "id": "LFKA",
-    "name": "ALBERTVILLE GÃ©nÃ©ral Pierre Delachenal"
+    "name": "ALBERTVILLE GÃ©nÃ©ral Pierre Delachenal",
+    "type": "airport"
   },
   {
     "id": "LFCI",
-    "name": "ALBI LE SEQUESTRE"
+    "name": "ALBI LE SEQUESTRE",
+    "type": "airport"
   },
   {
     "id": "LFOF",
-    "name": "ALENCON VALFRAMBERT"
+    "name": "ALENCON VALFRAMBERT",
+    "type": "airport"
   },
   {
     "id": "LFMS",
-    "name": "ALES CEVENNES"
+    "name": "ALES CEVENNES",
+    "type": "airport"
   },
   {
     "id": "LFXA",
-    "name": "AMBERIEU"
+    "name": "AMBERIEU",
+    "type": "airport"
   },
   {
     "id": "LFHT",
-    "name": "AMBERT LE POYET"
+    "name": "AMBERT LE POYET",
+    "type": "airport"
   },
   {
     "id": "LFEF",
-    "name": "AMBOISE DIERRE"
+    "name": "AMBOISE DIERRE",
+    "type": "airport"
   },
   {
     "id": "LFAY",
-    "name": "AMIENS-GLISY"
+    "name": "AMIENS-GLISY",
+    "type": "airport"
   },
   {
     "id": "LFFI",
-    "name": "ANCENIS"
+    "name": "ANCENIS",
+    "type": "airport"
   },
   {
     "id": "LFCD",
-    "name": "ANDERNOS LES BAINS"
+    "name": "ANDERNOS LES BAINS",
+    "type": "airport"
   },
   {
     "id": "LFJR",
-    "name": "ANGERS MARCE"
+    "name": "ANGERS MARCE",
+    "type": "airport"
   },
   {
     "id": "LFBU",
-    "name": "ANGOULEME BRIE CHAMPNIERS"
+    "name": "ANGOULEME BRIE CHAMPNIERS",
+    "type": "airport"
   },
   {
     "id": "LFLP",
-    "name": "ANNECY MEYTHET"
+    "name": "ANNECY MEYTHET",
+    "type": "airport"
   },
   {
     "id": "LFLI",
-    "name": "ANNEMASSE"
+    "name": "ANNEMASSE",
+    "type": "airport"
   },
   {
     "id": "LFCH",
-    "name": "ARCACHON LA TESTE DE BUCH"
+    "name": "ARCACHON LA TESTE DE BUCH",
+    "type": "airport"
   },
   {
     "id": "LFAJ",
-    "name": "ARGENTAN"
+    "name": "ARGENTAN",
+    "type": "airport"
   },
   {
     "id": "LFEG",
-    "name": "ARGENTON SUR CREUSE"
+    "name": "ARGENTON SUR CREUSE",
+    "type": "airport"
   },
   {
     "id": "LFQD",
-    "name": "ARRAS ROCLINCOURT"
+    "name": "ARRAS ROCLINCOURT",
+    "type": "airport"
   },
   {
     "id": "LFNJ",
-    "name": "ASPRES SUR BUECH"
+    "name": "ASPRES SUR BUECH",
+    "type": "airport"
   },
   {
     "id": "LFHO",
-    "name": "AUBENAS ARDECHE MERIDIONALE"
+    "name": "AUBENAS ARDECHE MERIDIONALE",
+    "type": "airport"
   },
   {
     "id": "LFJF",
-    "name": "AUBENASSON"
+    "name": "AUBENASSON",
+    "type": "airport"
   },
   {
     "id": "LFEH",
-    "name": "AUBIGNY SUR NERE"
+    "name": "AUBIGNY SUR NERE",
+    "type": "airport"
   },
   {
     "id": "LFDH",
-    "name": "AUCH GERS"
+    "name": "AUCH GERS",
+    "type": "airport"
   },
   {
     "id": "LFLW",
-    "name": "AURILLAC"
+    "name": "AURILLAC",
+    "type": "airport"
   },
   {
     "id": "LFQF",
-    "name": "AUTUN BELLEVUE"
+    "name": "AUTUN BELLEVUE",
+    "type": "airport"
   },
   {
     "id": "LFLA",
-    "name": "AUXERRE BRANCHES"
+    "name": "AUXERRE BRANCHES",
+    "type": "airport"
   },
   {
     "id": "LFGE",
-    "name": "AVALLON"
+    "name": "AVALLON",
+    "type": "airport"
   },
   {
     "id": "LFMV",
-    "name": "AVIGNON CAUMONT"
+    "name": "AVIGNON CAUMONT",
+    "type": "airport"
   },
   {
     "id": "LFNT",
-    "name": "AVIGNON PUJAUT"
+    "name": "AVIGNON PUJAUT",
+    "type": "airport"
   },
   {
     "id": "LFRW",
-    "name": "AVRANCHES LE VAL SAINT PERE"
+    "name": "AVRANCHES LE VAL SAINT PERE",
+    "type": "airport"
   },
   {
     "id": "LFCB",
-    "name": "BAGNERES DE LUCHON"
+    "name": "BAGNERES DE LUCHON",
+    "type": "airport"
   },
   {
     "id": "LFAO",
-    "name": "BAGNOLES DE L'ORNE COUTERNE"
+    "name": "BAGNOLES DE L'ORNE COUTERNE",
+    "type": "airport"
   },
   {
     "id": "LFFL",
-    "name": "BAILLEAU ARMENONVILLE"
+    "name": "BAILLEAU ARMENONVILLE",
+    "type": "airport"
   },
   {
     "id": "LFSB",
-    "name": "BALE-MULHOUSE"
+    "name": "BALE-MULHOUSE",
+    "type": "airport"
   },
   {
     "id": "LFEU",
-    "name": "BAR LE DUC LES HAUTS DE CHEE"
+    "name": "BAR LE DUC LES HAUTS DE CHEE",
+    "type": "airport"
   },
   {
     "id": "LFFR",
-    "name": "BAR SUR SEINE"
+    "name": "BAR SUR SEINE",
+    "type": "airport"
   },
   {
     "id": "LFMR",
-    "name": "BARCELONNETTE SAINT PONS"
+    "name": "BARCELONNETTE SAINT PONS",
+    "type": "airport"
   },
   {
     "id": "LFKB",
-    "name": "BASTIA PORETTA"
+    "name": "BASTIA PORETTA",
+    "type": "airport"
   },
   {
     "id": "LFGF",
-    "name": "BEAUNE CHALLANGES"
+    "name": "BEAUNE CHALLANGES",
+    "type": "airport"
   },
   {
     "id": "LFOB",
-    "name": "BEAUVAIS TILLE"
+    "name": "BEAUVAIS TILLE",
+    "type": "airport"
   },
   {
     "id": "LFFO",
-    "name": "BEAUVOIR FROMENTINE"
+    "name": "BEAUVOIR FROMENTINE",
+    "type": "airport"
   },
   {
     "id": "LFNX",
-    "name": "BEDARIEUX LA TOUR SUR ORB"
+    "name": "BEDARIEUX LA TOUR SUR ORB",
+    "type": "airport"
   },
   {
     "id": "LFGG",
-    "name": "BELFORT CHAUX"
+    "name": "BELFORT CHAUX",
+    "type": "airport"
   },
   {
     "id": "LFEA",
-    "name": "BELLE ILE"
+    "name": "BELLE ILE",
+    "type": "airport"
   },
   {
     "id": "LFHN",
-    "name": "BELLEGARDE VOUVRAY"
+    "name": "BELLEGARDE VOUVRAY",
+    "type": "airport"
   },
   {
     "id": "LFHW",
-    "name": "BELLEVILLE VILLIE MORGON"
+    "name": "BELLEVILLE VILLIE MORGON",
+    "type": "airport"
   },
   {
     "id": "LFKY",
-    "name": "BELLEY-PEYRIEU"
+    "name": "BELLEY-PEYRIEU",
+    "type": "airport"
   },
   {
     "id": "LFIB",
-    "name": "BELVES SAINT PARDOUX"
+    "name": "BELVES SAINT PARDOUX",
+    "type": "airport"
   },
   {
     "id": "LFAM",
-    "name": "BERCK SUR MER"
+    "name": "BERCK SUR MER",
+    "type": "airport"
   },
   {
     "id": "LFBE",
-    "name": "BERGERAC DORDOGNE PERIGORD"
+    "name": "BERGERAC DORDOGNE PERIGORD",
+    "type": "airport"
   },
   {
     "id": "LFPD",
-    "name": "BERNAY SAINT MARTIN"
+    "name": "BERNAY SAINT MARTIN",
+    "type": "airport"
   },
   {
     "id": "LFNR",
-    "name": "BERRE LA FARE"
+    "name": "BERRE LA FARE",
+    "type": "airport"
   },
   {
     "id": "LFQM",
-    "name": "BESANCON LA VEZE"
+    "name": "BESANCON LA VEZE",
+    "type": "airport"
   },
   {
     "id": "LFSA",
-    "name": "BESANCON THISE"
+    "name": "BESANCON THISE",
+    "type": "airport"
   },
   {
     "id": "LFPF",
-    "name": "BEYNES THIVERVAL"
+    "name": "BEYNES THIVERVAL",
+    "type": "airport"
   },
   {
     "id": "LFMU",
-    "name": "BEZIERS VIAS"
+    "name": "BEZIERS VIAS",
+    "type": "airport"
   },
   {
     "id": "LFBZ",
-    "name": "BIARRITZ PAYS BASQUE"
+    "name": "BIARRITZ PAYS BASQUE",
+    "type": "airport"
   },
   {
     "id": "LFBS",
-    "name": "BISCARROSSE PARENTIS"
+    "name": "BISCARROSSE PARENTIS",
+    "type": "airport"
   },
   {
     "id": "LFOQ",
-    "name": "BLOIS LE BREUIL"
+    "name": "BLOIS LE BREUIL",
+    "type": "airport"
   },
   {
     "id": "LFCS",
-    "name": "BORDEAUX LEOGNAN SAUCATS"
+    "name": "BORDEAUX LEOGNAN SAUCATS",
+    "type": "airport"
   },
   {
     "id": "LFBD",
-    "name": "BORDEAUX MERIGNAC"
+    "name": "BORDEAUX MERIGNAC",
+    "type": "airport"
   },
   {
     "id": "LFDY",
-    "name": "BORDEAUX YVRAC"
+    "name": "BORDEAUX YVRAC",
+    "type": "airport"
   },
   {
     "id": "LFHS",
-    "name": "BOURG CEYZERIAT"
+    "name": "BOURG CEYZERIAT",
+    "type": "airport"
   },
   {
     "id": "LFLD",
-    "name": "BOURGES"
+    "name": "BOURGES",
+    "type": "airport"
   },
   {
     "id": "LFRB",
-    "name": "BREST BRETAGNE"
+    "name": "BREST BRETAGNE",
+    "type": "airport"
   },
   {
     "id": "LFEI",
-    "name": "BRIARE CHATILLON"
+    "name": "BRIARE CHATILLON",
+    "type": "airport"
   },
   {
     "id": "LFFN",
-    "name": "BRIENNE LE CHATEAU"
+    "name": "BRIENNE LE CHATEAU",
+    "type": "airport"
   },
   {
     "id": "LFHR",
-    "name": "BRIOUDE BEAUMONT"
+    "name": "BRIOUDE BEAUMONT",
+    "type": "airport"
   },
   {
     "id": "LFSL",
-    "name": "BRIVE SOUILLAC"
+    "name": "BRIVE SOUILLAC",
+    "type": "airport"
   },
   {
     "id": "LFFB",
-    "name": "BUNO BONNEVAUX"
+    "name": "BUNO BONNEVAUX",
+    "type": "airport"
   },
   {
     "id": "LFRK",
-    "name": "CAEN CARPIQUET"
+    "name": "CAEN CARPIQUET",
+    "type": "airport"
   },
   {
     "id": "LFCC",
-    "name": "CAHORS LALBENQUE"
+    "name": "CAHORS LALBENQUE",
+    "type": "airport"
   },
   {
     "id": "LFAC",
-    "name": "CALAIS MARCK"
+    "name": "CALAIS MARCK",
+    "type": "airport"
   },
   {
     "id": "LFKC",
-    "name": "CALVI SAINTE CATHERINE"
+    "name": "CALVI SAINTE CATHERINE",
+    "type": "airport"
   },
   {
     "id": "LFYG",
-    "name": "CAMBRAI NIERGNIES"
+    "name": "CAMBRAI NIERGNIES",
+    "type": "airport"
   },
   {
     "id": "LFMD",
-    "name": "CANNES MANDELIEU"
+    "name": "CANNES MANDELIEU",
+    "type": "airport"
   },
   {
     "id": "LFMK",
-    "name": "CARCASSONNE SALVAZA"
+    "name": "CARCASSONNE SALVAZA",
+    "type": "airport"
   },
   {
     "id": "LFNH",
-    "name": "CARPENTRAS"
+    "name": "CARPENTRAS",
+    "type": "airport"
   },
   {
     "id": "LFIG",
-    "name": "CASSAGNES BEGONHES"
+    "name": "CASSAGNES BEGONHES",
+    "type": "airport"
   },
   {
     "id": "LFDQ",
-    "name": "CASTELNAU MAGNOAC"
+    "name": "CASTELNAU MAGNOAC",
+    "type": "airport"
   },
   {
     "id": "LFMW",
-    "name": "CASTELNAUDARY VILLENEUVE"
+    "name": "CASTELNAUDARY VILLENEUVE",
+    "type": "airport"
   },
   {
     "id": "LFCX",
-    "name": "CASTELSARRASIN MOISSAC"
+    "name": "CASTELSARRASIN MOISSAC",
+    "type": "airport"
   },
   {
     "id": "LFCK",
-    "name": "CASTRES MAZAMET"
+    "name": "CASTRES MAZAMET",
+    "type": "airport"
   },
   {
     "id": "LFJH",
-    "name": "CAZERES PALAMINY"
+    "name": "CAZERES PALAMINY",
+    "type": "airport"
   },
   {
     "id": "LFIH",
-    "name": "CHALAIS"
+    "name": "CHALAIS",
+    "type": "airport"
   },
   {
     "id": "LFLH",
-    "name": "CHALON CHAMPFORGEUIL"
+    "name": "CHALON CHAMPFORGEUIL",
+    "type": "airport"
   },
   {
     "id": "LFQK",
-    "name": "CHALONS ECURY SUR COOLE"
+    "name": "CHALONS ECURY SUR COOLE",
+    "type": "airport"
   },
   {
     "id": "LFOK",
-    "name": "CHALONS VATRY"
+    "name": "CHALONS VATRY",
+    "type": "airport"
   },
   {
     "id": "LFLB",
-    "name": "CHAMBERY AIX LES BAINS"
+    "name": "CHAMBERY AIX LES BAINS",
+    "type": "airport"
   },
   {
     "id": "LFLE",
-    "name": "CHAMBERY CHALLES LES EAUX"
+    "name": "CHAMBERY CHALLES LES EAUX",
+    "type": "airport"
   },
   {
     "id": "LFJY",
-    "name": "CHAMBLEY"
+    "name": "CHAMBLEY",
+    "type": "airport"
   },
   {
     "id": "LFGX",
-    "name": "CHAMPAGNOLE CROTENAY"
+    "name": "CHAMPAGNOLE CROTENAY",
+    "type": "airport"
   },
   {
     "id": "LFQV",
-    "name": "CHARLEVILLE MEZIERES"
+    "name": "CHARLEVILLE MEZIERES",
+    "type": "airport"
   },
   {
     "id": "LFOR",
-    "name": "CHARTRES METROPOLE"
+    "name": "CHARTRES METROPOLE",
+    "type": "airport"
   },
   {
     "id": "LFMX",
-    "name": "CHATEAU ARNOUX SAINT AUBAN"
+    "name": "CHATEAU ARNOUX SAINT AUBAN",
+    "type": "airport"
   },
   {
     "id": "LFFH",
-    "name": "CHATEAU THIERRY BELLEAU"
+    "name": "CHATEAU THIERRY BELLEAU",
+    "type": "airport"
   },
   {
     "id": "LFTQ",
-    "name": "CHATEAUBRIANT POUANCE"
+    "name": "CHATEAUBRIANT POUANCE",
+    "type": "airport"
   },
   {
     "id": "LFOC",
-    "name": "CHATEAUDUN"
+    "name": "CHATEAUDUN",
+    "type": "airport"
   },
   {
     "id": "LFFU",
-    "name": "CHATEAUNEUF SUR CHER"
+    "name": "CHATEAUNEUF SUR CHER",
+    "type": "airport"
   },
   {
     "id": "LFLX",
-    "name": "CHATEAUROUX DEOLS"
+    "name": "CHATEAUROUX DEOLS",
+    "type": "airport"
   },
   {
     "id": "LFEJ",
-    "name": "CHATEAUROUX VILLERS"
+    "name": "CHATEAUROUX VILLERS",
+    "type": "airport"
   },
   {
     "id": "LFCA",
-    "name": "CHATELLERAULT TARGE"
+    "name": "CHATELLERAULT TARGE",
+    "type": "airport"
   },
   {
     "id": "LFQH",
-    "name": "CHATILLON SUR SEINE"
+    "name": "CHATILLON SUR SEINE",
+    "type": "airport"
   },
   {
     "id": "LFJA",
-    "name": "CHAUMONT SEMOUTIERS"
+    "name": "CHAUMONT SEMOUTIERS",
+    "type": "airport"
   },
   {
     "id": "LFDW",
-    "name": "CHAUVIGNY"
+    "name": "CHAUVIGNY",
+    "type": "airport"
   },
   {
     "id": "LFPX",
-    "name": "CHAVENAY VILLEPREUX"
+    "name": "CHAVENAY VILLEPREUX",
+    "type": "airport"
   },
   {
     "id": "LFPH",
-    "name": "CHELLES LE PIN"
+    "name": "CHELLES LE PIN",
+    "type": "airport"
   },
   {
     "id": "LFRC",
-    "name": "CHERBOURG MAUPERTUS"
+    "name": "CHERBOURG MAUPERTUS",
+    "type": "airport"
   },
   {
     "id": "LFOU",
-    "name": "CHOLET LE PONTREAU"
+    "name": "CHOLET LE PONTREAU",
+    "type": "airport"
   },
   {
     "id": "LFJC",
-    "name": "CLAMECY"
+    "name": "CLAMECY",
+    "type": "airport"
   },
   {
     "id": "LFLC",
-    "name": "CLERMONT FERRAND AUVERGNE"
+    "name": "CLERMONT FERRAND AUVERGNE",
+    "type": "airport"
   },
   {
     "id": "LFBG",
-    "name": "COGNAC CHATEAUBERNARD"
+    "name": "COGNAC CHATEAUBERNARD",
+    "type": "airport"
   },
   {
     "id": "LFGA",
-    "name": "COLMAR HOUSSEN"
+    "name": "COLMAR HOUSSEN",
+    "type": "airport"
   },
   {
     "id": "LFAD",
-    "name": "COMPIEGNE MARGNY"
+    "name": "COMPIEGNE MARGNY",
+    "type": "airport"
   },
   {
     "id": "LFID",
-    "name": "CONDOM VALENCE SUR BAISE"
+    "name": "CONDOM VALENCE SUR BAISE",
+    "type": "airport"
   },
   {
     "id": "LFJD",
-    "name": "CORLIER"
+    "name": "CORLIER",
+    "type": "airport"
   },
   {
     "id": "LFKT",
-    "name": "CORTE"
+    "name": "CORTE",
+    "type": "airport"
   },
   {
     "id": "LFGH",
-    "name": "COSNE SUR LOIRE"
+    "name": "COSNE SUR LOIRE",
+    "type": "airport"
   },
   {
     "id": "LFDV",
-    "name": "COUHE VERAC"
+    "name": "COUHE VERAC",
+    "type": "airport"
   },
   {
     "id": "LFPK",
-    "name": "COULOMMIERS VOISINS"
+    "name": "COULOMMIERS VOISINS",
+    "type": "airport"
   },
   {
     "id": "LFLJ",
-    "name": "COURCHEVEL"
+    "name": "COURCHEVEL",
+    "type": "airport"
   },
   {
     "id": "LFTF",
-    "name": "CUERS PIERREFEU"
+    "name": "CUERS PIERREFEU",
+    "type": "airport"
   },
   {
     "id": "LFBY",
-    "name": "DAX SEYRESSE"
+    "name": "DAX SEYRESSE",
+    "type": "airport"
   },
   {
     "id": "LFRG",
-    "name": "DEAUVILLE NORMANDIE"
+    "name": "DEAUVILLE NORMANDIE",
+    "type": "airport"
   },
   {
     "id": "LFAB",
-    "name": "DIEPPE SAINT AUBIN"
+    "name": "DIEPPE SAINT AUBIN",
+    "type": "airport"
   },
   {
     "id": "LFQZ",
-    "name": "DIEUZE GUEBLANGE"
+    "name": "DIEUZE GUEBLANGE",
+    "type": "airport"
   },
   {
     "id": "LFGI",
-    "name": "DIJON DAROIS"
+    "name": "DIJON DAROIS",
+    "type": "airport"
   },
   {
     "id": "LFSD",
-    "name": "DIJON LONGVIC"
+    "name": "DIJON LONGVIC",
+    "type": "airport"
   },
   {
     "id": "LFEB",
-    "name": "DINAN TRELIVAN"
+    "name": "DINAN TRELIVAN",
+    "type": "airport"
   },
   {
     "id": "LFRD",
-    "name": "DINARD PLEURTUIT SAINT MALO"
+    "name": "DINARD PLEURTUIT SAINT MALO",
+    "type": "airport"
   },
   {
     "id": "LFGJ",
-    "name": "DOLE TAVAUX"
+    "name": "DOLE TAVAUX",
+    "type": "airport"
   },
   {
     "id": "LFGR",
-    "name": "DONCOURT LES CONFLANS"
+    "name": "DONCOURT LES CONFLANS",
+    "type": "airport"
   },
   {
     "id": "LFON",
-    "name": "DREUX VERNOUILLET"
+    "name": "DREUX VERNOUILLET",
+    "type": "airport"
   },
   {
     "id": "LFAK",
-    "name": "DUNKERQUE LES MOERES"
+    "name": "DUNKERQUE LES MOERES",
+    "type": "airport"
   },
   {
     "id": "LFDE",
-    "name": "EGLETONS"
+    "name": "EGLETONS",
+    "type": "airport"
   },
   {
     "id": "LFFE",
-    "name": "ENGHIEN MOISSELLES"
+    "name": "ENGHIEN MOISSELLES",
+    "type": "airport"
   },
   {
     "id": "LFSW",
-    "name": "EPERNAY PLIVOT"
+    "name": "EPERNAY PLIVOT",
+    "type": "airport"
   },
   {
     "id": "LFSE",
-    "name": "EPINAL DOGNEVILLE"
+    "name": "EPINAL DOGNEVILLE",
+    "type": "airport"
   },
   {
     "id": "LFSG",
-    "name": "EPINAL MIRECOURT"
+    "name": "EPINAL MIRECOURT",
+    "type": "airport"
   },
   {
     "id": "LFQE",
-    "name": "ETAIN ROUVRES"
+    "name": "ETAIN ROUVRES",
+    "type": "airport"
   },
   {
     "id": "LFOX",
-    "name": "ETAMPES MONDESIR"
+    "name": "ETAMPES MONDESIR",
+    "type": "airport"
   },
   {
     "id": "LFFY",
-    "name": "ETREPAGNY"
+    "name": "ETREPAGNY",
+    "type": "airport"
   },
   {
     "id": "LFAE",
-    "name": "EU MERS LE TREPORT"
+    "name": "EU MERS LE TREPORT",
+    "type": "airport"
   },
   {
     "id": "LFAS",
-    "name": "FALAISE MONTS D'ERAINES"
+    "name": "FALAISE MONTS D'ERAINES",
+    "type": "airport"
   },
   {
     "id": "LFMF",
-    "name": "FAYENCE"
+    "name": "FAYENCE",
+    "type": "airport"
   },
   {
     "id": "LFLZ",
-    "name": "FEURS CHAMBEON"
+    "name": "FEURS CHAMBEON",
+    "type": "airport"
   },
   {
     "id": "LFKF",
-    "name": "FIGARI SUD CORSE"
+    "name": "FIGARI SUD CORSE",
+    "type": "airport"
   },
   {
     "id": "LFCF",
-    "name": "FIGEAC LIVERNON"
+    "name": "FIGEAC LIVERNON",
+    "type": "airport"
   },
   {
     "id": "LFOG",
-    "name": "FLERS SAINT PAUL"
+    "name": "FLERS SAINT PAUL",
+    "type": "airport"
   },
   {
     "id": "LFNO",
-    "name": "FLORAC SAINTE ENIMIE"
+    "name": "FLORAC SAINTE ENIMIE",
+    "type": "airport"
   },
   {
     "id": "LFFK",
-    "name": "FONTENAY LE COMTE"
+    "name": "FONTENAY LE COMTE",
+    "type": "airport"
   },
   {
     "id": "LFPQ",
-    "name": "FONTENAY TRESIGNY"
+    "name": "FONTENAY TRESIGNY",
+    "type": "airport"
   },
   {
     "id": "LFDX",
-    "name": "FUMEL MONTAYRAL"
+    "name": "FUMEL MONTAYRAL",
+    "type": "airport"
   },
   {
     "id": "LFDG",
-    "name": "GAILLAC LISLE SUR TARN"
+    "name": "GAILLAC LISLE SUR TARN",
+    "type": "airport"
   },
   {
     "id": "LFNA",
-    "name": "GAP TALLARD"
+    "name": "GAP TALLARD",
+    "type": "airport"
   },
   {
     "id": "LFKG",
-    "name": "GHISONACCIA ALZITONE"
+    "name": "GHISONACCIA ALZITONE",
+    "type": "airport"
   },
   {
     "id": "LFRF",
-    "name": "GRANVILLE MONT SAINT MICHEL"
+    "name": "GRANVILLE MONT SAINT MICHEL",
+    "type": "airport"
   },
   {
     "id": "LFCQ",
-    "name": "GRAULHET MONTDRAGON"
+    "name": "GRAULHET MONTDRAGON",
+    "type": "airport"
   },
   {
     "id": "LFEV",
-    "name": "GRAY SAINT ADRIEN"
+    "name": "GRAY SAINT ADRIEN",
+    "type": "airport"
   },
   {
     "id": "LFLS",
-    "name": "GRENOBLE ALPES ISERE"
+    "name": "GRENOBLE ALPES ISERE",
+    "type": "airport"
   },
   {
     "id": "LFLG",
-    "name": "GRENOBLE LE VERSOUD"
+    "name": "GRENOBLE LE VERSOUD",
+    "type": "airport"
   },
   {
     "id": "LFCE",
-    "name": "GUERET SAINT LAURENT"
+    "name": "GUERET SAINT LAURENT",
+    "type": "airport"
   },
   {
     "id": "LFES",
-    "name": "GUISCRIFF SCAER"
+    "name": "GUISCRIFF SCAER",
+    "type": "airport"
   },
   {
     "id": "LFSH",
-    "name": "HAGUENAU"
+    "name": "HAGUENAU",
+    "type": "airport"
   },
   {
     "id": "LFTH",
-    "name": "HYERES LE PALYVESTRE"
+    "name": "HYERES LE PALYVESTRE",
+    "type": "airport"
   },
   {
     "id": "LFEY",
-    "name": "ILE D'YEU"
+    "name": "ILE D'YEU",
+    "type": "airport"
   },
   {
     "id": "LFHA",
-    "name": "ISSOIRE LE BROC"
+    "name": "ISSOIRE LE BROC",
+    "type": "airport"
   },
   {
     "id": "LFEK",
-    "name": "ISSOUDUN LE FAY"
+    "name": "ISSOUDUN LE FAY",
+    "type": "airport"
   },
   {
     "id": "LFMI",
-    "name": "ISTRES LE TUBE"
+    "name": "ISTRES LE TUBE",
+    "type": "airport"
   },
   {
     "id": "LFIX",
-    "name": "ITXASSOU"
+    "name": "ITXASSOU",
+    "type": "airport"
   },
   {
     "id": "LFGK",
-    "name": "JOIGNY"
+    "name": "JOIGNY",
+    "type": "airport"
   },
   {
     "id": "LFFJ",
-    "name": "JOINVILLE MUSSEY"
+    "name": "JOINVILLE MUSSEY",
+    "type": "airport"
   },
   {
     "id": "LFCJ",
-    "name": "JONZAC NEULLES"
+    "name": "JONZAC NEULLES",
+    "type": "airport"
   },
   {
     "id": "LFQX",
-    "name": "JUVANCOURT"
+    "name": "JUVANCOURT",
+    "type": "airport"
   },
   {
     "id": "LFOL",
-    "name": "L'AIGLE SAINT MICHEL"
+    "name": "L'AIGLE SAINT MICHEL",
+    "type": "airport"
   },
   {
     "id": "LFHU",
-    "name": "L'ALPE D'HUEZ"
+    "name": "L'ALPE D'HUEZ",
+    "type": "airport"
   },
   {
     "id": "LFRE",
-    "name": "LA BAULE ESCOUBLAC"
+    "name": "LA BAULE ESCOUBLAC",
+    "type": "airport"
   },
   {
     "id": "LFFQ",
-    "name": "LA FERTE ALAIS"
+    "name": "LA FERTE ALAIS",
+    "type": "airport"
   },
   {
     "id": "LFFG",
-    "name": "LA FERTE GAUCHER"
+    "name": "LA FERTE GAUCHER",
+    "type": "airport"
   },
   {
     "id": "LFAL",
-    "name": "LA FLECHE THOREE LES PINS"
+    "name": "LA FLECHE THOREE LES PINS",
+    "type": "airport"
   },
   {
     "id": "LFTN",
-    "name": "LA GRAND'COMBE"
+    "name": "LA GRAND'COMBE",
+    "type": "airport"
   },
   {
     "id": "LFNQ",
-    "name": "LA LLAGONNE LA QUILLANE"
+    "name": "LA LLAGONNE LA QUILLANE",
+    "type": "airport"
   },
   {
     "id": "LFTZ",
-    "name": "LA MOLE"
+    "name": "LA MOLE",
+    "type": "airport"
   },
   {
     "id": "LFJE",
-    "name": "LA MOTTE CHALANCON"
+    "name": "LA MOTTE CHALANCON",
+    "type": "airport"
   },
   {
     "id": "LFDR",
-    "name": "LA REOLE FLOUDES"
+    "name": "LA REOLE FLOUDES",
+    "type": "airport"
   },
   {
     "id": "LFRI",
-    "name": "LA ROCHE SUR YON LES AJONCS"
+    "name": "LA ROCHE SUR YON LES AJONCS",
+    "type": "airport"
   },
   {
     "id": "LFBH",
-    "name": "LA ROCHELLE ILE DE RE"
+    "name": "LA ROCHELLE ILE DE RE",
+    "type": "airport"
   },
   {
     "id": "LFKP",
-    "name": "LA TOUR DU PIN CESSIEU"
+    "name": "LA TOUR DU PIN CESSIEU",
+    "type": "airport"
   },
   {
     "id": "LFRJ",
-    "name": "LANDIVISIAU"
+    "name": "LANDIVISIAU",
+    "type": "airport"
   },
   {
     "id": "LFHL",
-    "name": "LANGOGNE LESPERON"
+    "name": "LANGOGNE LESPERON",
+    "type": "airport"
   },
   {
     "id": "LFSU",
-    "name": "LANGRES ROLAMPONT"
+    "name": "LANGRES ROLAMPONT",
+    "type": "airport"
   },
   {
     "id": "LFRO",
-    "name": "LANNION"
+    "name": "LANNION",
+    "type": "airport"
   },
   {
     "id": "LFRL",
-    "name": "LANVEOC POULMIC"
+    "name": "LANVEOC POULMIC",
+    "type": "airport"
   },
   {
     "id": "LFAF",
-    "name": "LAON CHAMBRY"
+    "name": "LAON CHAMBRY",
+    "type": "airport"
   },
   {
     "id": "LFHX",
-    "name": "LAPALISSE PERIGNY"
+    "name": "LAPALISSE PERIGNY",
+    "type": "airport"
   },
   {
     "id": "LFJV",
-    "name": "LASCLAVERIES"
+    "name": "LASCLAVERIES",
+    "type": "airport"
   },
   {
     "id": "LFOV",
-    "name": "LAVAL ENTRAMMES"
+    "name": "LAVAL ENTRAMMES",
+    "type": "airport"
   },
   {
     "id": "LFEL",
-    "name": "LE BLANC"
+    "name": "LE BLANC",
+    "type": "airport"
   },
   {
     "id": "LFMQ",
-    "name": "LE CASTELLET"
+    "name": "LE CASTELLET",
+    "type": "airport"
   },
   {
     "id": "LFOH",
-    "name": "LE HAVRE OCTEVILLE"
+    "name": "LE HAVRE OCTEVILLE",
+    "type": "airport"
   },
   {
     "id": "LFOY",
-    "name": "LE HAVRE SAINT ROMAIN"
+    "name": "LE HAVRE SAINT ROMAIN",
+    "type": "airport"
   },
   {
     "id": "LFMC",
-    "name": "LE LUC LE CANNET"
+    "name": "LE LUC LE CANNET",
+    "type": "airport"
   },
   {
     "id": "LFRM",
-    "name": "LE MANS ARNAGE"
+    "name": "LE MANS ARNAGE",
+    "type": "airport"
   },
   {
     "id": "LFNZ",
-    "name": "LE MAZET DE ROMANIN"
+    "name": "LE MAZET DE ROMANIN",
+    "type": "airport"
   },
   {
     "id": "LFPP",
-    "name": "LE PLESSIS BELLEVILLE"
+    "name": "LE PLESSIS BELLEVILLE",
+    "type": "airport"
   },
   {
     "id": "LFHP",
-    "name": "LE PUY LOUDES"
+    "name": "LE PUY LOUDES",
+    "type": "airport"
   },
   {
     "id": "LFAT",
-    "name": "LE TOUQUET COTE D'OPALE"
+    "name": "LE TOUQUET COTE D'OPALE",
+    "type": "airport"
   },
   {
     "id": "LFQL",
-    "name": "LENS BENIFONTAINE"
+    "name": "LENS BENIFONTAINE",
+    "type": "airport"
   },
   {
     "id": "LFXU",
-    "name": "LES MUREAUX"
+    "name": "LES MUREAUX",
+    "type": "airport"
   },
   {
     "id": "LFOO",
-    "name": "LES SABLES D'OLONNE TALMONT"
+    "name": "LES SABLES D'OLONNE TALMONT",
+    "type": "airport"
   },
   {
     "id": "LFDU",
-    "name": "LESPARRE SAINT LAURENT MEDOC"
+    "name": "LESPARRE SAINT LAURENT MEDOC",
+    "type": "airport"
   },
   {
     "id": "LFOM",
-    "name": "LESSAY"
+    "name": "LESSAY",
+    "type": "airport"
   },
   {
     "id": "LFMZ",
-    "name": "LEZIGNAN CORBIERES"
+    "name": "LEZIGNAN CORBIERES",
+    "type": "airport"
   },
   {
     "id": "LFDI",
-    "name": "LIBOURNE ARTIGUES DE LUSSAC"
+    "name": "LIBOURNE ARTIGUES DE LUSSAC",
+    "type": "airport"
   },
   {
     "id": "LFQQ",
-    "name": "LILLE LESQUIN"
+    "name": "LILLE LESQUIN",
+    "type": "airport"
   },
   {
     "id": "LFQO",
-    "name": "LILLE MARCQ EN BAROEUL"
+    "name": "LILLE MARCQ EN BAROEUL",
+    "type": "airport"
   },
   {
     "id": "LFBL",
-    "name": "LIMOGES BELLEGARDE"
+    "name": "LIMOGES BELLEGARDE",
+    "type": "airport"
   },
   {
     "id": "LFPL",
-    "name": "LOGNES EMERAINVILLE"
+    "name": "LOGNES EMERAINVILLE",
+    "type": "airport"
   },
   {
     "id": "LFGS",
-    "name": "LONGUYON VILLETTE"
+    "name": "LONGUYON VILLETTE",
+    "type": "airport"
   },
   {
     "id": "LFGL",
-    "name": "LONS LE SAUNIER COURLAOUX"
+    "name": "LONS LE SAUNIER COURLAOUX",
+    "type": "airport"
   },
   {
     "id": "LFRH",
-    "name": "LORIENT LANN BIHOUE"
+    "name": "LORIENT LANN BIHOUE",
+    "type": "airport"
   },
   {
     "id": "LFDL",
-    "name": "LOUDUN"
+    "name": "LOUDUN",
+    "type": "airport"
   },
   {
     "id": "LFQC",
-    "name": "LUNEVILLE CROISMARE"
+    "name": "LUNEVILLE CROISMARE",
+    "type": "airport"
   },
   {
     "id": "LFJU",
-    "name": "LURCY LEVIS"
+    "name": "LURCY LEVIS",
+    "type": "airport"
   },
   {
     "id": "LFKL",
-    "name": "LYON BRINDAS"
+    "name": "LYON BRINDAS",
+    "type": "airport"
   },
   {
     "id": "LFLY",
-    "name": "LYON BRON"
+    "name": "LYON BRON",
+    "type": "airport"
   },
   {
     "id": "LFHJ",
-    "name": "LYON CORBAS"
+    "name": "LYON CORBAS",
+    "type": "airport"
   },
   {
     "id": "LFLL",
-    "name": "LYON SAINT EXUPERY"
+    "name": "LYON SAINT EXUPERY",
+    "type": "airport"
   },
   {
     "id": "LFLM",
-    "name": "MACON CHARNAY"
+    "name": "MACON CHARNAY",
+    "type": "airport"
   },
   {
     "id": "LFFC",
-    "name": "MANTES CHERENCE"
+    "name": "MANTES CHERENCE",
+    "type": "airport"
   },
   {
     "id": "LFJI",
-    "name": "MARENNES"
+    "name": "MARENNES",
+    "type": "airport"
   },
   {
     "id": "LFTB",
-    "name": "MARIGNANE BERRE"
+    "name": "MARIGNANE BERRE",
+    "type": "airport"
   },
   {
     "id": "LFDM",
-    "name": "MARMANDE VIRAZEIL"
+    "name": "MARMANDE VIRAZEIL",
+    "type": "airport"
   },
   {
     "id": "LFML",
-    "name": "MARSEILLE PROVENCE"
+    "name": "MARSEILLE PROVENCE",
+    "type": "airport"
   },
   {
     "id": "LFQJ",
-    "name": "MAUBEUGE ELESMES"
+    "name": "MAUBEUGE ELESMES",
+    "type": "airport"
   },
   {
     "id": "LFJB",
-    "name": "MAULEON"
+    "name": "MAULEON",
+    "type": "airport"
   },
   {
     "id": "LFPE",
-    "name": "MEAUX ESBLY"
+    "name": "MEAUX ESBLY",
+    "type": "airport"
   },
   {
     "id": "LFHM",
-    "name": "MEGEVE"
+    "name": "MEGEVE",
+    "type": "airport"
   },
   {
     "id": "LFPM",
-    "name": "MELUN VILLAROCHE"
+    "name": "MELUN VILLAROCHE",
+    "type": "airport"
   },
   {
     "id": "LFNB",
-    "name": "MENDE BRENOUX"
+    "name": "MENDE BRENOUX",
+    "type": "airport"
   },
   {
     "id": "LFKX",
-    "name": "MERIBEL ROBERT MERLOZ"
+    "name": "MERIBEL ROBERT MERLOZ",
+    "type": "airport"
   },
   {
     "id": "LFQT",
-    "name": "MERVILLE CALONNE"
+    "name": "MERVILLE CALONNE",
+    "type": "airport"
   },
   {
     "id": "LFJL",
-    "name": "METZ NANCY LORRAINE"
+    "name": "METZ NANCY LORRAINE",
+    "type": "airport"
   },
   {
     "id": "LFCM",
-    "name": "MILLAU LARZAC"
+    "name": "MILLAU LARZAC",
+    "type": "airport"
   },
   {
     "id": "LFCZ",
-    "name": "MIMIZAN"
+    "name": "MIMIZAN",
+    "type": "airport"
   },
   {
     "id": "LFNC",
-    "name": "MONT DAUPHIN SAINT CREPIN"
+    "name": "MONT DAUPHIN SAINT CREPIN",
+    "type": "airport"
   },
   {
     "id": "LFMG",
-    "name": "MONTAGNE NOIRE"
+    "name": "MONTAGNE NOIRE",
+    "type": "airport"
   },
   {
     "id": "LFFW",
-    "name": "MONTAIGU SAINT GEORGES"
+    "name": "MONTAIGU SAINT GEORGES",
+    "type": "airport"
   },
   {
     "id": "LFEM",
-    "name": "MONTARGIS VIMORY"
+    "name": "MONTARGIS VIMORY",
+    "type": "airport"
   },
   {
     "id": "LFDB",
-    "name": "MONTAUBAN"
+    "name": "MONTAUBAN",
+    "type": "airport"
   },
   {
     "id": "LFSM",
-    "name": "MONTBELIARD COURCELLES"
+    "name": "MONTBELIARD COURCELLES",
+    "type": "airport"
   },
   {
     "id": "LFGM",
-    "name": "MONTCEAU LES MINES POUILLOUX"
+    "name": "MONTCEAU LES MINES POUILLOUX",
+    "type": "airport"
   },
   {
     "id": "LFAR",
-    "name": "MONTDIDIER"
+    "name": "MONTDIDIER",
+    "type": "airport"
   },
   {
     "id": "LFLQ",
-    "name": "MONTELIMAR ANCONE"
+    "name": "MONTELIMAR ANCONE",
+    "type": "airport"
   },
   {
     "id": "LFDC",
-    "name": "MONTENDRE MARCILLAC"
+    "name": "MONTENDRE MARCILLAC",
+    "type": "airport"
   },
   {
     "id": "LFLT",
-    "name": "MONTLUCON DOMERAT"
+    "name": "MONTLUCON DOMERAT",
+    "type": "airport"
   },
   {
     "id": "LFBK",
-    "name": "MONTLUCON GUERET"
+    "name": "MONTLUCON GUERET",
+    "type": "airport"
   },
   {
     "id": "LFNG",
-    "name": "MONTPELLIER CANDILLARGUES"
+    "name": "MONTPELLIER CANDILLARGUES",
+    "type": "airport"
   },
   {
     "id": "LFMT",
-    "name": "MONTPELLIER MEDITERRANEE"
+    "name": "MONTPELLIER MEDITERRANEE",
+    "type": "airport"
   },
   {
     "id": "LFHI",
-    "name": "MORESTEL"
+    "name": "MORESTEL",
+    "type": "airport"
   },
   {
     "id": "LFPU",
-    "name": "MORET EPISY"
+    "name": "MORET EPISY",
+    "type": "airport"
   },
   {
     "id": "LFRU",
-    "name": "MORLAIX PLOUJEAN"
+    "name": "MORLAIX PLOUJEAN",
+    "type": "airport"
   },
   {
     "id": "LFAX",
-    "name": "MORTAGNE AU PERCHE"
+    "name": "MORTAGNE AU PERCHE",
+    "type": "airport"
   },
   {
     "id": "LFHY",
-    "name": "MOULINS MONTBEUGNY"
+    "name": "MOULINS MONTBEUGNY",
+    "type": "airport"
   },
   {
     "id": "LFGB",
-    "name": "MULHOUSE HABSHEIM"
+    "name": "MULHOUSE HABSHEIM",
+    "type": "airport"
   },
   {
     "id": "LFBR",
-    "name": "MURET LHERM"
+    "name": "MURET LHERM",
+    "type": "airport"
   },
   {
     "id": "LFEX",
-    "name": "NANCY AZELOT"
+    "name": "NANCY AZELOT",
+    "type": "airport"
   },
   {
     "id": "LFSN",
-    "name": "NANCY ESSEY"
+    "name": "NANCY ESSEY",
+    "type": "airport"
   },
   {
     "id": "LFEZ",
-    "name": "NANCY MALZEVILLE"
+    "name": "NANCY MALZEVILLE",
+    "type": "airport"
   },
   {
     "id": "LFAI",
-    "name": "NANGIS LES LOGES"
+    "name": "NANGIS LES LOGES",
+    "type": "airport"
   },
   {
     "id": "LFRS",
-    "name": "NANTES ATLANTIQUE"
+    "name": "NANTES ATLANTIQUE",
+    "type": "airport"
   },
   {
     "id": "LFNN",
-    "name": "NARBONNE"
+    "name": "NARBONNE",
+    "type": "airport"
   },
   {
     "id": "LFFT",
-    "name": "NEUFCHATEAU"
+    "name": "NEUFCHATEAU",
+    "type": "airport"
   },
   {
     "id": "LFQG",
-    "name": "NEVERS FOURCHAMBAULT"
+    "name": "NEVERS FOURCHAMBAULT",
+    "type": "airport"
   },
   {
     "id": "LFMN",
-    "name": "NICE COTE D'AZUR"
+    "name": "NICE COTE D'AZUR",
+    "type": "airport"
   },
   {
     "id": "LFME",
-    "name": "NIMES COURBESSAC"
+    "name": "NIMES COURBESSAC",
+    "type": "airport"
   },
   {
     "id": "LFTW",
-    "name": "NIMES GARONS"
+    "name": "NIMES GARONS",
+    "type": "airport"
   },
   {
     "id": "LFBN",
-    "name": "NIORT MARAIS POITEVIN"
+    "name": "NIORT MARAIS POITEVIN",
+    "type": "airport"
   },
   {
     "id": "LFCN",
-    "name": "NOGARO"
+    "name": "NOGARO",
+    "type": "airport"
   },
   {
     "id": "LFGZ",
-    "name": "NUITS SAINT GEORGES"
+    "name": "NUITS SAINT GEORGES",
+    "type": "airport"
   },
   {
     "id": "LFCO",
-    "name": "OLORON HERRERE"
+    "name": "OLORON HERRERE",
+    "type": "airport"
   },
   {
     "id": "LFOJ",
-    "name": "ORLEANS BRICY"
+    "name": "ORLEANS BRICY",
+    "type": "airport"
   },
   {
     "id": "LFOZ",
-    "name": "ORLEANS SAINT DENIS DE L'HOTEL"
+    "name": "ORLEANS SAINT DENIS DE L'HOTEL",
+    "type": "airport"
   },
   {
     "id": "LFEC",
-    "name": "OUESSANT"
+    "name": "OUESSANT",
+    "type": "airport"
   },
   {
     "id": "LFLK",
-    "name": "OYONNAX ARBENT"
+    "name": "OYONNAX ARBENT",
+    "type": "airport"
   },
   {
     "id": "LFDJ",
-    "name": "PAMIERS LES PUJOLS"
+    "name": "PAMIERS LES PUJOLS",
+    "type": "airport"
   },
   {
     "id": "LFGN",
-    "name": "PARAY LE MONIAL"
+    "name": "PARAY LE MONIAL",
+    "type": "airport"
   },
   {
     "id": "LFPG",
-    "name": "PARIS CHARLES DE GAULLE"
+    "name": "PARIS CHARLES DE GAULLE",
+    "type": "airport"
   },
   {
     "id": "LFPB",
-    "name": "PARIS LE BOURGET"
+    "name": "PARIS LE BOURGET",
+    "type": "airport"
   },
   {
     "id": "LFPO",
-    "name": "PARIS ORLY"
+    "name": "PARIS ORLY",
+    "type": "airport"
   },
   {
     "id": "LFBP",
-    "name": "PAU PYRENEES"
+    "name": "PAU PYRENEES",
+    "type": "airport"
   },
   {
     "id": "LFBX",
-    "name": "PERIGUEUX BASSILLAC"
+    "name": "PERIGUEUX BASSILLAC",
+    "type": "airport"
   },
   {
     "id": "LFAG",
-    "name": "PERONNE SAINT QUENTIN"
+    "name": "PERONNE SAINT QUENTIN",
+    "type": "airport"
   },
   {
     "id": "LFHC",
-    "name": "PEROUGES MEXIMIEUX"
+    "name": "PEROUGES MEXIMIEUX",
+    "type": "airport"
   },
   {
     "id": "LFMP",
-    "name": "PERPIGNAN RIVESALTES"
+    "name": "PERPIGNAN RIVESALTES",
+    "type": "airport"
   },
   {
     "id": "LFPA",
-    "name": "PERSAN BEAUMONT"
+    "name": "PERSAN BEAUMONT",
+    "type": "airport"
   },
   {
     "id": "LFIP",
-    "name": "PEYRESOURDE BALESTAS"
+    "name": "PEYRESOURDE BALESTAS",
+    "type": "airport"
   },
   {
     "id": "LFQP",
-    "name": "PHALSBOURG BOURSCHEID"
+    "name": "PHALSBOURG BOURSCHEID",
+    "type": "airport"
   },
   {
     "id": "LFHD",
-    "name": "PIERRELATTE"
+    "name": "PIERRELATTE",
+    "type": "airport"
   },
   {
     "id": "LFFP",
-    "name": "PITHIVIERS"
+    "name": "PITHIVIERS",
+    "type": "airport"
   },
   {
     "id": "LFRP",
-    "name": "PLOERMEL LOYAT"
+    "name": "PLOERMEL LOYAT",
+    "type": "airport"
   },
   {
     "id": "LFBI",
-    "name": "POITIERS BIARD"
+    "name": "POITIERS BIARD",
+    "type": "airport"
   },
   {
     "id": "LFCP",
-    "name": "PONS AVY"
+    "name": "PONS AVY",
+    "type": "airport"
   },
   {
     "id": "LFSV",
-    "name": "PONT SAINT VINCENT"
+    "name": "PONT SAINT VINCENT",
+    "type": "airport"
   },
   {
     "id": "LFGO",
-    "name": "PONT SUR YONNE"
+    "name": "PONT SUR YONNE",
+    "type": "airport"
   },
   {
     "id": "LFSP",
-    "name": "PONTARLIER"
+    "name": "PONTARLIER",
+    "type": "airport"
   },
   {
     "id": "LFED",
-    "name": "PONTIVY"
+    "name": "PONTIVY",
+    "type": "airport"
   },
   {
     "id": "LFPT",
-    "name": "PONTOISE CORMEILLES EN VEXIN"
+    "name": "PONTOISE CORMEILLES EN VEXIN",
+    "type": "airport"
   },
   {
     "id": "LFEP",
-    "name": "POUILLY MACONGE"
+    "name": "POUILLY MACONGE",
+    "type": "airport"
   },
   {
     "id": "LFKO",
-    "name": "PROPRIANO"
+    "name": "PROPRIANO",
+    "type": "airport"
   },
   {
     "id": "LFTP",
-    "name": "PUIMOISSON"
+    "name": "PUIMOISSON",
+    "type": "airport"
   },
   {
     "id": "LFNW",
-    "name": "PUIVERT"
+    "name": "PUIVERT",
+    "type": "airport"
   },
   {
     "id": "LFEQ",
-    "name": "QUIBERON"
+    "name": "QUIBERON",
+    "type": "airport"
   },
   {
     "id": "LFRQ",
-    "name": "QUIMPER PLUGUFFAN"
+    "name": "QUIMPER PLUGUFFAN",
+    "type": "airport"
   },
   {
     "id": "LFER",
-    "name": "REDON BAINS SUR OUST"
+    "name": "REDON BAINS SUR OUST",
+    "type": "airport"
   },
   {
     "id": "LFQA",
-    "name": "REIMS PRUNAY"
+    "name": "REIMS PRUNAY",
+    "type": "airport"
   },
   {
     "id": "LFRN",
-    "name": "RENNES SAINT JACQUES"
+    "name": "RENNES SAINT JACQUES",
+    "type": "airport"
   },
   {
     "id": "LFAP",
-    "name": "RETHEL PERTHES"
+    "name": "RETHEL PERTHES",
+    "type": "airport"
   },
   {
     "id": "LFIR",
-    "name": "REVEL MONTGEY"
+    "name": "REVEL MONTGEY",
+    "type": "airport"
   },
   {
     "id": "LFIK",
-    "name": "RIBERAC TOURETTE"
+    "name": "RIBERAC TOURETTE",
+    "type": "airport"
   },
   {
     "id": "LFIL",
-    "name": "RION DES LANDES"
+    "name": "RION DES LANDES",
+    "type": "airport"
   },
   {
     "id": "LFLO",
-    "name": "ROANNE"
+    "name": "ROANNE",
+    "type": "airport"
   },
   {
     "id": "LFDN",
-    "name": "ROCHEFORT CHARENTE-MARITIME"
+    "name": "ROCHEFORT CHARENTE-MARITIME",
+    "type": "airport"
   },
   {
     "id": "LFCR",
-    "name": "RODEZ AVEYRON"
+    "name": "RODEZ AVEYRON",
+    "type": "airport"
   },
   {
     "id": "LFHE",
-    "name": "ROMANS SAINT PAUL"
+    "name": "ROMANS SAINT PAUL",
+    "type": "airport"
   },
   {
     "id": "LFYR",
-    "name": "ROMORANTIN PRUNIERS"
+    "name": "ROMORANTIN PRUNIERS",
+    "type": "airport"
   },
   {
     "id": "LFOP",
-    "name": "ROUEN VALLEE DE SEINE"
+    "name": "ROUEN VALLEE DE SEINE",
+    "type": "airport"
   },
   {
     "id": "LFCY",
-    "name": "ROYAN MEDIS"
+    "name": "ROYAN MEDIS",
+    "type": "airport"
   },
   {
     "id": "LFHF",
-    "name": "RUOMS"
+    "name": "RUOMS",
+    "type": "airport"
   },
   {
     "id": "LFIF",
-    "name": "SAINT AFFRIQUE BELMONT"
+    "name": "SAINT AFFRIQUE BELMONT",
+    "type": "airport"
   },
   {
     "id": "LFFD",
-    "name": "SAINT ANDRE DE L'EURE"
+    "name": "SAINT ANDRE DE L'EURE",
+    "type": "airport"
   },
   {
     "id": "LFRT",
-    "name": "SAINT BRIEUC ARMOR"
+    "name": "SAINT BRIEUC ARMOR",
+    "type": "airport"
   },
   {
     "id": "LFHG",
-    "name": "SAINT CHAMOND L'HORME"
+    "name": "SAINT CHAMOND L'HORME",
+    "type": "airport"
   },
   {
     "id": "LFPZ",
-    "name": "SAINT CYR L'ECOLE"
+    "name": "SAINT CYR L'ECOLE",
+    "type": "airport"
   },
   {
     "id": "LFGY",
-    "name": "SAINT DIE REMOMEIX"
+    "name": "SAINT DIE REMOMEIX",
+    "type": "airport"
   },
   {
     "id": "LFMH",
-    "name": "SAINT ETIENNE LOIRE"
+    "name": "SAINT ETIENNE LOIRE",
+    "type": "airport"
   },
   {
     "id": "LFGP",
-    "name": "SAINT FLORENTIN CHEU"
+    "name": "SAINT FLORENTIN CHEU",
+    "type": "airport"
   },
   {
     "id": "LFHQ",
-    "name": "SAINT FLOUR COLTINES"
+    "name": "SAINT FLOUR COLTINES",
+    "type": "airport"
   },
   {
     "id": "LFKM",
-    "name": "SAINT GALMIER"
+    "name": "SAINT GALMIER",
+    "type": "airport"
   },
   {
     "id": "LFIM",
-    "name": "SAINT GAUDENS MONTREJEAU"
+    "name": "SAINT GAUDENS MONTREJEAU",
+    "type": "airport"
   },
   {
     "id": "LFCG",
-    "name": "SAINT GIRONS ANTICHAN"
+    "name": "SAINT GIRONS ANTICHAN",
+    "type": "airport"
   },
   {
     "id": "LFIS",
-    "name": "SAINT INGLEVERT LES DEUX CAPS"
+    "name": "SAINT INGLEVERT LES DEUX CAPS",
+    "type": "airport"
   },
   {
     "id": "LFIY",
-    "name": "SAINT JEAN D'ANGELY SAINT DENIS DU PIN"
+    "name": "SAINT JEAN D'ANGELY SAINT DENIS DU PIN",
+    "type": "airport"
   },
   {
     "id": "LFKH",
-    "name": "SAINT JEAN D'AVELANNE"
+    "name": "SAINT JEAN D'AVELANNE",
+    "type": "airport"
   },
   {
     "id": "LFKE",
-    "name": "SAINT JEAN EN ROYANS"
+    "name": "SAINT JEAN EN ROYANS",
+    "type": "airport"
   },
   {
     "id": "LFBJ",
-    "name": "SAINT JUNIEN"
+    "name": "SAINT JUNIEN",
+    "type": "airport"
   },
   {
     "id": "LFNL",
-    "name": "SAINT MARTIN DE LONDRES"
+    "name": "SAINT MARTIN DE LONDRES",
+    "type": "airport"
   },
   {
     "id": "LFRZ",
-    "name": "SAINT NAZAIRE MONTOIR"
+    "name": "SAINT NAZAIRE MONTOIR",
+    "type": "airport"
   },
   {
     "id": "LFQN",
-    "name": "SAINT OMER WIZERNES"
+    "name": "SAINT OMER WIZERNES",
+    "type": "airport"
   },
   {
     "id": "LFDP",
-    "name": "SAINT PIERRE D'OLERON"
+    "name": "SAINT PIERRE D'OLERON",
+    "type": "airport"
   },
   {
     "id": "LFOW",
-    "name": "SAINT QUENTIN ROUPY"
+    "name": "SAINT QUENTIN ROUPY",
+    "type": "airport"
   },
   {
     "id": "LFLR",
-    "name": "SAINT RAMBERT D'ALBON"
+    "name": "SAINT RAMBERT D'ALBON",
+    "type": "airport"
   },
   {
     "id": "LFKR",
-    "name": "SAINT REMY DE MAURIENNE"
+    "name": "SAINT REMY DE MAURIENNE",
+    "type": "airport"
   },
   {
     "id": "LFSS",
-    "name": "SAINT SULPICE DES LANDES"
+    "name": "SAINT SULPICE DES LANDES",
+    "type": "airport"
   },
   {
     "id": "LFOS",
-    "name": "SAINT VALERY VITTEFLEUR"
+    "name": "SAINT VALERY VITTEFLEUR",
+    "type": "airport"
   },
   {
     "id": "LFLN",
-    "name": "SAINT YAN"
+    "name": "SAINT YAN",
+    "type": "airport"
   },
   {
     "id": "LFDF",
-    "name": "SAINTE FOY LA GRANDE"
+    "name": "SAINTE FOY LA GRANDE",
+    "type": "airport"
   },
   {
     "id": "LFYS",
-    "name": "SAINTE LEOCADIE"
+    "name": "SAINTE LEOCADIE",
+    "type": "airport"
   },
   {
     "id": "LFXB",
-    "name": "SAINTES THENAC"
+    "name": "SAINTES THENAC",
+    "type": "airport"
   },
   {
     "id": "LFHZ",
-    "name": "SALLANCHES MONT BLANC"
+    "name": "SALLANCHES MONT BLANC",
+    "type": "airport"
   },
   {
     "id": "LFMY",
-    "name": "SALON DE PROVENCE"
+    "name": "SALON DE PROVENCE",
+    "type": "airport"
   },
   {
     "id": "LFNE",
-    "name": "SALON EYGUIERES"
+    "name": "SALON EYGUIERES",
+    "type": "airport"
   },
   {
     "id": "LFDS",
-    "name": "SARLAT DOMME"
+    "name": "SARLAT DOMME",
+    "type": "airport"
   },
   {
     "id": "LFQU",
-    "name": "SARRE UNION"
+    "name": "SARRE UNION",
+    "type": "airport"
   },
   {
     "id": "LFGT",
-    "name": "SARREBOURG BUHL"
+    "name": "SARREBOURG BUHL",
+    "type": "airport"
   },
   {
     "id": "LFGU",
-    "name": "SARREGUEMINES NEUNKIRCH"
+    "name": "SARREGUEMINES NEUNKIRCH",
+    "type": "airport"
   },
   {
     "id": "LFEW",
-    "name": "SAULIEU LIERNAIS"
+    "name": "SAULIEU LIERNAIS",
+    "type": "airport"
   },
   {
     "id": "LFOD",
-    "name": "SAUMUR SAINT FLORENT"
+    "name": "SAUMUR SAINT FLORENT",
+    "type": "airport"
   },
   {
     "id": "LFQY",
-    "name": "SAVERNE STEINBOURG"
+    "name": "SAVERNE STEINBOURG",
+    "type": "airport"
   },
   {
     "id": "LFSJ",
-    "name": "SEDAN DOUZY"
+    "name": "SEDAN DOUZY",
+    "type": "airport"
   },
   {
     "id": "LFGQ",
-    "name": "SEMUR EN AUXOIS"
+    "name": "SEMUR EN AUXOIS",
+    "type": "airport"
   },
   {
     "id": "LFTM",
-    "name": "SERRES LA BATIE MONTSALEON"
+    "name": "SERRES LA BATIE MONTSALEON",
+    "type": "airport"
   },
   {
     "id": "LFFZ",
-    "name": "SEZANNE SAINT REMY"
+    "name": "SEZANNE SAINT REMY",
+    "type": "airport"
   },
   {
     "id": "LFNS",
-    "name": "SISTERON VAUMEILH"
+    "name": "SISTERON VAUMEILH",
+    "type": "airport"
   },
   {
     "id": "LFJS",
-    "name": "SOISSONS COURMELLES"
+    "name": "SOISSONS COURMELLES",
+    "type": "airport"
   },
   {
     "id": "LFKD",
-    "name": "SOLLIERES SARDIERES"
+    "name": "SOLLIERES SARDIERES",
+    "type": "airport"
   },
   {
     "id": "LFDK",
-    "name": "SOULAC SUR MER"
+    "name": "SOULAC SUR MER",
+    "type": "airport"
   },
   {
     "id": "LFST",
-    "name": "STRASBOURG ENTZHEIM"
+    "name": "STRASBOURG ENTZHEIM",
+    "type": "airport"
   },
   {
     "id": "LFGC",
-    "name": "STRASBOURG NEUHOF"
+    "name": "STRASBOURG NEUHOF",
+    "type": "airport"
   },
   {
     "id": "LFDT",
-    "name": "TARBES LALOUBERE"
+    "name": "TARBES LALOUBERE",
+    "type": "airport"
   },
   {
     "id": "LFBT",
-    "name": "TARBES LOURDES PYRENEES"
+    "name": "TARBES LOURDES PYRENEES",
+    "type": "airport"
   },
   {
     "id": "LFCT",
-    "name": "THOUARS"
+    "name": "THOUARS",
+    "type": "airport"
   },
   {
     "id": "LFET",
-    "name": "TIL CHATEL"
+    "name": "TIL CHATEL",
+    "type": "airport"
   },
   {
     "id": "LFBO",
-    "name": "TOULOUSE BLAGNAC"
+    "name": "TOULOUSE BLAGNAC",
+    "type": "airport"
   },
   {
     "id": "LFIT",
-    "name": "TOULOUSE BOURG SAINT BERNARD"
+    "name": "TOULOUSE BOURG SAINT BERNARD",
+    "type": "airport"
   },
   {
     "id": "LFBF",
-    "name": "TOULOUSE FRANCAZAL"
+    "name": "TOULOUSE FRANCAZAL",
+    "type": "airport"
   },
   {
     "id": "LFCL",
-    "name": "TOULOUSE LASBORDES"
+    "name": "TOULOUSE LASBORDES",
+    "type": "airport"
   },
   {
     "id": "LFFX",
-    "name": "TOURNUS CUISERY"
+    "name": "TOURNUS CUISERY",
+    "type": "airport"
   },
   {
     "id": "LFJT",
-    "name": "TOURS LE LOUROUX"
+    "name": "TOURS LE LOUROUX",
+    "type": "airport"
   },
   {
     "id": "LFEN",
-    "name": "TOURS SORIGNY"
+    "name": "TOURS SORIGNY",
+    "type": "airport"
   },
   {
     "id": "LFOT",
-    "name": "TOURS VAL DE LOIRE"
+    "name": "TOURS VAL DE LOIRE",
+    "type": "airport"
   },
   {
     "id": "LFPN",
-    "name": "TOUSSUS LE NOBLE"
+    "name": "TOUSSUS LE NOBLE",
+    "type": "airport"
   },
   {
     "id": "LFQB",
-    "name": "TROYES BARBEREY"
+    "name": "TROYES BARBEREY",
+    "type": "airport"
   },
   {
     "id": "LFCU",
-    "name": "USSEL THALAMY"
+    "name": "USSEL THALAMY",
+    "type": "airport"
   },
   {
     "id": "LFNU",
-    "name": "UZES"
+    "name": "UZES",
+    "type": "airport"
   },
   {
     "id": "LFLU",
-    "name": "VALENCE CHABEUIL"
+    "name": "VALENCE CHABEUIL",
+    "type": "airport"
   },
   {
     "id": "LFAV",
-    "name": "VALENCIENNES DENAIN"
+    "name": "VALENCIENNES DENAIN",
+    "type": "airport"
   },
   {
     "id": "LFNV",
-    "name": "VALREAS VISAN"
+    "name": "VALREAS VISAN",
+    "type": "airport"
   },
   {
     "id": "LFRV",
-    "name": "VANNES MEUCON"
+    "name": "VANNES MEUCON",
+    "type": "airport"
   },
   {
     "id": "LFAU",
-    "name": "VAUVILLE"
+    "name": "VAUVILLE",
+    "type": "airport"
   },
   {
     "id": "LFIV",
-    "name": "VENDAYS MONTALIVET"
+    "name": "VENDAYS MONTALIVET",
+    "type": "airport"
   },
   {
     "id": "LFGW",
-    "name": "VERDUN SOMMEDIEUE"
+    "name": "VERDUN SOMMEDIEUE",
+    "type": "airport"
   },
   {
     "id": "LFQW",
-    "name": "VESOUL FROTEY"
+    "name": "VESOUL FROTEY",
+    "type": "airport"
   },
   {
     "id": "LFLV",
-    "name": "VICHY CHARMEIL"
+    "name": "VICHY CHARMEIL",
+    "type": "airport"
   },
   {
     "id": "LFHH",
-    "name": "VIENNE REVENTIN"
+    "name": "VIENNE REVENTIN",
+    "type": "airport"
   },
   {
     "id": "LFFV",
-    "name": "VIERZON MEREAU"
+    "name": "VIERZON MEREAU",
+    "type": "airport"
   },
   {
     "id": "LFCV",
-    "name": "VILLEFRANCHE DE ROUERGUE"
+    "name": "VILLEFRANCHE DE ROUERGUE",
+    "type": "airport"
   },
   {
     "id": "LFHV",
-    "name": "VILLEFRANCHE TARARE"
+    "name": "VILLEFRANCHE TARARE",
+    "type": "airport"
   },
   {
     "id": "LFCW",
-    "name": "VILLENEUVE SUR LOT"
+    "name": "VILLENEUVE SUR LOT",
+    "type": "airport"
   },
   {
     "id": "LFAW",
-    "name": "VILLERUPT"
+    "name": "VILLERUPT",
+    "type": "airport"
   },
   {
     "id": "LFNF",
-    "name": "VINON"
+    "name": "VINON",
+    "type": "airport"
   },
   {
     "id": "LFQS",
-    "name": "VITRY EN ARTOIS"
+    "name": "VITRY EN ARTOIS",
+    "type": "airport"
   },
   {
     "id": "LFSK",
-    "name": "VITRY LE FRANCOIS VAUCLERC"
+    "name": "VITRY LE FRANCOIS VAUCLERC",
+    "type": "airport"
   },
   {
     "id": "LFYV",
