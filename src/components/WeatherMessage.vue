@@ -35,15 +35,15 @@ export default {
   name: "WeatherMessage",
   props: {
     station: Object,
-    type: String,
+    type: String
   },
   computed: {
     haveMessages() {
       return this.station.messages.length > 0;
-    },
+    }
   },
   filters: {
-    trim: (str) => str.trim(),
-  },
+    trim: str => str.trim()
+  }
 };
 </script>

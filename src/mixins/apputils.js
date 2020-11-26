@@ -20,7 +20,7 @@ export const UnitSystem = {
           m: 1,
           ft: 3.28084,
           FL: 328.084
-        },
+        }
         // distance: {
         //   m: 1,
         //   Km: 0.001,
@@ -55,6 +55,9 @@ export const UnitSystem = {
       };
       return (value / altitude[from]) * altitude[to];
       // return this.convert(value, "altitude", from, to)
+    },
+    FL(num) {
+      return `FL${num.toString().padStart(3, "0")}`;
     },
     asDistance(value, to = "ft", from = "m") {
       let distance = {
@@ -119,7 +122,7 @@ export const ImportExport = {
         };
         reader.onerror = reject;
         reader.readAsText(file);
-      })
+      });
     },
     downloadJSON(data, fileName) {
       let file = new Blob([JSON.stringify(data, undefined, 2)], {

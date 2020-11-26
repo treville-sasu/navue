@@ -10,103 +10,136 @@
         </div>
       </div>
     </section>
-    <div class="columns">
-      <div class="column is-half">
-        <div class="notification">
-          <b-field label="ICAO Code for FIR or Airports" expanded>
-            <b-taginput
-              v-model="selectedCodes"
-              :data="filteredCodes"
-              @typing="getFilteredCodes"
-              @input="getMessages"
-              autocomplete
-              allow-new
-              icon="label"
-              placeholder="Type a code"
-              maxtags="50"
-              maxlength="4"
-              field="id"
-            >
-              <template slot-scope="props">
-                <strong>{{ props.option.id }}</strong
-                >: <i>{{ props.option.name }}</i>
-              </template>
-              <template slot="empty">
-                Code unknown, validate to check it.
-              </template>
-            </b-taginput>
-          </b-field>
-          <b-field position="is-centered" expanded>
-            <div
-              class="control"
-              v-for="category in avaliableMessagesCategories"
-              :key="category"
-            >
-              <b-checkbox-button
-                v-model="selectedMessagesCategories"
-                :native-value="category"
-                type="is-success"
-              >
-                {{ category }}
-              </b-checkbox-button>
-            </div>
-          </b-field>
+    <div
+      class="notification"
+      v-bind:class="{
+        'is-loading': !validated && !error,
+      }"
+    >
+      <div
+        class="message level is-warning is-overlay"
+        v-bind:class="{ 'is-hidden': !error }"
+        style="z-index: 6; margin-bottom: 0"
+      >
+        <div class="level-item has-text-centered" style="display: inline-block">
+          <h4 class="title">
+            <b-icon
+              icon="alert-circle-outline"
+              type="is-danger"
+              size="is-large"
+            />
+            Aeroweb Server Unavailable
+          </h4>
+          <p class="heading">
+            Check your connection or use Meteo France server directly
+          </p>
+          <a href="https://aviation.meteo.fr" target="_blank"
+            >https://aviation.meteo.fr</a
+          >
         </div>
-        <section
-          class="block"
-          v-for="(stations, category) in messages"
-          :key="category"
-        >
-          <WeatherMessage
-            v-for="station in stations"
-            :key="category + station.oaci"
-            :station="station"
-            :type="category"
-          />
-        </section>
       </div>
-      <div class="column is-half">
-        <div class="notification">
-          <b-field label="Meteorological Zone" expanded>
-            <b-select
-              placeholder="Select a zone"
-              v-model="selectedMapsZone"
-              @input="getMaps"
-            >
-              <option
-                v-for="(option, key) in avaliableMaps.zones"
-                :value="key"
-                :key="key"
-                >{{ option }}</option
-              >
-            </b-select>
-          </b-field>
-          <b-field position="is-centered" expanded>
-            <div
-              class="control"
-              v-for="(name, type) in avaliableMaps.types"
-              :key="type"
-            >
-              <b-checkbox-button
-                v-model="selectedMapsTypes"
-                :native-value="type"
-                type="is-success"
-              >
-                {{ name }}
-              </b-checkbox-button>
-            </div>
-          </b-field>
-        </div>
-        <section class="block" v-for="(mapsSet, type) in maps" :key="type">
-          <WeatherMap
-            v-for="(map, key) in mapsSet"
-            :key="key"
-            :data="map"
-            :src="proxyUrl(map.lien)"
+      <b-field grouped>
+        <b-field label="ICAO Code for FIR or Airports" expanded>
+          <b-icao
+            v-model="selectedCodes"
+            maxtags="12"
+            :data="avaliableCodes"
+            @input="getMessages"
+            allow-new
           />
-        </section>
-      </div>
+        </b-field>
+        <b-field position="is-centered" expanded>
+          <div
+            class="control"
+            v-for="category in avaliableMessagesCategories"
+            :key="category"
+          >
+            <b-checkbox-button
+              v-model="selectedMessagesCategories"
+              :native-value="category"
+              type="is-primary"
+            >
+              {{ category }}
+            </b-checkbox-button>
+          </div>
+        </b-field>
+      </b-field>
+      <b-field grouped>
+        <b-field label="Meteorological Zone" expanded>
+          <b-select
+            placeholder="Select a zone"
+            v-model="selectedMapsZone"
+            @input="getMaps"
+          >
+            <option
+              v-for="(option, key) in avaliableMaps.zones"
+              :value="key"
+              :key="key"
+            >
+              {{ option }}
+            </option>
+          </b-select>
+        </b-field>
+        <b-field position="is-centered" expanded>
+          <div
+            class="control"
+            v-for="(name, type) in avaliableMaps.types"
+            :key="type"
+          >
+            <b-checkbox-button
+              v-model="selectedMapsTypes"
+              :native-value="type"
+              type="is-primary"
+            >
+              {{ name }}
+            </b-checkbox-button>
+          </div>
+        </b-field>
+      </b-field>
     </div>
+
+    <section class="section">
+      <h2 class="subtitle">Messages :</h2>
+      <div
+        class="block"
+        v-for="(stations, category) in messages"
+        :key="category"
+      >
+        <WeatherMessage
+          v-for="station in stations"
+          :key="category + station.oaci"
+          :station="station"
+          :type="category"
+        />
+      </div>
+    </section>
+    <section class="section">
+      <h2 class="subtitle">Weather Charts :</h2>
+      <div class="block" v-for="(mapsSet, type) in maps" :key="type">
+        <div class="box" v-for="(map, key) in mapsSet" :key="key">
+          <ChartCartridge
+            v-bind="map"
+            :url="map.lien"
+            :name="map.zone_carte"
+            :tags="{
+              primary: map.type,
+              info: map.niveau,
+              warning: map.echeance,
+            }"
+            @click="openChartUrl = $event"
+          >
+            <b-icon
+              :icon="
+                map.type == 'TEMSI' ? 'weather-partly-cloudy' : 'weather-windy'
+              "
+              size="is-large"
+              type="is-primary"
+            />
+          </ChartCartridge>
+        </div>
+      </div>
+      <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
+    </section>
   </section>
 </template>
 
@@ -118,15 +151,26 @@
 </style>
 
 <script>
+//TODO: make Aeroweb an external dependency. Build a mixins for aeroweb usage.
+import BIcao from "@/components/BIcao.vue";
+
 import Aeroweb from "@/mixins/aeroweb.js";
 import WeatherMessage from "@/components/WeatherMessage.vue";
-import WeatherMap from "@/components/WeatherMap.vue";
+
+import ChartCartridge from "@/components/ChartCartridge.vue";
+import PDFModal from "@/components/PDFModal.vue";
+
+import CorsProxy from "@/mixins/CorsProxy";
 
 export default {
+  name: "Weather",
   components: {
+    BIcao,
     WeatherMessage,
-    WeatherMap,
+    ChartCartridge,
+    PDFModal
   },
+  mixins: [CorsProxy],
   data() {
     return {
       avaliableCodes: [
@@ -134,24 +178,23 @@ export default {
           Object.entries({
             ...Aeroweb.VAA,
             ...Aeroweb.TCA,
-            ...Aeroweb.PREDEC,
+            ...Aeroweb.PREDEC
           }),
-          (station) => {
-            return { id: station[0], name: station[1] };
+          station => {
+            return { id: station[0], name: station[1], type: "weather" };
           }
         ),
-        ...require("@/store/vac.json"),
+        ...require("@/store/vac.json")
       ],
-      filteredCodes: [],
       selectedCodes: [],
       avaliableMessagesCategories: [
         "OPMET",
-        "SIGMET",
+        "SIGMET"
         // "VAA",
         // "TCA",
         // "MAA",
         // "SW",
-        // "PREDEC",
+        // "PREDEC"
       ],
       selectedMessagesCategories: ["OPMET", "SIGMET"],
       avaliableMaps: Aeroweb.CARTES,
@@ -159,97 +202,85 @@ export default {
       selectedMapsTypes: ["AERO_TEMSI", "AERO_WINTEM"],
 
       server: new Aeroweb("IBAUJYXSHD", {
-        cors_proxy: this.proxyUrl,
+        cors_proxy: this.proxyUrl
       }),
       messages: {},
       maps: {},
+      openChartUrl: null,
+      validated: undefined,
+      error: false
     };
+  },
+  async mounted() {
+    try {
+      this.validated = await this.server.VALIDATION("mabrenac");
+    } catch {
+      this.error = true;
+    }
+  },
+  computed: {
+    proxyChartUrl: {
+      get() {
+        return this.openChartUrl ? this.proxyUrl(this.openChartUrl) : null;
+      },
+      set(val) {
+        this.openChartUrl = val;
+      }
+    }
   },
   watch: {
     selectedMessagesCategories(newVal, oldVal) {
       oldVal
-        .filter((x) => !newVal.includes(x))
-        .forEach((op) => {
+        .filter(x => !newVal.includes(x))
+        .forEach(op => {
           this.messages[op] = [];
         });
 
       this.getMessages(
         this.selectedCodes,
-        newVal.filter((x) => !oldVal.includes(x))
+        newVal.filter(x => !oldVal.includes(x))
       );
     },
     selectedMapsTypes(newVal, oldVal) {
       oldVal
-        .filter((x) => !newVal.includes(x))
-        .forEach((op) => {
+        .filter(x => !newVal.includes(x))
+        .forEach(op => {
           this.maps[op] = [];
         });
 
       this.getMaps(
         this.selectedMapsZone,
-        newVal.filter((x) => !oldVal.includes(x))
+        newVal.filter(x => !oldVal.includes(x))
       );
-    },
+      //FIXME changing types do not update maps correctly
+    }
   },
   methods: {
-    proxyUrl(url) {
-      return process.env.NODE_ENV != "production"
-        ? "https://cors.treville.workers.dev/" + url
-        : url;
-    },
     getMessages(codes, categories) {
-      (categories || this.selectedMessagesCategories).forEach((category) => {
-        this.server[category](codes.map((c) => c.id || c))
-          .then((data) => {
+      (categories || this.selectedMessagesCategories).forEach(category => {
+        this.server[category](codes.map(c => c.id || c))
+          .then(data => {
             this.$set(this.messages, category, data);
           })
-          .catch((err) => {
-            this.openWarning(err);
+          .catch(() => {
+            this.error = true;
             this.messages[category] = [];
           });
       });
     },
     getMaps(zone, types) {
-      (types || this.selectedMapsTypes).forEach((type) => {
+      (types || this.selectedMapsTypes).forEach(type => {
         this.server
           .CARTES(zone || this.selectedMapsZone, type)
-          .then((data) => {
+          .then(data => {
             this.$set(this.maps, type, data);
           })
-          .catch((err) => {
-            this.openWarning(err);
+          .catch(() => {
+            this.error = true;
             this.maps[type] = [];
           });
       });
-    },
-    getFilteredCodes(text) {
-      this.filteredCodes = this.avaliableCodes.filter((option) => {
-        return (
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(text.toLowerCase()) >= 0 ||
-          option.id
-            .toString()
-            .toLowerCase()
-            .indexOf(text.toLowerCase()) >= 0
-        );
-      });
-    },
-    openWarning(error) {
-      console.error(error);
-      this.$buefy.snackbar.open({
-        message: "Can't get info from AeroWeb.",
-        position: "is-bottom",
-        type: "is-danger",
-        duration: 2500,
-      });
-    },
-  },
-  filters: {
-    FL(num) {
-      return `FL${num.toString().padStart(3, "0")}`;
-    },
-  },
+    }
+  }
 };
 </script>

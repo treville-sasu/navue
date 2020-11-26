@@ -21,7 +21,7 @@ export default class AeroWeb {
     return this.request(
       "OPMET2",
       {
-        LIEUID: this.pipe(...codes)
+        LIEUID: codes.join("|")
       },
       options
     ).then(data => {
@@ -32,7 +32,7 @@ export default class AeroWeb {
     return this.request(
       "SIGMET2",
       {
-        LIEUID: this.pipe(...codes)
+        LIEUID: codes.join("|")
       },
       options
     ).then(data => {
@@ -43,7 +43,7 @@ export default class AeroWeb {
     return this.request(
       "VAA",
       {
-        LIEUID: this.pipe(...codes)
+        LIEUID: codes.join("|")
       },
       options
     ).then(this.groupByMessage);
@@ -52,7 +52,7 @@ export default class AeroWeb {
     return this.request(
       "VAG",
       {
-        LIEUID: this.pipe(...codes)
+        LIEUID: codes.join("|")
       },
       options
     ).then(this.flattenMaps);
@@ -61,7 +61,7 @@ export default class AeroWeb {
     return this.request(
       "TCA",
       {
-        LIEUID: this.pipe(...codes)
+        LIEUID: codes.join("|")
       },
       options
     ).then(this.groupByMessage);
@@ -70,7 +70,7 @@ export default class AeroWeb {
     return this.request(
       "TCAG",
       {
-        LIEUID: this.pipe(...codes)
+        LIEUID: codes.join("|")
       },
       options
     ).then(this.flattenMaps);
@@ -79,7 +79,7 @@ export default class AeroWeb {
     return this.request(
       "MAA",
       {
-        LIEUID: this.pipe(...codes)
+        LIEUID: codes.join("|")
       },
       options
     );
@@ -88,7 +88,7 @@ export default class AeroWeb {
     return this.request(
       "PREDEC",
       {
-        LIEUID: this.pipe(...codes)
+        LIEUID: codes.join("|")
       },
       options
     );
@@ -148,10 +148,6 @@ export default class AeroWeb {
     );
   }
 
-  pipe(...codes) {
-    return codes.join("|");
-  }
-
   parser(data) {
     return xmljs.xml2js(data, { compact: true, ignoreDeclaration: true });
   }
@@ -188,7 +184,7 @@ export default class AeroWeb {
 
   groupByMessage(data) {
     if (!data.groupe) return data;
-    return [data.groupe.messages].flat().map(function(station) {
+    return [data.groupe.messages].flat().map(function (station) {
       return {
         ...{ oaci: station.oaci, nom: station.nom },
         ...AeroWeb.groupBy([station.message].flat(), "type", m => m.texte)
@@ -223,7 +219,7 @@ export default class AeroWeb {
   }
 
   static groupBy(xs, key, callback) {
-    return xs.reduce(function(rv, x) {
+    return xs.reduce(function (rv, x) {
       if (x) (rv[x[key]] = rv[x[key]] || []).push(callback.call(null, x));
       return rv;
     }, {});
