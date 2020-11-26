@@ -1,5 +1,5 @@
 <template>
-  <section style="height: 100%;">
+  <section style="height: 100%">
     <NavigationSelect
       v-model="navigation"
       required
@@ -9,10 +9,10 @@
     <AircraftSelect v-model="aircraft" @close="tool = undefined" />
     <l-map
       v-if="navigation"
-      :zoom="6"
-      :center="{ lat: 43.34911845652575, lng: -0.012370347976684572 }"
+      :zoom="10"
+      :center="{ lat: 42.69597591582309, lng: 2.879308462142945 }"
       :options="{
-        zoomSnap: 0.5
+        zoomSnap: 0.5,
       }"
       v-on="mapEvents"
     >
@@ -25,7 +25,7 @@
           position: 'topleft',
           showResultIcons: true,
           showUniqueResult: true,
-          defaultMarkGeocode: false
+          defaultMarkGeocode: false,
         }"
       />
       <l-control-fullscreen position="topleft" />
@@ -49,7 +49,7 @@
         @click-trace="selectRoute(id)"
       />
       <l-polyline
-        v-if="pointerVector.every(i => i && i.lat && i.lng)"
+        v-if="pointerVector.every((i) => i && i.lat && i.lng)"
         :lat-lngs="pointerVector"
         className="pointerVector"
         dashArray="40, 30, 10, 30"
