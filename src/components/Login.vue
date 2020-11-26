@@ -35,7 +35,7 @@
           >Create Account</b-button
         >
         <b-button
-          v-if="getLocalData"
+          v-if="gotLocalData"
           @click="cleanLocal"
           class="is-danger is-light"
           icon-left="database-remove"
@@ -150,6 +150,13 @@ export default {
       password: null,
       userStats: {},
       syncIcon: "cloud-off-outline"
+      // importData: {
+      //   title: "Import data",
+      //   type: "is-warning",
+      //   message:
+      //     "Some data are present in this device. Would you like to import them into your account ?",
+      //   confirmText: "Import & Sync"
+      // }
     };
   },
   computed: {
@@ -188,6 +195,8 @@ export default {
         this.remoteDB
           .logIn(username, password)
           .catch(this.openToast)
+          // .then(() => this.confirmAction(this.importData))
+          // .catch(this.cleanLocal)
           .then(this.setCurrentUser)
           .then(this.startSync)
           .finally(() => {
@@ -224,6 +233,23 @@ export default {
     checkSession() {
       return this.setCurrentUser().catch(this.logoutUser);
     },
+    // startSync(userDB) {
+    //   return this.$pouch
+    //     .ecoSync(userDB)
+    //     .then(handle => {
+    //       console.log("synced ?");
+    //       this.syncIcon = "cloud-sync-outline fade";
+    //       this.syncHandle = handle
+    //         .on("active", () => (this.syncIcon = "cloud-sync-outline fade"))
+    //         .on("change", () => (this.syncIcon = "cloud-sync-outline fade"))
+    //         .on("paused", () => (this.syncIcon = "cloud-check-outline"));
+    //         .on("paused", this.setUserStats)
+    //     })
+    //     .catch(err => {
+    //       this.openToast(err);
+    //       this.syncIcon = "weather-cloudy-alert";
+    //     });
+    // },
     startSync(userDB) {
       if (this.syncHandle) this.stopSync();
       this.syncHandle = this.$pouch
