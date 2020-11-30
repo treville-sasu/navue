@@ -13,7 +13,7 @@
     <div
       class="notification"
       v-bind:class="{
-        'is-loading': !validated && !error
+        'is-loading': validated == undefined && !error,
       }"
     >
       <div
@@ -41,21 +41,21 @@
       <b-field grouped>
         <b-field label="ICAO Code for FIR or Airports" expanded>
           <b-icao
-            v-model="selectedCodes"
+            v-model="searchCodes"
             maxtags="12"
             :data="avaliableCodes"
-            @input="getMessages"
             allow-new
+            @input="getMessages"
           />
         </b-field>
         <b-field position="is-centered" expanded>
           <div
             class="control"
-            v-for="category in avaliableMessagesCategories"
+            v-for="category in avaliableCategories"
             :key="category"
           >
             <b-checkbox-button
-              v-model="selectedMessagesCategories"
+              v-model="searchCategories"
               :native-value="category"
               type="is-primary"
             >
@@ -68,7 +68,7 @@
         <b-field label="Meteorological Zone" expanded>
           <b-select
             placeholder="Select a zone"
-            v-model="selectedMapsZone"
+            v-model="searchZones"
             @input="getMaps"
           >
             <option
@@ -87,7 +87,7 @@
             :key="type"
           >
             <b-checkbox-button
-              v-model="selectedMapsTypes"
+              v-model="searchTypes"
               :native-value="type"
               type="is-primary"
             >
@@ -98,11 +98,11 @@
       </b-field>
     </div>
 
-    <section class="section">
+    <section class="section" v-if="Object.keys(resultsMessages).length > 0">
       <h2 class="subtitle">Messages :</h2>
       <div
         class="block"
-        v-for="(stations, category) in messages"
+        v-for="(stations, category) in resultsMessages"
         :key="category"
       >
         <WeatherMessage
@@ -113,9 +113,9 @@
         />
       </div>
     </section>
-    <section class="section">
+    <section class="section" v-if="Object.keys(resultsMaps).length > 0">
       <h2 class="subtitle">Weather Charts :</h2>
-      <div class="block" v-for="(mapsSet, type) in maps" :key="type">
+      <div class="block" v-for="(mapsSet, type) in resultsMaps" :key="type">
         <div class="box" v-for="(map, key) in mapsSet" :key="key">
           <ChartCartridge
             v-bind="map"
@@ -124,7 +124,7 @@
             :tags="{
               primary: map.type,
               info: map.niveau,
-              warning: map.echeance
+              warning: map.echeance,
             }"
             @click="openChartUrl = $event"
           >
@@ -151,15 +151,15 @@
 </style>
 
 <script>
-//TODO: make Aeroweb an external dependency. Build a mixins for aeroweb usage.
+//TODO: Check why messages request are sent twice.
 import BIcao from "@/components/BIcao.vue";
 
-import Aeroweb from "@/mixins/aeroweb.js";
 import WeatherMessage from "@/components/WeatherMessage.vue";
 
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";
 
+import Aeroweb from "@/mixins/Aeroweb";
 import CorsProxy from "@/mixins/CorsProxy";
 
 export default {
@@ -168,55 +168,24 @@ export default {
     BIcao,
     WeatherMessage,
     ChartCartridge,
-    PDFModal
+    PDFModal,
   },
-  mixins: [CorsProxy],
+  mixins: [Aeroweb, CorsProxy],
   data() {
     return {
-      avaliableCodes: [
-        ...Array.from(
-          Object.entries({
-            ...Aeroweb.VAA,
-            ...Aeroweb.TCA,
-            ...Aeroweb.PREDEC
-          }),
-          station => {
-            return { id: station[0], name: station[1], type: "weather" };
-          }
-        ),
-        ...require("@/store/vac.json")
-      ],
-      selectedCodes: [],
-      avaliableMessagesCategories: [
-        "OPMET",
-        "SIGMET"
-        // "VAA",
-        // "TCA",
-        // "MAA",
-        // "SW",
-        // "PREDEC"
-      ],
-      selectedMessagesCategories: ["OPMET", "SIGMET"],
-      avaliableMaps: Aeroweb.CARTES,
-      selectedMapsZone: null,
-      selectedMapsTypes: ["AERO_TEMSI", "AERO_WINTEM"],
-
-      server: new Aeroweb("IBAUJYXSHD", {
-        cors_proxy: this.proxyUrl
-      }),
-      messages: {},
-      maps: {},
+      searchCodes: [],
+      searchCategories: ["OPMET", "SIGMET"],
+      searchZones: null,
+      searchTypes: ["AERO_TEMSI", "AERO_WINTEM"],
+      resultsMessages: {},
+      resultsMaps: {},
       openChartUrl: null,
       validated: undefined,
-      error: false
+      error: false,
     };
   },
   async mounted() {
-    try {
-      this.validated = await this.server.VALIDATION("mabrenac");
-    } catch {
-      this.error = true;
-    }
+    this.validated = await this.validateUser("navue");
   },
   computed: {
     proxyChartUrl: {
@@ -225,62 +194,46 @@ export default {
       },
       set(val) {
         this.openChartUrl = val;
-      }
-    }
+      },
+    },
   },
   watch: {
-    selectedMessagesCategories(newVal, oldVal) {
+    searchCategories(newVal, oldVal) {
       oldVal
-        .filter(x => !newVal.includes(x))
-        .forEach(op => {
-          this.messages[op] = [];
+        .filter((x) => !newVal.includes(x))
+        .forEach((category) => {
+          delete this.resultsMessages[category];
         });
 
       this.getMessages(
-        this.selectedCodes,
-        newVal.filter(x => !oldVal.includes(x))
+        this.searchCodes,
+        newVal.filter((x) => !oldVal.includes(x))
       );
     },
-    selectedMapsTypes(newVal, oldVal) {
+    searchTypes(newVal, oldVal) {
       oldVal
-        .filter(x => !newVal.includes(x))
-        .forEach(op => {
-          this.maps[op] = [];
+        .filter((x) => !newVal.includes(x))
+        .forEach((type) => {
+          delete this.resultsMaps[type];
         });
 
       this.getMaps(
-        this.selectedMapsZone,
-        newVal.filter(x => !oldVal.includes(x))
+        this.searchZones,
+        newVal.filter((x) => !oldVal.includes(x))
       );
-      //FIXME changing types do not update maps correctly
-    }
+    },
   },
   methods: {
-    getMessages(codes, categories) {
-      (categories || this.selectedMessagesCategories).forEach(category => {
-        this.server[category](codes.map(c => c.id || c))
-          .then(data => {
-            this.$set(this.messages, category, data);
-          })
-          .catch(() => {
-            this.error = true;
-            this.messages[category] = [];
-          });
-      });
+    async validateUser(user) {
+      try {
+        clearTimeout(this.error);
+        this.error = false;
+        return await this.aerowebInstance.VALIDATION(user);
+      } catch (err) {
+        console.error(err);
+        this.error = setTimeout(this.validateUser, 3000, user);
+      }
     },
-    getMaps(zone, types) {
-      (types || this.selectedMapsTypes).forEach(type => {
-        this.server
-          .CARTES(zone || this.selectedMapsZone, type)
-          .then(data => {
-            this.$set(this.maps, type, data);
-          })
-          .catch(() => {
-            this.error = true;
-            this.maps[type] = [];
-          });
-      });
-    }
-  }
+  },
 };
 </script>

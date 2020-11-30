@@ -12,6 +12,7 @@
   "dependencies": {
     "@creativebulma/bulma-divider": "^1.1.0",
     "@mdi/font": "^5.4.55",
+    "aeroweb": "^0.9.0",
     "buefy": "^0.9.3",
     "bulmaswatch": "^0.8.1",
     "chart.js": "^2.9.3",
@@ -35,8 +36,7 @@
     "vue2-leaflet": "^2.5.2",
     "vue2-leaflet-fullscreen": "^1.0.0",
     "vue2-leaflet-rotatedmarker": "^1.0.9",
-    "vuex": "^3.4.0",
-    "xml-js": "^1.6.11"
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "~4.4.0",
