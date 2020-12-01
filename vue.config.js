@@ -1,3 +1,5 @@
+const CreateFileWebpack = require("create-file-webpack");
+
 module.exports = {
   devServer: {
     disableHostCheck: true,
@@ -44,7 +46,14 @@ module.exports = {
     },
     externals: {
       L: "leaflet"
-    }
+    },
+    plugins: [
+      new CreateFileWebpack({
+        path: "./dist",
+        fileName: ".git",
+        content: "gitdir: ../.git/worktrees/dist"
+      })
+    ]
   },
 
   productionSourceMap: false
