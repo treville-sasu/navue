@@ -7,7 +7,7 @@ export default {
       AZBASourceUrl: "https://www.sia.aviation-civile.gouv.fr/schedules",
       VACSourceUrl: "https://www.sia.aviation-civile.gouv.fr/",
       NOTAMSourceUrl:
-        "http://notamweb.aviation-civile.gouv.fr/Script/IHM/Bul_Aerodrome.php"
+        "https://notamweb.aviation-civile.gouv.fr/Script/IHM/Bul_Aerodrome.php" // true protocole is http, handling it in ServiceWorker and CorsProxy to work around mixed content
     };
   },
   methods: {
@@ -25,13 +25,13 @@ export default {
       const elements = Array.from(document.getElementsByTagName("iframe"));
 
       return elements.map(i => {
-        let [url, date, st_h, st_min, ed_h, ed_min] = i.src.match(
-          /.*(\d{4}-\d{2}-\d{2})_(\d{2})(\d{2})-(\d{2})(\d{2}).pdf+/i
+        const [url, year, month, day, st_h, st_min, ed_h, ed_min] = i.src.match(
+          /.*(\d{4})-(\d{2})-(\d{2})_(\d{2})(\d{2})-(\d{2})(\d{2}).pdf+/i
         );
-        const start = new Date(Date.parse(`${date}T${st_h}:${st_min}`));
-        const end = new Date(Date.parse(`${date}T${ed_h}:${ed_min}`));
-        date = new Date(Date.parse(date));
-        return { url, date, start, end };
+        const start = new Date(Date.UTC(year, month - 1, day, st_h, st_min));
+        const end = new Date(Date.UTC(year, month - 1, day, ed_h, ed_min));
+
+        return { url, start, end };
       });
     },
     async getVACbaseUrl(target) {
@@ -58,9 +58,10 @@ export default {
         },
         body: new URLSearchParams(this.formatAeroParams(params)).toString()
       });
-      return Array.from(document.querySelectorAll("pre")).map(
-        pre => pre.innerText
+      const collection = Array.from(document.querySelectorAll("pre")).map(pre =>
+        this.decodeMessage(pre.innerText)
       );
+      return this.groupByAttribute(collection, "A", m => m);
     },
 
     formatAeroParams(params) {
@@ -101,6 +102,28 @@ export default {
         code.id || ""
       ]);
       return Object.fromEntries(params);
+    },
+    decodeMessage(message) {
+      return {
+        id: message.split("\n")[0].trim(),
+        raw: message,
+        ...Object.fromEntries(
+          Array.from(
+            message.matchAll(
+              /([QABCDEFG])\) (.+?)(?=(?: |\n)+[QABCDEFG]\) |$)/gs
+            )
+          ).map(m => [m[1], m[2].trim()])
+        )
+      };
+    },
+    groupByAttribute(collection, attribute, key_callback) {
+      return collection.reduce((rv, x) => {
+        if (x)
+          (rv[x[attribute]] = rv[x[attribute]] || []).push(
+            key_callback.call(null, x)
+          );
+        return rv;
+      }, {});
     }
   }
 };

@@ -36,11 +36,11 @@
       </div>
       <b-field grouped group-multiline>
         <b-field label="ICAO Code for Airports" expanded>
-          <b-icao v-model="notam.codes" maxtags="12" />
+          <b-icao v-model="searchNotam.codes" maxtags="12" />
         </b-field>
         <b-field label="Select a date and time">
           <b-datetimepicker
-            v-model="notam.datetime"
+            v-model="searchNotam.datetime"
             rounded
             placeholder="Click to select..."
             icon="calendar-today"
@@ -51,7 +51,7 @@
               <b-button
                 class="button is-primary"
                 icon-left="clock"
-                @click="notam.datetime = new Date()"
+                @click="searchNotam.datetime = new Date()"
                 label="Now"
               />
             </template>
@@ -61,7 +61,7 @@
       <b-field grouped group-multiline>
         <b-field label="Duration">
           <b-numberinput
-            v-model="notam.duration"
+            v-model="searchNotam.duration"
             :step="1"
             :min="0"
             controls-position="compact"
@@ -69,7 +69,7 @@
         </b-field>
         <b-field label="Radius or width">
           <b-numberinput
-            v-model="notam.radius"
+            v-model="searchNotam.radius"
             :step="10"
             :min="0"
             controls-position="compact"
@@ -77,7 +77,7 @@
         </b-field>
         <b-field label="Ceiling">
           <b-numberinput
-            v-model="notam.ceiling"
+            v-model="searchNotam.ceiling"
             :step="10"
             :min="0"
             controls-position="compact"
@@ -85,21 +85,21 @@
         </b-field>
         <b-field label="Flight Rules" position="is-centered">
           <b-radio-button
-            v-model="notam.flightrules"
+            v-model="searchNotam.flightrules"
             native-value="VFR"
             type="is-primary"
           >
             VFR
           </b-radio-button>
           <b-radio-button
-            v-model="notam.flightrules"
+            v-model="searchNotam.flightrules"
             native-value="IFR/VFR"
             type="is-primary"
           >
             IFR/VFR
           </b-radio-button>
           <b-radio-button
-            v-model="notam.flightrules"
+            v-model="searchNotam.flightrules"
             native-value="IFR"
             type="is-primary"
           >
@@ -108,14 +108,14 @@
         </b-field>
         <b-field label="Complementary" position="is-centered" expanded>
           <b-checkbox-button
-            v-model="notam.complementary"
+            v-model="searchNotam.complementary"
             type="is-primary"
             native-value="gps"
           >
             GPS
           </b-checkbox-button>
           <b-checkbox-button
-            v-model="notam.complementary"
+            v-model="searchNotam.complementary"
             type="is-primary"
             native-value="misc"
           >
@@ -126,10 +126,15 @@
       <b-button @click="getNotams">Submit</b-button>
     </div>
 
-    <section class="section" v-if="notams.length > 0">
-      <h2 class="subtitle">Notams ({{ notams.length }}) :</h2>
-      <div class="box" v-for="(message, key) in notams" :key="'notam' + key">
-        <NotamMessage :message="message" />
+    <section class="section" v-if="Object.keys(notams).length > 0">
+      <h2 class="subtitle">Notams :</h2>
+      <div class="box" v-for="(messages, zone) in notams" :key="zone">
+        <h4>{{ zone }}</h4>
+        <NotamMessage
+          :message="message.raw"
+          v-for="message in messages"
+          :key="message.id"
+        />
       </div>
     </section>
     <section class="section" v-if="azba.length > 0">
@@ -142,11 +147,11 @@
         >
           <ChartCartridge
             v-bind="map"
-            :name="map.date | asDay"
+            :name="map.start | asDay"
             :tags="{
               danger: 'RTBA',
               warning: $options.filters.asTime(map.start),
-              success: $options.filters.asTime(map.end)
+              success: $options.filters.asTime(map.end),
             }"
             @click="openChartUrl = $event"
             card
@@ -179,24 +184,24 @@ export default {
     NotamMessage,
     ChartCartridge,
     PDFModal,
-    Pdf
+    Pdf,
   },
   mixins: [Sia],
   data() {
     return {
       error: false,
-      notam: {
+      searchNotam: {
         codes: [],
         datetime: new Date(),
         duration: 12,
         radius: 10,
         ceiling: 990,
         flightrules: "VFR",
-        complementary: ["gps", "misc"]
+        complementary: ["gps", "misc"],
       },
       azba: [],
       openChartUrl: null,
-      notams: []
+      notams: [],
     };
   },
   async mounted() {
@@ -213,16 +218,16 @@ export default {
       },
       set(val) {
         this.openChartUrl = val;
-      }
-    }
+      },
+    },
   },
   methods: {
     async getNotams() {
       this.notams = await this.getAirportNOTAMs(
-        this.notam,
+        this.searchNotam,
         this.NOTAMSourceUrl
       );
-    }
+    },
   },
   filters: {
     asTime(value) {
@@ -231,7 +236,7 @@ export default {
         timeZoneName: "short",
         hour12: false,
         hour: "2-digit",
-        minute: "2-digit"
+        minute: "2-digit",
       });
     },
     asDay(value) {
@@ -239,9 +244,9 @@ export default {
         timeZone: "UTC",
         weekday: "long",
         day: "numeric",
-        month: "long"
+        month: "long",
       });
-    }
-  }
+    },
+  },
 };
 </script>
