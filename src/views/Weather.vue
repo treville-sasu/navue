@@ -10,34 +10,25 @@
         </div>
       </div>
     </section>
-    <div
-      class="notification"
-      v-bind:class="{
-        'is-loading': validated == undefined && !error,
-      }"
-    >
-      <div
-        class="message level is-warning is-overlay"
-        v-bind:class="{ 'is-hidden': !error }"
-        style="z-index: 6; margin-bottom: 0"
-      >
-        <div class="level-item has-text-centered" style="display: inline-block">
-          <h4 class="title">
-            <b-icon
-              icon="alert-circle-outline"
-              type="is-danger"
-              size="is-large"
-            />
-            Aeroweb Server Unavailable
-          </h4>
+    <div class="notification">
+      <b-loading :is-full-page="false" :active="baseURL === null && !error" />
+      <b-loading :is-full-page="false" :active="error">
+        <b-notification
+          has-icon
+          icon="alert-circle-outline"
+          :closable="false"
+          aria-close-label="Close notification"
+        >
+          <h4 class="title">Aeroweb Server Unavailable</h4>
           <p class="heading">
             Check your connection or use Meteo France server directly
           </p>
           <a href="https://aviation.meteo.fr" target="_blank"
             >https://aviation.meteo.fr</a
           >
-        </div>
-      </div>
+        </b-notification>
+      </b-loading>
+
       <b-field grouped>
         <b-field label="ICAO Code for FIR or Airports" expanded>
           <b-icao

@@ -10,32 +10,24 @@
         </div>
       </div>
     </section>
-    <div
-      class="notification"
-      v-bind:class="{ 'is-loading': baseURL === null && !error }"
-    >
-      <div
-        class="message level is-warning is-overlay"
-        v-bind:class="{ 'is-hidden': !error }"
-        style="z-index: 6; margin-bottom: 0"
-      >
-        <div class="level-item has-text-centered" style="display: inline-block">
-          <h4 class="title">
-            <b-icon
-              icon="alert-circle-outline"
-              type="is-danger"
-              size="is-large"
-            />
-            SIA Server Unavailable
-          </h4>
+    <div class="notification">
+      <b-loading :is-full-page="false" :active="baseURL === null && !error" />
+      <b-loading :is-full-page="false" :active="error">
+        <b-notification
+          has-icon
+          icon="alert-circle-outline"
+          :closable="false"
+          aria-close-label="Close notification"
+        >
+          <h4 class="title">SIA Server Unavailable</h4>
           <p class="heading">
             Check your connection or use SIA server directly
           </p>
           <a href="https://www.sia.aviation-civile.gouv.fr/" target="_blank"
             >https://www.sia.aviation-civile.gouv.fr/</a
           >
-        </div>
-      </div>
+        </b-notification>
+      </b-loading>
       <b-field label="ICAO Code for Airports" expanded>
         <b-icao v-model="codes" />
       </b-field>
@@ -47,7 +39,7 @@
           v-bind="map"
           :url="map.id | asVACurl(baseURL)"
           :tags="{
-            info: 'Airport'
+            info: 'Airport',
           }"
           @click="openChartUrl = $event"
         >
@@ -71,7 +63,7 @@ export default {
   components: {
     BIcao,
     ChartCartridge,
-    PDFModal
+    PDFModal,
   },
   mixins: [Sia],
   data() {
@@ -79,15 +71,11 @@ export default {
       error: false,
       codes: [],
       baseURL: null,
-      openChartUrl: null
+      openChartUrl: null,
     };
   },
   async mounted() {
-    try {
-      this.baseURL = await this.getVACbaseUrl(this.VACSourceUrl);
-    } catch {
-      this.error = true;
-    }
+    this.baseURL = await this.getCycleUrl(this.VACSourceUrl);
   },
   computed: {
     proxyChartUrl: {
@@ -96,13 +84,25 @@ export default {
       },
       set(val) {
         this.openChartUrl = val;
+      },
+    },
+  },
+  methods: {
+    async getCycleUrl(url) {
+      try {
+        clearTimeout(this.error);
+        this.error = false;
+        return await this.getVACbaseUrl(url);
+      } catch (err) {
+        console.error(err);
+        this.error = setTimeout(this.getCycleUrl, 3000, url);
       }
-    }
+    },
   },
   filters: {
     asVACurl(value, base) {
       return new URL(`AD-2.${value}.pdf`, base).href;
-    }
-  }
+    },
+  },
 };
 </script>

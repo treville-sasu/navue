@@ -8,32 +8,24 @@
         </div>
       </div>
     </section>
-    <div
-      class="notification"
-      v-bind:class="{ 'is-loading': azba.length == 0 && !error }"
-    >
-      <div
-        class="message level is-warning is-overlay"
-        v-bind:class="{ 'is-hidden': !error }"
-        style="z-index: 6; margin-bottom: 0"
-      >
-        <div class="level-item has-text-centered" style="display: inline-block">
-          <h4 class="title">
-            <b-icon
-              icon="alert-circle-outline"
-              type="is-danger"
-              size="is-large"
-            />
-            SIA Server Unavailable
-          </h4>
+    <div class="notification">
+      <b-loading :is-full-page="false" :active="azba.length == 0 && !error" />
+      <b-loading :is-full-page="false" :active="error">
+        <b-notification
+          has-icon
+          icon="alert-circle-outline"
+          :closable="false"
+          aria-close-label="Close notification"
+        >
+          <h4 class="title">SIA Server Unavailable</h4>
           <p class="heading">
             Check your connection or use SIA server directly
           </p>
           <a href="https://www.sia.aviation-civile.gouv.fr/" target="_blank"
             >https://www.sia.aviation-civile.gouv.fr/</a
           >
-        </div>
-      </div>
+        </b-notification>
+      </b-loading>
       <b-field grouped group-multiline>
         <b-field label="ICAO Code for Airports" expanded>
           <b-icao v-model="searchNotam.codes" maxtags="12" />
@@ -205,11 +197,7 @@ export default {
     };
   },
   async mounted() {
-    try {
-      this.azba = await this.getAZBAfiles(this.AZBASourceUrl);
-    } catch {
-      this.error = true;
-    }
+    this.azba = this.getAZBA(this.AZBASourceUrl);
   },
   computed: {
     proxyChartUrl: {
@@ -227,6 +215,16 @@ export default {
         this.searchNotam,
         this.NOTAMSourceUrl
       );
+    },
+    async getAZBA(url) {
+      try {
+        clearTimeout(this.error);
+        this.error = false;
+        return await this.getAZBAfiles(url);
+      } catch (err) {
+        console.error(err);
+        this.error = setTimeout(this.getAZBA, 3000, url);
+      }
     },
   },
   filters: {
