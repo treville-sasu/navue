@@ -34,19 +34,32 @@
     </div>
 
     <section class="section">
-      <div class="box" v-for="(map, key) in codes" :key="key">
-        <ChartCartridge
-          v-bind="map"
-          :url="map.id | asVACurl(baseURL)"
-          :tags="{
-            info: 'Airport',
-          }"
-          @click="openChartUrl = $event"
+      <div class="columns is-multiline">
+        <div
+          class="column is-one-quarter"
+          v-for="(map, key) in codes"
+          :key="key"
         >
-          <b-icon icon="airplane-landing" size="is-large" type="is-primary" />
-        </ChartCartridge>
+          <ChartCartridge
+            v-bind="map"
+            :url="map.id | asVACurl(baseURL)"
+            :tags="{
+              info: 'Airport',
+            }"
+            @click="openChartUrl = $event"
+            card
+          >
+            <figure class="image">
+              <pdf
+                :src="proxyUrl($options.filters.asVACurl(map.id, baseURL))"
+                :page="1"
+                style="height: 100%"
+              />
+            </figure>
+          </ChartCartridge>
+        </div>
+        <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
       </div>
-      <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
     </section>
   </section>
 </template>
@@ -56,6 +69,7 @@ import BIcao from "@/components/BIcao.vue";
 
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";
+import Pdf from "vue-pdf";
 import Sia from "@/mixins/Sia";
 
 export default {
@@ -64,6 +78,7 @@ export default {
     BIcao,
     ChartCartridge,
     PDFModal,
+    Pdf,
   },
   mixins: [Sia],
   data() {
@@ -75,7 +90,7 @@ export default {
     };
   },
   async mounted() {
-    this.baseURL = await this.getCycleUrl(this.VACSourceUrl);
+    this.baseURL = await this.getCycleUrl();
   },
   computed: {
     proxyChartUrl: {
@@ -88,14 +103,14 @@ export default {
     },
   },
   methods: {
-    async getCycleUrl(url) {
+    async getCycleUrl() {
       try {
         clearTimeout(this.error);
         this.error = false;
-        return await this.getVACbaseUrl(url);
+        return await this.getVACbaseUrl();
       } catch (err) {
         console.error(err);
-        this.error = setTimeout(this.getCycleUrl, 3000, url);
+        this.error = setTimeout(this.getCycleUrl, 3000);
       }
     },
   },

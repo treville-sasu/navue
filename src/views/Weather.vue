@@ -11,7 +11,10 @@
       </div>
     </section>
     <div class="notification">
-      <b-loading :is-full-page="false" :active="baseURL === null && !error" />
+      <b-loading
+        :is-full-page="false"
+        :active="validated === undefined && !error"
+      />
       <b-loading :is-full-page="false" :active="error">
         <b-notification
           has-icon
@@ -36,7 +39,6 @@
             maxtags="12"
             :data="avaliableCodes"
             allow-new
-            @input="getMessages"
           />
         </b-field>
         <b-field position="is-centered" expanded>
@@ -87,50 +89,70 @@
           </div>
         </b-field>
       </b-field>
+      <Timer
+        ref="searchTimer"
+        :duration="1000"
+        countdown
+        @timesup="getBulletin()"
+        type="is-primary"
+        size="is-small"
+        class="mt-5"
+        style="height: 0.35em"
+      />
     </div>
 
-    <section class="section" v-if="Object.keys(resultsMessages).length > 0">
-      <h2 class="subtitle">Messages :</h2>
-      <div
-        class="block"
-        v-for="(stations, category) in resultsMessages"
-        :key="category"
+    <div
+      class="block"
+      v-for="(stations, category) in resultsMessages"
+      :key="category"
+    >
+      <b-notification
+        v-for="(station, key1) in stations"
+        :key="`${category}_${station.oaci}`"
+        aria-close-label="Close notification"
+        @close="$delete(resultsMessages[category], key1)"
       >
+        <h4>
+          <b-icon
+            :icon="true ? 'heart' : 'heart-outline'"
+            size="is-small"
+            class="is-clickable"
+          />
+          {{ station.oaci }} -
+          {{ station.nom }}
+        </h4>
         <WeatherMessage
-          v-for="station in stations"
-          :key="category + station.oaci"
-          :station="station"
-          :type="category"
+          v-for="(message, key2) in station.messages"
+          :key="`${category}_${station.oaci}_${key2}`"
+          :message="message"
         />
+      </b-notification>
+    </div>
+
+    <div class="block" v-for="(mapsSet, type) in resultsMaps" :key="type">
+      <div class="box" v-for="(map, key) in mapsSet" :key="key">
+        <ChartCartridge
+          v-bind="map"
+          :url="map.lien"
+          :name="map.zone_carte"
+          :tags="{
+            primary: map.type,
+            info: map.niveau,
+            warning: map.echeance,
+          }"
+          @click="openChartUrl = $event"
+        >
+          <b-icon
+            :icon="
+              map.type == 'TEMSI' ? 'weather-partly-cloudy' : 'weather-windy'
+            "
+            size="is-large"
+            type="is-primary"
+          />
+        </ChartCartridge>
       </div>
-    </section>
-    <section class="section" v-if="Object.keys(resultsMaps).length > 0">
-      <h2 class="subtitle">Weather Charts :</h2>
-      <div class="block" v-for="(mapsSet, type) in resultsMaps" :key="type">
-        <div class="box" v-for="(map, key) in mapsSet" :key="key">
-          <ChartCartridge
-            v-bind="map"
-            :url="map.lien"
-            :name="map.zone_carte"
-            :tags="{
-              primary: map.type,
-              info: map.niveau,
-              warning: map.echeance,
-            }"
-            @click="openChartUrl = $event"
-          >
-            <b-icon
-              :icon="
-                map.type == 'TEMSI' ? 'weather-partly-cloudy' : 'weather-windy'
-              "
-              size="is-large"
-              type="is-primary"
-            />
-          </ChartCartridge>
-        </div>
-      </div>
-      <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
-    </section>
+    </div>
+    <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
   </section>
 </template>
 
@@ -149,6 +171,7 @@ import WeatherMessage from "@/components/WeatherMessage.vue";
 
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";
+import Timer from "@/components/Timer.vue";
 
 import Aeroweb from "@/mixins/Aeroweb";
 import CorsProxy from "@/mixins/CorsProxy";
@@ -157,6 +180,7 @@ export default {
   name: "Weather",
   components: {
     BIcao,
+    Timer,
     WeatherMessage,
     ChartCartridge,
     PDFModal,
@@ -165,7 +189,7 @@ export default {
   data() {
     return {
       searchCodes: [],
-      searchCategories: ["OPMET", "SIGMET"],
+      searchCategories: ["OPMET"],
       searchZones: null,
       searchTypes: ["AERO_TEMSI", "AERO_WINTEM"],
       resultsMessages: {},
@@ -189,6 +213,11 @@ export default {
     },
   },
   watch: {
+    searchCodes(codes) {
+      this.$refs.searchTimer.flyback();
+      if (!this.$refs.searchTimer.running) this.$refs.searchTimer.start();
+      if (codes.length == 0) this.$refs.searchTimer.reset();
+    },
     searchCategories(newVal, oldVal) {
       oldVal
         .filter((x) => !newVal.includes(x))
@@ -215,6 +244,11 @@ export default {
     },
   },
   methods: {
+    getBulletin() {
+      this.$refs.searchTimer.hold(async () => {
+        await this.getMessages(this.searchCodes);
+      });
+    },
     async validateUser(user) {
       try {
         clearTimeout(this.error);

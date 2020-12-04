@@ -1,0 +1,84 @@
+<template>
+  <b-progress
+    v-if="running || indeterminate"
+    :value="indeterminate ? undefined : value"
+    :max="duration"
+    v-bind="$attrs"
+  >
+    <!-- <slot v-bind:elapsed="elapsed"></slot>
+    <slot name="bar" v-bind:elapsed="elapsed"></slot> -->
+  </b-progress>
+</template>
+
+<script>
+export default {
+  name: "Timer",
+  props: {
+    duration: Number,
+    precision: {
+      type: Number,
+      default: 10,
+    },
+    countdown: {
+      type: Boolean,
+      default: false,
+    },
+    // infinite: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+  },
+  data() {
+    return {
+      elapsed: 0,
+      timer: undefined,
+      indeterminate: false,
+    };
+  },
+  computed: {
+    running() {
+      return !!this.timer;
+    },
+    value() {
+      return this.countdown ? this.duration - this.elapsed : this.elapsed;
+    },
+  },
+  methods: {
+    start() {
+      if (!this.timer) {
+        this.timer = setInterval(this.countup, this.precision, this.precision);
+        this.$emit("start", this.elapsed, this.duration);
+      }
+    },
+    stop() {
+      clearInterval(this.timer);
+      this.timer = undefined;
+      this.$emit("stop", this.elapsed, this.duration);
+    },
+    reset() {
+      this.stop();
+      this.flyback();
+    },
+    flyback() {
+      this.$emit("reset", this.elapsed, this.duration);
+      this.elapsed = 0;
+    },
+    async hold(func) {
+      //   const status = this.running;
+      //   if (status) this.stop();
+      this.indeterminate = true;
+      await func.apply();
+      this.indeterminate = false;
+      //   if (status) this.start();
+    },
+    countup(i) {
+      if (this.elapsed >= this.duration) {
+        // this.infinite ?
+        // this.flyback() :
+        this.stop();
+        this.$emit("timesup", this.elapsed, this.duration);
+      } else this.elapsed += i;
+    },
+  },
+};
+</script>

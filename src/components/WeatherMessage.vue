@@ -1,22 +1,15 @@
 <template>
-  <b-collapse v-if="haveMessages" class="message is-primary" animation="slide">
-    <div class="message-header" slot="trigger">
-      <h4 class="title has-text-white mb-0">{{ station.oaci }}</h4>
-      <span class="subtitle has-text-light">{{ station.nom }}</span>
-    </div>
-    <div>
-      <div class="message-content">
-        <pre
-          v-for="(message, index) in station.messages"
-          :key="station.name + type + index"
-          >{{ message | trim }}</pre
-        >
-      </div>
-    </div>
+  <b-collapse :open="false" position="is-top">
+    <span slot="trigger" slot-scope="props">
+      <b-icon :icon="!props.open ? 'chevron-down' : 'chevron-up'" />
+      <span class="has-text-weight-bold">
+        {{ message | firstLine }}
+      </span>
+    </span>
+    <span class="has-text-weight-bold">
+      {{ message | lastLines }}
+    </span>
   </b-collapse>
-  <!-- <b-tag v-else type="is-warning" size="is-medium">
-    {{ station.oaci }}
-  </b-tag> -->
 </template>
 
 <style scoped>
@@ -34,16 +27,16 @@ pre {
 export default {
   name: "WeatherMessage",
   props: {
-    station: Object,
-    type: String
+    message: String,
   },
-  computed: {
-    haveMessages() {
-      return this.station.messages.length > 0;
-    }
-  },
+  computed: {},
   filters: {
-    trim: str => str.trim()
-  }
+    firstLine(value) {
+      return value.split("\n")[0];
+    },
+    lastLines(value) {
+      return value.split("\n").slice(1).join("\n");
+    },
+  },
 };
 </script>

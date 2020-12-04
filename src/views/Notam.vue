@@ -115,47 +115,61 @@
           </b-checkbox-button>
         </b-field>
       </b-field>
-      <b-button @click="getNotams">Submit</b-button>
+      <Timer
+        ref="searchTimer"
+        :duration="2000"
+        countdown
+        @timesup="getNotams()"
+        type="is-primary"
+        size="is-small"
+        class="mt-5"
+        style="height: 0.35em"
+      />
     </div>
-
-    <section class="section" v-if="Object.keys(notams).length > 0">
-      <h2 class="subtitle">Notams :</h2>
-      <div class="box" v-for="(messages, zone) in notams" :key="zone">
-        <h4>{{ zone }}</h4>
-        <NotamMessage
-          :message="message.raw"
-          v-for="message in messages"
-          :key="message.id"
+    <b-notification
+      v-for="(messages, zone) in notams"
+      :key="zone"
+      aria-close-label="Close notification"
+      @close="$delete(notams, zone)"
+    >
+      <h4>
+        <b-icon
+          :icon="true ? 'heart' : 'heart-outline'"
+          size="is-small"
+          class="is-clickable"
         />
-      </div>
-    </section>
-    <section class="section" v-if="azba.length > 0">
-      <h2 class="subtitle">Cartes AZBA ({{ azba.length }}) :</h2>
-      <div class="columns is-multiline">
-        <div
-          class="column is-one-quarter"
-          v-for="(map, key) in azba"
-          :key="'azba' + key"
+        {{ zone }}
+      </h4>
+      <NotamMessage
+        :message="message.raw"
+        v-for="message in messages"
+        :key="message.id"
+      />
+    </b-notification>
+    <div class="columns is-multiline">
+      <div
+        class="column is-one-quarter"
+        v-for="(map, key) in azba"
+        :key="'azba' + key"
+      >
+        <ChartCartridge
+          v-bind="map"
+          :name="map.start | asDay"
+          :tags="{
+            danger: 'RTBA',
+            warning: $options.filters.asTime(map.start),
+            success: $options.filters.asTime(map.end),
+          }"
+          @click="openChartUrl = $event"
+          card
         >
-          <ChartCartridge
-            v-bind="map"
-            :name="map.start | asDay"
-            :tags="{
-              danger: 'RTBA',
-              warning: $options.filters.asTime(map.start),
-              success: $options.filters.asTime(map.end),
-            }"
-            @click="openChartUrl = $event"
-            card
-          >
-            <figure class="image">
-              <pdf :src="proxyUrl(map.url)" :page="1" style="height: 100%" />
-            </figure>
-          </ChartCartridge>
-        </div>
-        <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
+          <figure class="image">
+            <pdf :src="proxyUrl(map.url)" :page="1" style="height: 100%" />
+          </figure>
+        </ChartCartridge>
       </div>
-    </section>
+      <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
+    </div>
   </section>
 </template>
 
@@ -165,6 +179,7 @@ import BIcao from "@/components/BIcao.vue";
 import NotamMessage from "@/components/NotamMessage.vue";
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";
+import Timer from "@/components/Timer.vue";
 import Sia from "@/mixins/Sia";
 
 import Pdf from "vue-pdf";
@@ -176,6 +191,7 @@ export default {
     NotamMessage,
     ChartCartridge,
     PDFModal,
+    Timer,
     Pdf,
   },
   mixins: [Sia],
@@ -187,7 +203,7 @@ export default {
         datetime: new Date(),
         duration: 12,
         radius: 10,
-        ceiling: 990,
+        ceiling: 30,
         flightrules: "VFR",
         complementary: ["gps", "misc"],
       },
@@ -197,7 +213,7 @@ export default {
     };
   },
   async mounted() {
-    this.azba = this.getAZBA(this.AZBASourceUrl);
+    this.azba = await this.getAZBA();
   },
   computed: {
     proxyChartUrl: {
@@ -209,21 +225,37 @@ export default {
       },
     },
   },
-  methods: {
-    async getNotams() {
-      this.notams = await this.getAirportNOTAMs(
-        this.searchNotam,
-        this.NOTAMSourceUrl
-      );
+  watch: {
+    searchNotam: {
+      deep: true,
+      handler() {
+        this.$refs.searchTimer.flyback();
+        if (!this.$refs.searchTimer.running) this.$refs.searchTimer.start();
+        if (this.searchNotam.codes.length == 0) this.$refs.searchTimer.reset();
+      },
     },
-    async getAZBA(url) {
+  },
+  methods: {
+    getNotams() {
+      const datetime = new Date(
+        Math.max(this.searchNotam.datetime, new Date())
+      );
+      this.$refs.searchTimer.hold(async () => {
+        this.notams = [];
+        this.notams = await this.getAirportNOTAMs({
+          ...this.searchNotam,
+          datetime,
+        });
+      });
+    },
+    async getAZBA() {
       try {
         clearTimeout(this.error);
         this.error = false;
-        return await this.getAZBAfiles(url);
+        return await this.getAZBAfiles();
       } catch (err) {
         console.error(err);
-        this.error = setTimeout(this.getAZBA, 3000, url);
+        this.error = setTimeout(this.getAZBA, 3000);
       }
     },
   },

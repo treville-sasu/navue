@@ -20,8 +20,8 @@ export default {
         return new DOMParser().parseFromString(text, "text/html");
       }
     },
-    async getAZBAfiles(target) {
-      const document = await this.fetchSIA(target);
+    async getAZBAfiles() {
+      const document = await this.fetchSIA(this.AZBASourceUrl);
       const elements = Array.from(document.getElementsByTagName("iframe"));
 
       return elements.map(i => {
@@ -34,14 +34,14 @@ export default {
         return { url, start, end };
       });
     },
-    async getVACbaseUrl(target) {
+    async getVACbaseUrl() {
       // https://www.sia.aviation-civile.gouv.fr/documents/htmlshow?f=dvd/eAIP_05_NOV_2020/Atlas-VAC/home.htm
-      const document = await this.fetchSIA(target);
+      const document = await this.fetchSIA(this.VACSourceUrl);
       const href = document.querySelector("a[href*=Atlas-VAC]").href;
       const path = new URL(href).searchParams.get("f");
       return new URL(
         path.replace("home.htm", "PDF_AIPparSSection/VAC/AD/"),
-        target
+        this.VACSourceUrl
       );
     },
     VACurl(code, baseURL = this.baseURL) {
@@ -50,14 +50,19 @@ export default {
       return new URL(`AD-2.${code}.pdf`, baseURL);
     },
 
-    async getAirportNOTAMs(params, target) {
-      const document = await this.fetchSIA(target, {
+    async getAirportNOTAMs(params) {
+      const searchBody = new URLSearchParams(
+        this.formatAeroParams(params)
+      ).toString();
+
+      const document = await this.fetchSIA(this.NOTAMSourceUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: new URLSearchParams(this.formatAeroParams(params)).toString()
+        body: searchBody
       });
+
       const collection = Array.from(document.querySelectorAll("pre")).map(pre =>
         this.decodeMessage(pre.innerText)
       );
