@@ -1,7 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Balance from "../views/Balance.vue";
-import Checklists from "../views/Checklists.vue";
 
 Vue.use(VueRouter);
 
@@ -44,12 +42,7 @@ const routes = [
   {
     path: "/balance/:id?",
     name: "Balance",
-    component: Balance
-  },
-  {
-    path: "/checklists/:id?",
-    name: "Checklists",
-    component: Checklists
+    component: () => import("../views/Balance.vue")
   },
   {
     path: "/about",
