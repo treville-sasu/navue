@@ -194,19 +194,18 @@ export default {
       );
     },
     addLocation(e) {
-      return this.$pouch.post(
+      return this.$pouch[this.traceDB].post(
         {
           ...e,
           type: "location",
           _id: e.timestamp.toString()
         },
-        {},
-        this.traceDB
+        {}
       );
     },
     removeLocations() {
-      this.$pouch
-        .destroy(this.traceDB)
+      this.$pouch[this.traceDB]
+        .destroy()
         .then(() => {
           // FIXME: workaround for updating livefeed
           let keep = this.traceType;
