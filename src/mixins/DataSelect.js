@@ -78,7 +78,7 @@ export const DataSelect = {
     }
   },
   computed: {
-    openModal: {
+    isOpen: {
       get() {
         return (this.required && this.value === null) || this.activated;
       },

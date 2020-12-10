@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    v-model="openModal"
+    v-model="isOpen"
     @after-leave="$emit('close')"
     v-bind="$attrs"
     has-modal-card
@@ -141,8 +141,8 @@ export default {
       proto: {
         type: "navigation",
         name: undefined,
-        routes: []
-      }
+        routes: [],
+      },
     };
   },
   pouch: {
@@ -151,10 +151,10 @@ export default {
         database: "navue",
         selector: {
           type: this.dataType,
-          name: { $regex: RegExp(this.search, "i") }
-        }
+          name: { $regex: RegExp(this.search, "i") },
+        },
       };
-    }
+    },
   },
 
   computed: {
@@ -164,7 +164,7 @@ export default {
       },
       set(val) {
         this.$store.commit("currentNavigation", val);
-      }
+      },
     },
     activated: {
       get() {
@@ -172,8 +172,8 @@ export default {
       },
       set(val) {
         this.$store.commit("navigationSelect", val);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
