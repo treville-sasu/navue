@@ -5,23 +5,22 @@
         <b-input v-model="value.position" placeholder="echo" />
       </b-field>
 
-      <b-field label="Alt." label-position="on-border" expanded>
-        <b-numberinput
-          v-model="value.altitude.value"
+      <b-field label="Alt." label-position="on-border">
+        <b-number-select
+          :value.sync="value.altitude.value"
+          :quantity.sync="value.altitude.unit"
+          :options="quantity.altitude"
           :controls="false"
-          :step="1"
-          placeholder="how high ?"
-          expanded
         />
-        <b-select placeholder="unit" v-model="value.altitude.unit">
-          <option
-            v-for="(ratio, name) in units.altitude"
-            :value="name"
-            :key="name"
-            >{{ name }}</option
-          >
-        </b-select>
       </b-field>
+      <b-select
+        v-model="value.altitude.reference"
+        :disabled="value.altitude.unit === 'FL'"
+      >
+        <option v-for="ref in quantity.references" :value="ref" :key="ref">{{
+          ref
+        }}</option>
+      </b-select>
     </b-field>
 
     <b-field label="Notes" label-position="on-border" expanded>
@@ -31,10 +30,12 @@
 </template>
 
 <script>
-import { UnitSystem } from "@/mixins/apputils";
+import UnitSystem from "@/mixins/UnitSystem.js";
+import BNumberSelect from "./BNumberSelect.vue";
 
 export default {
   name: "WaypointContent",
+  components: { BNumberSelect },
   mixins: [UnitSystem],
   props: {
     value: Object

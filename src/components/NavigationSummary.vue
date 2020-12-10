@@ -13,7 +13,7 @@
       :selected.sync="selectedSummaries"
     >
       <b-table-column field="distance" label="Dist." numeric v-slot="props">
-        {{ props.row.distance | asDistance("NM") | precision(0) }}
+        {{ props.row.distance | to("NM") | precision(0) }}
         NM
       </b-table-column>
       <b-table-column field="duration" label="ETE" numeric v-slot="props">
@@ -27,7 +27,7 @@
       <template slot="footer">
         <th>
           <div class="th-wrap is-numeric">
-            {{ totalDistance | asDistance("NM") | precision(0) }} NM
+            {{ totalDistance | to("NM") | precision(0) }} NM
           </div>
         </th>
         <th>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { UnitSystem } from "@/mixins/apputils";
+import UnitSystem from "@/mixins/UnitSystem";
 import LatLon from "geodesy/latlon-spherical.js";
 
 export default {

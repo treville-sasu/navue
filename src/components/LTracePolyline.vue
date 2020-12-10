@@ -13,8 +13,8 @@
         sticky: true
       }"
     >
-      {{ bearing | asHeading | precision(0) }}° -
-      {{ distance | asDistance("NM") | precision(0) }}NM
+      {{ bearing | asHeading | precision(0) | with('°') }} -
+      {{ distance | to("NM") | precision(0) | with('NM') }}
     </l-tooltip>
   </l-polyline>
 </template>
@@ -49,7 +49,7 @@
 
 import { LPolyline, LTooltip } from "vue2-leaflet";
 import LatLon from "geodesy/latlon-nvector-spherical.js";
-import { UnitSystem } from "@/mixins/apputils";
+import UnitSystem from "@/mixins/UnitSystem.js";
 
 export default {
   name: "LTracePolyline",

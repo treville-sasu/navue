@@ -4,7 +4,7 @@
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-success" size="is-medium">{{
-            distance | asDistance("NM") | precision(0)
+            distance | to("NM") | precision(0)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">NM</b-tag>
         </b-taglist>
@@ -20,11 +20,11 @@
       <!-- <div class="control">
         <b-taglist attached>
           <b-tag type="is-warning" size="is-medium">{{
-            to.altitude | asAltitude | precision(-1)
+            to.altitude | is('ft') | precision(-1)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">ft</b-tag>
           <b-tag type="is-danger" size="is-medium">{{
-            vertical_speed | asSpeed("ft/min") | precision(-1)
+            vertical_speed | is("ft/min") | precision(-1)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">ft/min</b-tag>
         </b-taglist>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { UnitSystem } from "@/mixins/apputils";
+import UnitSystem from "@/mixins/UnitSystem.js";
 import { LControl } from "vue2-leaflet";
 import LatLon from "geodesy/latlon-ellipsoidal-vincenty.js";
 

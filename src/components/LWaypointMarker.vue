@@ -27,8 +27,7 @@
     >
       {{ value.position ? value.position : "-" }}
       |
-      {{ value.altitude.value | precision(-1) }}
-      {{ value.altitude.unit }}
+      {{ value.altitude | to | precision(-1) | with(value.altitude.unit) }}
     </l-tooltip>
   </l-marker>
 </template>
@@ -73,7 +72,7 @@
 <script>
 import { LMarker, LIcon, LPopup, LTooltip } from "vue2-leaflet";
 import WaypointContent from "@/components/WaypointContent.vue";
-import { UnitSystem } from "@/mixins/apputils";
+import UnitSystem from "@/mixins/UnitSystem.js";
 
 export default {
   name: "LWaypointMarker",

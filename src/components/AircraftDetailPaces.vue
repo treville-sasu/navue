@@ -4,6 +4,7 @@
       >Add a pace</b-button
     >
     <div class="control">
+      <!-- TODO : Make table of it -->
       <b-field
         v-for="(speed, index) in value"
         :key="index"
@@ -14,15 +15,12 @@
           <b-input v-model="speed.name" />
         </b-field>
         <b-field label="Speed" label-position="on-border">
-          <b-numberinput v-model="speed.value" :controls="false" :step="0.01" />
-          <b-select placeholder="unit" v-model="speed.unit">
-            <option
-              v-for="(ratio, name) in units.speed"
-              :value="name"
-              :key="name"
-              >{{ name }}</option
-            >
-          </b-select>
+          <b-number-select
+            :value.sync="speed.value"
+            :quantity.sync="speed.unit"
+            :options="quantity.speed"
+            :controls="false"
+          />
         </b-field>
         <b-button
           @click="value.splice(index, 1)"
@@ -37,9 +35,11 @@
 <style scoped lang="scss"></style>
 
 <script>
-import { UnitSystem } from "@/mixins/apputils";
+import UnitSystem from "@/mixins/UnitSystem";
+import BNumberSelect from "./BNumberSelect.vue";
 
 export default {
+  components: { BNumberSelect },
   name: "AircraftDetailPaces",
   props: {
     value: {

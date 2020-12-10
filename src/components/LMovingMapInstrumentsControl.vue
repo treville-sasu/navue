@@ -4,7 +4,7 @@
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-primary" size="is-medium">{{
-            value.speed | asSpeed | precision(0)
+            value.speed | to("kt") | precision(0)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">kt</b-tag>
         </b-taglist>
@@ -20,7 +20,7 @@
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-info" size="is-medium">{{
-            value.altitude | asAltitude | precision(-1)
+            value.altitude | to("ft") | precision(-1)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">ft</b-tag>
         </b-taglist>
@@ -28,7 +28,7 @@
       <div class="control">
         <b-taglist attached>
           <b-tag type="is-dark" size="is-medium">{{
-            value.vario | asSpeed("ft/min") | precision(-1)
+            value.vario | to("ft/min") | precision(-1)
           }}</b-tag>
           <b-tag type="is-light" size="is-medium">ft/min</b-tag>
         </b-taglist>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { UnitSystem } from "@/mixins/apputils";
+import UnitSystem from "@/mixins/UnitSystem.js";
 import { LControl } from "vue2-leaflet";
 
 export default {

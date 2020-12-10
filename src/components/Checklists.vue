@@ -5,7 +5,7 @@
         <div class="column" v-for="pace in paces" :key="pace.name">
           <div class="notification is-primary">
             <h1 class="title">
-              <b>{{ pace.value }}</b> {{ pace.unit }}
+              <b>{{ pace | to }}</b> {{ pace.unit }}
             </h1>
             <h2 class="subtitle">
               {{ pace.name }}
@@ -18,7 +18,7 @@
       <b-table
         :data="cl.items"
         checkable
-        :is-row-checkable="(row) => !!row.expect"
+        :is-row-checkable="row => !!row.expect"
         checkbox-position="right"
         :checked-rows.sync="checked"
         :header-checkable="false"
@@ -28,7 +28,7 @@
         <b-table-column field="name" label="Name" v-slot="props">{{
           props.row.name
         }}</b-table-column>
-        <!-- TODO: fix visisble, centered and colspan https://github.com/buefy/buefy/issues/2980 -->
+        <!-- TODO: fix visible, centered and colspan https://github.com/buefy/buefy/issues/2980 -->
         <!-- :centered="!props.row.expect" -->
         <!-- :colspan="!props.row.expect ? 2 : 1" -->
 
@@ -56,17 +56,20 @@
 </template>
 
 <script>
+import UnitSystem from "@/mixins/UnitSystem.js";
+
 export default {
   name: "Checklists",
+  mixins: [UnitSystem],
   props: {
     checklists: Array,
-    paces: Array,
+    paces: Array
   },
   data() {
     return {
       currentCL: 0,
-      checked: [],
+      checked: []
     };
-  },
+  }
 };
 </script>
