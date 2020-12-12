@@ -6,13 +6,14 @@
       editable
       @close="tool = undefined"
     />
+    <!-- TODO: on select navigation setView -->
     <AircraftSelect v-model="aircraft" @close="tool = undefined" />
     <l-map
       v-if="navigation"
       :zoom="10"
       :center="{ lat: 42.69597591582309, lng: 2.879308462142945 }"
       :options="{
-        zoomSnap: 0.5,
+        zoomSnap: 0.5
       }"
       v-on="mapEvents"
     >
@@ -25,7 +26,7 @@
           position: 'topleft',
           showResultIcons: true,
           showUniqueResult: true,
-          defaultMarkGeocode: false,
+          defaultMarkGeocode: false
         }"
       />
       <l-control-fullscreen position="topleft" />
@@ -49,7 +50,7 @@
         @click-trace="selectRoute(id)"
       />
       <l-polyline
-        v-if="pointerVector.every((i) => i && i.lat && i.lng)"
+        v-if="pointerVector.every(i => i && i.lat && i.lng)"
         :lat-lngs="pointerVector"
         className="pointerVector"
         dashArray="40, 30, 10, 30"
@@ -102,6 +103,8 @@ import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import { MapTools } from "@/mixins/MapTools";
 
+import { Navigation } from "@/models/Navigation.js";
+
 export default {
   name: "Route",
   components: {
@@ -122,7 +125,7 @@ export default {
   mixins: [MapTools],
   data() {
     return {
-      navigation: NavigationSelect.data().proto,
+      navigation: new Navigation(),
       aircraft: null,
       miniMap: {
         layer: new L.TileLayer(

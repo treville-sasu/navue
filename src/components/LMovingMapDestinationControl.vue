@@ -44,7 +44,6 @@
 <script>
 import UnitSystem from "@/mixins/UnitSystem.js";
 import { LControl } from "vue2-leaflet";
-import LatLon from "geodesy/latlon-ellipsoidal-vincenty.js";
 
 export default {
   name: "LMovingMapDestinationControl",
@@ -58,24 +57,19 @@ export default {
   mixins: [UnitSystem],
   computed: {
     distance() {
-      return this.from.latlng.distanceTo(this.to.latlng);
+      return this.from.distanceTo(this.to);
     },
     ETE() {
       return this.distance / this.from.speed;
     },
     heading() {
-      return this.latlon(this.from).initialBearingTo(this.latlon(this.to));
+      return this.from.bearingTo(this.to);
     },
     relative_bearing() {
       return this.heading - this.from.heading;
     },
     vertical_speed() {
       return (this.to.altitude - this.from.altitude) / this.ETE;
-    }
-  },
-  methods: {
-    latlon(point) {
-      return new LatLon(point.latlng.lat, point.latlng.lng);
     }
   }
 };

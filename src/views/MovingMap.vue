@@ -1,5 +1,5 @@
 <template>
-  <section style="height: 100%;">
+  <section style="height: 100%">
     <NavigationSelect />
     <AircraftSelect />
 
@@ -9,7 +9,7 @@
         zoomSnap: 0.5
       }"
       @ready="setupMap"
-      @contextmenu="nextDestination = $event"
+      @contextmenu="setDestination"
     >
       <l-base-layer-group />
       <l-control-fullscreen position="topleft" />
@@ -24,9 +24,9 @@
       />
 
       <l-moving-map-destination-control
-        v-if="lastKnownLocation && nextDestination"
+        v-if="lastKnownLocation && destination"
         :from="lastKnownLocation"
-        :to="nextDestination"
+        :to="destination"
         position="bottomright"
       />
       <l-location-marker
@@ -37,16 +37,13 @@
       <l-polyline v-if="!!trace" :lat-lngs="trace" className="traceLine" />
 
       <l-route-layer-group
-        v-for="(route, id) in routes"
+        v-for="(route, id) in navigation.routes"
         :value="route"
         :key="id"
         :active="false"
-        @contextmenu-waypoint="nextDestination = route[$event]"
+        @contextmenu-waypoint="setDestination(route[$event])"
       />
-      <l-destination-marker
-        v-model="nextDestination"
-        :origin="lastKnownLocation"
-      />
+      <l-destination-marker v-model="destination" :origin="lastKnownLocation" />
     </l-map>
   </section>
 </template>
@@ -91,6 +88,8 @@ import LLocationMarker from "@/components/LLocationMarker.vue";
 import LDestinationMarker from "@/components/LDestinationMarker.vue";
 import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 
+import { Waypoint } from "@/models/Navigation.js";
+
 // FIXME: Setview with futur and past value
 export default {
   name: "MovingMap",
@@ -113,7 +112,7 @@ export default {
     return {
       lastKnownLocation: undefined,
       lastKnownError: undefined,
-      nextDestination: undefined,
+      destination: undefined,
       wakeLock: null,
       traceDB: "navue_trace",
       traceType: "location",
@@ -141,12 +140,8 @@ export default {
     map() {
       return this.$refs.movingMap.mapObject;
     },
-    routes() {
-      try {
-        return this.$store.state.currentNavigation.routes;
-      } catch {
-        return null;
-      }
+    navigation() {
+      return this.$store.state.currentNavigation || { routes: [] };
     },
     trace() {
       return (this.reportedLocations || [])
@@ -186,11 +181,11 @@ export default {
 
       if (this.settings.getLocation) this.startLocate();
     },
+    // FIXME: toBounds do not work well in potrait.
     bestView(e) {
       this.map.flyToBounds(
-        e.latlng
-          .toBounds(e.speed ? e.speed * this.futurPositionDelay : e.accuracy)
-          .pad(0.1)
+        e.toBounds(e.speed ? e.speed * this.futurPositionDelay : e.accuracy),
+        { padding: [100, 100] }
       );
     },
     addLocation(e) {
@@ -207,37 +202,27 @@ export default {
       this.$pouch[this.traceDB]
         .destroy()
         .then(() => {
-          // FIXME: workaround for updating livefeed
+          // FIXME: this is a workaround for updating livefeed
           let keep = this.traceType;
           this.traceType = null;
           this.traceType = keep;
         })
         .catch(console.error);
     },
-    setNextDestination(e) {
+    setDestination(e) {
+      this.destination = new Waypoint(e);
+    },
+    //TODO : on route select, set a Next Destination
+    getDestination(lastDestination) {
       if (
-        this.nextDestination &&
-        e.latlng.distanceTo(this.nextDestination.latlng) < this.minDestination
+        this.destination &&
+        lastDestination.distanceTo(this.destination.latlng) <
+          this.minDestination
       ) {
-        if (this.routes)
-          this.nextDestination = this.getNextWaypoint(
-            this.routes,
-            this.nextDestination
-          );
-        else this.nextDestination = null;
+        this.destination = this.navigation.getNextWaypoint(this.destination);
       } else return;
     },
-    getNextWaypoint(routes, current) {
-      //TODO should we get to next route or return null ?
-      let routeId = routes.findIndex(rte => rte.indexOf(current) > -1);
-      if (routeId > -1) {
-        let currentRoute = routes[routeId];
-        let waypointId = currentRoute.indexOf(current);
-        if (currentRoute.length - 1 > waypointId)
-          return currentRoute[waypointId + 1];
-      }
-      return null;
-    },
+
     async requestWakeLock() {
       try {
         if ("wakeLock" in navigator && document.visibilityState === "visible") {
@@ -247,6 +232,7 @@ export default {
         this.settings.wakeLock = false;
       }
     },
+    //TODO: spinoff openWarning and openModal as app UI features
     openWarning(e) {
       this.$buefy.snackbar.open({
         message: e.message,

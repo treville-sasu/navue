@@ -37,8 +37,6 @@
 </style>
 
 <script>
-import LatLon from "geodesy/latlon-spherical.js";
-
 import { LLayerGroup, LMarker, LIcon, LPolyline, LCircle } from "vue2-leaflet";
 
 export default {
@@ -68,13 +66,7 @@ export default {
     speedVector() {
       return [
         this.value.latlng,
-        new LatLon(
-          this.value.latlng.lat,
-          this.value.latlng.lng
-        ).rhumbDestinationPoint(
-          this.value.speed * this.delay,
-          this.value.heading
-        )
+        this.destinationPoint(this.value.speed * this.delay, this.value.heading)
       ];
     }
   }

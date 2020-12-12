@@ -27,7 +27,7 @@
                 clearable
               >
                 <template slot="header" v-if="editable">
-                  <a @click="useData(proto)">
+                  <a @click="useData(createNavigation)">
                     <span> Create a new one... </span>
                   </a>
                 </template>
@@ -131,18 +131,14 @@
 </style>
 <script>
 import { DataSelect } from "@/mixins/DataSelect";
+import { Navigation } from "@/models/Navigation.js";
 
 export default {
   name: "NavigationSelect",
   mixins: [DataSelect],
   data() {
     return {
-      dataType: "navigation",
-      proto: {
-        type: "navigation",
-        name: undefined,
-        routes: [],
-      },
+      dataType: "navigation"
     };
   },
   pouch: {
@@ -151,20 +147,23 @@ export default {
         database: "navue",
         selector: {
           type: this.dataType,
-          name: { $regex: RegExp(this.search, "i") },
-        },
+          name: { $regex: RegExp(this.search, "i") }
+        }
       };
-    },
+    }
   },
 
   computed: {
+    createNavigation() {
+      return new Navigation();
+    },
     selectedData: {
       get() {
         return this.$store.state.currentNavigation;
       },
       set(val) {
         this.$store.commit("currentNavigation", val);
-      },
+      }
     },
     activated: {
       get() {
@@ -172,8 +171,8 @@ export default {
       },
       set(val) {
         this.$store.commit("navigationSelect", val);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

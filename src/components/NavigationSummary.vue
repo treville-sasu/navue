@@ -40,7 +40,6 @@
 
 <script>
 import UnitSystem from "@/mixins/UnitSystem";
-import LatLon from "geodesy/latlon-spherical.js";
 
 export default {
   name: "NavigationSummary",
@@ -86,10 +85,7 @@ export default {
       let total = 0;
       waypoints.reduce((previous, current) => {
         if (previous) {
-          total += new LatLon(
-            previous.latlng.lat,
-            previous.latlng.lng
-          ).rhumbDistanceTo(new LatLon(current.latlng.lat, current.latlng.lng));
+          total += previous.distanceTo(current);
         }
         return current;
       }, null);

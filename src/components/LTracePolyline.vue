@@ -48,7 +48,6 @@
 //TODO : implement geodesic lines
 
 import { LPolyline, LTooltip } from "vue2-leaflet";
-import LatLon from "geodesy/latlon-nvector-spherical.js";
 import UnitSystem from "@/mixins/UnitSystem.js";
 
 export default {
@@ -64,20 +63,11 @@ export default {
     destination: Object
   },
   computed: {
-    originCoord() {
-      return new LatLon(this.origin.latlng.lat, this.origin.latlng.lng);
-    },
-    destinationCoord() {
-      return new LatLon(
-        this.destination.latlng.lat,
-        this.destination.latlng.lng
-      );
-    },
     bearing() {
-      return this.originCoord.initialBearingTo(this.destinationCoord);
+      return this.origin.bearingTo(this.destination);
     },
     distance() {
-      return this.originCoord.distanceTo(this.destinationCoord);
+      return this.origin.distanceTo(this.destination);
     }
   }
 };

@@ -1,6 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import { Navigation } from "@/models/Navigation.js";
+import { Aircraft } from "@/models/Aircraft.js";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -26,8 +29,12 @@ export default new Vuex.Store({
         state.currentUser = rest;
       } else state.currentUser = null;
     },
-    currentAircraft: (state, payload) => (state.currentAircraft = payload),
-    currentNavigation: (state, payload) => (state.currentNavigation = payload),
+    currentAircraft(state, payload) {
+      state.currentAircraft = Aircraft.import(payload);
+    },
+    currentNavigation(state, payload) {
+      state.currentNavigation = Navigation.import(payload);
+    },
     aircraftSelect: (state, payload) => (state.aircraftSelect = payload),
     navigationSelect: (state, payload) => (state.navigationSelect = payload)
   }

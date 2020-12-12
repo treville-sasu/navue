@@ -65,17 +65,20 @@ export const MapTools = {
       this.currentRoute = this.navigation.routes[id];
     },
     clearRoute(rte) {
+      //FIXME: use Model
       let position = this.navigation.routes.indexOf(rte);
       this.currentRoute = null;
       if (position > -1) this.navigation.routes.splice(position, 1);
     },
     addMarker(e) {
+      //FIXME: use Model
       let mk = { latlng: e.latlng, altitude: {}, bearings: [] };
 
       if (e.insertBefore) this.currentRoute.splice(e.insertBefore, 0, mk);
       else this.currentRoute.push(mk);
     },
     removeMarker(id) {
+      //FIXME: use Model
       this.currentRoute.splice(id, 1);
       if (this.currentRoute.length == 0) {
         this.clearRoute(this.currentRoute);

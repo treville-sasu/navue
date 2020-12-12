@@ -34,6 +34,7 @@ export const DataSelect = {
   },
   methods: {
     getData(id) {
+      // TODO: Handle error with care ! in the whole app
       return this.$pouch.get(id).catch(console.error);
     },
     saveData(data) {
@@ -54,7 +55,7 @@ export const DataSelect = {
       this.selectedData = e;
       this.activated = false;
       this.$emit("update:saved", true);
-      this.$emit("input", e);
+      this.$emit("input", this.selectedData);
     },
     deleteData() {
       this.$pouch
