@@ -1,108 +1,61 @@
-import LatLon from "geodesy/latlon-spherical.js";
+import { Model, Collection } from "@/models/Base.js";
+import { Waypoint } from "@/models/Waypoint.js";
 
-export class Navigation {
-  constructor(name, ...routes) {
+export class Navigation extends Model {
+  constructor({ name, notes, routes = [] } = {}) {
+    routes = RouteCollection.from(routes);
+    super({ name, notes, routes });
     this.type = "navigation";
-    this.name = name;
-    this.routes = routes;
   }
-  static import(object) {
-    if (object.type == "navigation") {
-      object.routes = object.routes.map(rte =>
-        rte.map(pnt => Waypoint.import(pnt))
-      );
-      return Object.assign(new this(), object);
-    } else throw "Invalid data";
+
+  addRoute(...args) {
+    return this.routes.append(...args);
   }
-  getNextWaypoint(waypoint) {
-    const wpId = this.routes.flat().indexOf(waypoint);
+
+  removeRoute(rte) {
+    return rte instanceof Collection
+      ? this.routes.remove(rte)
+      : this.routes.splice(rte, 0);
+  }
+
+  addWaypoint({ insertBefore, ...wp } = {}, route = this.routes.last()) {
+    return insertBefore ? route.insert(wp, insertBefore) : route.append(wp);
+  }
+
+  removeWaypoint(wp, route = this.routes.last()) {
+    return wp instanceof Waypoint ? route.remove(wp) : route.splice(wp, 1);
+  }
+
+  getNextWaypoint(wp) {
+    const wpId = this.routes.flat().indexOf(wp);
     return this.routes.flat()[wpId + 1];
   }
 }
 
-export class Waypoint {
-  constructor({ latlng, altitude } = {}) {
-    this.latlng = latlng;
-    this.name = undefined;
-    this.altitude = altitude;
-    this.notes = undefined;
+export class RouteCollection extends Collection {
+  create(...args) {
+    return Route.from(...args);
   }
-  set latlng({ lat, lng } = {}) {
-    this.latitude = lat;
-    this.longitude = lng;
-  }
-  get latlng() {
-    return { lat: this.latitude, lng: this.longitude };
-  }
-  get point() {
-    return new LatLon(this.latitude, this.longitude);
-  }
-  distanceTo(otherWP) {
-    return this.point.rhumbDistanceTo(otherWP.point);
-  }
-  bearingTo(otherWP) {
-    return this.point.rhumbBearingTo(otherWP.point);
-  }
-  destinationPoint(distance, heading) {
-    return this.point.rhumbDestinationPoint(distance, heading);
-  }
-  static import(object) {
-    object.name |= object.position;
-    object.altitude = { ref: "AMSL", ...object.altitude };
-    return Object.assign(new this(), object);
+
+  static from(collection) {
+    const routeCollection = new RouteCollection();
+    for (const route of collection) {
+      if (Array.isArray(route)) routeCollection.append(route);
+    }
+    return routeCollection;
   }
 }
-
-export class Location extends Waypoint {
-  constructor() {
-    super(arguments);
-    this.type |= "location";
-  }
-  set lastLocation(last) {
-    this.heading |= last.bearingTo(this);
-    this.speed |=
-      last.distanceTo(this) / ((this.timestamp - last.timestamp) * 1000);
-    //FIXME if altitude unit or ref is changed calculation should take it into account
-    this.verticalSpeed |=
-      ((last.altitude.value - this.altitude.value) /
-        (this.timestamp - last.timestamp)) *
-      1000;
-  }
-  toBounds(sizeInMeters = this.accuracy) {
-    const latAccuracy = (180 * sizeInMeters) / 40075017;
-    const lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.latitude);
-
-    return [
-      [this.latitude - latAccuracy, this.longitude - lngAccuracy],
-      [this.latitude + latAccuracy, this.longitude + lngAccuracy]
-    ];
+export class Route extends Collection {
+  create(...args) {
+    return new Waypoint(...args);
   }
 
-  static import({
-    latitude,
-    longitude,
-    accuracy,
-    altitude,
-    altitudeAccuracy,
-    speed,
-    heading,
-    timestamp,
-    type
-  } = {}) {
-    return super.import({
-      latitude,
-      longitude,
-      accuracy,
-      altitude: {
-        value: altitude,
-        accuracy: altitudeAccuracy,
-        unit: "m",
-        ref: "WGS84"
-      },
-      speed,
-      heading,
-      timestamp,
-      type
-    });
+  static from(collection) {
+    const route = new Route();
+    if (Array.isArray(collection))
+      for (const waypoint of collection) {
+        route.append(waypoint);
+      }
+    return route;
   }
 }

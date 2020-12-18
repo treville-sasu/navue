@@ -8,7 +8,11 @@
     "plugin:compat/recommended",
     "plugin:vue/essential",
     "eslint:recommended",
-    "@vue/prettier"
+    "@vue/prettier",
+    "plugin:jest/all"
+  ],
+  "plugins": [
+    "jest"
   ],
   "parserOptions": {
     "ecmaVersion": 2020
@@ -16,6 +20,23 @@
   "rules": {
     "compat/compat": "error",
     "no-console": "off",
-    "no-debugger": "off"
-  }
+    "no-debugger": "off",
+    "jest/prefer-expect-assertions": [
+      "warn",
+      {
+        "onlyFunctionsWithAsyncKeyword": true
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)"
+      ],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
