@@ -88,7 +88,7 @@ import LLocationMarker from "@/components/LLocationMarker.vue";
 import LDestinationMarker from "@/components/LDestinationMarker.vue";
 import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 
-import { Waypoint } from "@/models/Navigation.js";
+import { Waypoint } from "@/models/Waypoint.js";
 
 // FIXME: Setview with futur and past value
 export default {
@@ -216,8 +216,7 @@ export default {
     getDestination(lastDestination) {
       if (
         this.destination &&
-        lastDestination.distanceTo(this.destination.latlng) <
-          this.minDestination
+        lastDestination.distanceTo(this.destination) < this.minDestination
       ) {
         this.destination = this.navigation.getNextWaypoint(this.destination);
       } else return;

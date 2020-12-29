@@ -33,7 +33,7 @@ export class Waypoint extends Model {
   }
   toGeoJSON() {
     // eslint-disable-next-line no-unused-vars
-    const { latitude, longitude, ...properties } = { ...this }
+    const { latitude, longitude, ...properties } = { ...this };
     return {
       type: "Feature",
       properties,
@@ -42,7 +42,7 @@ export class Waypoint extends Model {
     // or with : https://www.npmjs.com/package/geojson >>>> GeoJSON.parse(data, { Point: ['lat', 'lng'] });
   }
 
-  static import(object) {
+  static from(object) {
     object.name |= object.position;
     object.altitude = { ref: "AMSL", ...object.altitude };
     return super.import(object);
@@ -81,6 +81,7 @@ export class Location extends Waypoint {
         (this.timestamp - last.timestamp)) *
       1000;
   }
+
   toBounds(sizeInMeters = this.accuracy) {
     const latAccuracy = (180 * sizeInMeters) / 40075017;
     const lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.latitude);
@@ -91,7 +92,7 @@ export class Location extends Waypoint {
     ];
   }
 
-  static import({
+  static from({
     latitude,
     longitude,
     accuracy,
@@ -102,7 +103,7 @@ export class Location extends Waypoint {
     timestamp,
     type
   } = {}) {
-    return super.import({
+    return new this({
       latitude,
       longitude,
       accuracy,

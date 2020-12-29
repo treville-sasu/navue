@@ -18,7 +18,7 @@
       <WaypointContent v-model="value" />
     </l-popup>
     <l-tooltip
-      v-else-if="value.position || value.altitude.value"
+      v-else-if="value.position || value.altitude"
       :options="{
         className: 'waypointLabel',
         permanent: true,

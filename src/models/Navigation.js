@@ -1,61 +1,63 @@
-import { Model, Collection } from "@/models/Base.js";
+import { Model } from "@/models/Base.js";
 import { Waypoint } from "@/models/Waypoint.js";
 
 export class Navigation extends Model {
   constructor({ name, notes, routes = [] } = {}) {
-    routes = RouteCollection.from(routes);
+    routes.forEach((rte, i) => {
+      if (rte instanceof Array)
+        rte.forEach((wp, j) => {
+          routes[i][j] = new Waypoint(wp);
+        });
+      else throw `'${rte}' cannot be coerced in a route`;
+    });
     super({ name, notes, routes });
     this.type = "navigation";
   }
 
   addRoute(...args) {
-    return this.routes.append(...args);
+    this.routes.push(args);
+    return this.routes[this.routes.length - 1];
   }
 
-  removeRoute(rte) {
-    return rte instanceof Collection
-      ? this.routes.remove(rte)
-      : this.routes.splice(rte, 0);
+  removeRoute(route) {
+    return this.routes.splice(this.getRouteId(route), 1);
   }
 
-  addWaypoint({ insertBefore, ...wp } = {}, route = this.routes.last()) {
-    return insertBefore ? route.insert(wp, insertBefore) : route.append(wp);
+  clearRoute(route) {
+    route = this.getRoute(route);
+    if (route.length == 0) {
+      this.removeRoute(route);
+      return true;
+    }
   }
 
-  removeWaypoint(wp, route = this.routes.last()) {
-    return wp instanceof Waypoint ? route.remove(wp) : route.splice(wp, 1);
+  addWaypoint({ insertBefore, ...wp } = {}, route) {
+    route = this.getRoute(route);
+    wp = new Waypoint(wp);
+    return insertBefore ? route.splice(insertBefore, 0, wp) : route.push(wp);
+  }
+
+  removeWaypoint(wp, route) {
+    route = this.getRoute(route);
+    return wp instanceof Waypoint
+      ? route.splice(route.indexOf(wp), 1)
+      : route.splice(wp, 1);
   }
 
   getNextWaypoint(wp) {
-    const wpId = this.routes.flat().indexOf(wp);
-    return this.routes.flat()[wpId + 1];
-  }
-}
-
-export class RouteCollection extends Collection {
-  create(...args) {
-    return Route.from(...args);
+    const id = this.routes.flat().indexOf(wp);
+    return this.routes.flat()[id + 1];
   }
 
-  static from(collection) {
-    const routeCollection = new RouteCollection();
-    for (const route of collection) {
-      if (Array.isArray(route)) routeCollection.append(route);
-    }
-    return routeCollection;
-  }
-}
-export class Route extends Collection {
-  create(...args) {
-    return new Waypoint(...args);
+  getRoute(objindex) {
+    if (objindex instanceof Array) return objindex;
+    else if (isFinite(objindex)) return this.routes[objindex];
+    else return this.routes[this.routes.length - 1];
   }
 
-  static from(collection) {
-    const route = new Route();
-    if (Array.isArray(collection))
-      for (const waypoint of collection) {
-        route.append(waypoint);
-      }
-    return route;
+  getRouteId(objindex) {
+    if (objindex instanceof Array) return this.routes.indexOf(objindex);
+    else if (isFinite(objindex)) return objindex;
+    else return this.routes.length - 1;
   }
 }

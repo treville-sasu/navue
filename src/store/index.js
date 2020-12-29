@@ -30,10 +30,10 @@ export default new Vuex.Store({
       } else state.currentUser = null;
     },
     currentAircraft(state, payload) {
-      state.currentAircraft = Aircraft.import(payload);
+      state.currentAircraft = new Aircraft(payload);
     },
     currentNavigation(state, payload) {
-      state.currentNavigation = Navigation.import(payload);
+      state.currentNavigation = new Navigation(payload);
     },
     aircraftSelect: (state, payload) => (state.aircraftSelect = payload),
     navigationSelect: (state, payload) => (state.navigationSelect = payload)

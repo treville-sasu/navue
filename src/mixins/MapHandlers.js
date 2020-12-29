@@ -1,4 +1,4 @@
-import { Location } from "@/models/Navigation.js";
+import { Location } from "@/models/Waypoint.js";
 
 export const MapHandlers = {
   data() {
@@ -22,7 +22,7 @@ export const MapHandlers = {
       this.map.locate(this.geoOptions);
     },
     _locationFound(e) {
-      let location = Location.import(e);
+      let location = Location.from(e);
 
       try {
         if (location.accuracy > this.maxAccuracy)
@@ -57,7 +57,8 @@ export const MapHandlers = {
       if (this.settings.setView) this.bestView(location);
       if (this.settings.inFlight) {
         this.addLocation(location);
-        this.setDestination(this.getDestination(location));
+        const nextDestination = this.getDestination(location);
+        if (nextDestination) this.setDestination(nextDestination);
       }
     },
     _locationError(e) {
@@ -84,7 +85,7 @@ export const MapHandlers = {
         return (Math.random() - 0.5) * s;
       };
 
-      return Location.import({
+      return Location.from({
         type: "locationfaked",
         latitude: latlng.lat + rand(spread / 100),
         longitude: latlng.lng + rand(spread / 100),

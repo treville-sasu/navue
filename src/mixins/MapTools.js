@@ -64,28 +64,14 @@ export const MapTools = {
     selectRoute(id) {
       this.currentRoute = this.navigation.routes[id];
     },
-    clearRoute(rte) {
-      //FIXME: use Model
-      let position = this.navigation.routes.indexOf(rte);
-      this.currentRoute = null;
-      if (position > -1) this.navigation.routes.splice(position, 1);
-    },
     addMarker(e) {
-      //FIXME: use Model
-      let mk = { latlng: e.latlng, altitude: {}, bearings: [] };
-
-      if (e.insertBefore) this.currentRoute.splice(e.insertBefore, 0, mk);
-      else this.currentRoute.push(mk);
+      this.navigation.addWaypoint(e);
     },
     removeMarker(id) {
-      //FIXME: use Model
-      this.currentRoute.splice(id, 1);
-      if (this.currentRoute.length == 0) {
-        this.clearRoute(this.currentRoute);
+      this.navigation.removeWaypoint(id, this.currentRoute);
+      if (this.navigation.clearRoute(this.currentRoute))
         this.currentRoute = null;
-      }
     },
-
     updatePointer(e) {
       this.pointerVector.splice(1, 1, e ? e.latlng : null);
     }
@@ -95,8 +81,7 @@ export const MapTools = {
       switch (oldTool) {
         case "route":
           this.map._container.style.cursor = null;
-          if (this.currentRoute && this.currentRoute.length == 0)
-            this.clearRoute(this.currentRoute);
+          this.navigation.clearRoute(this.currentRoute);
           break;
         case "select":
           this.$store.commit("navigationSelect", false);
@@ -107,16 +92,15 @@ export const MapTools = {
       switch (newTool) {
         case "route":
           if (!this.currentRoute)
-            this.currentRoute = this.navigation.routes[
-              this.navigation.routes.push([]) - 1
-            ];
+            this.currentRoute = this.navigation.addRoute();
           this.map._container.style.cursor = "crosshair";
           break;
         case "select":
           this.$store.commit("navigationSelect", true);
           break;
         case "clear":
-          this.clearRoute(this.currentRoute);
+          this.navigation.removeRoute(this.currentRoute);
+          this.currentRoute = null;
           this.$nextTick(() => (this.tool = null));
           break;
       }
