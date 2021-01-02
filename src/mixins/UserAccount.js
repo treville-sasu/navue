@@ -8,7 +8,7 @@ export const UserAccount = {
   data() {
     return {
       syncHandle: null,
-      remoteDbUrl: new URL("http://localhost:5984")
+      remoteDbUrl: new URL(process.env.VUE_APP_COUCHDB_URL)
     };
   },
   computed: {

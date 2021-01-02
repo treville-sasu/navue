@@ -1,6 +1,7 @@
 const CreateFileWebpack = require("create-file-webpack");
 
 module.exports = {
+  outputDir: process.env.BUILD_DIR,
   devServer: {
     disableHostCheck: true,
     public: "localhost:8080",

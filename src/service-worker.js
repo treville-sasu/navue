@@ -31,10 +31,7 @@ workbox.routing.registerRoute(
 
 const CorsProxyPlugin = {
   requestWillFetch: ({ request }) => {
-    return new Request(
-      "https://cors.treville.workers.dev/" + request.url,
-      request
-    );
+    return new Request(process.env.VUE_APP_PROXY + request.url, request);
   }
 };
 

@@ -32,10 +32,9 @@ export default {
           url:
             "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
           options: {
-            username: "mabrenac",
+            username: process.env.VUE_APP_MAPBOX_USERNAME,
             style_id: "ckfm71uvx26p119oc47tx5pxd",
-            token:
-              "pk.eyJ1IjoibWFicmVuYWMiLCJhIjoiY2sxbm1ueWhjMDd6aTNvcWZhNWVzejEyZiJ9.y6D5gNxGbMDJnzd0CSW9xQ",
+            token: process.env.VUE_APP_MAPBOX_TOKEN,
             maxZoom: 17,
             minZoom: 11,
             format: "image/jpeg",
@@ -50,10 +49,9 @@ export default {
           url:
             "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
           options: {
-            username: "mabrenac",
+            username: process.env.VUE_APP_MAPBOX_USERNAME,
             style_id: "ckflgd4gu1gv519ocwjauheyd",
-            token:
-              "pk.eyJ1IjoibWFicmVuYWMiLCJhIjoiY2sxbm1ueWhjMDd6aTNvcWZhNWVzejEyZiJ9.y6D5gNxGbMDJnzd0CSW9xQ",
+            token: process.env.VUE_APP_MAPBOX_TOKEN,
             maxZoom: 9,
             crossOrigin: true
           }
@@ -66,7 +64,7 @@ export default {
             "https://wxs.ign.fr/{apikey}/geoportail/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE={style}&TILEMATRIXSET=PM&FORMAT={format}&LAYER={variant}&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",
           options: {
             variant: "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-OACI",
-            apikey: "7d4hl8l320bxpi56m3hosljf",
+            apikey: process.env.VUE_APP_GEOPORTAIL_KEY,
             maxZoom: 11,
             minZoom: 9,
             bounds: [
@@ -109,7 +107,7 @@ export default {
 //     "https://wxs.ign.fr/{apikey}/geoportail/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE={style}&TILEMATRIXSET=PM&FORMAT={format}&LAYER={variant}&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",
 //   options: {
 //     variant: "ORTHOIMAGERY.ORTHOPHOTOS",
-//     apikey: "7d4hl8l320bxpi56m3hosljf",
+//     apikey: process.env.VUE_APP_GEOPORTAIL_KEY,
 //     maxZoom: 17,
 //     minZoom: 13,
 //     format: "image/jpeg",
