@@ -1,7 +1,7 @@
-import CorsProxy from "@/mixins/CorsProxy";
+// import CorsProxy from "@/mixins/CorsProxy";
 
 export default {
-  mixins: [CorsProxy],
+  // mixins: [CorsProxy],
   data() {
     return {
       AZBASourceUrl: "https://www.sia.aviation-civile.gouv.fr/schedules",
@@ -12,7 +12,7 @@ export default {
   },
   methods: {
     async fetchSIA(target, options = {}) {
-      const response = await fetch(this.proxyUrl(target), options);
+      const response = await fetch(target, options);
       if (!response.ok)
         throw { code: response.status, message: response.statusText };
       else {

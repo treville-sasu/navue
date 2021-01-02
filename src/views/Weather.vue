@@ -113,11 +113,6 @@
         @close="$delete(resultsMessages[category], key1)"
       >
         <h4>
-          <b-icon
-            :icon="true ? 'heart' : 'heart-outline'"
-            size="is-small"
-            class="is-clickable"
-          />
           {{ station.oaci }} -
           {{ station.nom }}
         </h4>
@@ -138,7 +133,7 @@
           :tags="{
             primary: map.type,
             info: map.niveau,
-            warning: map.echeance,
+            warning: map.echeance
           }"
           @click="openChartUrl = $event"
         >
@@ -152,7 +147,7 @@
         </ChartCartridge>
       </div>
     </div>
-    <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
+    <PDFModal v-model="openChartUrl" :active="!!openChartUrl" />
   </section>
 </template>
 
@@ -174,7 +169,6 @@ import PDFModal from "@/components/PDFModal.vue";
 import Timer from "@/components/Timer.vue";
 
 import Aeroweb from "@/mixins/Aeroweb";
-import CorsProxy from "@/mixins/CorsProxy";
 
 export default {
   name: "Weather",
@@ -183,9 +177,9 @@ export default {
     Timer,
     WeatherMessage,
     ChartCartridge,
-    PDFModal,
+    PDFModal
   },
-  mixins: [Aeroweb, CorsProxy],
+  mixins: [Aeroweb],
   data() {
     return {
       searchCodes: [],
@@ -196,21 +190,11 @@ export default {
       resultsMaps: {},
       openChartUrl: null,
       validated: undefined,
-      error: false,
+      error: false
     };
   },
   async mounted() {
     this.validated = await this.validateUser("navue");
-  },
-  computed: {
-    proxyChartUrl: {
-      get() {
-        return this.openChartUrl ? this.proxyUrl(this.openChartUrl) : null;
-      },
-      set(val) {
-        this.openChartUrl = val;
-      },
-    },
   },
   watch: {
     searchCodes(codes) {
@@ -220,28 +204,28 @@ export default {
     },
     searchCategories(newVal, oldVal) {
       oldVal
-        .filter((x) => !newVal.includes(x))
-        .forEach((category) => {
+        .filter(x => !newVal.includes(x))
+        .forEach(category => {
           delete this.resultsMessages[category];
         });
 
       this.getMessages(
         this.searchCodes,
-        newVal.filter((x) => !oldVal.includes(x))
+        newVal.filter(x => !oldVal.includes(x))
       );
     },
     searchTypes(newVal, oldVal) {
       oldVal
-        .filter((x) => !newVal.includes(x))
-        .forEach((type) => {
+        .filter(x => !newVal.includes(x))
+        .forEach(type => {
           delete this.resultsMaps[type];
         });
 
       this.getMaps(
         this.searchZones,
-        newVal.filter((x) => !oldVal.includes(x))
+        newVal.filter(x => !oldVal.includes(x))
       );
-    },
+    }
   },
   methods: {
     getBulletin() {
@@ -258,7 +242,7 @@ export default {
         console.error(err);
         this.error = setTimeout(this.validateUser, 3000, user);
       }
-    },
-  },
+    }
+  }
 };
 </script>

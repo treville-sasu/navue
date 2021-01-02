@@ -26,7 +26,8 @@
       </div>
       <div v-else class="card-image">
         <pdf
-          :src="value"
+          v-if="value"
+          :src="value.toString()"
           :page="currentPage"
           @num-pages="pageCount = $event"
           @progress="progress = $event"

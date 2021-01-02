@@ -1,13 +1,9 @@
 import AerowebJS from "aeroweb";
-import CorsProxy from "@/mixins/CorsProxy";
 
 export default {
-  mixins: [CorsProxy],
   data() {
     return {
-      aerowebInstance: new AerowebJS("IBAUJYXSHD", {
-        prefetch: this.proxyUrl
-      })
+      aerowebInstance: new AerowebJS(process.env.VUE_APP_AEROWEB_CODE)
     };
   },
   computed: {

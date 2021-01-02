@@ -133,11 +133,6 @@
       @close="$delete(notams, zone)"
     >
       <h4>
-        <b-icon
-          :icon="true ? 'heart' : 'heart-outline'"
-          size="is-small"
-          class="is-clickable"
-        />
         {{ zone }}
       </h4>
       <NotamMessage
@@ -158,17 +153,17 @@
           :tags="{
             danger: 'RTBA',
             warning: $options.filters.asTime(map.start),
-            success: $options.filters.asTime(map.end),
+            success: $options.filters.asTime(map.end)
           }"
           @click="openChartUrl = $event"
           card
         >
           <figure class="image">
-            <pdf :src="proxyUrl(map.url)" :page="1" style="height: 100%" />
+            <pdf :src="map.url" :page="1" style="height: 100%" />
           </figure>
         </ChartCartridge>
       </div>
-      <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
+      <PDFModal v-model="openChartUrl" :active="!!openChartUrl" />
     </div>
   </section>
 </template>
@@ -192,7 +187,7 @@ export default {
     ChartCartridge,
     PDFModal,
     Timer,
-    Pdf,
+    Pdf
   },
   mixins: [Sia],
   data() {
@@ -205,25 +200,15 @@ export default {
         radius: 10,
         ceiling: 30,
         flightrules: "VFR",
-        complementary: ["gps", "misc"],
+        complementary: ["gps", "misc"]
       },
       azba: [],
       openChartUrl: null,
-      notams: [],
+      notams: []
     };
   },
   async mounted() {
     this.azba = await this.getAZBA();
-  },
-  computed: {
-    proxyChartUrl: {
-      get() {
-        return this.openChartUrl ? this.proxyUrl(this.openChartUrl) : null;
-      },
-      set(val) {
-        this.openChartUrl = val;
-      },
-    },
   },
   watch: {
     searchNotam: {
@@ -232,8 +217,8 @@ export default {
         this.$refs.searchTimer.flyback();
         if (!this.$refs.searchTimer.running) this.$refs.searchTimer.start();
         if (this.searchNotam.codes.length == 0) this.$refs.searchTimer.reset();
-      },
-    },
+      }
+    }
   },
   methods: {
     getNotams() {
@@ -244,7 +229,7 @@ export default {
         this.notams = [];
         this.notams = await this.getAirportNOTAMs({
           ...this.searchNotam,
-          datetime,
+          datetime
         });
       });
     },
@@ -257,7 +242,7 @@ export default {
         console.error(err);
         this.error = setTimeout(this.getAZBA, 3000);
       }
-    },
+    }
   },
   filters: {
     asTime(value) {
@@ -266,7 +251,7 @@ export default {
         timeZoneName: "short",
         hour12: false,
         hour: "2-digit",
-        minute: "2-digit",
+        minute: "2-digit"
       });
     },
     asDay(value) {
@@ -274,9 +259,9 @@ export default {
         timeZone: "UTC",
         weekday: "long",
         day: "numeric",
-        month: "long",
+        month: "long"
       });
-    },
-  },
+    }
+  }
 };
 </script>

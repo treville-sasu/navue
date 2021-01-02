@@ -42,23 +42,23 @@
         >
           <ChartCartridge
             v-bind="map"
-            :url="map.id | asVACurl(baseURL)"
+            :url="VACurl(map.id, baseURL)"
             :tags="{
-              info: 'Airport',
+              info: 'Airport'
             }"
             @click="openChartUrl = $event"
             card
           >
             <figure class="image">
               <pdf
-                :src="proxyUrl($options.filters.asVACurl(map.id, baseURL))"
+                :src="VACurl(map.id, baseURL).toString()"
                 :page="1"
                 style="height: 100%"
               />
             </figure>
           </ChartCartridge>
         </div>
-        <PDFModal v-model="proxyChartUrl" :active="!!proxyChartUrl" />
+        <PDFModal v-model="openChartUrl" :active="!!openChartUrl" />
       </div>
     </section>
   </section>
@@ -78,7 +78,7 @@ export default {
     BIcao,
     ChartCartridge,
     PDFModal,
-    Pdf,
+    Pdf
   },
   mixins: [Sia],
   data() {
@@ -86,21 +86,11 @@ export default {
       error: false,
       codes: [],
       baseURL: null,
-      openChartUrl: null,
+      openChartUrl: null
     };
   },
   async mounted() {
     this.baseURL = await this.getCycleUrl();
-  },
-  computed: {
-    proxyChartUrl: {
-      get() {
-        return this.openChartUrl ? this.proxyUrl(this.openChartUrl) : null;
-      },
-      set(val) {
-        this.openChartUrl = val;
-      },
-    },
   },
   methods: {
     async getCycleUrl() {
@@ -112,12 +102,7 @@ export default {
         console.error(err);
         this.error = setTimeout(this.getCycleUrl, 3000);
       }
-    },
-  },
-  filters: {
-    asVACurl(value, base) {
-      return new URL(`AD-2.${value}.pdf`, base).href;
-    },
-  },
+    }
+  }
 };
 </script>

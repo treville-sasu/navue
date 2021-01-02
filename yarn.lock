@@ -1103,9 +1103,9 @@ address@^1.1.2:
   integrity sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==
 
 aeroweb@^0.9.0:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/aeroweb/-/aeroweb-0.9.1.tgz#2db4063cbda99359abc4c863cea80ad02ed7d6d3"
-  integrity sha512-RDMbTuWVtbWoo3ggDt4IJA7xbiFuarxsa6vtMs3H6WmaWoCiIrlpBFBhB3/GS5tjFXSWN3nXP8cL7GkHW9SfMg==
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/aeroweb/-/aeroweb-0.9.2.tgz#8dd8b7e9e6a32b4c654103f1f01d689889fd9539"
+  integrity sha512-ukeUiLcFNoelE+QtZF7FQMGXmaEy35+eEyPyrhs5LKcliFFllMTr2hObHxNWAbVX6xBl4TPkeDgnBPPIxB6uZQ==
   dependencies:
     xml-js "^1.6.11"
 
