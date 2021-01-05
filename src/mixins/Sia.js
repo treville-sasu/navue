@@ -6,8 +6,9 @@ export default {
     return {
       AZBASourceUrl: "https://www.sia.aviation-civile.gouv.fr/schedules",
       VACSourceUrl: "https://www.sia.aviation-civile.gouv.fr/",
+      // https request is required to prevent Mixed-Content restriction. but real server protocol is http.this tweak is required when request are proxied via ServiceWorker.
       NOTAMSourceUrl:
-        "https://notamweb.aviation-civile.gouv.fr/Script/IHM/Bul_Aerodrome.php" // true protocole is http, handling it in ServiceWorker and CorsProxy to work around mixed content
+        "https://notamweb.aviation-civile.gouv.fr/Script/IHM/Bul_Aerodrome.php"
     };
   },
   methods: {

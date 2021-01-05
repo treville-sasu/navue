@@ -140,12 +140,12 @@ export default {
         balance: undefined,
         envelopes: undefined,
         consumptions: undefined,
-        checklists: undefined,
-      },
+        checklists: undefined
+      }
     };
   },
   created() {
-    this.$root.$on("aircraft-select", (e) => {
+    this.$root.$on("aircraft-select", e => {
       switch (e) {
         case "save":
           this.saveData(this.value);
@@ -164,10 +164,10 @@ export default {
         database: "navue",
         selector: {
           type: this.dataType,
-          registration: { $regex: RegExp(this.search, "i") },
-        },
+          registration: { $regex: RegExp(this.search, "i") }
+        }
       };
-    },
+    }
   },
 
   computed: {
@@ -177,7 +177,7 @@ export default {
       },
       set(val) {
         this.$store.commit("currentAircraft", val);
-      },
+      }
     },
     activated: {
       get() {
@@ -185,8 +185,8 @@ export default {
       },
       set(val) {
         this.$store.commit("aircraftSelect", val);
-      },
-    },
-  },
+      }
+    }
+  }
 };
 </script>

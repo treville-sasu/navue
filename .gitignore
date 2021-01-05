@@ -4,6 +4,7 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+staging
 
 # Log files
 npm-debug.log*
@@ -20,4 +21,3 @@ pnpm-debug.log*
 *.sln
 *.sw?
 *.pem
-staging
