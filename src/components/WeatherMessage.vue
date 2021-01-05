@@ -13,9 +13,6 @@
 </template>
 
 <style scoped>
-.mb-0 {
-  margin-bottom: 0 !important;
-}
 pre {
   margin: 0.5rem;
   padding: 0.5rem;
@@ -24,10 +21,11 @@ pre {
 </style>
 
 <script>
+// TODO: allow caching
 export default {
   name: "WeatherMessage",
   props: {
-    message: String,
+    message: String
   },
   computed: {},
   filters: {
@@ -35,8 +33,11 @@ export default {
       return value.split("\n")[0];
     },
     lastLines(value) {
-      return value.split("\n").slice(1).join("\n");
-    },
-  },
+      return value
+        .split("\n")
+        .slice(1)
+        .join("\n");
+    }
+  }
 };
 </script>

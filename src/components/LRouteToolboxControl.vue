@@ -3,7 +3,7 @@
     <b-field>
       <b-radio-button v-model="tool" native-value="select">
         <b-tooltip label="open or save">
-          <b-icon icon="cloud-sync-outline" />
+          <b-icon icon="map-marker-path" />
         </b-tooltip>
       </b-radio-button>
       <b-radio-button v-model="tool" native-value="route">

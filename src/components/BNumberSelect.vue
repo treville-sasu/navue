@@ -16,9 +16,6 @@ import UnitSystem from "@/mixins/UnitSystem.js";
 export default {
   name: "BNumberSelect",
   props: ["value", "quantity", "options"],
-  data() {
-    return {};
-  },
   mixins: [UnitSystem],
   computed: {
     input: {

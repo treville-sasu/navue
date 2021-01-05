@@ -82,25 +82,37 @@
             </b-tooltip>
           </button>
         </p>
-        <p class="control">
-          <button class="button" disabled>
-            <b-tooltip label="Checklist">
-              <b-icon icon="clipboard-list-outline" />
-            </b-tooltip>
-          </button>
-        </p>
       </template>
+      <p class="control" v-if="aircraft">
+        <button
+          class="button"
+          @click="
+            openModal('Checklists', {
+              checklists: aircraft.checklists,
+              paces: aircraft.paces
+            })
+          "
+        >
+          >
+          <b-tooltip label="Checklist">
+            <b-icon icon="clipboard-list-outline" />
+          </b-tooltip>
+        </button>
+      </p>
     </b-field>
   </l-control>
 </template>
 
 <script>
 import { LControl } from "vue2-leaflet";
+import Checklists from "@/components/Checklists.vue";
 
 export default {
   name: "LMovingMapToolboxControl",
   components: {
-    LControl
+    LControl,
+    // eslint-disable-next-line vue/no-unused-components
+    Checklists
   },
   props: {
     value: {
@@ -111,7 +123,8 @@ export default {
           setView: true,
           wakeLock: true,
           inFlight: false,
-          allowWarning: true
+          allowWarning: true,
+          isChecklistsActive: false
         };
       }
     }
@@ -119,6 +132,12 @@ export default {
   computed: {
     wakeLockable() {
       return "wakeLock" in navigator && document.visibilityState === "visible";
+    },
+    aircraft() {
+      return this.$store.state.currentAircraft;
+    },
+    navigation() {
+      return this.$store.state.currentNavigation;
     }
   },
   watch: {
@@ -127,6 +146,17 @@ export default {
       handler(val) {
         this.$emit("input", val);
       }
+    }
+  },
+  methods: {
+    openModal(component, props) {
+      this.$buefy.modal.open({
+        parent: this,
+        component: this.$options.components[component],
+        props,
+        trapFocus: true,
+        "destroy-on-hide": false
+      });
     }
   }
 };

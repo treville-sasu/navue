@@ -44,7 +44,7 @@
       </b-field>
     </fieldset>
     <div v-else>
-      <nav class="level">
+      <nav class="level is-mobile">
         <div class="level-item has-text-centered">
           <b-icon :icon="syncIcon" />
         </div>
@@ -191,18 +191,14 @@ export default {
         .catch(this.openToast);
     },
     loginUser(username, password) {
-      return (
-        this.remoteDB
-          .logIn(username, password)
-          .catch(this.openToast)
-          // .then(() => this.confirmAction(this.importData))
-          // .catch(this.cleanLocal)
-          .then(this.setCurrentUser)
-          .then(this.startSync)
-          .finally(() => {
-            this.username = this.password = null;
-          })
-      );
+      return this.remoteDB
+        .logIn(username, password)
+        .catch(this.openToast)
+        .then(this.setCurrentUser)
+        .then(this.startSync)
+        .finally(() => {
+          this.username = this.password = null;
+        });
     },
     logoutUser() {
       return this.remoteDB
@@ -233,6 +229,7 @@ export default {
     checkSession() {
       return this.setCurrentUser().catch(this.logoutUser);
     },
+    // smarter but broken implementation
     // startSync(userDB) {
     //   return this.$pouch
     //     .ecoSync(userDB)
