@@ -14,7 +14,8 @@ module.exports = {
     name: "naVue",
     workboxPluginMode: "InjectManifest",
     workboxOptions: {
-      swSrc: "src/service-worker.js"
+      swSrc: "src/service-worker.js",
+      exclude: ["CNAME", "robots.txt"]
     },
     themeColor: "#34495e",
     msTileColor: "#34495e",
