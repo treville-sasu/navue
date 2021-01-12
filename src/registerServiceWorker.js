@@ -37,9 +37,7 @@ if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
     });
   });
 
-  //https://redfin.engineering/how-to-fix-the-refresh-button-when-using-service-workers-a8e27af6df68
-  wb.addEventListener("controlling", event => {
-    console.log(event, "controlling");
+  wb.addEventListener("controlling", () => {
     window.location.reload();
   });
 

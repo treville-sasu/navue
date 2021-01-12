@@ -1,5 +1,18 @@
 <template>
   <div class="container" style="min-width: 30vw">
+    <b-loading :is-full-page="false" :active="!!error">
+      <b-notification
+        has-icon
+        icon="alert-circle-outline"
+        :closable="false"
+        aria-close-label="Close notification"
+      >
+        <h4 class="title">Navue User Server Unavailable</h4>
+        <p class="heading">
+          Check your connection
+        </p>
+      </b-notification>
+    </b-loading>
     <fieldset v-if="!currentUser">
       <b-field label="Email">
         <b-input
@@ -134,6 +147,7 @@
 </style>
 
 <script>
+// TODO Gray out login form if db server is unreachable.
 import UserEdit from "@/components/UserEdit.vue";
 import { UserAccount } from "@/mixins/UserAccount.js";
 
@@ -149,7 +163,7 @@ export default {
       username: null,
       password: null,
       userStats: {},
-      syncIcon: "cloud-off-outline"
+      syncIcon: "cloud-off-outline",
       // importData: {
       //   title: "Import data",
       //   type: "is-warning",
@@ -157,7 +171,12 @@ export default {
       //     "Some data are present in this device. Would you like to import them into your account ?",
       //   confirmText: "Import & Sync"
       // }
+      serverPresent: undefined,
+      error: false
     };
+  },
+  async mounted() {
+    this.serverPresent = await this.checkServer("navue");
   },
   computed: {
     currentUser: {
@@ -184,6 +203,16 @@ export default {
       .finally(this.setUserStats);
   },
   methods: {
+    async checkServer(user) {
+      // TODO Should use background sync for better perception.
+      try {
+        clearTimeout(this.error);
+        this.error = false;
+        return await this.remoteDB.info();
+      } catch (err) {
+        this.error = setTimeout(this.checkServer, 3000, user);
+      }
+    },
     newUser(username, password) {
       return this.remoteDB
         .signUp(username, password)

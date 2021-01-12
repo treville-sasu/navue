@@ -69,7 +69,7 @@
               major browser : Chrome, Firefox and Edge.
             </p>
             <p class="block">
-              We explicitly exlude : Internet Explorer, Baidu browser & Opera
+              We explicitly exclude : Internet Explorer, Baidu browser & Opera
               Mini.
             </p>
           </div>

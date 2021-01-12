@@ -2,9 +2,9 @@ export const UserAccount = {
   // With couchDB 3.x only an admin can create users. disable this with :
   // https://github.com/apache/couchdb-documentation/issues/513
   //
-  // PUT http://127.0.0.1:5984/_node/couchdb@127.0.0.1/_config/couchdb/users_db_security_editable true
-  // PUT http://127.0.0.1:5984/_users/_security {"members":{"roles":[]},"admins":{"roles":["_admin"]}}
-  // PUT http://127.0.0.1:5984/_node/couchdb@127.0.0.1/_config/couchdb/users_db_security_editable false
+  // /_node/couchdb@127.0.0.1/_config/couchdb/users_db_security_editable true
+  // /_users/_security {"members":{"roles":[]},"admins":{"roles":["_admin"]}}
+  // /_node/couchdb@127.0.0.1/_config/couchdb/users_db_security_editable false
   data() {
     return {
       syncHandle: null,
