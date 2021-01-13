@@ -118,6 +118,7 @@ export default {
       traceType: "location",
       futurPositionDelay: 3 * 60,
       minDestination: 100,
+      traceLength: 200,
       settings: {
         getLocation: true,
         setView: true,
@@ -144,9 +145,7 @@ export default {
       return this.$store.state.currentNavigation || { routes: [] };
     },
     trace() {
-      return (this.reportedLocations || [])
-        .filter(p => !!p.latlng)
-        .map(p => p.latlng);
+      return (this.reportedLocations || []).map(p => [p.latitude, p.longitude]);
     }
   },
   watch: {
@@ -167,6 +166,7 @@ export default {
     reportedLocations() {
       return {
         database: this.traceDB,
+        limit: this.traceLength,
         selector: {
           type: this.traceType
         }
@@ -192,7 +192,6 @@ export default {
       return this.$pouch[this.traceDB].post(
         {
           ...e,
-          type: "location",
           _id: e.timestamp.toString()
         },
         {}
@@ -232,20 +231,14 @@ export default {
       }
     },
     //TODO: spinoff openWarning and openModal as app UI features
-    openWarning(e) {
+    openWarning(message, actionText, onAction) {
       this.$buefy.snackbar.open({
-        message: e.message,
+        message,
         position: "is-bottom",
         type: "is-danger",
         duration: 5000,
-        actionText: "Deactivate",
-        onAction: () => {
-          this.settings.allowWarning = false;
-          this.$buefy.toast.open({
-            message: "Warnings Deactivated",
-            queue: false
-          });
-        }
+        actionText,
+        onAction
       });
     }
   }

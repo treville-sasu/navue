@@ -32,9 +32,6 @@
             >Delete trace</b-button
           >
         </b-dropdown-item>
-        <b-dropdown-item>
-          <b-switch v-model="value.allowWarning">Display warnings</b-switch>
-        </b-dropdown-item>
       </b-dropdown>
       <template v-if="!value.inFlight">
         <p class="control">
@@ -123,7 +120,6 @@ export default {
           setView: true,
           wakeLock: true,
           inFlight: false,
-          allowWarning: true,
           isChecklistsActive: false
         };
       }

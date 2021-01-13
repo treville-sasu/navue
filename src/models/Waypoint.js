@@ -63,11 +63,12 @@ export class Location extends Waypoint {
     timestamp
   } = {}) {
     super({ name, latitude, longitude, altitude, notes, latlng });
+    this.type = "location";
+    this.timestamp = timestamp;
     this.accuracy = accuracy;
     if (heading) this.heading = heading % 360;
     // TODO: set speed object
     this.speed = speed;
-    this.timestamp = timestamp;
   }
 
   computeMovementFrom(last) {
@@ -100,8 +101,7 @@ export class Location extends Waypoint {
     altitudeAccuracy,
     speed,
     heading,
-    timestamp,
-    type
+    timestamp
   } = {}) {
     return new this({
       latitude,
@@ -115,8 +115,7 @@ export class Location extends Waypoint {
       },
       speed,
       heading,
-      timestamp,
-      type
+      timestamp
     });
   }
 }

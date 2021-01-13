@@ -66,7 +66,10 @@ export default {
     speedVector() {
       return [
         this.value.latlng,
-        this.destinationPoint(this.value.speed * this.delay, this.value.heading)
+        this.value.destinationPoint(
+          this.value.speed * this.delay,
+          this.value.heading
+        )
       ];
     }
   }
