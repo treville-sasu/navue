@@ -90,6 +90,8 @@ import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 
 import { Waypoint } from "@/models/Waypoint.js";
 
+import { WakeLock } from "@/mixins/apputils.js";
+
 // FIXME: Setview with futur and past value
 export default {
   name: "MovingMap",
@@ -107,13 +109,12 @@ export default {
     LRouteLayerGroup,
     LDestinationMarker
   },
-  mixins: [MapHandlers],
+  mixins: [WakeLock, MapHandlers],
   data() {
     return {
       lastKnownLocation: undefined,
       lastKnownError: undefined,
       destination: undefined,
-      wakeLock: null,
       traceDB: "navue_trace",
       traceType: "location",
       futurPositionDelay: 3 * 60,
@@ -122,20 +123,12 @@ export default {
       settings: {
         getLocation: true,
         setView: true,
-        wakeLock: true,
-        inFlight: false,
-        allowWarning: true
+        inFlight: false
       }
     };
   },
-  mounted() {
-    this.requestWakeLock();
-    document.addEventListener("visibilitychange", this.requestWakeLock);
-  },
   beforeDestroy() {
     this.stopLocate();
-    document.removeEventListener("visibilitychange", this.requestWakeLock);
-    if (this.wakeLock) this.wakeLock.release();
   },
   computed: {
     map() {
@@ -151,10 +144,6 @@ export default {
   watch: {
     "settings.setView": function(val) {
       if (val && this.lastKnownLocation) this.bestView(this.lastKnownLocation);
-    },
-    "settings.wakeLock": function(val) {
-      if (val) this.requestWakeLock();
-      if (!val && this.wakeLock) this.wakeLock.release();
     },
     "settings.getLocation": {
       handler(val) {
@@ -219,27 +208,6 @@ export default {
       ) {
         this.destination = this.navigation.getNextWaypoint(this.destination);
       } else return;
-    },
-
-    async requestWakeLock() {
-      try {
-        if ("wakeLock" in navigator && document.visibilityState === "visible") {
-          this.wakeLock = await navigator.wakeLock.request("screen");
-        } else throw "wakelock unavaliable";
-      } catch (err) {
-        this.settings.wakeLock = false;
-      }
-    },
-    //TODO: spinoff openWarning and openModal as app UI features
-    openWarning(message, actionText, onAction) {
-      this.$buefy.snackbar.open({
-        message,
-        position: "is-bottom",
-        type: "is-danger",
-        duration: 5000,
-        actionText,
-        onAction
-      });
     }
   }
 };

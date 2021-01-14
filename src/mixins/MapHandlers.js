@@ -1,4 +1,5 @@
 import { Location } from "@/models/Waypoint.js";
+import { UIHelpers } from "@/mixins/apputils";
 
 export const MapHandlers = {
   data() {
@@ -14,6 +15,7 @@ export const MapHandlers = {
       }
     };
   },
+  mixins: [UIHelpers],
   methods: {
     stopLocate() {
       this.map.stopLocate();
@@ -30,12 +32,6 @@ export const MapHandlers = {
             type: "locationerror",
             message: `Geolocation error: too low accuracy (${location.accuracy}m)`
           };
-        // Check location patern
-        // if (location.accuracy > this.maxAccuracy)
-        //   throw {
-        //     type: "locationerror",
-        //     message: `Geolocation error: too low accuracy (${location.accuracy}m)`
-        //   };
       } catch (err) {
         if (process.env.NODE_ENV == "development")
           location = this._fakeLocation({ ...location, accuracy: 20 });
@@ -45,7 +41,7 @@ export const MapHandlers = {
         }
       }
 
-      // now we have a usefull location,
+      // now we have a location, let's polish it & use it.
       if (
         this.lastKnownLocation instanceof Location &&
         location.distanceTo(this.lastKnownLocation) <= this.minDistance

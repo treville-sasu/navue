@@ -18,11 +18,6 @@
           >
         </b-dropdown-item>
         <b-dropdown-item>
-          <b-switch v-model="value.wakeLock" :disabled="!wakeLockable"
-            >Keep screen On</b-switch
-          >
-        </b-dropdown-item>
-        <b-dropdown-item>
           <b-button
             size="is-small"
             icon-right="map-marker-remove-outline"
@@ -126,9 +121,6 @@ export default {
     }
   },
   computed: {
-    wakeLockable() {
-      return "wakeLock" in navigator && document.visibilityState === "visible";
-    },
     aircraft() {
       return this.$store.state.currentAircraft;
     },
