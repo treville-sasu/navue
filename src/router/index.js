@@ -20,6 +20,11 @@ const routes = [
     component: () => import("../views/MovingMap.vue")
   },
   {
+    path: "/checklists",
+    name: "Checklists",
+    component: () => import("../views/Checklists.vue")
+  },
+  {
     path: "/route/:id?",
     name: "Route",
     component: () => import("../views/Route.vue")

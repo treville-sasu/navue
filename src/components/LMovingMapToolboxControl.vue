@@ -97,14 +97,11 @@
 
 <script>
 import { LControl } from "vue2-leaflet";
-import Checklists from "@/components/Checklists.vue";
 
 export default {
   name: "LMovingMapToolboxControl",
   components: {
-    LControl,
-    // eslint-disable-next-line vue/no-unused-components
-    Checklists
+    LControl
   },
   props: {
     value: {
@@ -114,8 +111,7 @@ export default {
           getLocation: true,
           setView: true,
           wakeLock: true,
-          inFlight: false,
-          isChecklistsActive: false
+          inFlight: false
         };
       }
     }
