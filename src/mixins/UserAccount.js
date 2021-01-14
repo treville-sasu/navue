@@ -51,6 +51,8 @@ export const UserAccount = {
         .query(
           {
             map: (doc, emit) => {
+              // if (doc.type == "trace")
+              //   emit("flightduration", { ETE: doc.duration });
               emit(doc.type);
             },
             reduce: "_count" // _stats _count _sum _approx_count_distinct
