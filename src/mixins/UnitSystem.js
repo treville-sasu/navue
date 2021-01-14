@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      quantity: {
+      quantities: {
         speed: {
           "m/s": 1,
           "km/h": 3.6,

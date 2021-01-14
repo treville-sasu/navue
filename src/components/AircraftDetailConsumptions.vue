@@ -12,13 +12,13 @@
           <b-number-select
             :value.sync="consumption.value"
             :quantity.sync="consumption.unit"
-            :options="quantity.volume"
+            :options="quantities.volume"
             :controls="false"
           />
         </b-field>
         <b-select placeholder="cons." v-model="consumption.part">
           <option
-            v-for="option in quantity.consumptions"
+            v-for="option in quantities.consumptions"
             :value="option"
             :key="option"
             >{{ option }}</option

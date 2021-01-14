@@ -18,7 +18,7 @@
           <b-number-select
             :value.sync="speed.value"
             :quantity.sync="speed.unit"
-            :options="quantity.speed"
+            :options="quantities.speed"
             :controls="false"
           />
         </b-field>

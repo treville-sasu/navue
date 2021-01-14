@@ -17,7 +17,7 @@
         v-model="value.altitude.reference"
         :disabled="value.altitude.unit === 'FL'"
       >
-        <option v-for="ref in quantity.references" :value="ref" :key="ref">{{
+        <option v-for="ref in quantities.references" :value="ref" :key="ref">{{
           ref
         }}</option>
       </b-select> -->
