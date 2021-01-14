@@ -23,6 +23,16 @@ export class Aircraft extends Model {
     });
     this.type = "aircraft";
   }
+
+  get gotId() {
+    return this._id && this._rev;
+  }
+  setId(id, rev) {
+    this._id = id;
+    this._rev = rev;
+    return this;
+  }
+
   addPace(name, value, unit) {
     return this.paces.push({ name, unit, value });
   }
@@ -63,7 +73,7 @@ export class Aircraft extends Model {
 
   static import(object) {
     if (object.type == "aircraft") {
-      return super.import(object);
+      return new Aircraft(object).setId(object._id, object._rev);
     } else
       throw `Invalid data : 'type' should be 'aircraft' got '${object.type}'`;
   }

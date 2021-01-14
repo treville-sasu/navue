@@ -7,7 +7,6 @@
       @close="tool = undefined"
     />
     <!-- TODO: on select navigation setView -->
-    <AircraftSelect v-model="aircraft" @close="tool = undefined" />
     <l-map
       v-if="navigation"
       :zoom="10"
@@ -84,7 +83,6 @@ body,
 </style>
 
 <script>
-import AircraftSelect from "@/components/AircraftSelect.vue";
 import NavigationSelect from "@/components/NavigationSelect.vue";
 import NavigationSummary from "@/components/NavigationSummary.vue";
 import L from "leaflet";
@@ -108,7 +106,6 @@ import { Navigation } from "@/models/Navigation.js";
 export default {
   name: "Route",
   components: {
-    AircraftSelect,
     NavigationSelect,
     NavigationSummary,
     LMap,
@@ -126,7 +123,6 @@ export default {
   data() {
     return {
       navigation: new Navigation(),
-      aircraft: null,
       miniMap: {
         layer: new L.TileLayer(
           "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
@@ -145,6 +141,11 @@ export default {
         }
       }
     };
+  },
+  computed: {
+    aircraft() {
+      return this.$store.state.currentAircraft;
+    }
   }
 };
 

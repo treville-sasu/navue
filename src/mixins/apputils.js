@@ -50,3 +50,18 @@ export const ImportExport = {
     }
   }
 };
+
+export const UIHelpers = {
+  methods: {
+    openWarning(message, actionText, onAction) {
+      this.$buefy.snackbar.open({
+        message,
+        position: "is-bottom",
+        type: "is-danger",
+        duration: 5000,
+        actionText,
+        onAction
+      });
+    }
+  }
+};

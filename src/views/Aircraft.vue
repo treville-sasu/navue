@@ -1,7 +1,5 @@
 <template>
   <section>
-    <AircraftSelect v-model="aircraft" :saved.sync="saved" required editable />
-    <!-- @update="saved = true" -->
     <section class="hero is-primary is-hidden-mobile">
       <div class="hero-body">
         <div class="container">
@@ -12,91 +10,53 @@
         </div>
       </div>
     </section>
-    <section class="section" v-if="!(aircraft === null)">
-      <div class="buttons is-grouped is-centered">
-        <b-button
-          :type="!saved ? 'is-danger' : 'is-primary'"
-          :disabled="saved"
-          icon-left="content-save"
-          @click="saved = null"
-          outlined
-          label="Save"
-        />
-        <b-button
-          type="is-primary"
-          icon-left="view-carousel-outline"
-          @click="$root.$emit('aircraft-select')"
-          outlined
-          label="Manage"
-        />
-      </div>
-
-      <b-tabs position="is-centered" multiline expanded v-if="aircraft">
-        <b-tab-item label="Identification">
-          <b-field label="Registration" horizontal>
-            <b-input
-              @input="saved = false"
-              v-model="aircraft.registration"
-              placeholder="F-...."
-              required
-            />
-          </b-field>
-          <b-field label="Manufacturer" horizontal>
-            <b-input
-              @input="saved = false"
-              v-model="aircraft.manufacturer"
-              placeholder="Robin"
-            />
-          </b-field>
-          <b-field label="Model" horizontal>
-            <b-input
-              @input="saved = false"
-              v-model="aircraft.model"
-              placeholder="DR40"
-            />
-          </b-field>
-          <b-field label="Airworthiness Certificate" horizontal>
-            <b-input
-              @input="saved = false"
-              v-model="aircraft.cn"
-              maxlength="200"
-              type="textarea"
-              placeholder="CNRA.. 12/12/1983"
-            />
-          </b-field>
-        </b-tab-item>
-        <b-tab-item label="Paces">
-          <AircraftDetailPaces
-            @input="saved = false"
-            :value.sync="aircraft.paces"
+    <AircraftSelect
+      :unsavedAircaft="aircraft"
+      @update:aircraft="aircraft = JSON.parse(JSON.stringify($event))"
+      select
+      create
+      save
+    />
+    <b-tabs position="is-centered" multiline expanded v-if="aircraft">
+      <b-tab-item label="Identification">
+        <b-field label="Registration" horizontal>
+          <b-input
+            v-model="aircraft.registration"
+            placeholder="F-...."
+            required
           />
-        </b-tab-item>
-        <b-tab-item label="Fuel">
-          <AircraftDetailConsumptions
-            @input="saved = false"
-            :value.sync="aircraft.consumptions"
+        </b-field>
+        <b-field label="Manufacturer" horizontal>
+          <b-input v-model="aircraft.manufacturer" placeholder="Robin" />
+        </b-field>
+        <b-field label="Model" horizontal>
+          <b-input v-model="aircraft.model" placeholder="DR40" />
+        </b-field>
+        <b-field label="Airworthiness Certificate" horizontal>
+          <b-input
+            v-model="aircraft.cn"
+            maxlength="200"
+            type="textarea"
+            placeholder="CNRA.. 30/04/1983"
           />
-        </b-tab-item>
-        <b-tab-item label="Balance & Weight">
-          <AircraftDetailBalance
-            @input="saved = false"
-            :value.sync="aircraft.balance"
-          />
-        </b-tab-item>
-        <b-tab-item label="Envelopes">
-          <AircraftDetailEnvelopes
-            @input="saved = false"
-            :value.sync="aircraft.envelopes"
-          />
-        </b-tab-item>
-        <b-tab-item label="Checklists">
-          <AircraftDetailChecklists
-            @input="saved = false"
-            :value.sync="aircraft.checklists"
-          />
-        </b-tab-item>
-      </b-tabs>
-    </section>
+        </b-field>
+      </b-tab-item>
+      <b-tab-item label="Paces">
+        <AircraftDetailPaces :value.sync="aircraft.paces" />
+      </b-tab-item>
+      <b-tab-item label="Fuel">
+        <AircraftDetailConsumptions :value.sync="aircraft.consumptions" />
+      </b-tab-item>
+      <b-tab-item label="Balance & Weight">
+        <AircraftDetailBalance :value.sync="aircraft.balance" />
+      </b-tab-item>
+      <b-tab-item label="Envelopes">
+        <AircraftDetailEnvelopes :value.sync="aircraft.envelopes" />
+      </b-tab-item>
+      <b-tab-item label="Checklists">
+        <AircraftDetailChecklists :value.sync="aircraft.checklists" />
+      </b-tab-item>
+    </b-tabs>
   </section>
 </template>
 <script>
@@ -120,9 +80,11 @@ export default {
   },
   data() {
     return {
-      aircraft: null,
-      saved: true
+      aircraft: null
     };
+  },
+  mounted() {
+    this.aircraft = this.$store.state.currentAircraft;
   }
 };
 </script>

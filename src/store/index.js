@@ -11,7 +11,6 @@ export default new Vuex.Store({
     currentUser: null,
     currentAircraft: null,
     currentNavigation: null,
-    aircraftSelect: null,
     navigationSelect: null
   },
   mutations: {
@@ -30,12 +29,19 @@ export default new Vuex.Store({
       } else state.currentUser = null;
     },
     currentAircraft(state, payload) {
-      state.currentAircraft = new Aircraft(payload);
+      state.currentAircraft = payload ? Aircraft.import(payload) : payload;
     },
     currentNavigation(state, payload) {
-      state.currentNavigation = new Navigation(payload);
+      state.currentNavigation = payload ? new Navigation(payload) : payload;
     },
-    aircraftSelect: (state, payload) => (state.aircraftSelect = payload),
     navigationSelect: (state, payload) => (state.navigationSelect = payload)
+  },
+  actions: {
+    saveToDB(context, payload) {
+      return this._vm.$pouch.put(payload);
+    },
+    deleteFromDB(context, payload) {
+      return this._vm.$pouch.remove(payload);
+    }
   }
 });

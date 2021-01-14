@@ -1,7 +1,5 @@
 <template>
   <section>
-    <AircraftSelect v-model="aircraft" required />
-
     <section class="hero is-primary is-hidden-mobile">
       <div class="hero-body">
         <h1 class="title">Weight & Balance</h1>
@@ -11,7 +9,8 @@
         </h2>
       </div>
     </section>
-    <section class="section" v-if="!!aircraft">
+    <AircraftSelect v-if="!aircraft" select />
+    <section class="section" v-else>
       <div class="columns">
         <div class="column">
           <div v-for="(weight, index) in aircraft.balance.weights" :key="index">
@@ -51,11 +50,6 @@ export default {
     BalanceChart
   },
   mixins: [ChartSettings],
-  data() {
-    return {
-      aircraft: null
-    };
-  },
   methods: {
     getCenterGravity(weights) {
       let cg = weights.reduce(
@@ -73,6 +67,9 @@ export default {
     }
   },
   computed: {
+    aircraft() {
+      return this.$store.state.currentAircraft;
+    },
     cgFullTank() {
       return this.getCenterGravity(this.aircraft.balance.weights);
     },
