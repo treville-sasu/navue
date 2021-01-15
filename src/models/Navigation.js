@@ -60,4 +60,14 @@ export class Navigation extends Model {
     else if (isFinite(objindex)) return objindex;
     else return this.routes.length - 1;
   }
+
+  static import(object) {
+    if (object.type == "navigation") {
+      let imported = new this(object);
+      if (object._id) imported._id = object._id;
+      if (object._rev) imported._rev = object._rev;
+      return imported;
+    } else
+      throw `Invalid data : 'type' should be 'navigation' got '${object.type}'`;
+  }
 }

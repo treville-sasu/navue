@@ -24,9 +24,6 @@ export class Aircraft extends Model {
     this.type = "aircraft";
   }
 
-  get gotId() {
-    return this._id && this._rev;
-  }
   setId(id, rev) {
     this._id = id;
     this._rev = rev;
@@ -73,7 +70,10 @@ export class Aircraft extends Model {
 
   static import(object) {
     if (object.type == "aircraft") {
-      return new Aircraft(object).setId(object._id, object._rev);
+      let imported = new this(object);
+      if (object._id) imported._id = object._id;
+      if (object._rev) imported._rev = object._rev;
+      return imported;
     } else
       throw `Invalid data : 'type' should be 'aircraft' got '${object.type}'`;
   }

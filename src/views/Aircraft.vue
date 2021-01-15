@@ -11,8 +11,8 @@
       </div>
     </section>
     <AircraftSelect
-      :unsavedAircaft="aircraft"
-      @update:aircraft="aircraft = JSON.parse(JSON.stringify($event))"
+      :value="aircraft"
+      @input="aircraft = JSON.parse(JSON.stringify($event))"
       select
       create
       save

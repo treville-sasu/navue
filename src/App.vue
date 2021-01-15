@@ -21,12 +21,20 @@ $modal-z: $navbar-fixed-z + 100;
 .notices {
   z-index: $navbar-fixed-z + 1000;
 }
+
+.modal .animation-content .modal-card {
+  overflow: visible !important;
+}
+
+.modal-card-body {
+  overflow: visible !important;
+}
 </style>
 
 <script>
 import Navbar from "@/components/Navbar.vue";
 
 export default {
-  components: { Navbar },
+  components: { Navbar }
 };
 </script>

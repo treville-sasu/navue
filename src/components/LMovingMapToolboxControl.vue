@@ -18,6 +18,9 @@
           >
         </b-dropdown-item>
         <b-dropdown-item>
+          <b-switch v-model="value.zoomControl">Display zoom control</b-switch>
+        </b-dropdown-item>
+        <b-dropdown-item>
           <b-button
             size="is-small"
             icon-right="map-marker-remove-outline"
@@ -30,19 +33,9 @@
       </b-dropdown>
       <template v-if="!value.inFlight">
         <p class="control">
-          <button
-            class="button"
-            @click="$store.commit('navigationSelect', true)"
-          >
+          <button class="button" @click="$emit('open-navigation')">
             <b-tooltip label="Select a navigation">
               <b-icon icon="map-marker-path" />
-            </b-tooltip>
-          </button>
-        </p>
-        <p class="control">
-          <button class="button" @click="$store.commit('aircraftSelect', true)">
-            <b-tooltip label="Select an aircraft">
-              <b-icon icon="airplane" />
             </b-tooltip>
           </button>
         </p>
@@ -53,41 +46,12 @@
             </b-tooltip>
           </button>
         </p>
-        <p class="control">
-          <button
-            class="button"
-            @click="$store.commit('traceSelect', true)"
-            disabled
-          >
-            <b-tooltip label="Save trace">
-              <b-icon icon="map-marker-plus-outline" />
-            </b-tooltip>
-          </button>
-        </p>
       </template>
 
-      <template v-else>
-        <p class="control">
-          <button class="button" @click="value.inFlight = false">
-            <b-tooltip label="Stop">
-              <b-icon type="is-danger" icon="airplane-landing" />
-            </b-tooltip>
-          </button>
-        </p>
-      </template>
-      <p class="control" v-if="aircraft">
-        <button
-          class="button"
-          @click="
-            openModal('Checklists', {
-              checklists: aircraft.checklists,
-              paces: aircraft.paces
-            })
-          "
-        >
-          >
-          <b-tooltip label="Checklist">
-            <b-icon icon="clipboard-list-outline" />
+      <p class="control" v-else>
+        <button class="button" @click="value.inFlight = false">
+          <b-tooltip label="Stop">
+            <b-icon type="is-danger" icon="airplane-landing" />
           </b-tooltip>
         </button>
       </p>
@@ -110,7 +74,7 @@ export default {
         return {
           getLocation: true,
           setView: true,
-          wakeLock: true,
+          zoomControl: false,
           inFlight: false
         };
       }
@@ -130,17 +94,6 @@ export default {
       handler(val) {
         this.$emit("input", val);
       }
-    }
-  },
-  methods: {
-    openModal(component, props) {
-      this.$buefy.modal.open({
-        parent: this,
-        component: this.$options.components[component],
-        props,
-        trapFocus: true,
-        "destroy-on-hide": false
-      });
     }
   }
 };

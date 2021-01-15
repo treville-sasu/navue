@@ -1,14 +1,33 @@
 <template>
   <section style="height: 100%">
-    <NavigationSelect
-      v-model="navigation"
-      required
-      editable
-      @close="tool = undefined"
-    />
+    <b-modal
+      v-model="isNavigationSelectActive"
+      trap-focus
+      destroy-on-hide
+      has-modal-card
+      aria-role="dialog"
+      aria-modal
+      @after-leave="tool = null"
+    >
+      <template #default="props">
+        <div class="modal-card">
+          <NavigationSelect
+            :value="navigation"
+            @input="
+              event => {
+                props.close();
+                navigation = event;
+              }
+            "
+            select
+            create
+            save
+          />
+        </div>
+      </template>
+    </b-modal>
     <!-- TODO: on select navigation setView -->
     <l-map
-      v-if="navigation"
       :zoom="10"
       :center="{ lat: 42.69597591582309, lng: 2.879308462142945 }"
       :options="{
@@ -54,13 +73,6 @@
         className="pointerVector"
         dashArray="40, 30, 10, 30"
       />
-      <l-control position="topright" v-if="navigation.routes.length > 0">
-        <NavigationSummary
-          v-bind="navigation"
-          :selected="navigation.routes.indexOf(currentRoute)"
-          @select="selectRoute"
-        />
-      </l-control>
     </l-map>
   </section>
 </template>
@@ -84,12 +96,11 @@ body,
 
 <script>
 import NavigationSelect from "@/components/NavigationSelect.vue";
-import NavigationSummary from "@/components/NavigationSummary.vue";
 import L from "leaflet";
 import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
-import { LMap, LPolyline, LControl } from "vue2-leaflet";
+import { LMap, LPolyline } from "vue2-leaflet";
 import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
 
 import LRouteToolboxControl from "@/components/LRouteToolboxControl.vue";
@@ -101,18 +112,13 @@ import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import { MapTools } from "@/mixins/MapTools";
 
-import { Navigation } from "@/models/Navigation.js";
-
 export default {
   name: "Route",
   components: {
     NavigationSelect,
-    NavigationSummary,
     LMap,
     LPolyline,
-    LControl,
     LBaseLayerGroup,
-    // LBearingMarker,
     LRouteLayerGroup,
     LRouteToolboxControl,
     VueLeafletMinimap,
@@ -122,7 +128,8 @@ export default {
   mixins: [MapTools],
   data() {
     return {
-      navigation: new Navigation(),
+      isNavigationSelectActive: false,
+      navigation: null,
       miniMap: {
         layer: new L.TileLayer(
           "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",

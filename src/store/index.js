@@ -10,8 +10,7 @@ export default new Vuex.Store({
   state: {
     currentUser: null,
     currentAircraft: null,
-    currentNavigation: null,
-    navigationSelect: null
+    currentNavigation: null
   },
   mutations: {
     currentUser: (state, payload) => {
@@ -32,9 +31,8 @@ export default new Vuex.Store({
       state.currentAircraft = payload ? Aircraft.import(payload) : payload;
     },
     currentNavigation(state, payload) {
-      state.currentNavigation = payload ? new Navigation(payload) : payload;
-    },
-    navigationSelect: (state, payload) => (state.navigationSelect = payload)
+      state.currentNavigation = payload ? Navigation.import(payload) : payload;
+    }
   },
   actions: {
     saveToDB(context, payload) {

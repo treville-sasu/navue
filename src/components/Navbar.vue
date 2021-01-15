@@ -68,7 +68,7 @@
       >
         <template #default="props">
           <div class="modal-card">
-            <AircraftSelect select @update:aircraft="props.close" />
+            <AircraftSelect select @input="props.close" />
           </div>
         </template>
       </b-modal>

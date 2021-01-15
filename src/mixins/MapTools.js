@@ -8,7 +8,11 @@ export const MapTools = {
   },
   computed: {
     inactiveRoutes() {
-      return this.navigation.routes.filter(rte => rte != this.currentRoute);
+      try {
+        return this.navigation.routes.filter(rte => rte != this.currentRoute);
+      } catch {
+        return [];
+      }
     },
     mapEvents() {
       return [
@@ -83,9 +87,6 @@ export const MapTools = {
           this.map._container.style.cursor = null;
           this.navigation.clearRoute(this.currentRoute);
           break;
-        case "select":
-          this.$store.commit("navigationSelect", false);
-          break;
         default:
           this.map._container.style.cursor = null;
       }
@@ -96,7 +97,7 @@ export const MapTools = {
           this.map._container.style.cursor = "crosshair";
           break;
         case "select":
-          this.$store.commit("navigationSelect", true);
+          this.isNavigationSelectActive = true;
           break;
         case "clear":
           this.navigation.removeRoute(this.currentRoute);

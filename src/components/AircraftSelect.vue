@@ -2,11 +2,11 @@
   <div class="columns is-multiline is-centered">
     <div class="column" v-if="select">
       <div class="box">
-        <b-field label="Choose an aircraft">
+        <b-field label="Choose an aircraft" v-if="!value">
           <b-autocomplete
             placeholder="F-Pxx, Nxxx"
             v-model="search"
-            :data="aircrafts || []"
+            :data="availableData || []"
             @select="useData"
             icon="magnify"
             field="registration"
@@ -16,7 +16,7 @@
             clearable
           >
             <template slot="header" v-if="create">
-              <a @click="useData({})">
+              <a @click="useData({ type: 'aircraft' })">
                 <span> Create a new one... </span>
               </a>
             </template>
@@ -24,18 +24,30 @@
           </b-autocomplete>
         </b-field>
         <b-button
-          v-if="aircraft"
-          @click="aircraft = null"
+          v-if="value"
+          @click="useData(null)"
           icon-left="selection-off"
           type="is-primary"
           expanded
-          label="Unselect"
+          label="Discard"
+        />
+        <!-- //FIXME : Should close modal if it exists -->
+        <b-button
+          v-if="$route.name != 'Aircraft'"
+          tag="router-link"
+          :to="{
+            name: 'Aircraft'
+          }"
+          icon-left="circle-edit-outline"
+          type="is-primary"
+          expanded
+          label="Manage Aircrafts"
         />
       </div>
     </div>
-    <div class="column" v-if="isSaved && create">
+    <div class="column" v-if="create">
       <div class="box">
-        <b-field class="file">
+        <b-field class="file" v-if="!value">
           <b-upload
             v-model="upload"
             accept="application/json"
@@ -52,7 +64,8 @@
           </b-upload>
         </b-field>
         <b-button
-          @click="useData(cloneData(aircraft))"
+          v-if="value"
+          @click="useData(cloneData(value))"
           icon-left="plus-circle-multiple-outline"
           type="is-primary"
           expanded
@@ -60,19 +73,8 @@
         />
       </div>
     </div>
-    <div class="column" v-if="aircraft">
+    <div class="column" v-if="value && save">
       <div class="box buttons">
-        <b-button
-          v-if="$route.name != 'Aircraft'"
-          tag="router-link"
-          :to="{
-            name: 'Aircraft'
-          }"
-          icon-left="circle-edit-outline"
-          type="is-primary"
-          expanded
-          label="Modify"
-        />
         <b-button
           v-if="isSaved"
           @click="exportData"
@@ -83,14 +85,6 @@
         />
         <b-button
           v-if="!isSaved"
-          @click="discardData"
-          icon-left="cloud-upload-outline"
-          type="is-info"
-          expanded
-          label="Discard"
-        />
-        <b-button
-          v-if="!isSaved"
           @click="saveData"
           icon-left="cloud-upload-outline"
           type="is-warning"
@@ -98,7 +92,7 @@
           label="Save"
         />
         <b-button
-          v-if="isSaved && aircraft.gotId"
+          v-if="fromDB"
           @click="deleteData"
           icon-left="delete-outline"
           type="is-danger"
@@ -109,109 +103,31 @@
     </div>
   </div>
 </template>
-<style scoped>
-.modal .animation-content .modal-card {
-  overflow: visible !important;
-}
 
-.modal-card-body {
-  overflow: visible !important;
-}
-</style>
 <script>
-// import { DataSelect } from "@/mixins/DataSelect";
-import deepEqual from "deep-equal";
-import { ImportExport } from "@/mixins/apputils";
-import { UIHelpers } from "@/mixins/apputils";
+import { DataSelect } from "@/mixins/DataSelect";
 
 export default {
   name: "AircraftSelect",
-  // mixins: [DataSelect],
-  mixins: [ImportExport, UIHelpers],
+  mixins: [DataSelect],
   props: {
-    unsavedAircaft: Object,
     select: Boolean,
     create: Boolean,
     save: Boolean
   },
   data() {
     return {
-      search: "",
-      upload: []
+      dataType: "aircraft"
     };
   },
-  pouch: {
-    aircrafts() {
-      return {
-        database: "navue",
-        selector: {
-          type: this.dataType,
-          registration: { $regex: RegExp(this.search, "i") }
-        }
-      };
-    }
-  },
-
   computed: {
-    aircraft: {
+    selectedData: {
       get() {
         return this.$store.state.currentAircraft;
       },
       set(val) {
-        this.$emit("update:aircraft", val);
         this.$store.commit("currentAircraft", val);
       }
-    },
-    isSaved() {
-      return (
-        !this.unsavedAircaft || deepEqual(this.aircraft, this.unsavedAircaft)
-      );
-    }
-  },
-  methods: {
-    useData(data) {
-      this.aircraft = data;
-      this.$emit("update:aircraft", this.aircraft);
-    },
-    discardData() {
-      this.useData(this.aircraft);
-    },
-    saveData() {
-      this.$store
-        .dispatch("saveToDB", {
-          _id: `aircraft-${Date.now()}`,
-          ...this.unsavedAircaft
-        })
-        .then(res => {
-          this.useData({ ...this.unsavedAircaft, _id: res.id, _rev: res.rev });
-          this.openWarning("Aircraft Saved");
-        })
-        .catch(err => {
-          this.openWarning(err);
-        });
-    },
-    deleteData() {
-      this.$store
-        .dispatch("deleteFromDB", this.aircraft)
-        .then(() => {
-          this.useData(null);
-          this.openWarning("Aircraft deleted");
-        })
-        .catch(err => {
-          this.openWarning(err);
-        });
-    },
-    importData(file) {
-      this.uploadJSON(file).then(res => {
-        this.useData(this.cloneData(res));
-      });
-    },
-    exportData() {
-      if (this.value) this.downloadJSON(this.value, `${this.value.name}.json`);
-    },
-    cloneData(data) {
-      const { _id, _rev, ...clone } = data; // eslint-disable-line no-unused-vars
-      return clone;
     }
   }
 };

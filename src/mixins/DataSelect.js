@@ -1,12 +1,10 @@
-import { ImportExport } from "@/mixins/apputils";
+import deepEqual from "deep-equal";
+import { ImportExport, UIHelpers } from "@/mixins/apputils";
 
 export const DataSelect = {
-  mixins: [ImportExport],
+  mixins: [ImportExport, UIHelpers],
   props: {
-    value: Object,
-    required: Boolean,
-    editable: Boolean,
-    saved: Boolean
+    value: Object
   },
   data() {
     return {
@@ -14,56 +12,75 @@ export const DataSelect = {
       upload: []
     };
   },
-  beforeMount() {
-    this.activated = false;
+  // mounted() {
+  //   if (this.$route.params.id)
+  //     this.getData(this.$route.params.id)
+  //       .then(this.useData)
+  //       .then(() => {
+  //         this.$router.push({
+  //           name: this.$route.name,
+  //           params: {}
+  //         });
+  //       });
+  //   else if (this.selectedData) this.useData(this.selectedData);
+  // },
+  computed: {
+    isSaved() {
+      return !this.value || deepEqual(this.selectedData, this.value);
+    },
+    fromDB() {
+      return this.value && this.value._id && this.value._rev;
+    }
   },
-  beforeDestroy() {
-    this.activated = null;
-  },
-  mounted() {
-    if (this.$route.params.id)
-      this.getData(this.$route.params.id)
-        .then(this.useData)
-        .then(() => {
-          this.$router.push({
-            name: this.$route.name,
-            params: {}
-          });
-        });
-    else if (this.selectedData) this.useData(this.selectedData);
+  pouch: {
+    availableData() {
+      return {
+        database: "navue",
+        selector: {
+          type: this.dataType,
+          registration: { $regex: RegExp(this.search, "i") }
+        }
+      };
+    }
   },
   methods: {
-    getData(id) {
-      // TODO: Handle error with care ! in the whole app
-      return this.$pouch.get(id).catch(console.error);
-    },
-    saveData(data) {
-      this.$pouch
-        .put({
-          _id: `${this.dataType}-${Date.now()}`,
-          ...data
-        })
-        .catch(err => {
-          this.$emit("update:saved", false);
-          console.error(err);
-        })
-        .then(res => {
-          this.useData({ ...data, _id: res.id, _rev: res.rev });
-        });
-    },
-    useData(e) {
-      this.selectedData = e;
-      this.activated = false;
-      this.$emit("update:saved", true);
+    // getData(id) {
+    //   // TODO: Handle error with care ! in the whole app
+    //   return this.$pouch.get(id).catch(console.error);
+    // },
+    useData(data) {
+      this.selectedData = data;
       this.$emit("input", this.selectedData);
     },
+    discardData() {
+      this.useData(this.selectedData);
+    },
+    saveData() {
+      this.$store
+        .dispatch("saveToDB", {
+          _id: `${this.dataType}-${Date.now()}`,
+          ...this.value
+        })
+        .then(res => {
+          this.useData({ ...this.value, _id: res.id, _rev: res.rev });
+          this.openWarning("Saved");
+        })
+        .catch(err => {
+          console.debug(err);
+          this.openWarning(err);
+        });
+    },
     deleteData() {
-      this.$pouch
-        .remove(this.value)
+      this.$store
+        .dispatch("deleteFromDB", this.value)
         .then(() => {
           this.useData(null);
+          this.openWarning("Deleted");
         })
-        .catch(console.error);
+        .catch(err => {
+          console.debug(err);
+          this.openWarning(err);
+        });
     },
     importData(file) {
       this.uploadJSON(file).then(res => {
@@ -74,26 +91,9 @@ export const DataSelect = {
       if (this.value) this.downloadJSON(this.value, `${this.value.name}.json`);
     },
     cloneData(data) {
-      const { _id, _rev, ...clone } = data; // eslint-disable-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
+      const { _id, _rev, ...clone } = data;
       return clone;
-    }
-  },
-  computed: {
-    isOpen: {
-      get() {
-        return (this.required && this.value === null) || this.activated;
-      },
-      set(val) {
-        this.activated = val;
-      }
-    },
-    isFromDB() {
-      return !!(this.value && this.value._id && this.value._rev);
-    }
-  },
-  watch: {
-    saved(val) {
-      if (val === null) this.saveData(this.value);
     }
   }
 };

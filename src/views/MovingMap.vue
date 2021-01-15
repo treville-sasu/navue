@@ -1,34 +1,59 @@
 <template>
   <section style="height: 100%">
-    <NavigationSelect />
-    <AircraftSelect />
-
+    <b-modal
+      v-model="isNavigationSelectActive"
+      trap-focus
+      destroy-on-hide
+      has-modal-card
+      aria-role="dialog"
+      aria-modal
+      @after-leave="tool = null"
+    >
+      <template #default="props">
+        <div class="modal-card">
+          <NavigationSelect
+            :value="navigation"
+            @input="
+              event => {
+                props.close();
+                navigation = event;
+              }
+            "
+            select
+          />
+        </div>
+      </template>
+    </b-modal>
     <l-map
       ref="movingMap"
       :options="{
-        zoomSnap: 0.5
+        zoomSnap: 0.5,
+        zoomControl: false
       }"
       @ready="setupMap"
       @contextmenu="setDestination"
     >
-      <l-base-layer-group />
+      <l-control-zoom v-if="settings.zoomControl" position="topleft" />
       <l-control-fullscreen position="topleft" />
       <l-moving-map-toolbox-control
         v-model="settings"
         position="bottomleft"
         @delete-track="removeLocations"
+        @open-navigation="isNavigationSelectActive = true"
       />
       <l-moving-map-instruments-control
         v-model="lastKnownLocation"
         position="topright"
       />
-
       <l-moving-map-destination-control
         v-if="lastKnownLocation && destination"
         :from="lastKnownLocation"
         :to="destination"
         position="bottomright"
       />
+
+      <l-base-layer-group />
+
       <l-location-marker
         v-model="lastKnownLocation"
         :delay="futurPositionDelay"
@@ -37,7 +62,7 @@
       <l-polyline v-if="!!trace" :lat-lngs="trace" className="traceLine" />
 
       <l-route-layer-group
-        v-for="(route, id) in navigation.routes"
+        v-for="(route, id) in routes"
         :value="route"
         :key="id"
         :active="false"
@@ -67,16 +92,15 @@ body,
 </style>
 
 <script>
+import NavigationSelect from "@/components/NavigationSelect.vue";
+
 import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
-import { LMap, LPolyline } from "vue2-leaflet";
+import { LMap, LPolyline, LControlZoom } from "vue2-leaflet";
 import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
-
-import NavigationSelect from "@/components/NavigationSelect.vue";
-import AircraftSelect from "@/components/AircraftSelect.vue";
 
 import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
 
@@ -89,7 +113,6 @@ import LDestinationMarker from "@/components/LDestinationMarker.vue";
 import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 
 import { Waypoint } from "@/models/Waypoint.js";
-
 import { WakeLock } from "@/mixins/apputils.js";
 
 // FIXME: Setview with futur and past value
@@ -97,8 +120,8 @@ export default {
   name: "MovingMap",
   components: {
     NavigationSelect,
-    AircraftSelect,
     LMap,
+    LControlZoom,
     LControlFullscreen,
     LPolyline,
     LBaseLayerGroup,
@@ -123,8 +146,11 @@ export default {
       settings: {
         getLocation: true,
         setView: true,
+        zoomControl: false,
         inFlight: false
-      }
+      },
+      navigation: undefined,
+      isNavigationSelectActive: false
     };
   },
   beforeDestroy() {
@@ -134,11 +160,11 @@ export default {
     map() {
       return this.$refs.movingMap.mapObject;
     },
-    navigation() {
-      return this.$store.state.currentNavigation || { routes: [] };
-    },
     trace() {
       return (this.reportedLocations || []).map(p => [p.latitude, p.longitude]);
+    },
+    routes() {
+      return this.navigation ? this.navigation.routes : [];
     }
   },
   watch: {
@@ -170,8 +196,8 @@ export default {
 
       if (this.settings.getLocation) this.startLocate();
     },
-    // FIXME: toBounds do not work well in potrait.
     bestView(e) {
+      // FIXME: toBounds do not work well in potrait.
       this.map.flyToBounds(
         e.toBounds(e.speed ? e.speed * this.futurPositionDelay : e.accuracy),
         { padding: [100, 100] }
@@ -200,8 +226,8 @@ export default {
     setDestination(e) {
       this.destination = new Waypoint(e);
     },
-    //TODO : on route select, set a Next Destination
     getDestination(lastDestination) {
+      //TODO : on route select, set a Next Destination
       if (
         this.destination &&
         lastDestination.distanceTo(this.destination) < this.minDestination
