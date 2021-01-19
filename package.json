@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "staging": "http-server staging -S --port 5000",
     "build": "vue-cli-service build",
+    "push": "cd dist && stage .  && commit",
     "test:unit": "vue-cli-service test:unit  --watch",
     "lint": "vue-cli-service lint",
     "prestaging": "vue-cli-service build --mode staging",

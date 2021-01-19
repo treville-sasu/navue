@@ -9,7 +9,7 @@ module.exports = {
   outputDir: process.env.BUILD_DIR,
   devServer: {
     disableHostCheck: true,
-    public: "localhost:8080",
+    // public: "localhost:8080",
     https: true,
     open: true,
     openPage: ["index.html"]
