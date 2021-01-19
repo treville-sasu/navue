@@ -1,5 +1,10 @@
 const CreateFileWebpack = require("create-file-webpack");
 
+process.env.VUE_APP_VERSION = require("./package.json").version;
+process.env.VUE_APP_BUILD = require("child_process").execSync(
+  "git describe --always --dirty"
+);
+
 module.exports = {
   outputDir: process.env.BUILD_DIR,
   devServer: {

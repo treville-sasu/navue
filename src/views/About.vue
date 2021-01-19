@@ -73,6 +73,13 @@
               Mini.
             </p>
           </div>
+          If you ask for help, you will be asked for a version or build number,
+          just use this one :
+          <b-taglist attached>
+            <b-tag type="is-dark">{{ version }}</b-tag>
+            <b-tag type="is-info">{{ build }}</b-tag>
+          </b-taglist>
+          <pre></pre>
         </div>
       </div>
       <div class="tile is-vertical is-parent" id="legal">
@@ -113,6 +120,8 @@ export default {
   components: { BrowserCheck },
   data() {
     return {
+      version: process.env.VUE_APP_VERSION,
+      build: process.env.VUE_APP_BUILD,
       isBrowserCheckActive: false
     };
   }
