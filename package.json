@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "staging": "http-server staging -S --port 5000",
     "build": "vue-cli-service build",
+    "push": "cd dist && git publish",
     "test:unit": "vue-cli-service test:unit  --watch",
     "lint": "vue-cli-service lint",
     "prestaging": "vue-cli-service build --mode staging",
@@ -37,7 +38,6 @@
     "vue-pouchdb-lite": "^0.9.0",
     "vue-router": "^3.2.0",
     "vue2-leaflet": "^2.5.2",
-    "vue2-leaflet-fullscreen": "^1.0.0",
     "vue2-leaflet-rotatedmarker": "^1.0.9",
     "vuex": "^3.4.0"
   },

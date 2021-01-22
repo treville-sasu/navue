@@ -47,7 +47,6 @@
           defaultMarkGeocode: false
         }"
       />
-      <l-control-fullscreen position="topleft" />
 
       <l-route-toolbox-control v-model="tool" position="bottomleft" />
 
@@ -108,7 +107,6 @@ import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
 
 import LControlGeocoder from "@/components/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
-import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import { MapTools } from "@/mixins/MapTools";
 
@@ -122,8 +120,7 @@ export default {
     LRouteLayerGroup,
     LRouteToolboxControl,
     VueLeafletMinimap,
-    LControlGeocoder,
-    LControlFullscreen
+    LControlGeocoder
   },
   mixins: [MapTools],
   data() {

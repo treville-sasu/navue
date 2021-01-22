@@ -1,7 +1,7 @@
 <template>
   <section style="height: 100%">
     <b-modal
-      v-model="isNavigationSelectActive"
+      v-model="settings.navigationSelect"
       trap-focus
       destroy-on-hide
       has-modal-card
@@ -33,13 +33,17 @@
       @ready="setupMap"
       @contextmenu="setDestination"
     >
-      <l-control-zoom v-if="settings.zoomControl" position="topleft" />
-      <l-control-fullscreen position="topleft" />
-      <l-moving-map-toolbox-control
-        v-model="settings"
-        position="bottomleft"
+      <l-moving-map-settings-control
+        position="topleft"
+        v-bind="settings"
+        @update:settings="updateSettings"
         @delete-track="removeLocations"
-        @open-navigation="isNavigationSelectActive = true"
+      />
+      <l-control-zoom v-if="settings.zoomControl" position="topleft" />
+      <l-moving-map-toolbox-control
+        position="bottomleft"
+        v-bind="settings"
+        @update:settings="updateSettings"
       />
       <l-moving-map-instruments-control
         v-model="lastKnownLocation"
@@ -98,12 +102,12 @@ import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
 import { LMap, LPolyline, LControlZoom } from "vue2-leaflet";
-import LControlFullscreen from "vue2-leaflet-fullscreen";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
 
 import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
 
+import LMovingMapSettingsControl from "@/components/LMovingMapSettingsControl.vue";
 import LMovingMapToolboxControl from "@/components/LMovingMapToolboxControl.vue";
 import LMovingMapInstrumentsControl from "@/components/LMovingMapInstrumentsControl.vue";
 import LMovingMapDestinationControl from "@/components/LMovingMapDestinationControl.vue";
@@ -122,9 +126,9 @@ export default {
     NavigationSelect,
     LMap,
     LControlZoom,
-    LControlFullscreen,
     LPolyline,
     LBaseLayerGroup,
+    LMovingMapSettingsControl,
     LMovingMapToolboxControl,
     LMovingMapInstrumentsControl,
     LMovingMapDestinationControl,
@@ -146,11 +150,12 @@ export default {
       settings: {
         getLocation: true,
         setView: true,
+        fullScreen: !!document.fullscreenElement,
         zoomControl: false,
-        inFlight: false
+        inFlight: false,
+        navigationSelect: false
       },
-      navigation: undefined,
-      isNavigationSelectActive: false
+      navigation: undefined
     };
   },
   beforeDestroy() {
@@ -171,10 +176,14 @@ export default {
     "settings.setView": function(val) {
       if (val && this.lastKnownLocation) this.bestView(this.lastKnownLocation);
     },
-    "settings.getLocation": {
-      handler(val) {
-        val ? this.startLocate() : this.stopLocate();
-      }
+    "settings.fullScreen": function(val) {
+      this.toggleFullscreen(this.map.getContainer(), val);
+    },
+    "settings.getLocation": function(val) {
+      val ? this.startLocate() : this.stopLocate();
+    },
+    "settings.inFlight": function(val) {
+      this.settings.fullScreen = val;
     }
   },
   pouch: {
@@ -197,7 +206,7 @@ export default {
       if (this.settings.getLocation) this.startLocate();
     },
     bestView(e) {
-      // FIXME: toBounds do not work well in potrait.
+      // FIXME: toBounds do not work well in portrait.
       this.map.flyToBounds(
         e.toBounds(e.speed ? e.speed * this.futurPositionDelay : e.accuracy),
         { padding: [100, 100] }
@@ -234,6 +243,16 @@ export default {
       ) {
         this.destination = this.navigation.getNextWaypoint(this.destination);
       } else return;
+    },
+    updateSettings(opts) {
+      this.settings = { ...this.settings, ...opts };
+    },
+    toggleFullscreen(element, force) {
+      if (force == undefined)
+        if (!document.fullscreenElement) element.requestFullscreen();
+        else document.exitFullscreen();
+      else if (force) element.requestFullscreen();
+      else document.exitFullscreen();
     }
   }
 };

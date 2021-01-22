@@ -6227,10 +6227,6 @@ leaflet-control-geocoder@^1.13.0:
   optionalDependencies:
     open-location-code "^1.0.0"
 
-"leaflet-fullscreen@https://github.com/Leaflet/Leaflet.fullscreen":
-  version "1.0.2"
-  resolved "https://github.com/Leaflet/Leaflet.fullscreen#91c9745c712981942499f14f7a347c80fab41096"
-
 leaflet-minimap@^3.6.1:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/leaflet-minimap/-/leaflet-minimap-3.6.1.tgz#2a43ff3b3d947a45a0acf4bdefc96505b673a6c6"
@@ -10615,14 +10611,6 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue2-leaflet-fullscreen@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vue2-leaflet-fullscreen/-/vue2-leaflet-fullscreen-1.0.0.tgz#fa26c80f1d066ba534005ccd26c58fdfb18be353"
-  integrity sha512-lO1AFTNUilZQNHED0MWUnSYQSuKnAXZpUr7PKQaTWFNOjz4NKJMfEVTCFQp0PR3UDVLMBD8Rjr7LKgW/dlH48Q==
-  dependencies:
-    leaflet-fullscreen "https://github.com/Leaflet/Leaflet.fullscreen"
-    vue2-leaflet "^2.0.0"
-
 vue2-leaflet-rotatedmarker@^1.0.9:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/vue2-leaflet-rotatedmarker/-/vue2-leaflet-rotatedmarker-1.0.9.tgz#7b580032a88abc4d468af108f891851f02a1d183"
@@ -10632,7 +10620,7 @@ vue2-leaflet-rotatedmarker@^1.0.9:
     leaflet-rotatedmarker "^0.2.0"
     vue2-leaflet "^2.1.1"
 
-vue2-leaflet@^2.0.0, vue2-leaflet@^2.1.1, vue2-leaflet@^2.5.2:
+vue2-leaflet@^2.1.1, vue2-leaflet@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/vue2-leaflet/-/vue2-leaflet-2.5.2.tgz#b89c056fe741c7ce7cb9df5aca90809092e5eb8d"
   integrity sha512-9eN0TxqCkyXbaI7waO3u+n0OAezkxjb811tstG6gRLAZy/ocXlNLC3JqTWE0FwBUlqBbMpyzsIk6LrEhs8oVBQ==
