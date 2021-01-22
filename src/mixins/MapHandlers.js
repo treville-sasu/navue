@@ -29,16 +29,13 @@ export const MapHandlers = {
       try {
         if (location.accuracy > this.maxAccuracy)
           throw {
+            ...location,
             type: "locationerror",
             message: `Geolocation error: too low accuracy (${location.accuracy}m)`
           };
       } catch (err) {
-        if (process.env.NODE_ENV == "development")
-          location = this._fakeLocation({ ...location, accuracy: 20 });
-        else {
-          this._locationError(err);
-          return;
-        }
+        this._locationError(err);
+        return;
       }
 
       // now we have a location, let's polish it & use it.
@@ -72,16 +69,25 @@ export const MapHandlers = {
     },
 
     _locationError(e) {
-      console.error(e);
-      delete e.sourceTarget;
-      delete e.target;
-      this.lastKnownError = { ...e };
+      if (process.env.NODE_ENV == "development") {
+        const location = this._fakeLocation({
+          ...e,
+          ...this.lastKnownLocation,
+          accuracy: 20
+        });
+        this._locationFound(location);
+        console.error(e);
+      } else {
+        delete e.sourceTarget;
+        delete e.target;
+        this.lastKnownError = { ...e };
 
-      this.openWarning(
-        e.message,
-        "Stop GNSS",
-        () => (this.settings.getLocation = false)
-      );
+        this.openWarning(
+          e.message,
+          "Stop GNSS",
+          () => (this.settings.getLocation = false)
+        );
+      }
     },
 
     _fakeLocation(
