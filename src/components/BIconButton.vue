@@ -1,5 +1,6 @@
 <template>
   <b-button v-on="$listeners">
+    <slot />
     <b-tooltip v-if="tooltip" v-bind="tooltipOptions">
       <b-icon v-bind="iconOptions" />
     </b-tooltip>

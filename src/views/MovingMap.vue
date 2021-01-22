@@ -26,9 +26,12 @@
     </b-modal>
     <l-map
       ref="movingMap"
+      :zoom="10"
+      :center="{ lat: 42.69597591582309, lng: 2.879308462142945 }"
       :options="{
         zoomSnap: 0.5,
-        zoomControl: false
+        zoomControl: false,
+        attributionControl: false
       }"
       @ready="setupMap"
       @contextmenu="setDestination"
@@ -41,8 +44,8 @@
       />
       <l-control-zoom v-if="settings.zoomControl" position="topleft" />
       <l-moving-map-toolbox-control
-        position="bottomleft"
-        v-bind="settings"
+        position="topleft"
+        v-if="!settings.inFlight"
         @update:settings="updateSettings"
       />
       <l-moving-map-instruments-control
@@ -53,6 +56,10 @@
         v-if="lastKnownLocation && destination"
         :from="lastKnownLocation"
         :to="destination"
+        position="bottomleft"
+      />
+      <l-time-control
+        @update:settings="updateSettings"
         position="bottomright"
       />
 
@@ -60,7 +67,7 @@
 
       <l-location-marker
         v-model="lastKnownLocation"
-        :delay="futurPositionDelay"
+        :delay="settings.futurPositionDelay"
       />
 
       <l-polyline v-if="!!trace" :lat-lngs="trace" className="traceLine" />
@@ -111,6 +118,7 @@ import LMovingMapSettingsControl from "@/components/LMovingMapSettingsControl.vu
 import LMovingMapToolboxControl from "@/components/LMovingMapToolboxControl.vue";
 import LMovingMapInstrumentsControl from "@/components/LMovingMapInstrumentsControl.vue";
 import LMovingMapDestinationControl from "@/components/LMovingMapDestinationControl.vue";
+import LTimeControl from "@/components/LTimeControl.vue";
 
 import LLocationMarker from "@/components/LLocationMarker.vue";
 import LDestinationMarker from "@/components/LDestinationMarker.vue";
@@ -132,6 +140,7 @@ export default {
     LMovingMapToolboxControl,
     LMovingMapInstrumentsControl,
     LMovingMapDestinationControl,
+    LTimeControl,
     LLocationMarker,
     LRouteLayerGroup,
     LDestinationMarker
@@ -144,16 +153,16 @@ export default {
       destination: undefined,
       traceDB: "navue_trace",
       traceType: "location",
-      futurPositionDelay: 3 * 60,
-      minDestination: 100,
-      traceLength: 200,
       settings: {
         getLocation: true,
         setView: true,
         fullScreen: !!document.fullscreenElement,
         zoomControl: false,
         inFlight: false,
-        navigationSelect: false
+        navigationSelect: false,
+        traceLength: 200,
+        minDestination: 100,
+        futurPositionDelay: 3 * 60
       },
       navigation: undefined
     };
@@ -190,7 +199,7 @@ export default {
     reportedLocations() {
       return {
         database: this.traceDB,
-        limit: this.traceLength,
+        limit: this.settings.traceLength,
         selector: {
           type: this.traceType
         }
@@ -208,7 +217,9 @@ export default {
     bestView(e) {
       // FIXME: toBounds do not work well in portrait.
       this.map.flyToBounds(
-        e.toBounds(e.speed ? e.speed * this.futurPositionDelay : e.accuracy),
+        e.toBounds(
+          e.speed ? e.speed * this.settings.futurPositionDelay : e.accuracy
+        ),
         { padding: [100, 100] }
       );
     },
@@ -225,7 +236,7 @@ export default {
       this.$pouch[this.traceDB]
         .destroy()
         .then(() => {
-          // FIXME: this is a workaround for updating livefeed
+          // MEMO: this is a workaround for updating livefeed
           let keep = this.traceType;
           this.traceType = null;
           this.traceType = keep;
@@ -239,7 +250,8 @@ export default {
       //TODO : on route select, set a Next Destination
       if (
         this.destination &&
-        lastDestination.distanceTo(this.destination) < this.minDestination
+        lastDestination.distanceTo(this.destination) <
+          this.settings.minDestination
       ) {
         this.destination = this.navigation.getNextWaypoint(this.destination);
       } else return;

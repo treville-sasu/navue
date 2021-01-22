@@ -2,19 +2,6 @@
   <l-control v-bind="$attrs">
     <div class="buttons">
       <BIconButton
-        v-if="!inFlight"
-        @click="$emit('update:settings', { inFlight: true })"
-        tooltip="Start"
-        icon="airplane-takeoff"
-      />
-      <BIconButton
-        v-else
-        @click="$emit('update:settings', { inFlight: false })"
-        tooltip="Stop"
-        :icon="{ type: 'is-danger', icon: 'airplane-landing' }"
-      />
-      <BIconButton
-        v-if="!inFlight"
         @click="$emit('update:settings', { navigationSelect: true })"
         tooltip="Select a navigation"
         icon="map-marker-path"
@@ -32,7 +19,6 @@ export default {
   components: {
     LControl,
     BIconButton
-  },
-  props: { inFlight: Boolean }
+  }
 };
 </script>

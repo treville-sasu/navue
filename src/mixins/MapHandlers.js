@@ -19,6 +19,7 @@ export const MapHandlers = {
   methods: {
     stopLocate() {
       this.map.stopLocate();
+      this.lastKnownLocation = undefined;
     },
     startLocate() {
       this.map.locate(this.geoOptions);

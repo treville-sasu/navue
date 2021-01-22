@@ -18,6 +18,10 @@ $modal-z: $navbar-fixed-z + 100;
 @import "bulmaswatch/flatly/_overrides";
 @import "~@creativebulma/bulma-divider";
 
+.is-clickable {
+  cursor: pointer !important;
+}
+
 .notices {
   z-index: $navbar-fixed-z + 1000;
 }

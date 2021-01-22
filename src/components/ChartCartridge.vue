@@ -21,11 +21,7 @@
     </div>
   </article>
 </template>
-<style scoped>
-.is-clickable {
-  cursor: pointer !important;
-}
-</style>
+
 <script>
 export default {
   name: "ChartCartridge",

@@ -74,6 +74,9 @@ export default {
     asDirection(value) {
       return ((value + 540) % 360) - 180;
     },
+    fromTimestamp(value) {
+      return new Date(Math.round(value / 1000));
+    },
     asDuration(value) {
       // TODO: Check if working with very long duration (days, week)
       if (value) {
