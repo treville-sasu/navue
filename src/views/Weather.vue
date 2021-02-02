@@ -32,7 +32,7 @@
         </b-notification>
       </b-loading>
 
-      <b-field grouped>
+      <b-field grouped group-multiline>
         <b-field label="ICAO Code for FIR or Airports" expanded>
           <b-icao
             v-model="searchCodes"
@@ -57,12 +57,13 @@
           </div>
         </b-field>
       </b-field>
-      <b-field grouped>
+      <b-field grouped group-multiline>
         <b-field label="Meteorological Zone" expanded>
           <b-select
             placeholder="Select a zone"
             v-model="searchZones"
             @input="getMaps"
+            expanded
           >
             <option
               v-for="(option, key) in avaliableMaps.zones"

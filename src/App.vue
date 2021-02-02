@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <Navbar />
-    <router-view />
+    <!-- TODO: limit keep alive to flying views and componnents include="Checklists, MovingMap, LTimeControl, NavLog" -->
+    <keep-alive>
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 

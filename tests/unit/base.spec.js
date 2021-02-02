@@ -52,7 +52,7 @@ describe("collection", () => {
     expect(collection).toEqual(new Collection(1, 2, 4));
   });
 
-  it("throw an aexception if create is not set", () => {
+  it("throw an exception if create is not set", () => {
     expect(() => new Collection().create(1)).toThrow(
       "Collection.create() should be defined in Collection definition"
     );
