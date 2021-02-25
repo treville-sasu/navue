@@ -12,8 +12,6 @@
 </template>
 
 <script>
-// TODO add bounds to layers if needed
-
 import { LLayerGroup, LTileLayer } from "vue2-leaflet";
 
 export default {
@@ -37,6 +35,9 @@ export default {
             token: process.env.VUE_APP_MAPBOX_TOKEN,
             maxZoom: 17,
             minZoom: 11,
+            tileSize: 512,
+            zoomOffset: -1,
+
             format: "image/jpeg",
             style: "normal",
             crossOrigin: true
@@ -52,7 +53,7 @@ export default {
             username: process.env.VUE_APP_MAPBOX_USERNAME,
             style_id: "ckflgd4gu1gv519ocwjauheyd",
             token: process.env.VUE_APP_MAPBOX_TOKEN,
-            maxZoom: 9,
+            maxZoom: 8,
             crossOrigin: true
           }
         },
@@ -66,7 +67,7 @@ export default {
             variant: "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-OACI",
             apikey: process.env.VUE_APP_GEOPORTAIL_KEY,
             maxZoom: 11,
-            minZoom: 9,
+            minZoom: 8,
             bounds: [
               [41.32, -5.15],
               [51.1, 9.57]
@@ -98,43 +99,4 @@ export default {
     };
   }
 };
-
-// {
-//   name: "Satellite IGN",
-//   attribution:
-//     "<a target='_blank' href='https://www.geoportail.gouv.fr/'>Geoportail France</a>",
-//   url:
-//     "https://wxs.ign.fr/{apikey}/geoportail/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&STYLE={style}&TILEMATRIXSET=PM&FORMAT={format}&LAYER={variant}&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",
-//   options: {
-//     variant: "ORTHOIMAGERY.ORTHOPHOTOS",
-//     apikey: process.env.VUE_APP_GEOPORTAIL_KEY,
-//     maxZoom: 17,
-//     minZoom: 13,
-//     format: "image/jpeg",
-//     style: "normal",
-//     crossOrigin: true,
-//   },
-// },
-// {
-//   name: "Fond Géographique",
-//   attribution:
-//     "<a target='_blank' href='https://www.arcgis.com/'>ArcGIS</a>",
-//   url:
-//     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
-//   options: {
-//     maxZoom: 13,
-//     crossOrigin: true,
-//   },
-// },
-// {
-//   name: "Satellite ARCGIS",
-//   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-//   url:
-//     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-//   options: {
-//     maxZoom: 17,
-//     minZoom: 13,
-//     crossOrigin: true,
-//   },
-// },
 </script>

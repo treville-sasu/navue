@@ -25,6 +25,11 @@ const routes = [
     component: () => import("../views/Checklists.vue")
   },
   {
+    path: "/navlog",
+    name: "NavLog",
+    component: () => import("../views/NavLog.vue")
+  },
+  {
     path: "/route/:id?",
     name: "Route",
     component: () => import("../views/Route.vue")
@@ -41,7 +46,7 @@ const routes = [
   },
   {
     path: "/approach",
-    name: "approach",
+    name: "Approach",
     component: () => import("../views/ApproachChart.vue")
   },
   {

@@ -11,9 +11,9 @@
     <template slot="start">
       <b-navbar-dropdown label="Briefing" collapsible hoverable>
         <b-navbar-item tag="router-link" :to="{ name: 'Route' }"
-          >Navigation route</b-navbar-item
+          >Trace routes</b-navbar-item
         >
-        <b-navbar-item tag="router-link" to="approach"
+        <b-navbar-item tag="router-link" :to="{ name: 'Approach' }"
           >Approach Charts</b-navbar-item
         >
         <b-navbar-item tag="router-link" :to="{ name: 'Weather' }"
@@ -32,9 +32,9 @@
         <b-navbar-item tag="router-link" to="checklists"
           >Checklists</b-navbar-item
         >
-        <!-- <b-navbar-item tag="router-link" to="logbook"
+        <b-navbar-item tag="router-link" to="navlog"
           >Navigation Log</b-navbar-item
-        > -->
+        >
         <b-navbar-item tag="router-link" :to="{ name: 'MovingMap' }"
           >Moving Map</b-navbar-item
         >

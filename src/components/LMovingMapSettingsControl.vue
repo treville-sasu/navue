@@ -1,11 +1,9 @@
 <template>
   <l-control v-bind="$attrs">
     <b-dropdown>
-      <BIconButton
-        slot="trigger"
-        icon="cog-outline"
-        :tooltip="{ label: 'Settings', position: 'is-bottom' }"
-      />
+      <b-button slot="trigger">
+        <b-icon icon="cog-outline" />
+      </b-button>
       <b-dropdown-item>
         <b-switch
           v-bind:value="getLocation"
@@ -51,13 +49,11 @@
 
 <script>
 import { LControl } from "vue2-leaflet";
-import BIconButton from "@/components/BIconButton.vue";
 
 export default {
   name: "LMovingMapSettingsControl",
   components: {
-    LControl,
-    BIconButton
+    LControl
   },
   props: {
     getLocation: Boolean,
