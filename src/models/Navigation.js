@@ -61,7 +61,7 @@ export class Navigation extends Model {
     else return this.routes.length - 1;
   }
 
-  static import(object) {
+  static from(object) {
     if (object.type == "navigation") {
       let imported = new this(object);
       if (object._id) imported._id = object._id;

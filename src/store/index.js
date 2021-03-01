@@ -28,10 +28,10 @@ export default new Vuex.Store({
       } else state.currentUser = null;
     },
     currentAircraft(state, payload) {
-      state.currentAircraft = payload ? Aircraft.import(payload) : payload;
+      state.currentAircraft = payload ? Aircraft.from(payload) : payload;
     },
     currentNavigation(state, payload) {
-      state.currentNavigation = payload ? Navigation.import(payload) : payload;
+      state.currentNavigation = payload ? Navigation.from(payload) : payload;
     }
   },
   actions: {

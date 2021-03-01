@@ -1,4 +1,5 @@
 import { Model } from "@/models/Base.js";
+import { Altitude } from "@/models/Quantities.js";
 import LatLon from "geodesy/latlon-spherical.js";
 
 export class Waypoint extends Model {
@@ -31,6 +32,7 @@ export class Waypoint extends Model {
   destinationPoint(distance, heading) {
     return this.point.rhumbDestinationPoint(distance, heading);
   }
+
   toGeoJSON() {
     // eslint-disable-next-line no-unused-vars
     const { latitude, longitude, ...properties } = { ...this };
@@ -44,7 +46,7 @@ export class Waypoint extends Model {
 
   static from(object) {
     object.name |= object.position;
-    object.altitude = { ref: "AMSL", ...object.altitude };
+    object.altitude = Altitude.form(object.altitude);
     return super.import(object);
   }
 }

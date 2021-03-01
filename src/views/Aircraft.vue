@@ -10,13 +10,7 @@
         </div>
       </div>
     </section>
-    <AircraftSelect
-      :value="aircraft"
-      @input="aircraft = JSON.parse(JSON.stringify($event))"
-      select
-      create
-      save
-    />
+    <AircraftSelect v-model="aircraft" select create save />
     <b-tabs position="is-centered" multiline expanded v-if="aircraft">
       <b-tab-item label="Identification">
         <b-field label="Registration" horizontal>
@@ -80,11 +74,8 @@ export default {
   },
   data() {
     return {
-      aircraft: null
+      aircraft: undefined
     };
-  },
-  mounted() {
-    this.aircraft = this.$store.state.currentAircraft;
   }
 };
 </script>

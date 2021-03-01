@@ -35,12 +35,7 @@ export default {
   components: {
     LControl
   },
-  props: ["value", "navigationName"],
-  data() {
-    return {
-      displayNaviationInput: null
-    };
-  },
+  props: { value: String },
   computed: {
     tool: {
       get: function() {

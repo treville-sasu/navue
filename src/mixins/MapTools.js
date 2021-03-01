@@ -1,3 +1,5 @@
+import { Navigation } from "@/models/Navigation.js";
+
 export const MapTools = {
   data() {
     return {
@@ -69,7 +71,7 @@ export const MapTools = {
       this.currentRoute = this.navigation.routes[id];
     },
     addMarker(e) {
-      this.navigation.addWaypoint(e);
+      this.navigation.addWaypoint(e, this.currentRoute);
     },
     removeMarker(id) {
       this.navigation.removeWaypoint(id, this.currentRoute);
@@ -85,13 +87,14 @@ export const MapTools = {
       switch (oldTool) {
         case "route":
           this.map._container.style.cursor = null;
-          this.navigation.clearRoute(this.currentRoute);
+          if (this.navigation) this.navigation.clearRoute(this.currentRoute);
           break;
         default:
           this.map._container.style.cursor = null;
       }
       switch (newTool) {
         case "route":
+          if (!this.navigation) this.navigation = new Navigation();
           if (!this.currentRoute)
             this.currentRoute = this.navigation.addRoute();
           this.map._container.style.cursor = "crosshair";
@@ -100,7 +103,7 @@ export const MapTools = {
           this.isNavigationSelectActive = true;
           break;
         case "clear":
-          this.navigation.removeRoute(this.currentRoute);
+          if (this.navigation) this.navigation.removeRoute(this.currentRoute);
           this.currentRoute = null;
           this.$nextTick(() => (this.tool = null));
           break;

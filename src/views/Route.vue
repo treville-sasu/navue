@@ -31,7 +31,8 @@
       :zoom="10"
       :center="{ lat: 42.69597591582309, lng: 2.879308462142945 }"
       :options="{
-        zoomSnap: 0.5
+        zoomSnap: 0.5,
+        attributionControl: false
       }"
       v-on="mapEvents"
     >
@@ -126,7 +127,7 @@ export default {
   data() {
     return {
       isNavigationSelectActive: false,
-      navigation: null,
+      navigation: undefined,
       miniMap: {
         layer: new L.TileLayer(
           "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
