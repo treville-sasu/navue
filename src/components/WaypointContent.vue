@@ -1,26 +1,13 @@
 <template>
   <fieldset>
     <b-field grouped>
-      <b-field label="Position" label-position="on-border" expanded>
-        <b-input v-model="value.position" placeholder="echo" />
+      <b-field label="Name" label-position="on-border" expanded>
+        <b-input v-model="value.name" placeholder="echo" />
       </b-field>
 
-      <!-- <b-field label="Alt." label-position="on-border">
-        <b-number-select
-          :value.sync="value.altitude.value"
-          :quantity.sync="value.altitude.unit"
-          :options="quantity.altitude"
-          :controls="false"
-        />
-      </b-field> -->
-      <!-- <b-select
-        v-model="value.altitude.reference"
-        :disabled="value.altitude.unit === 'FL'"
-      >
-        <option v-for="ref in quantities.references" :value="ref" :key="ref">{{
-          ref
-        }}</option>
-      </b-select> -->
+      <b-field label="Alt." label-position="on-border">
+        <b-altitude v-model="value.altitude" :controls="false" />
+      </b-field>
     </b-field>
 
     <b-field label="Notes" label-position="on-border" expanded>
@@ -31,14 +18,20 @@
 
 <script>
 import UnitSystem from "@/mixins/UnitSystem.js";
-// import BNumberSelect from "./BNumberSelect.vue";
+import { Altitude } from "@/models/Quantities.js";
+import BAltitude from "./BAltitude.vue";
 
 export default {
+  components: { BAltitude },
   name: "WaypointContent",
-  // components: { BNumberSelect },
   mixins: [UnitSystem],
   props: {
     value: Object
+  },
+  computed: {
+    altitude() {
+      return this.value.altitude || new Altitude();
+    }
   }
 };
 </script>

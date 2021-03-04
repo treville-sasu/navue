@@ -1,4 +1,5 @@
 import { Model } from "@/models/Base.js";
+import { Speed, Consumption, Weight } from "@/models/Quantities.js";
 
 export class Aircraft extends Model {
   constructor({
@@ -6,11 +7,23 @@ export class Aircraft extends Model {
     manufacturer,
     model,
     paces = [],
-    balance = [],
+    balance = { weights: [], date: undefined },
     envelopes = [],
     consumptions = [],
     checklists = []
   } = {}) {
+    paces.forEach((speed, i) => {
+      paces[i] = Speed.from(speed);
+    });
+
+    consumptions.forEach((obj, i) => {
+      consumptions[i] = Consumption.from(obj);
+    });
+
+    balance.weights.forEach((obj, i) => {
+      balance.weights[i] = Weight.from(obj);
+    });
+
     super({
       registration,
       manufacturer,
@@ -68,7 +81,7 @@ export class Aircraft extends Model {
     });
   }
 
-  static import(object) {
+  static from(object) {
     if (object.type == "aircraft") {
       let imported = new this(object);
       if (object._id) imported._id = object._id;

@@ -1,34 +1,35 @@
 <template>
   <section>
-    <b-button @click="value.unshift({ ...proto })" type="is-primary" rounded
-      >Add a pace</b-button
-    >
-    <div class="control">
-      <!-- TODO : Make table of it -->
-      <b-field
-        v-for="(speed, index) in value"
-        :key="index"
-        horizontal
-        group-multiline
-      >
-        <b-field label="Name" label-position="on-border" expanded>
-          <b-input v-model="speed.name" />
+    <b-table :data="value">
+      <b-table-column label="Name" v-slot="props">
+        <b-input v-model="props.row.name" />
+      </b-table-column>
+      <b-table-column label="Speed" v-slot="props">
+        <b-field>
+          <b-numberinput v-model="props.row.displayValue" :controls="false" />
+          <b-select v-model="props.row.unit" required>
+            <option
+              v-for="(ratio, name) in props.row.constructor.units"
+              :value="name"
+              :key="name"
+            >
+              {{ name }}
+            </option>
+          </b-select>
         </b-field>
-        <b-field label="Speed" label-position="on-border">
-          <b-number-select
-            :value.sync="speed.value"
-            :quantity.sync="speed.unit"
-            :options="quantities.speed"
-            :controls="false"
-          />
-        </b-field>
+      </b-table-column>
+      <b-table-column v-slot="props">
         <b-button
-          @click="value.splice(index, 1)"
+          @click="removeItem(props.row)"
           type="is-secondary"
           icon-right="close"
         />
-      </b-field>
-    </div>
+      </b-table-column>
+      <template #empty>
+        Set cruise, climb, ... speeds to get ETA and ETE
+      </template>
+    </b-table>
+    <b-button @click="addItem" type="is-primary">Add a pace</b-button>
   </section>
 </template>
 
@@ -36,33 +37,24 @@
 
 <script>
 import UnitSystem from "@/mixins/UnitSystem";
-import BNumberSelect from "./BNumberSelect.vue";
+import { Speed } from "@/models/Quantities.js";
 
 export default {
-  components: { BNumberSelect },
   name: "AircraftDetailPaces",
-  props: {
-    value: {
-      default() {
-        return [
-          {
-            name: undefined,
-            value: undefined,
-            unit: "kt"
-          }
-        ];
-      }
-    }
-  },
-  mixins: [UnitSystem],
+  props: ["value"],
   data() {
     return {
-      proto: {
-        name: undefined,
-        value: undefined,
-        unit: "kt"
-      }
+      checkedRows: []
     };
+  },
+  mixins: [UnitSystem],
+  methods: {
+    addItem() {
+      this.value.push(new Speed(undefined, undefined, { name: undefined }));
+    },
+    removeItem(item) {
+      this.value.splice(this.value.indexOf(item), 1);
+    }
   },
   watch: {
     value: {

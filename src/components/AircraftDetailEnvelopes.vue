@@ -1,56 +1,52 @@
 <template>
   <section>
-    <b-button
-      @click="value.unshift(JSON.parse(JSON.stringify(proto)))"
-      type="is-primary"
-      rounded
-      >Add an envelope</b-button
-    >
+    <b-button @click="addEnvelope" type="is-primary">Add an envelope</b-button>
     <div class="columns">
       <div class="column">
-        <div v-for="(envelope, index) in value" :key="index">
-          <b-field label="Name" horizontal>
-            <b-input v-model="envelope.name" />
-            <div class="control">
-              <b-button @click="value.splice(index, 1)" icon-right="close" />
-            </div>
-          </b-field>
-
-          <b-field
-            v-for="(point, index) in envelope.values"
+        <b-tabs v-model="currentList" vertical>
+          <b-tab-item
+            v-for="(envelope, index) in value"
             :key="index"
-            horizontal
+            :value="`${index}`"
+            :label="envelope.name || `${index + 1}`"
           >
-            <b-numberinput
-              v-model="point.x"
-              placeholder="arm"
-              :controls="false"
-              :step="0.001"
-            />
-            <b-numberinput
-              v-model="point.y"
-              placeholder="mass"
-              :controls="false"
-              :step="0.1"
-            />
-            <p class="control">
-              <b-button
-                @click="envelope.values.splice(index, 1)"
-                icon-right="close"
-              />
-            </p>
-          </b-field>
-          <b-field>
-            <b-button
-              @click="
-                envelope.values.unshift(JSON.parse(JSON.stringify(proto_item)))
-              "
-              icon-right="plus"
-              type="is-primary"
-              rounded
-            />
-          </b-field>
-        </div>
+            <b-field label="Name">
+              <p class="control">
+                <b-button @click="removeEnvelope(index)" icon-right="close" />
+              </p>
+              <b-input v-model="envelope.name" required />
+            </b-field>
+            <b-table :data="envelope.values">
+              <b-table-column label="Arm" v-slot="props">
+                <b-numberinput
+                  :controls="false"
+                  :step="0.001"
+                  v-model="props.row.x"
+                />
+              </b-table-column>
+              <b-table-column label="Mass" v-slot="props">
+                <b-numberinput
+                  :controls="false"
+                  :step="0.001"
+                  v-model="props.row.y"
+                />
+              </b-table-column>
+              <b-table-column v-slot="props">
+                <b-button
+                  @click="removeItem(envelope.values, props.row)"
+                  type="is-secondary"
+                  icon-right="close"
+                />
+              </b-table-column>
+              <template #empty>
+                Add points with arm and mass to create an envelope.
+              </template>
+            </b-table>
+            <b-button @click="addItem(envelope.values)" type="is-primary"
+              >Add a point</b-button
+            >
+          </b-tab-item>
+        </b-tabs>
       </div>
       <div class="column">
         <BalanceChart :chart-data="datasets" v-if="value.length > 0" />
@@ -58,8 +54,6 @@
     </div>
   </section>
 </template>
-
-<style scoped lang="scss"></style>
 
 <script>
 import BalanceChart from "@/components/BalanceChart.vue";
@@ -82,13 +76,7 @@ export default {
   },
   mixins: [ChartSettings],
   data() {
-    return {
-      proto: {
-        name: undefined,
-        values: [{ ...this.proto_item }]
-      },
-      proto_item: { x: undefined, y: undefined }
-    };
+    return { currentList: undefined };
   },
   computed: {
     datasets() {
@@ -101,6 +89,29 @@ export default {
       };
     }
   },
+  methods: {
+    addEnvelope() {
+      this.currentList =
+        this.value.push({
+          name: undefined,
+          values: []
+        }) - 1;
+    },
+    removeEnvelope(index) {
+      this.currentList = index - 1;
+      this.value.splice(index, 1);
+    },
+    addItem(items) {
+      items.push({
+        x: undefined,
+        y: undefined
+      });
+    },
+    removeItem(items, item) {
+      items.splice(items.indexOf(item), 1);
+    }
+  },
+
   watch: {
     value: {
       deep: true,

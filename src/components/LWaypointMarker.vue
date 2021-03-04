@@ -18,16 +18,16 @@
       <WaypointContent v-model="value" />
     </l-popup>
     <l-tooltip
-      v-else-if="value.position || value.altitude"
+      v-else-if="value.name || value.altitude"
       :options="{
         className: 'waypointLabel',
         permanent: true,
         sticky: true
       }"
     >
-      {{ value.position ? value.position : "-" }}
-      |
-      {{ value.altitude | to | precision(-1) | with(value.altitude.unit) }}
+      {{ value.name }}
+      {{ value.name && value.altitude ? "|" : "" }}
+      {{ value.altitude && value.altitude.toString() }}
     </l-tooltip>
   </l-marker>
 </template>

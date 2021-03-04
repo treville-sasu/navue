@@ -1,70 +1,69 @@
 <template>
   <section>
-    <b-button @click="value.unshift({ ...proto })" type="is-primary" rounded
-      >Add a consumption rate</b-button
-    >
-    <div class="control">
-      <b-field v-for="(consumption, index) in value" :key="index" horizontal>
-        <b-field label="Name" label-position="on-border" expanded>
-          <b-input v-model="consumption.name" />
+    <b-table :data="value">
+      <b-table-column label="Name" v-slot="props">
+        <b-input v-model="props.row.name" />
+      </b-table-column>
+      <b-table-column label="Value" v-slot="props">
+        <b-field>
+          <b-numberinput v-model="props.row.displayValue" :controls="false" />
+          <b-select v-model="props.row.unit" required>
+            <option
+              v-for="(ratio, name) in props.row.constructor.units"
+              :value="name"
+              :key="name"
+            >
+              {{ name }}
+            </option>
+          </b-select>
+          <p class="control">
+            <span class="button is-static">/</span>
+          </p>
+          <b-select v-model="props.row.reference" required>
+            <option
+              v-for="ref in props.row.constructor.references"
+              :value="ref"
+              :key="ref"
+            >
+              {{ ref }}
+            </option>
+          </b-select>
         </b-field>
-        <b-field label="Fuel" label-position="on-border">
-          <b-number-select
-            :value.sync="consumption.value"
-            :quantity.sync="consumption.unit"
-            :options="quantities.volume"
-            :controls="false"
-          />
-        </b-field>
-        <b-select placeholder="cons." v-model="consumption.part">
-          <option
-            v-for="option in quantities.consumptions"
-            :value="option"
-            :key="option"
-            >{{ option }}</option
-          >
-        </b-select>
+      </b-table-column>
+      <b-table-column v-slot="props">
         <b-button
-          @click="value.splice(index, 1)"
+          @click="removeItem(props.row)"
           type="is-secondary"
           icon-right="close"
         />
-      </b-field>
-    </div>
+      </b-table-column>
+      <template #empty>
+        Add fuel consumption values to allow fuel supply calculation.
+      </template>
+    </b-table>
+    <b-button @click="addItem" type="is-primary"
+      >Add a consumption rate</b-button
+    >
   </section>
 </template>
 
 <script>
 import UnitSystem from "@/mixins/UnitSystem";
-import BNumberSelect from "./BNumberSelect.vue";
+import { Consumption } from "@/models/Quantities.js";
 
 export default {
   name: "AircraftDetailConsumptions",
-  components: { BNumberSelect },
-  props: {
-    value: {
-      default() {
-        return [
-          {
-            name: undefined,
-            value: undefined,
-            volume: "L",
-            unit: undefined
-          }
-        ];
-      }
-    }
-  },
+  props: ["value"],
   mixins: [UnitSystem],
-  data() {
-    return {
-      proto: {
-        name: undefined,
-        value: undefined,
-        volume: "L",
-        unit: undefined
-      }
-    };
+  methods: {
+    addItem() {
+      this.value.push(
+        new Consumption(undefined, undefined, undefined, { name: undefined })
+      );
+    },
+    removeItem(item) {
+      this.value.splice(this.value.indexOf(item), 1);
+    }
   },
   watch: {
     value: {

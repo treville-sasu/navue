@@ -4,6 +4,7 @@ import LatLon from "geodesy/latlon-spherical.js";
 
 export class Waypoint extends Model {
   constructor({ name, latitude, longitude, altitude, notes, latlng } = {}) {
+    if (altitude) altitude = Altitude.from(altitude);
     super({ name, latitude, longitude, altitude, notes });
     if (latlng) this.latlng = latlng;
   }

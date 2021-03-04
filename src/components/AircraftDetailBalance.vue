@@ -8,111 +8,75 @@
         icon="calendar-today"
       />
     </b-field>
-    <b-button
-      @click="value.weights.unshift({ ...proto })"
-      type="is-primary"
-      rounded
-      >Add a mass</b-button
-    >
-    <div class="control">
-      <b-field v-for="(weight, index) in value.weights" :key="index" horizontal>
-        <b-field label="Name" label-position="on-border">
-          <b-input v-model="weight.name" />
-        </b-field>
-        <b-field label="Arm" label-position="on-border">
-          <b-numberinput
-            v-model="weight.arm"
-            :controls="false"
-            :step="0.001"
-            expanded
-          />
-        </b-field>
-        <b-field label="Minimum" label-position="on-border">
-          <b-numberinput
-            v-model="weight.min"
-            :controls="false"
-            :step="0.1"
-            expanded
-          />
-        </b-field>
-        <b-field label="Maximum" label-position="on-border">
-          <b-numberinput
-            v-model="weight.max"
-            :controls="false"
-            :step="0.1"
-            expanded
-          />
-        </b-field>
-        <b-field label="Weight" label-position="on-border">
-          <b-numberinput
-            v-model="weight.value"
-            :controls="false"
-            :step="0.1"
-            expanded
-          />
-        </b-field>
-        <b-field label="Density" label-position="on-border">
-          <b-numberinput
-            v-model="weight.density"
-            :controls="false"
-            :step="0.001"
-            expanded
-          />
-        </b-field>
+
+    <b-table :data="value.weights">
+      <b-table-column label="Name" v-slot="props">
+        <b-input v-model="props.row.name" />
+      </b-table-column>
+      <b-table-column label="Arm" v-slot="props">
+        <b-numberinput :controls="false" :step="0.1" v-model="props.row.arm" />
+      </b-table-column>
+      <b-table-column label="Minimum" v-slot="props">
+        <b-numberinput :controls="false" :step="0.1" v-model="props.row.min" />
+      </b-table-column>
+      <b-table-column label="Maximum" v-slot="props">
+        <b-numberinput :controls="false" :step="0.1" v-model="props.row.max" />
+      </b-table-column>
+      <b-table-column label="Weight" v-slot="props">
         <b-field>
-          <b-checkbox-button
-            v-model="weight.tank"
-            :native-value="true"
-            type="is-primary"
-            >Tank</b-checkbox-button
-          >
+          <b-numberinput v-model="props.row.displayValue" :controls="false" />
+          <b-select v-model="props.row.unit" required>
+            <option
+              v-for="(ratio, name) in props.row.constructor.units"
+              :value="name"
+              :key="name"
+            >
+              {{ name }}
+            </option>
+          </b-select>
         </b-field>
+      </b-table-column>
+      <b-table-column label="Density" v-slot="props">
+        <b-numberinput
+          v-model="props.row.density"
+          :controls="false"
+          :step="0.001"
+        />
+      </b-table-column>
+      <b-table-column v-slot="props">
+        <b-checkbox-button
+          v-model="props.row.tank"
+          :native-value="true"
+          type="is-primary"
+          >Tank</b-checkbox-button
+        >
+      </b-table-column>
+      <b-table-column v-slot="props">
         <b-button
-          @click="value.weights.splice(index, 1)"
+          @click="removeItem(props.row)"
           type="is-secondary"
           icon-right="close"
         />
-      </b-field>
-    </div>
+      </b-table-column>
+      <template #empty>
+        Add weights values to allow Balance and MTOW calculation.
+      </template>
+    </b-table>
+    <b-button @click="addItem" type="is-primary">Add a weight</b-button>
   </section>
 </template>
 
-<style scoped lang="scss"></style>
-
 <script>
+// TODO: implement density in Weight
+
+import { Weight } from "@/models/Quantities.js";
+
 export default {
   name: "AircraftDetailBalance",
-  props: {
-    value: {
-      default() {
-        return {
-          date: undefined,
-          weights: [
-            {
-              name: undefined,
-              arm: undefined,
-              value: undefined,
-              density: 1,
-              min: undefined,
-              max: undefined,
-              tank: false
-            }
-          ]
-        };
-      }
-    }
-  },
+  props: ["value"],
   data() {
     return {
-      proto: {
-        name: undefined,
-        arm: undefined,
-        value: undefined,
-        density: 1,
-        min: undefined,
-        max: undefined,
-        tank: false
-      }
+      checkedRows: []
     };
   },
   computed: {
@@ -124,6 +88,16 @@ export default {
       set(value) {
         this.value.date = value;
       }
+    }
+  },
+  methods: {
+    addItem() {
+      this.value.weights.push(
+        new Weight(undefined, undefined, undefined, { name: undefined })
+      );
+    },
+    removeItem(item) {
+      this.value.weights.splice(this.value.weights.indexOf(item), 1);
     }
   },
   watch: {

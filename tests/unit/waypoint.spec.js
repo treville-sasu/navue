@@ -20,14 +20,14 @@ describe("waypoint", () => {
         name: "Echo",
         latitude: 0,
         longitude: 0,
-        altitude: { value: 0, ref: "AMSL", unit: "m" },
+        altitude: { value: 0, reference: "MSL", unit: "m" },
         notes: "Some note"
       })
     ).toMatchObject({
       name: "Echo",
       latitude: 0,
       longitude: 0,
-      altitude: { value: 0, ref: "AMSL", unit: "m" },
+      altitude: { value: 0, reference: "MSL", unit: "m" },
       notes: "Some note"
     });
   });
@@ -88,11 +88,17 @@ describe("waypoint", () => {
     //     };
     //   });
     // });
-    let mockrhumbDistanceTo, mockrhumbBearingTo, mockrhumbDestinationPoint, mocktoGeoJSON;
+    let mockrhumbDistanceTo,
+      mockrhumbBearingTo,
+      mockrhumbDestinationPoint,
+      mocktoGeoJSON;
     beforeEach(() => {
       mockrhumbDistanceTo = jest.spyOn(LatLon.prototype, "rhumbDistanceTo");
       mockrhumbBearingTo = jest.spyOn(LatLon.prototype, "rhumbBearingTo");
-      mockrhumbDestinationPoint = jest.spyOn(LatLon.prototype, "rhumbDestinationPoint");
+      mockrhumbDestinationPoint = jest.spyOn(
+        LatLon.prototype,
+        "rhumbDestinationPoint"
+      );
       mocktoGeoJSON = jest.spyOn(LatLon.prototype, "toGeoJSON");
     });
 
@@ -103,11 +109,11 @@ describe("waypoint", () => {
       mocktoGeoJSON.mockRestore();
     });
     // beforeEach(() => {
-      // LatLon.mockClear();
-      // mockrhumbDistanceTo.mockClear();
-      // mockrhumbBearingTo.mockClear();
-      // mockrhumbDestinationPoint.mockClear();
-      // mocktoGeoJSON.mockClear();
+    // LatLon.mockClear();
+    // mockrhumbDistanceTo.mockClear();
+    // mockrhumbBearingTo.mockClear();
+    // mockrhumbDestinationPoint.mockClear();
+    // mocktoGeoJSON.mockClear();
     // });
 
     it("call LatLon methods for calculations", () => {

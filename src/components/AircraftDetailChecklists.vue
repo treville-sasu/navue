@@ -1,54 +1,50 @@
 <template>
   <section>
-    <b-button
-      @click="value.unshift(JSON.parse(JSON.stringify(proto)))"
-      type="is-primary"
-      rounded
-      >Create a checklist</b-button
-    >
-    <div class="control">
-      <div v-for="(checklist, index) in value" :key="index">
-        <b-field label="Name" label-position="on-border" horizontal>
-          <b-input v-model="checklist.name" />
+    <b-button @click="addList" type="is-primary">Add a list</b-button>
+    <b-tabs v-model="currentList" vertical>
+      <b-tab-item
+        v-for="(checklist, index) in value"
+        :key="index"
+        :value="`${index}`"
+        :label="checklist.name || `${index + 1}`"
+      >
+        <b-field label="Name">
           <p class="control">
-            <b-button @click="value.splice(index, 1)" icon-right="close" />
+            <b-button @click="removeList(index)" icon-right="close" />
           </p>
+          <b-input v-model="checklist.name" />
         </b-field>
-        <b-field
-          v-for="(item, index) in checklist.items"
-          :key="index"
-          horizontal
-        >
-          <b-input v-model="item.name" placeholder="name" />
-          <b-input v-model="item.expect" placeholder="expectation" />
-          <b-field>
+        <b-table :data="checklist.items">
+          <b-table-column label="Target" v-slot="props">
+            <b-input v-model="props.row.name" />
+          </b-table-column>
+          <b-table-column label="Expectation" v-slot="props">
+            <b-input v-model="props.row.expect" />
+          </b-table-column>
+          <b-table-column v-slot="props">
             <b-checkbox-button
-              v-model="item.action"
+              v-model="props.row.action"
               :native-value="true"
               type="is-primary"
               >Action</b-checkbox-button
             >
-          </b-field>
-          <p class="control">
+          </b-table-column>
+          <b-table-column v-slot="props">
             <b-button
-              @click="checklist.items.splice(index, 1)"
+              @click="removeItem(checklist.items, props.row)"
               type="is-secondary"
               icon-right="close"
             />
-          </p>
-        </b-field>
-        <b-field position="is-centered">
-          <b-button
-            @click="
-              checklist.items.push(JSON.parse(JSON.stringify(proto_item)))
-            "
-            type="is-primary"
-            rounded
-            icon-right="plus"
-          />
-        </b-field>
-      </div>
-    </div>
+          </b-table-column>
+          <template #empty>
+            Add Expectations, could be a verification or an action.
+          </template>
+        </b-table>
+        <b-button @click="addItem(checklist.items)" type="is-primary"
+          >Add an expectation</b-button
+        >
+      </b-tab-item>
+    </b-tabs>
   </section>
 </template>
 
@@ -58,33 +54,35 @@ export default {
   props: {
     value: {
       default() {
-        return [
-          {
-            name: undefined,
-            items: [
-              {
-                name: undefined,
-                expect: undefined,
-                action: false
-              }
-            ]
-          }
-        ];
+        return [];
       }
     }
   },
   data() {
-    return {
-      proto: {
-        name: undefined,
-        items: [{ ...this.proto_item }]
-      },
-      proto_item: {
+    return { currentList: undefined };
+  },
+  methods: {
+    addList() {
+      this.currentList =
+        this.value.push({
+          name: undefined,
+          items: []
+        }) - 1;
+    },
+    removeList(index) {
+      this.currentList = index - 1;
+      this.value.splice(index, 1);
+    },
+    addItem(items) {
+      items.push({
         name: undefined,
         expect: undefined,
         action: false
-      }
-    };
+      });
+    },
+    removeItem(items, item) {
+      items.splice(items.indexOf(item), 1);
+    }
   },
   watch: {
     value: {
