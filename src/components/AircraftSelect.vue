@@ -1,111 +1,104 @@
 <template>
-  <div class="columns is-multiline is-centered">
-    <div class="column" v-if="select">
-      <div class="box">
-        <b-field label="Choose an aircraft" v-if="!value">
-          <b-autocomplete
-            placeholder="F-Pxx, Nxxx"
-            v-model="search"
-            :data="availableData || []"
-            @select="useData"
-            icon="magnify"
-            field="registration"
-            open-on-focus
-            keep-first
-            clear-on-select
-            clearable
-          >
-            <template slot="header" v-if="create">
-              <a @click="useData({ type: 'aircraft' })">
-                <span> Create a new one... </span>
-              </a>
-            </template>
-            <template slot="empty"> No results for {{ search }}</template>
-          </b-autocomplete>
-        </b-field>
+  <div class="container">
+    <b-field position="is-centered" grouped group-multiline v-if="selectedData">
+      <p class="control">
         <b-button
-          v-if="value"
           @click="useData(null)"
           icon-left="selection-off"
-          type="is-primary"
-          expanded
+          type="is-light is-primary"
           label="Discard"
         />
-        <!-- //FIXME : Should close modal if it exists -->
+      </p>
+      <p class="control">
         <b-button
-          v-if="$route.name != 'Aircraft'"
-          tag="router-link"
-          :to="{
-            name: 'Aircraft'
-          }"
-          icon-left="circle-edit-outline"
-          type="is-primary"
-          expanded
-          label="Manage Aircrafts"
-        />
-      </div>
-    </div>
-    <div class="column" v-if="create">
-      <div class="box">
-        <b-field class="file" v-if="!value">
-          <b-upload
-            v-model="upload"
-            accept="application/json"
-            @input="importData"
-            drag-drop
-            expanded
-          >
-            <div class="content has-text-centered">
-              <p>
-                <b-icon icon="upload" size="is-large"></b-icon>
-              </p>
-              <p>Upload Aircraft data</p>
-            </div>
-          </b-upload>
-        </b-field>
-        <b-button
-          v-if="value"
-          @click="useData(cloneData(value))"
+          v-if="create"
+          @click="useData(cloneData(selectedData))"
           icon-left="plus-circle-multiple-outline"
-          type="is-primary"
-          expanded
-          label="Clone aircraft"
+          type="is-light is-primary"
+          label="Clone"
         />
-      </div>
-    </div>
-    <div class="column" v-if="value && save">
-      <div class="box buttons">
+      </p>
+      <p class="control">
         <b-button
-          v-if="isSaved"
           @click="exportData"
           icon-left="download-outline"
-          type="is-primary"
-          expanded
+          type="is-light is-primary"
           label="Download"
         />
+      </p>
+      <p class="control">
         <b-button
-          v-if="!isSaved"
+          v-if="save"
           @click="saveData"
           icon-left="cloud-upload-outline"
-          type="is-warning"
-          expanded
+          type="is-light is-warning"
           label="Save"
         />
+      </p>
+      <p class="control">
         <b-button
-          v-if="fromDB"
+          v-if="fromDB && save"
           @click="deleteData"
           icon-left="delete-outline"
-          type="is-danger"
-          expanded
+          type="is-light is-danger"
           label="Delete"
         />
-      </div>
-    </div>
+      </p>
+    </b-field>
+    <b-field position="is-centered" grouped group-multiline v-else>
+      <b-autocomplete
+        v-if="select"
+        placeholder="Choose"
+        v-model="search"
+        :data="availableData || []"
+        @select="useData"
+        icon="magnify"
+        field="registration"
+        open-on-focus
+        keep-first
+        clear-on-select
+        clearable
+      >
+        <template slot="empty">No results for {{ search }}</template>
+      </b-autocomplete>
+      <b-field>
+        <b-button
+          v-if="create"
+          @click="useData(newAircraft)"
+          icon-left="plus-circle-outline"
+          type="is-link"
+          label="Create"
+        />
+      </b-field>
+      <b-field class="file is-primary">
+        <b-upload
+          class="file-label"
+          v-if="create"
+          v-model="upload"
+          accept="application/json"
+          @input="importData"
+        >
+          <!-- drag-drop -->
+          <span class="file-cta">
+            <b-icon icon="upload" />
+            <span>Import data</span>
+          </span>
+        </b-upload>
+      </b-field>
+    </b-field>
   </div>
 </template>
 
+<style scoped>
+.upload .upload-draggable {
+  padding: 0.25em;
+  border: 0;
+}
+</style>
+
 <script>
 import { DataSelect } from "@/mixins/DataSelect";
+import { Aircraft } from "@/models/Aircraft";
 
 export default {
   name: "AircraftSelect",
@@ -128,6 +121,9 @@ export default {
       set(val) {
         this.$store.commit("currentAircraft", val);
       }
+    },
+    newAircraft() {
+      return new Aircraft();
     }
   }
 };

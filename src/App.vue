@@ -36,6 +36,12 @@ $modal-z: $navbar-fixed-z + 100;
 .modal-card-body {
   overflow: visible !important;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: $column-gap;
+}
 </style>
 
 <script>

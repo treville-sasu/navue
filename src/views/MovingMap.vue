@@ -11,16 +11,7 @@
     >
       <template #default="props">
         <div class="modal-card">
-          <NavigationSelect
-            :value="navigation"
-            @input="
-              event => {
-                props.close();
-                navigation = event;
-              }
-            "
-            select
-          />
+          <NavigationSelect @input="props.close" select />
         </div>
       </template>
     </b-modal>
@@ -44,7 +35,7 @@
       />
       <l-control-zoom v-if="settings.zoomControl" position="topleft" />
       <l-moving-map-toolbox-control
-        position="topleft"
+        position="bottomleft"
         v-if="!settings.inFlight"
         @update:settings="updateSettings"
       />
@@ -163,8 +154,7 @@ export default {
         traceLength: 200,
         minDestination: 100,
         futurPositionDelay: 3 * 60
-      },
-      navigation: undefined
+      }
     };
   },
   beforeDestroy() {
@@ -176,6 +166,9 @@ export default {
     },
     trace() {
       return (this.reportedLocations || []).map(p => [p.latitude, p.longitude]);
+    },
+    navigation() {
+      return this.$store.state.currentNavigation;
     },
     routes() {
       return this.navigation ? this.navigation.routes : [];

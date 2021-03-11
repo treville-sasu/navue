@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="min-width: 30vw">
+  <div class="container">
     <b-loading :is-full-page="false" :active="!!error">
       <b-notification
         has-icon
@@ -263,7 +263,6 @@ export default {
     //   return this.$pouch
     //     .ecoSync(userDB)
     //     .then(handle => {
-    //       console.log("synced ?");
     //       this.syncIcon = "cloud-sync-outline fade";
     //       this.syncHandle = handle
     //         .on("active", () => (this.syncIcon = "cloud-sync-outline fade"))

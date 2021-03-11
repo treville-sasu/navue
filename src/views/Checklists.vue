@@ -1,22 +1,33 @@
 <template>
   <section class="section">
-    <AircraftSelect v-if="!aircraft" select />
+    <div class="notification is-primary is-light" v-if="!aircraft">
+      <h1 class="title">
+        Select an aircraft
+      </h1>
+      <AircraftSelect select />
+    </div>
     <b-tabs v-else class="box" v-model="currentCL" multiline>
       <b-tab-item label="Paces" v-if="paces">
-        <div class="columns">
-          <div class="column" v-for="pace in paces" :key="pace.name">
-            <div class="notification is-primary">
-              <h1 class="title">
-                <b>{{ pace | to }}</b> {{ pace.unit }}
-              </h1>
-              <h2 class="subtitle">
-                {{ pace.name }}
-              </h2>
-            </div>
+        <div class="grid">
+          <div
+            class="notification is-primary"
+            v-for="pace in paces"
+            :key="pace.name"
+          >
+            <h1 class="title">
+              <b>{{ pace | to | precision(0) }}</b> {{ pace.unit }}
+            </h1>
+            <h2 class="subtitle">
+              {{ pace.name }}
+            </h2>
           </div>
         </div>
       </b-tab-item>
-      <b-tab-item v-for="cl in checklists" :label="cl.name" :key="cl.name">
+      <b-tab-item
+        v-for="cl in aircraft.checklists"
+        :label="cl.name"
+        :key="cl.name"
+      >
         <b-table
           :data="cl.items"
           checkable
@@ -48,7 +59,7 @@
           <template v-slot:bottom-left>
             <b-button
               type="is-primary"
-              @click="currentCL = (currentCL + 1) % checklists.length"
+              @click="currentCL = (currentCL + 1) % aircraft.checklists.length"
               >Next C/L</b-button
             >
           </template>
@@ -76,9 +87,6 @@ export default {
   computed: {
     aircraft() {
       return this.$store.state.currentAircraft;
-    },
-    checklists() {
-      return this.aircraft.checklists;
     },
     paces() {
       return this.aircraft.paces;

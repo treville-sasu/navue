@@ -23,10 +23,6 @@
         <b-navbar-item tag="router-link" :to="{ name: 'Balance' }"
           >Weight and Balance</b-navbar-item
         >
-        <hr class="navbar-divider" />
-        <b-navbar-item tag="router-link" :to="{ name: 'Aircraft' }"
-          >Aircrafts</b-navbar-item
-        >
       </b-navbar-dropdown>
       <b-navbar-dropdown label="Flying" hoverable collapsible>
         <b-navbar-item tag="router-link" to="checklists"
@@ -55,30 +51,31 @@
     </template>
 
     <template slot="end">
-      <b-navbar-item @click="isAircraftSelectActive = true">{{
-        currentAircraft ? currentAircraft.registration : "Aircraft"
-      }}</b-navbar-item>
-      <b-modal
-        v-model="isAircraftSelectActive"
-        trap-focus
-        destroy-on-hide
-        has-modal-card
-        aria-role="dialog"
-        aria-modal
-      >
-        <template #default="props">
-          <div class="modal-card">
-            <AircraftSelect select @input="props.close" />
-          </div>
+      <b-navbar-dropdown hoverable collapsible right arrowless>
+        <template slot="label">
+          {{ currentAircraft ? currentAircraft.registration : "Aircrafts" }}
         </template>
-      </b-modal>
+
+        <b-navbar-item
+          v-if="$route.name != 'Aircraft'"
+          tag="router-link"
+          :to="{
+            name: 'Aircraft'
+          }"
+        >
+          Manage Aircrafts
+        </b-navbar-item>
+        <b-navbar-item tag="div" style="min-width: 20vw;">
+          <AircraftSelect select />
+        </b-navbar-item>
+      </b-navbar-dropdown>
       <b-navbar-dropdown hoverable collapsible right>
         <template slot="label">
           <b-icon icon="account" />
         </template>
-        <div class="navbar-item">
+        <b-navbar-item tag="div" style="min-width: 30vw;">
           <Login />
-        </div>
+        </b-navbar-item>
       </b-navbar-dropdown>
     </template>
   </b-navbar>

@@ -2,7 +2,7 @@
   <div class="columns is-multiline is-centered">
     <div class="column">
       <div class="box">
-        <b-field label="Choose a navigation" v-if="!value">
+        <b-field label="Choose a navigation" v-if="!selectedData">
           <b-autocomplete
             placeholder="LFxx > LFxx..."
             v-model="search"
@@ -16,39 +16,30 @@
             clearable
           >
             <template slot="header" v-if="create">
-              <a @click="useData({ type: 'navigation' })">
+              <a @click="useData(newNavigation)">
                 <span> Create a new one... </span>
               </a>
             </template>
             <template slot="empty"> No results for {{ search }}</template>
           </b-autocomplete>
         </b-field>
+        <b-field label="Current Navigation" v-else>
+          <b-input :value="selectedData.name" disabled />
+        </b-field>
         <b-button
-          v-if="value"
+          v-if="selectedData"
           @click="useData(null)"
           icon-left="selection-off"
           type="is-primary"
           expanded
           label="Discard"
         />
-        <!-- //FIXME : Should close modal if it exists -->
-        <b-button
-          v-if="$route.name != 'Navigation'"
-          tag="router-link"
-          :to="{
-            name: 'Navigation'
-          }"
-          icon-left="circle-edit-outline"
-          type="is-primary"
-          expanded
-          label="Manage Navigations"
-        />
       </div>
     </div>
 
     <div class="column" v-if="create">
       <div class="box">
-        <b-field class="file" v-if="!value">
+        <b-field class="file" v-if="!selectedData">
           <b-upload
             v-model="upload"
             accept="application/json"
@@ -65,8 +56,8 @@
           </b-upload>
         </b-field>
         <b-button
-          v-if="value"
-          @click="useData(cloneData(value))"
+          v-if="selectedData"
+          @click="useData(cloneData(selectedData))"
           icon-left="plus-circle-multiple-outline"
           type="is-primary"
           expanded
@@ -74,10 +65,9 @@
         />
       </div>
     </div>
-    <div class="column" v-if="value && save">
+    <div class="column" v-if="selectedData && save">
       <div class="box buttons">
         <b-button
-          v-if="isSaved"
           @click="exportData"
           icon-left="download-outline"
           type="is-primary"
@@ -86,7 +76,7 @@
         />
         <b-field>
           <b-input
-            v-model="value.name"
+            v-model="selectedData.name"
             placeholder="Navigation name"
             :lazy="true"
             type="is-warning"
@@ -95,9 +85,11 @@
           />
           <p class="control">
             <b-button
-              @click="saveData(value)"
+              @click="saveData(selectedData)"
               icon-left="cloud-upload-outline"
-              :type="value && value._id ? 'is-primary' : 'is-warning'"
+              :type="
+                selectedData && selectedData._id ? 'is-primary' : 'is-warning'
+              "
               label="Save"
             />
           </p>
@@ -117,6 +109,7 @@
 
 <script>
 import { DataSelect } from "@/mixins/DataSelect";
+import { Navigation } from "@/models/Navigation";
 
 export default {
   name: "NavigationSelect",
@@ -150,6 +143,9 @@ export default {
       set(val) {
         this.$store.commit("currentNavigation", val);
       }
+    },
+    newNavigation() {
+      return new Navigation();
     }
   }
 };

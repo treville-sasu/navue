@@ -1,35 +1,18 @@
-import deepEqual from "deep-equal";
 import { ImportExport, UIHelpers } from "@/mixins/apputils";
 
 export const DataSelect = {
   mixins: [ImportExport, UIHelpers],
-  props: {
-    value: Object
-  },
   data() {
     return {
       search: "",
       upload: []
     };
   },
-  // mounted() {
-  //   if (this.$route.params.id)
-  //     this.getData(this.$route.params.id)
-  //       .then(this.useData)
-  //       .then(() => {
-  //         this.$router.push({
-  //           name: this.$route.name,
-  //           params: {}
-  //         });
-  //       });
-  //   else if (this.selectedData) this.useData(this.selectedData);
-  // },
   computed: {
-    isSaved() {
-      return !this.value || deepEqual(this.selectedData, this.value);
-    },
     fromDB() {
-      return this.value && this.value._id && this.value._rev;
+      return (
+        this.selectedData && this.selectedData._id && this.selectedData._rev
+      );
     }
   },
   pouch: {
@@ -44,25 +27,18 @@ export const DataSelect = {
     }
   },
   methods: {
-    // getData(id) {
-    //   // TODO: Handle error with care ! in the whole app
-    //   return this.$pouch.get(id).catch(console.error);
-    // },
     useData(data) {
       this.selectedData = data;
-      this.$emit("input", this.selectedData);
-    },
-    discardData() {
-      this.useData(this.selectedData);
+      this.$emit("input", data);
     },
     saveData() {
       this.$store
         .dispatch("saveToDB", {
           _id: `${this.dataType}-${Date.now()}`,
-          ...this.value
+          ...this.selectedData
         })
         .then(res => {
-          this.useData({ ...this.value, _id: res.id, _rev: res.rev });
+          this.useData({ ...this.selectedData, _id: res.id, _rev: res.rev });
           this.openWarning("Saved");
         })
         .catch(err => {
@@ -72,7 +48,7 @@ export const DataSelect = {
     },
     deleteData() {
       this.$store
-        .dispatch("deleteFromDB", this.value)
+        .dispatch("deleteFromDB", this.selectedData)
         .then(() => {
           this.useData(null);
           this.openWarning("Deleted");
@@ -83,12 +59,19 @@ export const DataSelect = {
         });
     },
     importData(file) {
-      this.uploadJSON(file).then(res => {
-        this.useData(this.cloneData(res));
-      });
+      this.uploadJSON(file)
+        .then(res => {
+          this.useData(this.cloneData(res));
+          this.openWarning("Imported");
+        })
+        .catch(err => {
+          console.debug(err);
+          this.openWarning(err);
+        });
     },
     exportData() {
-      if (this.value) this.downloadJSON(this.value, `${this.value.name}.json`);
+      if (this.selectedData)
+        this.downloadJSON(this.selectedData, `${this.selectedData.name}.json`);
     },
     cloneData(data) {
       // eslint-disable-next-line no-unused-vars

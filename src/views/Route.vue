@@ -11,18 +11,7 @@
     >
       <template #default="props">
         <div class="modal-card">
-          <NavigationSelect
-            :value="navigation"
-            @input="
-              event => {
-                props.close();
-                navigation = event;
-              }
-            "
-            select
-            create
-            save
-          />
+          <NavigationSelect select create save @input="props.close" />
         </div>
       </template>
     </b-modal>
@@ -127,7 +116,6 @@ export default {
   data() {
     return {
       isNavigationSelectActive: false,
-      navigation: undefined,
       miniMap: {
         layer: new L.TileLayer(
           "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
@@ -150,6 +138,9 @@ export default {
   computed: {
     aircraft() {
       return this.$store.state.currentAircraft;
+    },
+    navigation() {
+      return this.$store.state.currentNavigation;
     }
   }
 };
