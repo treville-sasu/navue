@@ -3,46 +3,33 @@
     <nav class="level is-mobile box">
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading">From Start</p>
-          <BIconButton
-            v-on="
-              isEnroute ? { contextmenu: stopFlight } : { click: startFlight }
-            "
-            :tooltip="{
-              label: isEnroute ? 'Take off' : 'Landing'
-            }"
-            :icon="{
-              type: isEnroute ? 'is-danger' : 'is-primary',
-              icon: isEnroute ? 'airplane-landing' : 'airplane-takeoff'
-            }"
-          />
-          <span
-            v-on="
-              isEnroute ? { contextmenu: stopFlight } : { click: startFlight }
-            "
+          <p class="heading">
+            <b-icon
+              :type="isEnroute ? 'is-danger' : 'is-primary'"
+              :icon="isEnroute ? 'airplane-landing' : 'airplane-takeoff'"
+            />
+          </p>
+          <p
             class="title is-clickable"
+            @click="isEnroute ? null : startFlight()"
+            @contextmenu.prevent.stop="isEnroute ? stopFlight() : null"
           >
             {{ fromStart | fromTimestamp | asDuration }}
-          </span>
+          </p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">
-            Chrono
+            <b-icon
+              icon="timer-outline"
+              :type="chronoTime ? 'is-danger' : 'is-primary'"
+            />
           </p>
-          <BIconButton
-            v-if="!chronoTime"
-            icon="timer-outline"
-            tooltip="Start"
-            @click="startChrono"
-          >
-          </BIconButton>
           <p
             class="title is-clickable"
-            v-else
             @click="startChrono"
-            @contextmenu="stopChrono"
+            @contextmenu.prevent.stop="stopChrono"
           >
             {{ chrono | fromTimestamp | asDuration }}
           </p>
@@ -51,32 +38,43 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">
-            Mark time
+            <b-icon icon="alarm-plus" />
           </p>
-          <BIconButton
-            icon="alarm-plus"
-            tooltip="Mark time"
-            @click="addTime"
-            @contextmenu="removeTime"
+          <div
+            class="is-clickable timelist"
+            @click.stop="addTime"
+            @contextmenu.prevent.stop="removeTime"
           >
-          </BIconButton>
-          <b-tag type="is-primary" rounded>{{ timesCount }}</b-tag>
+            <ul>
+              <li v-for="time in markedTimes" :key="time">
+                {{ time | fromTimestamp | asDuration }}
+              </li>
+            </ul>
+            <span class="title"> - </span>
+          </div>
         </div>
       </div>
     </nav>
   </l-control>
 </template>
 
+<style scoped>
+.timelist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2em;
+  max-height: 2.4em;
+}
+</style>
+
 <script>
 import { LControl } from "vue2-leaflet";
-import BIconButton from "@/components/BIconButton.vue";
 import UnitSystem from "@/mixins/UnitSystem.js";
 
 export default {
   name: "LTimeControl",
   components: {
-    LControl,
-    BIconButton
+    LControl
   },
   mixins: [UnitSystem],
   data() {
@@ -133,10 +131,10 @@ export default {
       this.chronoTime = undefined;
     },
     addTime() {
-      this.markedTimes.push(Date.now());
+      this.markedTimes.unshift(Date.now());
     },
     removeTime() {
-      this.markedTimes.pop();
+      this.markedTimes.shift();
     }
   }
 };
