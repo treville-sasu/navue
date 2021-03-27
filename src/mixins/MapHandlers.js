@@ -100,15 +100,12 @@ export const MapHandlers = {
       latitude = 0,
       longitude = 0,
       accuracy = 20,
-      altitude = 1000,
-      timestamp
+      altitude = 1000
     }) {
       console.debug("Faking around:", {
         latitude,
         longitude,
-        accuracy,
-        altitude,
-        timestamp
+        altitude
       });
 
       let rand = (s = 1) => {
@@ -121,7 +118,7 @@ export const MapHandlers = {
         accuracy: accuracy + rand(),
         altitude: altitude + rand(10),
         altitudeAccuracy: accuracy + rand(),
-        timestamp
+        timestamp: Date.now()
       };
     }
   }
