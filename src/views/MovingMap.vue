@@ -17,13 +17,7 @@
     </b-modal>
     <l-map
       ref="movingMap"
-      :zoom="10"
-      :center="{ lat: 42.69597591582309, lng: 2.879308462142945 }"
-      :options="{
-        zoomSnap: 0.5,
-        zoomControl: false,
-        attributionControl: false
-      }"
+      v-bind="settings.map"
       @ready="setupMap"
       @contextmenu="setDestination"
     >
@@ -40,7 +34,7 @@
         @update:settings="updateSettings"
       />
       <l-moving-map-instruments-control
-        v-model="lastKnownLocation"
+        v-bind="lastKnownLocation"
         position="topright"
       />
       <l-moving-map-destination-control
@@ -57,7 +51,7 @@
       <l-base-layer-group />
 
       <l-location-marker
-        v-model="lastKnownLocation"
+        :value="lastKnownLocation"
         :delay="settings.futurPositionDelay"
       />
 
@@ -153,7 +147,16 @@ export default {
         navigationSelect: false,
         traceLength: 200,
         minDestination: 100,
-        futurPositionDelay: 3 * 60
+        futurPositionDelay: 3 * 60,
+        map: {
+          zoom: 10,
+          center: { lat: 42.69597591582309, lng: 2.879308462142945 },
+          options: {
+            zoomSnap: 0.5,
+            zoomControl: false,
+            attributionControl: false
+          }
+        }
       }
     };
   },

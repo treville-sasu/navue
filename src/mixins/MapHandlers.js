@@ -4,14 +4,16 @@ import { UIHelpers } from "@/mixins/apputils";
 export const MapHandlers = {
   data() {
     return {
-      maxAccuracy: 150,
-      minSpeed: 1000 / 3600,
-      minDistance: 1,
       geoOptions: {
         watch: true,
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 1000
+      },
+      settings: {
+        maxAccuracy: 150,
+        minSpeed: 1000 / 3600,
+        minDistance: 1
       }
     };
   },

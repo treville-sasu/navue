@@ -66,6 +66,7 @@ export const MapTools = {
   methods: {
     setupMap(e) {
       this.map = e;
+      this.map.locate({ setView: true, maxZoom: 10 });
     },
     selectRoute(id) {
       this.currentRoute = this.navigation.routes[id];

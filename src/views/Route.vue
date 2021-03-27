@@ -15,19 +15,11 @@
         </div>
       </template>
     </b-modal>
-    <!-- TODO: on select navigation setView -->
-    <l-map
-      :zoom="10"
-      :center="{ lat: 42.69597591582309, lng: 2.879308462142945 }"
-      :options="{
-        zoomSnap: 0.5,
-        attributionControl: false
-      }"
-      v-on="mapEvents"
-    >
+
+    <l-map v-bind="fullMapSettings" v-on="mapEvents">
       <l-base-layer-group />
 
-      <vue-leaflet-minimap v-bind="miniMap" />
+      <vue-leaflet-minimap v-bind="miniMapSettings" />
 
       <l-control-geocoder
         :options="{
@@ -116,7 +108,15 @@ export default {
   data() {
     return {
       isNavigationSelectActive: false,
-      miniMap: {
+      fullMapSettings: {
+        zoom: 10,
+        center: { lat: 42.69597591582309, lng: 2.879308462142945 },
+        options: {
+          zoomSnap: 0.5,
+          attributionControl: false
+        }
+      },
+      miniMapSettings: {
         layer: new L.TileLayer(
           "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
           {
@@ -139,12 +139,23 @@ export default {
     aircraft() {
       return this.$store.state.currentAircraft;
     },
-    navigation() {
-      return this.$store.state.currentNavigation;
+    navigation: {
+      get() {
+        return this.$store.state.currentNavigation;
+      },
+      set(val) {
+        this.$store.commit("currentNavigation", val);
+      }
+    }
+  },
+  watch: {
+    navigation(newNav) {
+      let bounds;
+      if (newNav && "toBounds" in newNav && (bounds = newNav.toBounds()))
+        this.map.flyToBounds(bounds, {
+          padding: [50, 50]
+        });
     }
   }
 };
-
-// https://en.wikipedia.org/wiki/Decimal_degrees
-// https://wiki.openstreetmap.org/wiki/Precision_of_coordinates
 </script>
