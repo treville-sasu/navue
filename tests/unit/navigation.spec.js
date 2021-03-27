@@ -31,8 +31,8 @@ describe("navigation", () => {
       "routes",
       new Array(
         new Array(
-          new Waypoint({ name: "A", latitude: 0, longitude: 0 }),
-          new Waypoint({ name: "B", latitude: 0, longitude: 1 })
+          Waypoint.from({ name: "A", latitude: 0, longitude: 0 }),
+          Waypoint.from({ name: "B", latitude: 0, longitude: 1 })
         )
       )
     );
@@ -63,6 +63,32 @@ describe("navigation", () => {
     const route = navigation.addRoute();
     navigation.removeRoute(route);
     expect(navigation.routes).toHaveLength(0);
+  });
+
+  it.todo("clearRoute");
+  it.todo("addWaypoint");
+  it.todo("getNextWaypoint");
+  it.todo("getRoute");
+  it.todo("getRouteId");
+  it.todo("toGeoJSON");
+
+  it("calculate bounds of navigation", () => {
+    const nav = new Navigation({
+      routes: [
+        [
+          { name: "A", latitude: -1, longitude: 0 },
+          { name: "B", latitude: 0, longitude: 1 }
+        ],
+        [
+          { name: "C", latitude: 0, longitude: -1 },
+          { name: "D", latitude: 1, longitude: 1 }
+        ]
+      ]
+    });
+    expect(nav.toBounds()).toEqual([
+      [-1, -1],
+      [1, 1]
+    ]);
   });
 });
 
@@ -143,8 +169,8 @@ describe("navigation", () => {
 //       "routes",
 //       new RouteCollection(
 //         new Route(
-//           new Waypoint({ name: "A", latitude: 0, longitude: 0 }),
-//           new Waypoint({ name: "B", latitude: 0, longitude: 1 })
+//           Waypoint.from({ name: "A", latitude: 0, longitude: 0 }),
+//           Waypoint.from({ name: "B", latitude: 0, longitude: 1 })
 //         )
 //       )
 //     );

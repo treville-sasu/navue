@@ -37,12 +37,6 @@ export class Aircraft extends Model {
     this.type = "aircraft";
   }
 
-  setId(id, rev) {
-    this._id = id;
-    this._rev = rev;
-    return this;
-  }
-
   addPace(name, value, unit) {
     return this.paces.push({ name, unit, value });
   }

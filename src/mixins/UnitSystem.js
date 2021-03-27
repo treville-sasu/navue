@@ -33,6 +33,32 @@ export default {
     };
   },
   filters: {
+    toString(value, precision) {
+      if (value) return value.toString(precision);
+      else return "-";
+    },
+    as(value, unit) {
+      if (value) return value.as(unit);
+    },
+
+    fromTimestamp(value) {
+      return new Date(Math.round(value / 1000));
+    },
+
+    asDuration(value) {
+      // TODO: Check if working with very long duration (days, week)
+      if (value) {
+        return new Date(value * 1000).toLocaleTimeString(undefined, {
+          timeZone: "UTC",
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        });
+      } else return "-";
+    },
+
+    //    TODO: remove from here
     with(value, unit) {
       if (typeof unit == "string")
         switch (unit) {
@@ -68,27 +94,6 @@ export default {
       else return value * fact[unit];
     },
 
-    asHeading(value) {
-      return (value + 360) % 360;
-    },
-    asDirection(value) {
-      return ((value + 540) % 360) - 180;
-    },
-    fromTimestamp(value) {
-      return new Date(Math.round(value / 1000));
-    },
-    asDuration(value) {
-      // TODO: Check if working with very long duration (days, week)
-      if (value) {
-        return new Date(value * 1000).toLocaleTimeString(undefined, {
-          timeZone: "UTC",
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit"
-        });
-      } else return "-";
-    },
     precision(value, precision = 2) {
       // TODO: could handle time if power base is adapted
       const fact = 10 ** precision;

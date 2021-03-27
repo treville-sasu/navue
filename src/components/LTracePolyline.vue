@@ -13,8 +13,8 @@
         sticky: true
       }"
     >
-      {{ bearing | asHeading | precision(0) | with('°') }} -
-      {{ distance | to("NM") | precision(0) | with('NM') }}
+      {{ bearing | toString(0) }} |
+      {{ distance | toString(0) }}
     </l-tooltip>
   </l-polyline>
 </template>
@@ -31,9 +31,9 @@
 
 .routeLabel {
   padding: 0.3em;
-  color: white;
-  background-color: $primary;
-  border: none;
+  background-color: white;
+  color: $primary;
+  border: 0.1em solid $primary;
 }
 
 .inactiveRoute {

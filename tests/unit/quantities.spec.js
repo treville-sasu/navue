@@ -4,7 +4,10 @@ import {
   Distance,
   Speed,
   Volume,
-  Altitude
+  Altitude,
+  Angle,
+  Azimuth,
+  Bearing
 } from "@/models/Quantities.js";
 import { Model } from "@/models/Base.js";
 
@@ -37,6 +40,21 @@ describe("quantity", () => {
       "list of available units should be set on class."
     );
   });
+  it("coerc Quantity to primitive", () => {
+    let q = new Quantity(10);
+    expect(q.valueOf()).toBe(q.value);
+    expect(Number(q)).toStrictEqual(10);
+    expect(q + q).toStrictEqual(20);
+    expect(q + 1).toStrictEqual(11);
+    expect(q * q).toStrictEqual(100);
+  });
+
+  // TODO : should we allow toString with no unit
+  // it("coerc Quantity to String", () => {
+  //   let q = new Quantity(10);
+  //   expect(q.toString()).toStrictEqual("10");
+  //   expect(String(q)).toStrictEqual("10");
+  // });
 
   describe("with `units` set", () => {
     let WithUnits;
@@ -74,25 +92,34 @@ describe("quantity", () => {
         unit: "mm"
       });
     });
-    it("create a new Quantity from original as`newUnit`", () => {
-      let originalQuantity = new WithUnits(10, "m");
-
-      expect(originalQuantity.as("mm")).toMatchObject({
-        value: 10,
-        unit: "mm"
+    it("create a new Quantity from Object", () => {
+      expect(
+        Quantity.from({ value: 100, unit: "km", name: "name" })
+      ).toMatchObject({
+        value: 100,
+        unit: "km",
+        name: "name"
       });
-      expect(originalQuantity.as("km")).toMatchObject({
-        value: 10,
-        unit: "km"
-      });
-      // Do we need to check for existing newUnit in units ?
-      expect(() => originalQuantity.as("not listed")).toThrow(
+      expect(() => Quantity.from({ value: 100, unit: "dam" })).not.toThrow(
         "'not listed' is not an available unit"
       );
     });
+    it("create a new Quantity from original as`newUnit`", () => {
+      let originalQuantity = new WithUnits(10, "m");
+      const somethingSpy = jest.spyOn(originalQuantity.constructor, "from");
+
+      originalQuantity.as("mm");
+
+      expect(somethingSpy).toHaveBeenCalledWith({ value: 10, unit: "mm" });
+    });
+    it("return value in newUnit", () => {
+      expect(new WithUnits(123, "mm").to("mm")).toBeCloseTo(123);
+      expect(new WithUnits(123, "mm").to("m")).toBeCloseTo(0.123);
+      expect(new WithUnits(123, "mm").to("km")).toBeCloseTo(0.00123);
+    });
     it("toString(precision)", () => {
       //TODO check for locale or set one
-      expect(new WithUnits().toString()).toBeUndefined();
+      expect(new WithUnits().toString()).toBe("0 m");
       expect(new WithUnits(0, "m").toString()).toBe("0 m");
       expect(new WithUnits(123, "mm").toString()).toBe("123 mm");
       expect(new WithUnits(123, "mm").as("m").toString(0)).toBe("0 m");
@@ -104,6 +131,12 @@ describe("quantity", () => {
 
       beforeEach(() => {
         q = new WithUnits(10);
+      });
+
+      it("return displayUnit as `baseUnit` or unit", () => {
+        expect(q.displayUnit).toBe("m");
+        q.unit = "mm";
+        expect(q.displayUnit).toBe("mm");
       });
 
       it("set value as `display unit value`", () => {
@@ -215,10 +248,59 @@ describe("altitude", () => {
     expect(new Altitude(10, "FL").value).toBeCloseTo(304.8);
     expect(new Altitude(330, "FL").value).toBeCloseTo(10000, -2.1);
     expect(new Altitude(10, "FL").toString()).toBe("FL010");
+    // expect(new Altitude(10, "FL").as("ft")).toBe("1,000 ft QNE");
     expect(new Altitude(10, "FL").as("ft").toString()).toBe("1,000 ft QNE");
 
     expect(new Altitude(10000, "m", "QNE").as("FL").toString()).toBe("FL330");
   });
   it.todo("convert between references");
   it.todo("gives densityAltitude");
+});
+
+describe("angle", () => {
+  it("extends Quantity", () => {
+    expect(Angle.prototype).toBeInstanceOf(Quantity);
+  });
+  it("consume °", () => {
+    expect(new Angle(180, "°").value).toBeCloseTo(Math.PI);
+  });
+  it("consume radian", () => {
+    expect(new Angle(Math.PI, "rad").value).toBeCloseTo(Math.PI);
+  });
+  it("consume gradian", () => {
+    expect(new Angle(200, "gon").value).toBeCloseTo(Math.PI);
+  });
+  it("consume revolution", () => {
+    expect(new Angle(0.5, "rev").value).toBeCloseTo(Math.PI);
+  });
+  it("consume ₥ (mil angulaire)", () => {
+    expect(new Angle(3200, "₥").value).toBeCloseTo(Math.PI);
+  });
+});
+
+describe("azimuth", () => {
+  it("extends Quantity", () => {
+    expect(Azimuth.prototype).toBeInstanceOf(Angle);
+  });
+  it("return the value modulo a circle", () => {
+    expect(new Azimuth(270, "°").displayValue).toBeCloseTo(270);
+    expect(new Azimuth(540, "°").displayValue).toBeCloseTo(180);
+    expect(new Azimuth(-270, "°").displayValue).toBeCloseTo(90);
+    //TODO: 0 should give 360
+    expect(new Azimuth(0, "°").displayValue).toBeCloseTo(0);
+  });
+});
+
+describe("bearing", () => {
+  it("extends Quantity", () => {
+    expect(Bearing.prototype).toBeInstanceOf(Angle);
+  });
+  it("return the value modulo a circle", () => {
+    expect(new Bearing(270, "°").displayValue).toBeCloseTo(-90);
+    //TODO: 180 % should give 180
+    expect(new Bearing(180, "°").displayValue).toBeCloseTo(-180);
+    expect(new Bearing(540, "°").displayValue).toBeCloseTo(-180);
+    expect(new Bearing(90, "°").displayValue).toBeCloseTo(90);
+    expect(new Bearing(0, "°").displayValue).toBeCloseTo(0);
+  });
 });

@@ -1,43 +1,21 @@
 <template>
   <l-control v-bind="$attrs">
-    <b-field grouped group-multiline>
-      <div class="control">
-        <b-taglist attached>
-          <b-tag type="is-success" size="is-medium">{{
-            distance | to("NM") | precision(0)
-          }}</b-tag>
-          <b-tag type="is-light" size="is-medium">NM</b-tag>
-        </b-taglist>
-      </div>
-      <div class="control">
-        <b-taglist attached>
-          <b-tag type="is-info" size="is-medium">{{
-            heading | asHeading | precision(0)
-          }}</b-tag>
-          <b-tag type="is-light" size="is-medium">°</b-tag>
-        </b-taglist>
-      </div>
-      <!-- <div class="control">
-        <b-taglist attached>
-          <b-tag type="is-warning" size="is-medium">{{
-            to.altitude | is('ft') | precision(-1)
-          }}</b-tag>
-          <b-tag type="is-light" size="is-medium">ft</b-tag>
-          <b-tag type="is-danger" size="is-medium">{{
-            vertical_speed | is("ft/min") | precision(-1)
-          }}</b-tag>
-          <b-tag type="is-light" size="is-medium">ft/min</b-tag>
-        </b-taglist>
-      </div> -->
-      <div class="control">
-        <b-taglist attached>
-          <b-tag type="is-light" size="is-medium">ETE</b-tag>
-          <b-tag type="is-primary" size="is-medium">{{
-            ETE | asDuration
-          }}</b-tag>
-        </b-taglist>
-      </div>
-    </b-field>
+    <b-taglist>
+      <b-tag type="is-primary" size="is-medium">{{
+        distance | as("NM") | toString(0)
+      }}</b-tag>
+      <b-tag type="is-success" size="is-medium">{{
+        heading | toString(0)
+      }}</b-tag>
+      <b-tag type="is-info" size="is-medium">{{
+        to.altitude | toString(-1)
+      }}</b-tag>
+      <b-tag type="is-light" size="is-medium">{{
+        vertical_speed | as("ft/min") | toString(-1)
+      }}</b-tag>
+
+      <b-tag type="is-dark" size="is-medium">ETE {{ ETE | asDuration }}</b-tag>
+    </b-taglist>
   </l-control>
 </template>
 

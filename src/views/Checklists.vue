@@ -15,7 +15,7 @@
             :key="pace.name"
           >
             <h1 class="title">
-              <b>{{ pace | to | precision(0) }}</b> {{ pace.unit }}
+              <b>{{ pace | toString(0) }}</b>
             </h1>
             <h2 class="subtitle">
               {{ pace.name }}

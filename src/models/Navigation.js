@@ -6,7 +6,7 @@ export class Navigation extends Model {
     routes.forEach((rte, i) => {
       if (rte instanceof Array)
         rte.forEach((wp, j) => {
-          routes[i][j] = new Waypoint(wp);
+          routes[i][j] = Waypoint.from(wp);
         });
       else throw `'${rte}' cannot be coerced in a route`;
     });
@@ -33,7 +33,7 @@ export class Navigation extends Model {
 
   addWaypoint({ insertBefore, ...wp } = {}, route) {
     route = this.getRoute(route);
-    wp = new Waypoint(wp);
+    wp = Waypoint.from(wp);
     return insertBefore ? route.splice(insertBefore, 0, wp) : route.push(wp);
   }
 
@@ -59,6 +59,28 @@ export class Navigation extends Model {
     if (objindex instanceof Array) return this.routes.indexOf(objindex);
     else if (isFinite(objindex)) return objindex;
     else return this.routes.length - 1;
+  }
+
+  // toGeoJSON() {}
+  toBounds() {
+    return this.routes.flat().reduce((minmax, wp, index) => {
+      if (index == 0)
+        return [
+          [wp.latitude, wp.longitude],
+          [wp.latitude, wp.longitude]
+        ];
+      else
+        return [
+          [
+            Math.min(wp.latitude, minmax[0][0]),
+            Math.min(wp.longitude, minmax[0][1])
+          ],
+          [
+            Math.max(wp.latitude, minmax[1][0]),
+            Math.max(wp.longitude, minmax[1][1])
+          ]
+        ];
+    }, undefined);
   }
 
   static from(object) {

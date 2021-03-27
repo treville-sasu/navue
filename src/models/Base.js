@@ -3,8 +3,15 @@ export class Model {
     if (arguments[0] instanceof this.constructor) return arguments[0];
     Object.assign(this, object);
   }
+  // FIXME : bad clone !!
+  clone() {
+    return this.constructor.from(JSON.parse(JSON.stringify(this)));
+  }
   static parse(string) {
-    return new this(JSON.parse(string));
+    return this.from(JSON.parse(string));
+  }
+  static from(object) {
+    return new this(object);
   }
 }
 
@@ -40,14 +47,3 @@ export class Collection extends Array {
     return super.from(args, this.prototype.create);
   }
 }
-
-// export class Pace extends BaseModel {
-//   constructor({ name, value, unit }) {
-//     super({ name, value, unit });
-//   }
-// }
-// export class Weight extends BaseModel {
-//   constructor({ name, arm, value, min, max, density, tank }) {
-//     super({ name, arm, value, min, max, density, tank });
-//   }
-// }

@@ -7,18 +7,17 @@ export class Quantity extends Model {
 
     super({ value, unit, ...properties });
 
-    if (unit && !this._factor(unit))
-      throw `'${unit}' is not an available units`;
-    else if (unit) this.displayValue = value;
+    if (unit) this.displayValue = value;
   }
 
   _factor(unit) {
-    return this.constructor.units[unit];
+    if (this.constructor.units[unit]) return this.constructor.units[unit];
+    else throw `'${unit}' is not an available unit`;
   }
 
   _convertFrom(val, unit) {
     if (this._factor(unit)) return Number(val) / this._factor(unit);
-    return this;
+    return val;
   }
 
   _convertTo(val, unit) {
@@ -26,43 +25,68 @@ export class Quantity extends Model {
   }
 
   get displayValue() {
-    return this._convertTo(this.value, this.unit);
+    return this._convertTo(this.value, this.displayUnit);
   }
 
   set displayValue(val) {
-    this.value = this._convertFrom(val, this.unit);
+    this.value = this._convertFrom(val, this.displayUnit);
   }
 
-  as(newUnit) {
-    return this.constructor.from({ ...this, unit: newUnit });
+  get displayUnit() {
+    return this.unit || this.constructor._baseUnit;
+  }
+
+  set displayUnit(val) {
+    if (this.constructor.units[val]) this.unit = val;
+    else throw `'${val}' is not an available unit`;
+  }
+
+  to(unit) {
+    return this._convertTo(this.value, unit);
+  }
+
+  as(unit) {
+    return this.constructor.from({ ...this, unit });
+  }
+
+  valueOf() {
+    return this.value;
   }
 
   toString(precision = 2) {
-    let roundedValue;
-    if (precision < 0) {
-      const fact = 10 ** precision;
-      roundedValue =
-        Math.round(
-          this._convertTo(this.value, this.unit) * fact + Number.EPSILON
-        ) / fact;
-    }
-    if (
-      (roundedValue || this.displayValue || this.displayValue === 0) &&
-      this.unit
-    )
-      // TODO : merge default with method options
-      return `${(roundedValue || this.displayValue).toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: Math.max(precision, 0)
-      })} ${this.unit}`;
+    try {
+      let roundedValue;
+      if (precision < 0) {
+        const fact = 10 ** precision;
+        roundedValue =
+          Math.round(this.displayValue * fact + Number.EPSILON) / fact;
+      }
+      if (
+        (roundedValue || this.displayValue || this.displayValue === 0) &&
+        this.displayUnit
+      )
+        // TODO : merge default with method options
+        return `${(roundedValue || this.displayValue).toLocaleString(
+          undefined,
+          {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: Math.max(precision, 0)
+          }
+        )} ${this.displayUnit}`;
+      // eslint-disable-next-line no-empty
+    } catch {}
   }
 
   static get units() {
     throw "list of available units should be set on class.";
   }
 
-  static from(object) {
-    return Object.assign(new this(), object);
+  static get _baseUnit() {
+    return Object.keys(this.units)[Object.values(this.units).indexOf(1)];
+  }
+
+  static from({ value, ...properties }) {
+    return new this(value, undefined, properties);
   }
 }
 
@@ -76,6 +100,49 @@ export class Distance extends Quantity {
       mi: 0.000621371,
       yd: 1.09361
     };
+  }
+}
+
+export class Altitude extends Distance {
+  constructor(value = 0, unit, reference, properties = {}) {
+    if (unit == "FL") reference = "QNE";
+    else if (unit && !reference)
+      throw `third argument 'reference' should be given, got '${reference}'`;
+
+    super(value, unit, { ...properties, reference });
+  }
+
+  // densityAltitude(temp) {
+  //   return new this.constructor(
+  //     this.value + 36.576 * (temp - 15),
+  //     "m",
+  //     "MSL"
+  //   );
+  // }
+
+  toString(precision) {
+    if (this.displayUnit == "FL") {
+      const value = Math.round(this.displayValue * 0.1 + Number.EPSILON) / 0.1;
+      return `FL${value.toString().padStart(3, "0")}`;
+    } else if (this.value && this.reference) {
+      return `${super.toString(precision)} ${this.reference}`;
+    }
+  }
+
+  static get references() {
+    return ["MSL", "AGL", "QNH", "QNE", "QFE", "WGS84"];
+  }
+
+  static get units() {
+    return {
+      m: 1,
+      ft: 3.28084,
+      FL: 0.0328084
+    };
+  }
+
+  static from({ value, reference, ...properties }) {
+    return new this(value, undefined, reference, properties);
   }
 }
 
@@ -125,54 +192,45 @@ export class Consumption extends Volume {
 export class Weight extends Quantity {
   static get units() {
     return {
-      kg: 1000,
+      kg: 1,
       lb: 0.453592,
       t: 1000
     };
   }
 }
 
-export class Altitude extends Distance {
-  constructor(value = 0, unit, reference) {
-    if (unit == "FL") reference = "QNE";
-    else if (unit && !reference)
-      throw `third argument 'reference' should be given, got '${reference}'`;
-
-    super(value, unit, { reference });
-  }
-
-  // densityAltitude(temp) {
-  //   return new this.constructor(
-  //     this.value + 36.576 * (temp - 15),
-  //     "m",
-  //     "MSL"
-  //   );
-  // }
-
-  toString(precision) {
-    if (this.unit == "FL") {
-      const value = Math.round(this.displayValue * 0.1 + Number.EPSILON) / 0.1;
-      return `FL${value.toString().padStart(3, "0")}`;
-    } else if (this.value && this.unit && this.reference) {
-      return `${super.toString(precision)} ${this.reference}`;
-    }
-  }
-
-  static get references() {
-    return ["MSL", "AGL", "QNH", "QNE", "QFE", "WGS84"];
-  }
-
+export class Angle extends Quantity {
   static get units() {
     return {
-      m: 1,
-      ft: 3.28084,
-      FL: 0.0328084
+      rad: 1,
+      "°": 180 / Math.PI,
+      gon: 200 / Math.PI,
+      rev: 1 / 2 / Math.PI,
+      "₥": 6400 / 2 / Math.PI
     };
   }
+}
 
-  static from(object = {}) {
-    let imported = new this(object.value, undefined, object.reference);
-    imported.unit = object.unit;
-    return imported;
+export class Azimuth extends Angle {
+  get displayValue() {
+    return this._convertTo(
+      (this.value + 2 * Math.PI) % (2 * Math.PI),
+      this.displayUnit
+    );
+  }
+  set displayValue(val) {
+    super.displayValue = val;
+  }
+}
+
+export class Bearing extends Angle {
+  get displayValue() {
+    return this._convertTo(
+      ((this.value + 3 * Math.PI) % (2 * Math.PI)) - Math.PI,
+      this.displayUnit
+    );
+  }
+  set displayValue(val) {
+    super.displayValue = val;
   }
 }

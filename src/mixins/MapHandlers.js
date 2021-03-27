@@ -25,10 +25,10 @@ export const MapHandlers = {
       this.map.locate(this.geoOptions);
     },
     _locationFound(e) {
-      let location = Location.from(e);
+      let location = Location.fromLocate(e);
 
       try {
-        if (location.accuracy > this.maxAccuracy)
+        if (location.accuracy > this.settings.maxAccuracy)
           throw {
             ...location,
             type: "locationerror",
@@ -39,20 +39,23 @@ export const MapHandlers = {
         return;
       }
 
-      // now we have a location, let's polish it & use it.
+      // // now we have a location, let's polish it & use it.
       if (
         this.lastKnownLocation instanceof Location &&
-        location.distanceTo(this.lastKnownLocation) <= this.minDistance
+        location.distanceTo(this.lastKnownLocation) <= this.settings.minDistance
       )
         return;
 
       if (this.lastKnownLocation instanceof Location)
-        location.computeMovementFrom(this.lastKnownLocation);
+        Object.assign(location, location.movementFrom(this.lastKnownLocation));
 
-      if (location.altitude.accuracy > this.maxAccuracy)
+      if (
+        location.altitude &&
+        location.altitude.accuracy > this.settings.maxAccuracy
+      )
         location.altitude = undefined;
 
-      if (location.speed < this.minSpeed) {
+      if (location.speed < this.settings.minSpeed) {
         location.speed = undefined;
         location.heading = undefined;
       }
@@ -71,13 +74,13 @@ export const MapHandlers = {
 
     _locationError(e) {
       if (process.env.NODE_ENV == "development") {
+        console.error(e);
         const location = this._fakeLocation({
-          ...e,
+          e,
           ...this.lastKnownLocation,
-          accuracy: 20
+          accuracy: this.settings.maxAccuracy / 2
         });
         this._locationFound(location);
-        console.error(e);
       } else {
         delete e.sourceTarget;
         delete e.target;
@@ -91,24 +94,33 @@ export const MapHandlers = {
       }
     },
 
-    _fakeLocation(
-      { latitude = 0, longitude = 0, accuracy = 20, altitude = 1000 },
-      spread = 5
-    ) {
-      console.debug("faking location");
+    _fakeLocation({
+      latitude = 0,
+      longitude = 0,
+      accuracy = 20,
+      altitude = 1000,
+      timestamp
+    }) {
+      console.debug("Faking around:", {
+        latitude,
+        longitude,
+        accuracy,
+        altitude,
+        timestamp
+      });
 
-      let rand = (s = spread) => {
+      let rand = (s = 1) => {
         return (Math.random() - 0.5) * s;
       };
 
-      return Location.from({
-        latitude: latitude + rand(spread / 100),
-        longitude: longitude + rand(spread / 100),
-        accuracy: accuracy + rand((accuracy * spread) / 100),
-        altitude: altitude + rand((altitude * spread) / 100),
-        altitudeAccuracy: accuracy + rand((accuracy * spread) / 100),
-        timestamp: Date.now()
-      });
+      return {
+        latitude: latitude + rand(),
+        longitude: longitude + rand(),
+        accuracy: accuracy + rand(),
+        altitude: altitude + rand(10),
+        altitudeAccuracy: accuracy + rand(),
+        timestamp
+      };
     }
   }
 };

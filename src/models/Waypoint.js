@@ -1,12 +1,12 @@
 import { Model } from "@/models/Base.js";
-import { Altitude } from "@/models/Quantities.js";
+import { Altitude, Distance, Speed, Azimuth } from "@/models/Quantities.js";
 import LatLon from "geodesy/latlon-spherical.js";
 
 export class Waypoint extends Model {
-  constructor({ name, latitude, longitude, altitude, notes, latlng } = {}) {
-    if (altitude) altitude = Altitude.from(altitude);
-    super({ name, latitude, longitude, altitude, notes });
-    if (latlng) this.latlng = latlng;
+  constructor(latitude, longitude, altitude, name, notes) {
+    if (altitude && !(altitude instanceof Altitude))
+      altitude = new Altitude(altitude);
+    super({ latitude, longitude, altitude, name, notes });
   }
 
   set latlng({ lat, lng } = {}) {
@@ -23,15 +23,16 @@ export class Waypoint extends Model {
   }
 
   distanceTo(otherWP) {
-    return this.point.rhumbDistanceTo(otherWP.point);
+    return new Distance(this.point.rhumbDistanceTo(otherWP.point), "m");
   }
 
   bearingTo(otherWP) {
-    return this.point.rhumbBearingTo(otherWP.point);
+    return new Azimuth(this.point.rhumbBearingTo(otherWP.point), "°");
   }
 
   destinationPoint(distance, heading) {
-    return this.point.rhumbDestinationPoint(distance, heading);
+    let point = this.point.rhumbDestinationPoint(distance, heading);
+    return new this.constructor(point.lat, point.lng);
   }
 
   toGeoJSON() {
@@ -45,45 +46,80 @@ export class Waypoint extends Model {
     // or with : https://www.npmjs.com/package/geojson >>>> GeoJSON.parse(data, { Point: ['lat', 'lng'] });
   }
 
-  static from(object) {
-    object.name |= object.position;
-    object.altitude = Altitude.form(object.altitude);
-    return super.import(object);
+  static from({ latitude, longitude, altitude, latlng, name, notes }) {
+    if (arguments[0] instanceof this) return arguments[0];
+    if (altitude) altitude = Altitude.from(altitude);
+    if (latlng) {
+      latitude = latitude || latlng.lat;
+      longitude = longitude || latlng.lng;
+    }
+    return new this(latitude, longitude, altitude, name, notes);
   }
 }
 
 export class Location extends Waypoint {
-  constructor({
-    name,
+  constructor(
     latitude,
     longitude,
     altitude,
-    notes,
-    latlng,
     accuracy,
-    heading,
+    verticalSpeed,
     speed,
-    timestamp
-  } = {}) {
-    super({ name, latitude, longitude, altitude, notes, latlng });
-    this.type = "location";
-    this.timestamp = timestamp;
-    this.accuracy = accuracy;
-    if (heading) this.heading = heading % 360;
-    // TODO: set speed object
-    this.speed = speed;
+    heading,
+    timestamp,
+    name,
+    notes
+  ) {
+    super(latitude, longitude, altitude, name, notes);
+
+    Object.assign(this, {
+      type: "location",
+      timestamp,
+      accuracy,
+      verticalSpeed,
+      heading,
+      speed
+    });
   }
 
-  computeMovementFrom(last) {
-    this.heading = last.bearingTo(this);
+  _delayFrom(other) {
+    return this.timestamp - other.timestamp;
+  }
 
-    this.speed =
-      (this.distanceTo(last) / (this.timestamp - last.timestamp)) * 1000;
+  _climbFrom(other) {
+    return this.altitude - other.altitude;
+  }
 
-    this.verticalSpeed =
-      ((this.altitude.value - last.altitude.value) /
-        (this.timestamp - last.timestamp)) *
-      1000;
+  _speedFrom(other) {
+    try {
+      if (this._delayFrom(other) == 0)
+        throw "Teleportation is not yet a possibility";
+      return new Speed(
+        (this.distanceTo(other) / this._delayFrom(other)) * 1000
+      );
+    } catch {
+      return undefined;
+    }
+  }
+
+  _verticalSpeedFrom(other) {
+    try {
+      if (this._delayFrom(other) == 0)
+        throw "Teleportation is not yet a possibility";
+      return new Speed(
+        (this._climbFrom(other) / this._delayFrom(other)) * 1000
+      );
+    } catch {
+      return undefined;
+    }
+  }
+
+  movementFrom(other) {
+    return {
+      speed: this._speedFrom(other),
+      verticalSpeed: this._verticalSpeedFrom(other),
+      heading: other.bearingTo(this)
+    };
   }
 
   toBounds(sizeInMeters = this.accuracy) {
@@ -96,29 +132,95 @@ export class Location extends Waypoint {
     ];
   }
 
+  positionInSeconds(delay, heading = this.heading) {
+    if (this.speed && heading)
+      return this.destinationPoint(
+        this.speed.to("m/s") * delay,
+        heading.to("°")
+      );
+    else
+      throw "cannot calculate futur position, speed & heading should be provided";
+  }
+
   static from({
     latitude,
     longitude,
-    accuracy,
     altitude,
-    altitudeAccuracy,
+    accuracy,
+    latlng,
+    name,
+    notes,
     speed,
+    verticalSpeed,
     heading,
     timestamp
-  } = {}) {
-    return new this({
+  }) {
+    if (arguments[0] instanceof this) return arguments[0];
+    if (latlng) {
+      latitude = latitude || latlng.lat;
+      longitude = longitude || latlng.lng;
+    }
+    if (altitude) altitude = Altitude.from(altitude);
+    if (speed) speed = Speed.from(speed);
+    if (heading) heading = new Azimuth(heading, "°");
+    if (verticalSpeed) verticalSpeed = Speed.from(verticalSpeed);
+
+    return new this(
+      latitude,
+      longitude,
+      altitude,
+      accuracy,
+      verticalSpeed,
+      speed,
+      heading,
+      timestamp,
+      name,
+      notes
+    );
+  }
+
+  static fromGeolocationPosition({
+    coords: {
+      latitude,
+      longitude,
+      altitude,
+      accuracy,
+      altitudeAccuracy,
+      heading,
+      speed
+    },
+    timestamp
+  }) {
+    if (altitude)
+      altitude = new Altitude(altitude, "m", "WGS84", {
+        accuracy: altitudeAccuracy
+      });
+    if (speed) speed = new Speed(speed, "m/s");
+    if (heading) heading = new Azimuth(heading, "°");
+
+    return this.from({
       latitude,
       longitude,
       accuracy,
-      altitude: {
-        value: altitude,
-        accuracy: altitudeAccuracy,
-        unit: "m",
-        ref: "WGS84"
-      },
+      altitude,
       speed,
       heading,
       timestamp
+    });
+  }
+
+  static fromLocate({ altitude, altitudeAccuracy, speed, heading, ...others }) {
+    if (altitude)
+      altitude = new Altitude(altitude, "m", "WGS84", {
+        accuracy: altitudeAccuracy
+      });
+    if (speed) speed = new Speed(speed, "m/s");
+    if (heading) heading = new Azimuth(heading, "°");
+
+    return this.from({
+      altitude,
+      speed,
+      ...others
     });
   }
 }

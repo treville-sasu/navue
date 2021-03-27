@@ -4,8 +4,8 @@ import { Model, Collection } from "@/models/Base.js";
 describe("model", () => {
   it("return first argument if it's an instance of Model", () => {
     const argModel = new Model();
-    expect(Object.is(new Model(argModel), argModel)).toBe(true);
-    expect(Object.is(new Model(argModel), new Model())).toBe(false);
+    expect(new Model(argModel)).toBe(argModel);
+    expect(new Model(argModel)).not.toBe(new Model());
   });
   it("create Model with any properties", () => {
     expect(new Model({ a: 1, b: 2 })).toMatchObject({ a: 1, b: 2 });
@@ -13,6 +13,14 @@ describe("model", () => {
 
   it("parse in Model with any properties", () => {
     expect(Model.parse('{"a":1,"b":2}')).toMatchObject({ a: 1, b: 2 });
+  });
+
+  it("import Object in Model with any properties or return Object if already Model", () => {
+    expect(Model.from({ a: 1, b: 2 })).toEqual(new Model({ a: 1, b: 2 }));
+
+    let model = new Model({ a: 1, b: 2 });
+    expect(Model.from(model)).toBe(model);
+    expect(Model.from(model)).not.toBe(new Model({ a: 1, b: 2 }));
   });
 
   // TODO: code and spec toJSON() if needed...

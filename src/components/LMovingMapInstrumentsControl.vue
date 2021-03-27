@@ -1,39 +1,19 @@
 <template>
   <l-control v-bind="$attrs">
-    <b-field grouped group-multiline>
-      <div class="control">
-        <b-taglist attached>
-          <b-tag type="is-primary" size="is-medium">{{
-            value.speed | to("kt") | precision(0)
-          }}</b-tag>
-          <b-tag type="is-light" size="is-medium">kt</b-tag>
-        </b-taglist>
-      </div>
-      <div class="control">
-        <b-taglist attached>
-          <b-tag type="is-primary" size="is-medium">{{
-            value.heading | asHeading | precision(0)
-          }}</b-tag>
-          <b-tag type="is-light" size="is-medium">°</b-tag>
-        </b-taglist>
-      </div>
-      <div class="control">
-        <b-taglist attached>
-          <b-tag type="is-info" size="is-medium">{{
-            value.altitude | to("ft") | precision(-1)
-          }}</b-tag>
-          <b-tag type="is-light" size="is-medium">ft</b-tag>
-        </b-taglist>
-      </div>
-      <div class="control">
-        <b-taglist attached>
-          <b-tag type="is-dark" size="is-medium">{{
-            value.vario | to("ft/min") | precision(-1)
-          }}</b-tag>
-          <b-tag type="is-light" size="is-medium">ft/min</b-tag>
-        </b-taglist>
-      </div>
-    </b-field>
+    <b-taglist>
+      <b-tag type="is-primary" size="is-medium">{{
+        speed | as("kt") | toString(0)
+      }}</b-tag>
+      <b-tag type="is-success" size="is-medium">{{
+        heading | toString(-1)
+      }}</b-tag>
+      <b-tag type="is-info" size="is-medium">{{
+        altitude | as("ft") | toString(-1)
+      }}</b-tag>
+      <b-tag type="is-dark" size="is-medium">{{
+        verticalSpeed | as("ft/min") | toString(-1)
+      }}</b-tag>
+    </b-taglist>
   </l-control>
 </template>
 
@@ -46,14 +26,7 @@ export default {
   components: {
     LControl
   },
-  props: {
-    value: {
-      type: Object,
-      default: () => {
-        return { speed: null, altitude: null, heading: null, vario: null };
-      }
-    }
-  },
+  props: ["altitude", "heading", "speed", "verticalSpeed"],
   mixins: [UnitSystem]
 };
 </script>

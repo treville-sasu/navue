@@ -207,14 +207,13 @@ export default {
 
       if (this.settings.getLocation) this.startLocate();
     },
-    bestView(e) {
-      // FIXME: toBounds do not work well in portrait.
-      this.map.flyToBounds(
-        e.toBounds(
-          e.speed ? e.speed * this.settings.futurPositionDelay : e.accuracy
-        ),
-        { padding: [100, 100] }
+    bestView(location) {
+      let bounds = location.toBounds(
+        location.speed
+          ? location.speed * this.settings.futurPositionDelay
+          : location.accuracy
       );
+      this.map.flyToBounds(bounds, { padding: [100, 100] });
     },
     addLocation(e) {
       return this.$pouch[this.traceDB].post(
@@ -237,7 +236,7 @@ export default {
         .catch(console.error);
     },
     setDestination(e) {
-      this.destination = new Waypoint(e);
+      this.destination = Waypoint.from(e);
     },
     getDestination(lastDestination) {
       //TODO : on route select, set a Next Destination
