@@ -30,8 +30,8 @@
 //TODO : implement geodesic lines and enable Midpoints.
 
 import { LLayerGroup, findRealParent } from "vue2-leaflet";
-import LWaypointMarker from "@/components/LWaypointMarker.vue";
-import LTracePolyline from "@/components/LTracePolyline.vue";
+import LWaypointMarker from "@/components/leaflet/LWaypointMarker.vue";
+import LTracePolyline from "@/components/leaflet/LTracePolyline.vue";
 
 export default {
   name: "LRouteLayerGroup",

@@ -101,7 +101,7 @@ export const MapTools = {
           this.map._container.style.cursor = "crosshair";
           break;
         case "select":
-          this.isNavigationSelectActive = true;
+          this.isNavigationManagerActive = true;
           break;
         case "clear":
           if (this.navigation) this.navigation.removeRoute(this.currentRoute);

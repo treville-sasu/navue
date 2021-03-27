@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import BIcao from "@/components/BIcao.vue";
+import BIcao from "@/components/buefy/BIcao.vue";
 
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";

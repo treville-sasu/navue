@@ -169,7 +169,7 @@
 </template>
 
 <script>
-import BIcao from "@/components/BIcao.vue";
+import BIcao from "@/components/buefy/BIcao.vue";
 
 import NotamMessage from "@/components/NotamMessage.vue";
 import ChartCartridge from "@/components/ChartCartridge.vue";

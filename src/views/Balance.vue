@@ -9,7 +9,7 @@
         </h2>
       </div>
     </section>
-    <AircraftSelect v-if="!aircraft" select />
+    <AircraftManager v-if="!aircraft" select />
     <section class="section" v-else>
       <div class="columns">
         <div class="column">
@@ -39,14 +39,14 @@
 </template>
 
 <script>
-import AircraftSelect from "@/components/AircraftSelect.vue";
+import AircraftManager from "@/components/AircraftManager.vue";
 import BalanceChart from "@/components/BalanceChart.vue";
 import { ChartSettings } from "@/mixins/apputils";
 
 export default {
   name: "Balance",
   components: {
-    AircraftSelect,
+    AircraftManager,
     BalanceChart
   },
   mixins: [ChartSettings],

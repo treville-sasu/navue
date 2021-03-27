@@ -101,7 +101,7 @@ import { DataSelect } from "@/mixins/DataSelect";
 import { Aircraft } from "@/models/Aircraft";
 
 export default {
-  name: "AircraftSelect",
+  name: "AircraftManager",
   mixins: [DataSelect],
   props: {
     select: Boolean,

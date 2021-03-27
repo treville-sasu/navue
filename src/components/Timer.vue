@@ -17,12 +17,12 @@ export default {
     duration: Number,
     precision: {
       type: Number,
-      default: 10,
+      default: 10
     },
     countdown: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
     // infinite: {
     //   type: Boolean,
     //   default: false,
@@ -32,7 +32,7 @@ export default {
     return {
       elapsed: 0,
       timer: undefined,
-      indeterminate: false,
+      indeterminate: false
     };
   },
   computed: {
@@ -41,7 +41,7 @@ export default {
     },
     value() {
       return this.countdown ? this.duration - this.elapsed : this.elapsed;
-    },
+    }
   },
   methods: {
     start() {
@@ -78,7 +78,7 @@ export default {
         this.stop();
         this.$emit("timesup", this.elapsed, this.duration);
       } else this.elapsed += i;
-    },
-  },
+    }
+  }
 };
 </script>

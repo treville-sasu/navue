@@ -1,7 +1,7 @@
 <template>
   <section style="height: 100%">
     <b-modal
-      v-model="isNavigationSelectActive"
+      v-model="isNavigationManagerActive"
       trap-focus
       destroy-on-hide
       has-modal-card
@@ -11,7 +11,7 @@
     >
       <template #default="props">
         <div class="modal-card">
-          <NavigationSelect select create save @input="props.close" />
+          <NavigationManager select create save @input="props.close" />
         </div>
       </template>
     </b-modal>
@@ -76,18 +76,18 @@ body,
 </style>
 
 <script>
-import NavigationSelect from "@/components/NavigationSelect.vue";
+import NavigationManager from "@/components/NavigationManager.vue";
 import L from "leaflet";
 import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
 import { LMap, LPolyline } from "vue2-leaflet";
-import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
+import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup.vue";
 
-import LRouteToolboxControl from "@/components/LRouteToolboxControl.vue";
-import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
+import LRouteToolboxControl from "@/components/leaflet/LRouteToolboxControl.vue";
+import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
 
-import LControlGeocoder from "@/components/LControlGeocoder";
+import LControlGeocoder from "@/components/leaflet/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 
 import { MapTools } from "@/mixins/MapTools";
@@ -95,7 +95,7 @@ import { MapTools } from "@/mixins/MapTools";
 export default {
   name: "Route",
   components: {
-    NavigationSelect,
+    NavigationManager,
     LMap,
     LPolyline,
     LBaseLayerGroup,
@@ -107,7 +107,7 @@ export default {
   mixins: [MapTools],
   data() {
     return {
-      isNavigationSelectActive: false,
+      isNavigationManagerActive: false,
       fullMapSettings: {
         zoom: 10,
         center: { lat: 42.69597591582309, lng: 2.879308462142945 },

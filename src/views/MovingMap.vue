@@ -11,7 +11,7 @@
     >
       <template #default="props">
         <div class="modal-card">
-          <NavigationSelect @input="props.close" select />
+          <NavigationManager @input="props.close" select />
         </div>
       </template>
     </b-modal>
@@ -88,7 +88,7 @@ body,
 </style>
 
 <script>
-import NavigationSelect from "@/components/NavigationSelect.vue";
+import NavigationManager from "@/components/NavigationManager.vue";
 
 import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
@@ -97,17 +97,17 @@ import { LMap, LPolyline, LControlZoom } from "vue2-leaflet";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
 
-import LBaseLayerGroup from "@/components/LBaseLayerGroup.vue";
+import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup.vue";
 
-import LMovingMapSettingsControl from "@/components/LMovingMapSettingsControl.vue";
-import LMovingMapToolboxControl from "@/components/LMovingMapToolboxControl.vue";
-import LMovingMapInstrumentsControl from "@/components/LMovingMapInstrumentsControl.vue";
-import LMovingMapDestinationControl from "@/components/LMovingMapDestinationControl.vue";
-import LTimeControl from "@/components/LTimeControl.vue";
+import LMovingMapSettingsControl from "@/components/leaflet/LMovingMapSettingsControl.vue";
+import LMovingMapToolboxControl from "@/components/leaflet/LMovingMapToolboxControl.vue";
+import LMovingMapInstrumentsControl from "@/components/leaflet/LMovingMapInstrumentsControl.vue";
+import LMovingMapDestinationControl from "@/components/leaflet/LMovingMapDestinationControl.vue";
+import LTimeControl from "@/components/leaflet/LTimeControl.vue";
 
-import LLocationMarker from "@/components/LLocationMarker.vue";
-import LDestinationMarker from "@/components/LDestinationMarker.vue";
-import LRouteLayerGroup from "@/components/LRouteLayerGroup.vue";
+import LLocationMarker from "@/components/leaflet/LLocationMarker.vue";
+import LDestinationMarker from "@/components/leaflet/LDestinationMarker.vue";
+import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
 
 import { Waypoint } from "@/models/Waypoint.js";
 import { WakeLock } from "@/mixins/apputils.js";
@@ -116,7 +116,7 @@ import { WakeLock } from "@/mixins/apputils.js";
 export default {
   name: "MovingMap",
   components: {
-    NavigationSelect,
+    NavigationManager,
     LMap,
     LControlZoom,
     LPolyline,
@@ -198,7 +198,8 @@ export default {
         limit: this.settings.traceLength,
         selector: {
           type: this.traceType
-        }
+        },
+        sort: ["timestamp"]
       };
     }
   },

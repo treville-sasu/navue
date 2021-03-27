@@ -66,7 +66,7 @@
           Manage Aircrafts
         </b-navbar-item>
         <b-navbar-item tag="div" style="min-width: 20vw;">
-          <AircraftSelect select />
+          <AircraftManager select />
         </b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-dropdown hoverable collapsible right>
@@ -82,15 +82,12 @@
 </template>
 
 <script>
-import AircraftSelect from "@/components/AircraftSelect.vue";
+import AircraftManager from "@/components/AircraftManager.vue";
 import Login from "@/components/Login.vue";
 
 export default {
   name: "Navbar",
-  components: { AircraftSelect, Login },
-  data() {
-    return { isAircraftSelectActive: false };
-  },
+  components: { AircraftManager, Login },
   computed: {
     currentAircraft() {
       return this.$store.state.currentAircraft;

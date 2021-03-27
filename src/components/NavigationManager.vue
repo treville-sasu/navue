@@ -112,7 +112,7 @@ import { DataSelect } from "@/mixins/DataSelect";
 import { Navigation } from "@/models/Navigation";
 
 export default {
-  name: "NavigationSelect",
+  name: "NavigationManager",
   mixins: [DataSelect],
   props: {
     select: Boolean,

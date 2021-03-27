@@ -161,7 +161,7 @@
 
 <script>
 //TODO: Check why messages request are sent twice.
-import BIcao from "@/components/BIcao.vue";
+import BIcao from "@/components/buefy/BIcao.vue";
 
 import WeatherMessage from "@/components/WeatherMessage.vue";
 

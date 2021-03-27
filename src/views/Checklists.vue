@@ -4,7 +4,7 @@
       <h1 class="title">
         Select an aircraft
       </h1>
-      <AircraftSelect select />
+      <AircraftManager select />
     </div>
     <b-tabs v-else class="box" v-model="currentCL" multiline>
       <b-tab-item label="Paces" v-if="paces">
@@ -70,14 +70,14 @@
 </template>
 
 <script>
-import AircraftSelect from "@/components/AircraftSelect.vue";
+import AircraftManager from "@/components/AircraftManager.vue";
 import UnitSystem from "@/mixins/UnitSystem.js";
 import { WakeLock } from "@/mixins/apputils.js";
 
 export default {
   name: "Checklists",
   mixins: [WakeLock, UnitSystem],
-  components: { AircraftSelect },
+  components: { AircraftManager },
   data() {
     return {
       currentCL: 0,

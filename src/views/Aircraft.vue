@@ -11,7 +11,7 @@
       </div>
     </section>
     <section class="section">
-      <AircraftSelect select create save />
+      <AircraftManager select create save />
       <b-tabs position="is-centered" multiline expanded v-if="aircraft">
         <b-tab-item label="Identification">
           <b-field label="Registration" horizontal>
@@ -56,7 +56,7 @@
   </section>
 </template>
 <script>
-import AircraftSelect from "@/components/AircraftSelect.vue";
+import AircraftManager from "@/components/AircraftManager.vue";
 
 import AircraftDetailPaces from "@/components/AircraftDetailPaces.vue";
 import AircraftDetailBalance from "@/components/AircraftDetailBalance.vue";
@@ -72,7 +72,7 @@ export default {
     AircraftDetailEnvelopes,
     AircraftDetailConsumptions,
     AircraftDetailChecklists,
-    AircraftSelect
+    AircraftManager
   },
   computed: {
     aircraft() {
