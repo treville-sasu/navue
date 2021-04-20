@@ -50,7 +50,8 @@ export class Waypoint extends Model {
 
   static from({ type, latitude, longitude, altitude, latlng, ...properties }) {
     if (arguments[0] instanceof this) return arguments[0];
-    else if (type != this.name) throw `Supplied object is no ${this.name}`;
+    else if (type != this.name)
+      throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
 
     if (altitude) altitude = Altitude.from(altitude);
     if (latlng) {
@@ -143,7 +144,7 @@ export class Location extends Waypoint {
     heading,
     timestamp,
     ...waypoint
-  }) {
+  } = {}) {
     //TODO accuracy should be a Distance.
     if (verticalSpeed) verticalSpeed = Speed.from(verticalSpeed);
     if (speed) speed = Speed.from(speed);

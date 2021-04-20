@@ -117,7 +117,7 @@ export class Moment extends Model {
     else if (type == this.name) {
       if (mass) mass = Weight.from(mass);
       if (lever) lever = Distance.from(lever);
-      return new this(mass, lever, { type });
-    } else throw `Supplied object is no ${this.name}`;
+      return new this(mass, lever);
+    } else throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
   }
 }

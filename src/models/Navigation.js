@@ -83,7 +83,8 @@ export class Navigation extends Model {
   }
 
   static from({ type, routes, _id, _rev, ...properties } = {}) {
-    if (type != this.name)
+    if (arguments[0] instanceof this) return arguments[0];
+    else if (type != this.name)
       throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
     else {
       if (routes) routes = Store.from(routes, Store, Waypoint);

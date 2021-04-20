@@ -11,10 +11,10 @@ export class Model {
     };
   }
 
-  static from(object = {}) {
-    if (object instanceof this) return object;
-    else if (object.type == this.name) return new this(object);
-    else throw `Supplied object is no ${this.name}`;
+  static from({ type, ...properties } = {}) {
+    if (arguments[0] instanceof this) return arguments[0];
+    else if (type == this.name) return new this(properties);
+    else throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
   }
 }
 
