@@ -72,11 +72,9 @@
 <script>
 import { LMarker, LIcon, LPopup, LTooltip } from "vue2-leaflet";
 import WaypointContent from "@/components/WaypointContent.vue";
-import UnitSystem from "@/mixins/UnitSystem.js";
 
 export default {
   name: "LWaypointMarker",
-  mixins: [UnitSystem],
   components: {
     LMarker,
     LIcon,

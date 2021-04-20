@@ -1,6 +1,6 @@
 import { ImportExport, UIHelpers } from "@/mixins/apputils";
 
-export const DataSelect = {
+export const DataManager = {
   mixins: [ImportExport, UIHelpers],
   data() {
     return {
@@ -15,17 +15,6 @@ export const DataSelect = {
       );
     }
   },
-  pouch: {
-    availableData() {
-      return {
-        database: "navue",
-        selector: {
-          type: this.dataType,
-          registration: { $regex: RegExp(this.search, "i") }
-        }
-      };
-    }
-  },
   methods: {
     useData(data) {
       this.selectedData = data;
@@ -33,16 +22,13 @@ export const DataSelect = {
     },
     saveData() {
       this.$store
-        .dispatch("saveToDB", {
-          _id: `${this.dataType}-${Date.now()}`,
-          ...this.selectedData
-        })
-        .then(res => {
-          this.useData({ ...this.selectedData, _id: res.id, _rev: res.rev });
+        .dispatch("saveToDB", this.selectedData)
+        .then(data => {
+          this.useData(data);
           this.openWarning("Saved");
         })
         .catch(err => {
-          console.debug(err);
+          console.error(err);
           this.openWarning(err);
         });
     },
@@ -54,7 +40,7 @@ export const DataSelect = {
           this.openWarning("Deleted");
         })
         .catch(err => {
-          console.debug(err);
+          console.error(err);
           this.openWarning(err);
         });
     },
@@ -65,7 +51,7 @@ export const DataSelect = {
           this.openWarning("Imported");
         })
         .catch(err => {
-          console.debug(err);
+          console.error(err);
           this.openWarning(err);
         });
     },

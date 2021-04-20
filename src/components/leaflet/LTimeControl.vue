@@ -14,7 +14,7 @@
             @click="isEnroute ? null : startFlight()"
             @contextmenu.prevent.stop="isEnroute ? stopFlight() : null"
           >
-            {{ fromStart | fromTimestamp | asDuration }}
+            {{ fromStart | asDuration }}
           </p>
         </div>
       </div>
@@ -31,7 +31,7 @@
             @click="startChrono"
             @contextmenu.prevent.stop="stopChrono"
           >
-            {{ chrono | fromTimestamp | asDuration }}
+            {{ chrono | asDuration }}
           </p>
         </div>
       </div>
@@ -47,7 +47,7 @@
           >
             <ul>
               <li v-for="time in markedTimes" :key="time">
-                {{ time | fromTimestamp | asDuration }}
+                {{ time | asDuration }}
               </li>
             </ul>
             <span class="title"> - </span>

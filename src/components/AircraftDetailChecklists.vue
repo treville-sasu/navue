@@ -1,7 +1,7 @@
 <template>
   <section>
     <b-button @click="addList" type="is-primary">Add a list</b-button>
-    <b-tabs v-model="currentList" vertical>
+    <b-tabs v-model="activeTab" vertical>
       <b-tab-item
         v-for="(checklist, index) in value"
         :key="index"
@@ -31,7 +31,7 @@
           </b-table-column>
           <b-table-column v-slot="props">
             <b-button
-              @click="removeItem(checklist.items, props.row)"
+              @click="removeItem(checklist, props.row)"
               type="is-secondary"
               icon-right="close"
             />
@@ -40,7 +40,7 @@
             Add Expectations, could be a verification or an action.
           </template>
         </b-table>
-        <b-button @click="addItem(checklist.items)" type="is-primary"
+        <b-button @click="addItem(checklist)" type="is-primary"
           >Add an expectation</b-button
         >
       </b-tab-item>
@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { Store } from "@/models/Base.js";
+
 export default {
   name: "AircraftDetailChecklists",
   props: {
@@ -59,36 +61,37 @@ export default {
     }
   },
   data() {
-    return { currentList: undefined };
+    return { activeTab: undefined };
   },
   methods: {
     addList() {
-      this.currentList =
-        this.value.push({
-          name: undefined,
-          items: []
-        }) - 1;
+      //FIXME : on issue pops in tabs when adding a list.
+      this.activeTab = this.value.add(
+        new Store({
+          name: undefined
+        })
+      );
     },
     removeList(index) {
-      this.currentList = index - 1;
-      this.value.splice(index, 1);
+      this.value.remove(undefined, index);
+      this.activeTab = Math.max(index - 1, 0);
     },
     addItem(items) {
-      items.push({
+      items.add({
         name: undefined,
         expect: undefined,
         action: false
       });
     },
     removeItem(items, item) {
-      items.splice(items.indexOf(item), 1);
+      items.remove(item);
     }
   },
   watch: {
     value: {
       deep: true,
-      handler(oldVal, newVal) {
-        this.$emit("input", newVal);
+      handler(val) {
+        this.$emit("input", val);
       }
     }
   }

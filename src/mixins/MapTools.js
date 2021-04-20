@@ -4,17 +4,27 @@ export const MapTools = {
   data() {
     return {
       tool: null,
-      pointerVector: [null, null],
+      pointerPosition: null,
       currentRoute: null
     };
   },
   computed: {
     inactiveRoutes() {
       try {
-        return this.navigation.routes.filter(rte => rte != this.currentRoute);
+        return this.navigation.routes.items.filter(
+          rte => rte != this.currentRoute
+        );
       } catch {
         return [];
       }
+    },
+    pointerVector() {
+      return [
+        this.currentRoute && this.currentRoute.last
+          ? this.currentRoute.last.latlng
+          : null,
+        this.pointerPosition ? this.pointerPosition.latlng : null
+      ];
     },
     mapEvents() {
       return [
@@ -42,7 +52,7 @@ export const MapTools = {
         contextmenu: () => this.selectRoute(null)
       };
       let pointerEvents = {
-        mouseout: () => this.updatePointer(null),
+        mouseout: this.updatePointer,
         mousemove: this.updatePointer
       };
       switch (this.tool) {
@@ -69,18 +79,18 @@ export const MapTools = {
       this.map.locate({ setView: true, maxZoom: 10 });
     },
     selectRoute(id) {
-      this.currentRoute = this.navigation.routes[id];
+      this.currentRoute = this.inactiveRoutes[id];
     },
-    addMarker(e) {
-      this.navigation.addWaypoint(e, this.currentRoute);
+    addMarker({ latlng } = {}) {
+      this.navigation.addWaypoint({ latlng }, this.currentRoute);
     },
     removeMarker(id) {
       this.navigation.removeWaypoint(id, this.currentRoute);
       if (this.navigation.clearRoute(this.currentRoute))
         this.currentRoute = null;
     },
-    updatePointer(e) {
-      this.pointerVector.splice(1, 1, e ? e.latlng : null);
+    updatePointer({ latlng, type } = {}) {
+      this.pointerPosition = { latlng, type };
     }
   },
   watch: {
@@ -110,12 +120,8 @@ export const MapTools = {
           break;
       }
     },
-    currentRoute(newVal) {
-      if (newVal && newVal.length > 0)
-        this.pointerVector.splice(0, 1, newVal[newVal.length - 1].latlng);
-      else this.pointerVector.splice(0, 1, null);
-
-      if (!newVal) this.tool = null;
+    currentRoute(route) {
+      if (!route) this.tool = null;
     }
   }
 };

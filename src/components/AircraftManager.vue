@@ -97,12 +97,12 @@
 </style>
 
 <script>
-import { DataSelect } from "@/mixins/DataSelect";
+import { DataManager } from "@/mixins/DataManager";
 import { Aircraft } from "@/models/Aircraft";
 
 export default {
   name: "AircraftManager",
-  mixins: [DataSelect],
+  mixins: [DataManager],
   props: {
     select: Boolean,
     create: Boolean,
@@ -110,8 +110,19 @@ export default {
   },
   data() {
     return {
-      dataType: "aircraft"
+      dataType: "Aircraft"
     };
+  },
+  pouch: {
+    availableData() {
+      return {
+        database: "navue",
+        selector: {
+          type: this.dataType,
+          registration: { $regex: RegExp(this.search, "i") }
+        }
+      };
+    }
   },
   computed: {
     selectedData: {

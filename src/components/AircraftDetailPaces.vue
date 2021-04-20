@@ -1,12 +1,12 @@
 <template>
   <section>
-    <b-table :data="value">
+    <b-table :data="value.items">
       <b-table-column label="Name" v-slot="props">
         <b-input v-model="props.row.name" />
       </b-table-column>
       <b-table-column label="Speed" v-slot="props">
         <b-field>
-          <b-numberinput v-model="props.row.displayValue" :controls="false" />
+          <b-numberinput v-model="props.row.value" :controls="false" />
           <b-select v-model="props.row.unit" required>
             <option
               v-for="(ratio, name) in props.row.constructor.units"
@@ -36,7 +36,6 @@
 <style scoped lang="scss"></style>
 
 <script>
-import UnitSystem from "@/mixins/UnitSystem";
 import { Speed } from "@/models/Quantities.js";
 
 export default {
@@ -47,20 +46,19 @@ export default {
       checkedRows: []
     };
   },
-  mixins: [UnitSystem],
   methods: {
     addItem() {
-      this.value.push(new Speed(undefined, undefined, { name: undefined }));
+      this.value.add(new Speed(undefined, undefined, { name: undefined }));
     },
     removeItem(item) {
-      this.value.splice(this.value.indexOf(item), 1);
+      this.value.remove(item);
     }
   },
   watch: {
     value: {
       deep: true,
-      handler(oldVal, newVal) {
-        this.$emit("input", newVal);
+      handler(val) {
+        this.$emit("input", val);
       }
     }
   }

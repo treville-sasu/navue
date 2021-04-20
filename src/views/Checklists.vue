@@ -1,11 +1,14 @@
 <template>
   <section class="section">
-    <div class="notification is-primary is-light" v-if="!aircraft">
-      <h1 class="title">
-        Select an aircraft
-      </h1>
-      <AircraftManager select />
-    </div>
+    <nav class="level" v-if="!aircraft">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Aircraft</p>
+          <AircraftManager select v-if="!aircraft" />
+          <p class="title" v-else>{{ aircraft.registration }}</p>
+        </div>
+      </div>
+    </nav>
     <b-tabs v-else class="box" v-model="currentCL" multiline>
       <b-tab-item label="Paces" v-if="paces">
         <div class="grid">
@@ -15,7 +18,7 @@
             :key="pace.name"
           >
             <h1 class="title">
-              <b>{{ pace | toString(0) }}</b>
+              <b>{{ pace }}</b>
             </h1>
             <h2 class="subtitle">
               {{ pace.name }}
@@ -71,12 +74,11 @@
 
 <script>
 import AircraftManager from "@/components/AircraftManager.vue";
-import UnitSystem from "@/mixins/UnitSystem.js";
 import { WakeLock } from "@/mixins/apputils.js";
 
 export default {
   name: "Checklists",
-  mixins: [WakeLock, UnitSystem],
+  mixins: [WakeLock],
   components: { AircraftManager },
   data() {
     return {

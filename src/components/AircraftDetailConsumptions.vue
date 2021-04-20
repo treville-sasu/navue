@@ -1,12 +1,12 @@
 <template>
   <section>
-    <b-table :data="value">
+    <b-table :data="value.items">
       <b-table-column label="Name" v-slot="props">
         <b-input v-model="props.row.name" />
       </b-table-column>
       <b-table-column label="Value" v-slot="props">
         <b-field>
-          <b-numberinput v-model="props.row.displayValue" :controls="false" />
+          <b-numberinput v-model="props.row.value" :controls="false" />
           <b-select v-model="props.row.unit" required>
             <option
               v-for="(ratio, name) in props.row.constructor.units"
@@ -48,28 +48,26 @@
 </template>
 
 <script>
-import UnitSystem from "@/mixins/UnitSystem";
 import { Consumption } from "@/models/Quantities.js";
 
 export default {
   name: "AircraftDetailConsumptions",
   props: ["value"],
-  mixins: [UnitSystem],
   methods: {
     addItem() {
-      this.value.push(
+      this.value.add(
         new Consumption(undefined, undefined, undefined, { name: undefined })
       );
     },
     removeItem(item) {
-      this.value.splice(this.value.indexOf(item), 1);
+      this.value.remove(item);
     }
   },
   watch: {
     value: {
       deep: true,
-      handler(oldVal, newVal) {
-        this.$emit("input", newVal);
+      handler(val) {
+        this.$emit("input", val);
       }
     }
   }

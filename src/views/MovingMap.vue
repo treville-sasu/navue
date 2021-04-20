@@ -59,10 +59,10 @@
 
       <l-route-layer-group
         v-for="(route, id) in routes"
-        :value="route"
+        :value="route.items"
         :key="id"
         :active="false"
-        @contextmenu-waypoint="setDestination(route[$event])"
+        @contextmenu-waypoint="setDestination(route.items[$event])"
       />
       <l-destination-marker v-model="destination" :origin="lastKnownLocation" />
     </l-map>
@@ -137,7 +137,7 @@ export default {
       lastKnownError: undefined,
       destination: undefined,
       traceDB: "navue_trace",
-      traceType: "location",
+      traceType: "Location",
       settings: {
         getLocation: true,
         setView: true,
@@ -189,6 +189,16 @@ export default {
     },
     "settings.inFlight": function(val) {
       this.settings.fullScreen = val;
+    },
+    navigation(nav) {
+      try {
+        let bounds = nav.toBounds();
+        this.map.flyToBounds(bounds, {
+          padding: [50, 50]
+        });
+      } catch {
+        /* continue regardless of error */
+      }
     }
   },
   pouch: {
@@ -219,14 +229,10 @@ export default {
       );
       this.map.flyToBounds(bounds, { padding: [100, 100] });
     },
-    addLocation(e) {
-      return this.$pouch[this.traceDB].post(
-        {
-          ...e,
-          _id: e.timestamp.toString()
-        },
-        {}
-      );
+    addLocation(payload) {
+      let asJSON = JSON.parse(JSON.stringify(payload));
+      asJSON._id = payload.timestamp.toString();
+      return this.$pouch[this.traceDB].put(asJSON, {});
     },
     removeLocations() {
       this.$pouch[this.traceDB]
@@ -239,8 +245,14 @@ export default {
         })
         .catch(console.error);
     },
-    setDestination(e) {
-      this.destination = Waypoint.from(e);
+    setDestination({ latlng, latitude, longitude, altitude } = {}) {
+      this.destination = Waypoint.from({
+        latlng,
+        latitude,
+        longitude,
+        altitude,
+        type: "Waypoint"
+      });
     },
     getDestination(lastDestination) {
       //TODO : on route select, set a Next Destination

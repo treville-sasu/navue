@@ -108,12 +108,12 @@
 </template>
 
 <script>
-import { DataSelect } from "@/mixins/DataSelect";
+import { DataManager } from "@/mixins/DataManager";
 import { Navigation } from "@/models/Navigation";
 
 export default {
   name: "NavigationManager",
-  mixins: [DataSelect],
+  mixins: [DataManager],
   props: {
     select: Boolean,
     create: Boolean,
@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      dataType: "navigation"
+      dataType: "Navigation"
     };
   },
   pouch: {

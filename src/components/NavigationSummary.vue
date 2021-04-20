@@ -13,8 +13,7 @@
       :selected.sync="selectedSummaries"
     >
       <b-table-column field="distance" label="Dist." numeric v-slot="props">
-        {{ props.row.distance | to("NM") | precision(0) }}
-        NM
+        {{ props.row.distance | as("NM", 3) }}
       </b-table-column>
       <b-table-column field="duration" label="ETE" numeric v-slot="props">
         {{ props.row.duration | asDuration }}
@@ -27,7 +26,7 @@
       <template slot="footer">
         <th>
           <div class="th-wrap is-numeric">
-            {{ totalDistance | to("NM") | precision(0) }} NM
+            {{ totalDistance | as("NM", 3) }}
           </div>
         </th>
         <th>

@@ -7,13 +7,16 @@
           Here you can compute center of gravity and assert a correct margin
           within the aircraft limits
         </h2>
+        <div class="notification is-warning">
+          Do not USE, do not work for tanks
+        </div>
       </div>
     </section>
-    <AircraftManager v-if="!aircraft" select />
-    <section class="section" v-else>
-      <div class="columns">
+    <section class="section">
+      <AircraftManager select v-if="!aircraft" />
+      <div class="columns" v-else>
         <div class="column">
-          <div v-for="(weight, index) in aircraft.balance.weights" :key="index">
+          <div v-for="(weight, index) in aircraft.balance" :key="index">
             <b-field :label="weight.name" horizontal expanded>
               <b-slider
                 v-model="weight.value"
@@ -22,7 +25,7 @@
                 :tooltip="false"
               />
               <p class="control">
-                <b-tag type="is-dark">{{ weight.value }}</b-tag>
+                <b-tag type="is-dark">{{ weight }}</b-tag>
               </p>
             </b-field>
           </div>
@@ -53,10 +56,10 @@ export default {
   methods: {
     getCenterGravity(weights) {
       let cg = weights.reduce(
-        (acc, i) => {
-          let weight = i.value * (i.densitiy || 1);
+        (acc, w) => {
+          let weight = w.value * (w.densitiy || 1);
           return {
-            x: acc.x + weight * i.arm,
+            x: acc.x + weight * w.arm,
             y: acc.y + weight
           };
         },
@@ -71,18 +74,22 @@ export default {
       return this.$store.state.currentAircraft;
     },
     cgFullTank() {
-      return this.getCenterGravity(this.aircraft.balance.weights);
+      return this.getCenterGravity(this.aircraft.balance.items);
     },
     cgEmptyTank() {
       return this.getCenterGravity(
-        this.aircraft.balance.weights.filter(w => !w.tank)
+        this.aircraft.balance.items.filter(w => !w.tank)
       );
     },
     datasets() {
       return {
         datasets: [
-          ...this.aircraft.envelopes.map(e => {
-            return { ...this.envelopesDataset, label: e.name, data: e.values };
+          ...this.aircraft.envelopes.items.map(e => {
+            return {
+              ...this.envelopesDataset,
+              label: e.name,
+              data: e.items.map(i => i.toCoords())
+            };
           }),
           { ...this.cgDataset, data: [this.cgFullTank], label: "Full tank" },
           { ...this.cgDataset, data: [this.cgEmptyTank], label: "Empty tank" }

@@ -13,8 +13,8 @@
         sticky: true
       }"
     >
-      {{ bearing | toString(0) }} |
-      {{ distance | toString(0) }}
+      {{ bearing }} |
+      {{ distance | as("NM", 3) }}
     </l-tooltip>
   </l-polyline>
 </template>
@@ -52,11 +52,11 @@ import UnitSystem from "@/mixins/UnitSystem.js";
 
 export default {
   name: "LTracePolyline",
+  mixins: [UnitSystem],
   components: {
     LPolyline,
     LTooltip
   },
-  mixins: [UnitSystem],
   props: {
     active: Boolean,
     origin: Object,

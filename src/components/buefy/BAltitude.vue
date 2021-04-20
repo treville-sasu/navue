@@ -1,12 +1,12 @@
 <template>
   <b-field>
-    <b-numberinput v-model="displayValue" v-bind="$attrs" />
-    <b-select v-model="unit" required>
+    <b-numberinput v-model="value.value" v-bind="$attrs" />
+    <b-select v-model="value.unit" required>
       <option v-for="(ratio, name) in units" :value="name" :key="name">
         {{ name }}
       </option>
     </b-select>
-    <b-select v-model="reference" required>
+    <b-select v-model="value.reference" required>
       <option v-for="ref in references" :value="ref" :key="ref">
         {{ ref }}
       </option>
@@ -16,6 +16,7 @@
 
 <script>
 import { Altitude } from "@/models/Quantities.js";
+
 export default {
   name: "BAltitude",
   props: {
@@ -32,38 +33,17 @@ export default {
       units: Altitude.units
     };
   },
-  computed: {
-    displayValue: {
-      get() {
-        return this.value.displayValue;
-      },
-      set(val) {
-        this.update(val, this.unit, this.reference);
+
+  watch: {
+    value: {
+      deep: true,
+      handler(val) {
+        if ("FL" == val.unit) val.reference = "QNE";
+        else if (!val.reference) val.reference = "MSL";
+        if (!val.unit) val.unit = "ft";
+
+        this.$emit("input", val);
       }
-    },
-    unit: {
-      get() {
-        return this.value.unit;
-      },
-      set(val) {
-        this.update(this.displayValue, val, this.reference);
-      }
-    },
-    reference: {
-      get() {
-        return this.value.reference;
-      },
-      set(val) {
-        this.update(this.displayValue, this.unit, val);
-      }
-    }
-  },
-  methods: {
-    update(value, unit, reference) {
-      if ("FL" == unit) reference = "QNE";
-      if (!unit) unit = "ft";
-      if (!reference) reference = "MSL";
-      this.$emit("input", new Altitude(value, unit, reference));
     }
   }
 };

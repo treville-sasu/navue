@@ -69,13 +69,13 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Aircrafts</p>
-            <p class="title">{{ userStats.aircraft || 0 }}</p>
+            <p class="title">{{ userStats.Aircraft || 0 }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Navigations</p>
-            <p class="title">{{ userStats.navigation || 0 }}</p>
+            <p class="title">{{ userStats.Navigation || 0 }}</p>
           </div>
         </div>
         <div class="level-item has-text-centered">

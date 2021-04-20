@@ -34,7 +34,7 @@
 
       <l-route-layer-group
         v-if="currentRoute"
-        v-model="currentRoute"
+        v-model="currentRoute.items"
         :active="true"
         @contextmenu-waypoint="removeMarker"
         @click-trace="addMarker"
@@ -42,7 +42,7 @@
 
       <l-route-layer-group
         v-for="(route, id) in inactiveRoutes"
-        :value="route"
+        :value="route.items"
         :key="id"
         :active="false"
         @click-waypoint="selectRoute(id)"
@@ -149,12 +149,15 @@ export default {
     }
   },
   watch: {
-    navigation(newNav) {
-      let bounds;
-      if (newNav && "toBounds" in newNav && (bounds = newNav.toBounds()))
+    navigation(nav) {
+      try {
+        let bounds = nav.toBounds();
         this.map.flyToBounds(bounds, {
           padding: [50, 50]
         });
+      } catch {
+        /* continue regardless of error */
+      }
     }
   }
 };

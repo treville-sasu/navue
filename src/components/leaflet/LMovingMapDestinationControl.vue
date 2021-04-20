@@ -2,16 +2,14 @@
   <l-control v-bind="$attrs">
     <b-taglist>
       <b-tag type="is-primary" size="is-medium">{{
-        distance | as("NM") | toString(0)
+        distance | as("NM")
       }}</b-tag>
-      <b-tag type="is-success" size="is-medium">{{
-        heading | toString(0)
-      }}</b-tag>
+      <b-tag type="is-success" size="is-medium">{{ heading }}</b-tag>
       <b-tag type="is-info" size="is-medium">{{
-        to.altitude | toString(-1)
+        to.altitude | as("ft")
       }}</b-tag>
       <b-tag type="is-light" size="is-medium">{{
-        vertical_speed | as("ft/min") | toString(-1)
+        vertical_speed | as("m/s")
       }}</b-tag>
 
       <b-tag type="is-dark" size="is-medium">ETE {{ ETE | asDuration }}</b-tag>
@@ -22,6 +20,8 @@
 <script>
 import UnitSystem from "@/mixins/UnitSystem.js";
 import { LControl } from "vue2-leaflet";
+
+import { Speed } from "@/models/Quantities.js";
 
 export default {
   name: "LMovingMapDestinationControl",
@@ -43,11 +43,11 @@ export default {
     heading() {
       return this.from.bearingTo(this.to);
     },
-    relative_bearing() {
-      return this.heading - this.from.heading;
-    },
     vertical_speed() {
-      return (this.to.altitude - this.from.altitude) / this.ETE;
+      return new Speed(
+        (this.to.altitude - this.from.altitude) / this.ETE,
+        "m/s"
+      );
     }
   }
 };

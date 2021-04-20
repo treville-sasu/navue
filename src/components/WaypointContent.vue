@@ -17,14 +17,12 @@
 </template>
 
 <script>
-import UnitSystem from "@/mixins/UnitSystem.js";
 import { Altitude } from "@/models/Quantities.js";
 import BAltitude from "./buefy/BAltitude.vue";
 
 export default {
   components: { BAltitude },
   name: "WaypointContent",
-  mixins: [UnitSystem],
   props: {
     value: Object
   },

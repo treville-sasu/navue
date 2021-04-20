@@ -22,9 +22,27 @@ export const MapHandlers = {
     stopLocate() {
       this.map.stopLocate();
       this.lastKnownLocation = undefined;
+
+      // if (navigator.geolocation && navigator.geolocation.clearWatch) {
+      //   navigator.geolocation.clearWatch(this._locationWatchId);
+      // }
     },
     startLocate() {
       this.map.locate(this.geoOptions);
+
+      // if (!("geolocation" in navigator)) {
+      //   this._locationError({
+      //     code: 0,
+      //     message: "Geolocation not supported."
+      //   });
+      //   return this;
+      // }
+
+      // this._locationWatchId = navigator.geolocation.watchPosition(
+      //   this._locationFound,
+      //   this._locationError,
+      //   this.geoOptions
+      // );
     },
     _locationFound(e) {
       let location = Location.fromLocate(e);
@@ -76,7 +94,6 @@ export const MapHandlers = {
 
     _locationError(e) {
       if (process.env.NODE_ENV == "development") {
-        console.error(e);
         const location = this._fakeLocation({
           e,
           ...this.lastKnownLocation,

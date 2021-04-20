@@ -1,5 +1,6 @@
 <template>
   <section>
+    <div class="notification is-warning">Do not USE, do not work for tanks</div>
     <b-field label="Balanced on">
       <b-datepicker
         v-model="curatedDate"
@@ -9,7 +10,7 @@
       />
     </b-field>
 
-    <b-table :data="value.weights">
+    <b-table :data="value.items">
       <b-table-column label="Name" v-slot="props">
         <b-input v-model="props.row.name" />
       </b-table-column>
@@ -24,7 +25,7 @@
       </b-table-column>
       <b-table-column label="Weight" v-slot="props">
         <b-field>
-          <b-numberinput v-model="props.row.displayValue" :controls="false" />
+          <b-numberinput v-model="props.row.value" :controls="false" />
           <b-select v-model="props.row.unit" required>
             <option
               v-for="(ratio, name) in props.row.constructor.units"
@@ -67,18 +68,13 @@
 </template>
 
 <script>
-// TODO: implement density in Weight
+// TODO: implement density in Weight and allow easy Fuel input
 
 import { Weight } from "@/models/Quantities.js";
 
 export default {
   name: "AircraftDetailBalance",
   props: ["value"],
-  data() {
-    return {
-      checkedRows: []
-    };
-  },
   computed: {
     // TODO: check if still needed with buefy 0.9.3
     curatedDate: {
@@ -92,19 +88,19 @@ export default {
   },
   methods: {
     addItem() {
-      this.value.weights.push(
+      this.value.add(
         new Weight(undefined, undefined, undefined, { name: undefined })
       );
     },
     removeItem(item) {
-      this.value.weights.splice(this.value.weights.indexOf(item), 1);
+      this.value.remove(item);
     }
   },
   watch: {
     value: {
       deep: true,
-      handler(oldVal, newVal) {
-        this.$emit("input", newVal);
+      handler(val) {
+        this.$emit("input", val);
       }
     }
   }
