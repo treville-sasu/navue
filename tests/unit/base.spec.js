@@ -1,139 +1,300 @@
 /* eslint-disable jest/no-hooks */
-import { Model, Collection } from "@/models/Base.js";
+import { Model, Store } from "@/models/Base.js";
 
 describe("model", () => {
-  it("return first argument if it's an instance of Model", () => {
-    const argModel = new Model();
-    expect(new Model(argModel)).toBe(argModel);
-    expect(new Model(argModel)).not.toBe(new Model());
-  });
   it("create Model with any properties", () => {
     expect(new Model({ a: 1, b: 2 })).toMatchObject({ a: 1, b: 2 });
   });
 
-  it("parse in Model with any properties", () => {
-    expect(Model.parse('{"a":1,"b":2}')).toMatchObject({ a: 1, b: 2 });
-  });
-
   it("import Object in Model with any properties or return Object if already Model", () => {
-    expect(Model.from({ a: 1, b: 2 })).toEqual(new Model({ a: 1, b: 2 }));
+    expect(Model.from({ type: "Model", a: 1, b: 2 })).toStrictEqual(
+      new Model({ a: 1, b: 2 })
+    );
+    expect(() => Model.from({ a: 1, b: 2 })).toThrow(
+      "Supplied object is no Model"
+    );
 
     let model = new Model({ a: 1, b: 2 });
     expect(Model.from(model)).toBe(model);
     expect(Model.from(model)).not.toBe(new Model({ a: 1, b: 2 }));
   });
 
-  // TODO: code and spec toJSON() if needed...
-  it("export Model with any properties", () => {
-    expect(JSON.stringify(new Model({ a: 1, b: 2 }))).toMatch('{"a":1,"b":2}');
+  it("export Model with any properties & type", () => {
+    expect(new Model({ a: 1, b: 2 }).toJSON()).toMatchObject({
+      type: "Model",
+      a: 1,
+      b: 2
+    });
   });
 });
 
-describe("collection", () => {
-  it("extends Array", () => {
-    expect(Collection.prototype).toBeInstanceOf(Array);
-  });
-
-  it("built as an Array", () => {
-    expect(new Collection(1, 2, 3, 4)).toEqual([1, 2, 3, 4]);
-    expect(new Collection(...[1, 2, 3, 4])).toEqual([1, 2, 3, 4]);
-    expect(new Collection([1, 2, 3, 4])).toEqual([[1, 2, 3, 4]]);
-  });
-
-  it("returns the first item", () => {
-    expect(new Collection(1, 2, 3, 4).first()).toBe(1);
-  });
-
-  it("returns the last item", () => {
-    expect(new Collection(1, 2, 3, 4).last()).toBe(4);
-  });
-
-  it("insert a given item at a given position", () => {
-    const collection = new Collection(1, 2, 3, 4);
-    expect(collection.insert(3, 99)).toBe(99);
-    expect(collection[3]).toBe(99);
-  });
-
-  it("remove an item", () => {
-    const collection = new Collection(1, 2, 3, 4);
-    collection.remove(3);
-    expect(collection).toEqual(new Collection(1, 2, 4));
-  });
-
-  it("throw an exception if create is not set", () => {
-    expect(() => new Collection().create(1)).toThrow(
-      "Collection.create() should be defined in Collection definition"
-    );
-  });
-
-  describe("with create() set to new String", () => {
-    let mockCreate;
-
-    beforeEach(() => {
-      mockCreate = jest
-        .spyOn(Collection.prototype, "create")
-        .mockImplementation(x => new String(x));
+describe("store", () => {
+  describe("as an Array Subclass", () => {
+    it("extends Array", () => {
+      expect(Store.prototype).toBeInstanceOf(Array);
     });
 
-    afterEach(() => {
-      mockCreate.mockRestore();
-    });
-
-    it("creates a new item", () => {
-      expect(() => new Collection().create(1)).not.toThrow(
-        "Collection.create() should be defined in Collection definition"
+    it("create a Store with values & properties", () => {
+      expect(new Store()).toEqual(expect.arrayContaining([]));
+      expect(new Store({ name: "name" })).toEqual(expect.arrayContaining([]));
+      expect(new Store({ name: "name" }).name).toEqual("name");
+      expect(new Store(undefined, 1, 2, 3)).toEqual(
+        expect.arrayContaining([1, 2, 3])
       );
-      expect(new Collection().create(1)).toEqual("1");
     });
 
-    it("append a new item", () => {
-      const collection = new Collection(1, 2, 3, 4);
-      expect(collection.append(1)).toEqual("1");
-      expect(collection.create).toHaveBeenCalledWith(1);
-      expect(collection[collection.length - 1]).toEqual("1");
+    it("get items from store", () => {
+      expect(new Store().items).toEqual([]);
+      expect(new Store({ name: "name" }, 1, 2, 3).items).toEqual([1, 2, 3]);
     });
 
-    it("prepend a new item", () => {
-      const collection = new Collection(1, 2, 3, 4);
-      expect(collection.prepend(1)).toEqual("1");
-      expect(collection.create).toHaveBeenCalledWith(1);
-      expect(collection[0]).toEqual("1");
+    it("get properties from store", () => {
+      expect(new Store().properties).toEqual({});
+      expect(new Store({ name: "name" }, 1, 2, 3).properties).toEqual({
+        name: "name"
+      });
     });
 
-    it("add a new item before given index", () => {
-      const collection = new Collection(1, 2, 3, 4);
-      expect(collection.before(1, 99)).toEqual("99");
-      expect(collection.create).toHaveBeenCalledWith(99);
-      expect(collection[1]).toEqual("99");
+    it("set/get the properties of the store", () => {
+      let store = new Store(undefined, 1, 2, 3);
+      expect(store.name).toBeUndefined();
+      store.name = "name";
+      expect(store.name).toEqual("name");
+    });
+
+    // it("remove item from store by value", () => {
+    //   let store = new Store(undefined, 3, 2, 1);
+    //   expect(store.remove(3)).toBe(true);
+    //   expect(store.remove(7)).toBe(false);
+    //   expect(store).toStrictEqual(new Store(undefined, 2, 1));
+    // });
+
+    it("keep Store from wrong items", () => {
+      let store = new Store(undefined, true, false, true, true, false, true);
+
+      expect(store.keep(i => (i ? i : undefined))).toStrictEqual(
+        new Store(undefined, true, true, true, true)
+      );
+      expect(store).toStrictEqual(new Store(undefined, true, true, true, true));
+    });
+    it("keep Store with corrected items", () => {
+      let store = new Store(undefined, true, false, true, true, false, true);
+
+      expect(store.keep(i => (i ? 1 : undefined))).toStrictEqual(
+        new Store(undefined, 1, 1, 1, 1)
+      );
+      expect(store).toStrictEqual(new Store(undefined, 1, 1, 1, 1));
+    });
+
+    it("export Store with any properties & type", () => {
+      expect(new Store({ prop: "value" }, 1, 2, 3).toJSON()).toMatchObject({
+        type: "Store",
+        prop: "value",
+        items: [1, 2, 3]
+      });
+    });
+
+    it("import a Store from literal", () => {
+      let store = Store.from({ type: "Store", prop: "prop", items: [1, 2, 3] });
+      expect(store).toEqual(expect.arrayContaining([1, 2, 3]));
+      expect(store).toHaveProperty("prop", "prop");
+    });
+
+    it("import a Store from literal with builder callback", () => {
+      let store = Store.from(
+        {
+          type: "Store",
+          items: [
+            { type: "Model", value: 1 },
+            { type: "Model", value: 2 },
+            { type: "Model", value: 3 }
+          ]
+        },
+        Model
+      );
+
+      expect(store).toEqual(
+        expect.arrayContaining([
+          expect.any(Model),
+          expect.any(Model),
+          expect.any(Model)
+        ])
+      );
+    });
+
+    it("import a Store from literal with builder callback on two or more levels", () => {
+      let store = Store.from(
+        {
+          type: "Store",
+          items: [
+            {
+              type: "Store",
+              items: [{ type: "Model", value: 1 }]
+            },
+            {
+              type: "Store",
+              items: [{ type: "Model", value: 2 }]
+            }
+          ]
+        },
+        Store,
+        Model
+      );
+
+      expect(store).toEqual(
+        expect.arrayContaining([
+          expect.arrayContaining([expect.any(Model)]),
+          expect.arrayContaining([expect.any(Model)])
+        ])
+      );
     });
   });
+  describe.only("as an Object with items Array", () => {
+    it("extends Array", () => {
+      expect(Store.prototype).toBeInstanceOf(Object);
+    });
 
-  it("build a Collection from Enumerable", () => {
-    class NewCollection extends Collection {
-      create(x) {
-        return x * x;
-      }
-    }
-    expect(NewCollection.from([1, 2])).toEqual(new NewCollection(1, 4));
-  });
-  it("build a Collection from nested Enumerables", () => {
-    class ParentCollection extends Collection {
-      create(x) {
-        return ChildCollection.from(x);
-      }
-    }
-    class ChildCollection extends Collection {
-      create(x) {
-        return x * x;
-      }
-    }
-    expect(
-      ParentCollection.from([
-        [2, 3],
-        [2, 3]
-      ])
-    ).toStrictEqual(
-      new ParentCollection(new ChildCollection(4, 9), new ChildCollection(4, 9))
-    );
+    it("create a Store with values & properties", () => {
+      expect(new Store().items).toEqual(expect.arrayContaining([]));
+      expect(new Store({ name: "name" }).items).toEqual(
+        expect.arrayContaining([])
+      );
+      expect(new Store({ name: "name" }).name).toEqual("name");
+      expect(new Store(undefined, 1, 2, 3).items).toEqual(
+        expect.arrayContaining([1, 2, 3])
+      );
+    });
+
+    it("get items from store", () => {
+      expect(new Store().items).toEqual([]);
+      expect(new Store({ name: "name" }, 1, 2, 3).items).toEqual([1, 2, 3]);
+    });
+
+    it("get length from store items", () => {
+      let store = new Store({ name: "name" }, 1, 2, 3);
+      expect(store).toHaveLength(store.items.length);
+    });
+
+    it("get first and last items", () => {
+      let store = new Store(undefined, 3, 2, 1);
+      expect(store.first).toBe(3);
+      expect(store.last).toBe(1);
+    });
+
+    it("get properties from store", () => {
+      expect(new Store().properties).toEqual({});
+      expect(new Store({ name: "name" }, 1, 2, 3).properties).toEqual({
+        name: "name"
+      });
+    });
+
+    it("set/get the properties of the store", () => {
+      let store = new Store(undefined, 1, 2, 3);
+      expect(store.name).toBeUndefined();
+      store.name = "name";
+      expect(store.name).toEqual("name");
+    });
+
+    it("add or insert item to store", () => {
+      let store = new Store();
+      expect(store).toHaveLength(0);
+      expect(store.add(3)).toBe(1);
+      expect(store.add(7)).toBe(2);
+      expect(store.items).toStrictEqual([3, 7]);
+      expect(store.add("inserted", 1)).toBe(3);
+      expect(store.items).toStrictEqual([3, "inserted", 7]);
+    });
+
+    it("remove item from store by value or index", () => {
+      let store = new Store(undefined, 3, 2, 1);
+      expect(store.remove(3)).toBe(true);
+      expect(store.remove(7)).toBe(false);
+      expect(store).toStrictEqual(new Store(undefined, 2, 1));
+      expect(store.remove(undefined, 4)).toBe(false);
+      expect(store.remove(undefined, 1)).toBe(true);
+      expect(store).toStrictEqual(new Store(undefined, 2));
+      expect(store.remove(undefined, 0)).toBe(true);
+      expect(store).toStrictEqual(new Store());
+    });
+
+    it("keep Store from wrong items", () => {
+      let store = new Store(undefined, true, false, true, true, false, true);
+
+      expect(store.keep(i => (i ? i : undefined))).toStrictEqual(
+        new Store(undefined, true, true, true, true)
+      );
+      expect(store).toStrictEqual(new Store(undefined, true, true, true, true));
+    });
+    it("keep Store with corrected items", () => {
+      let store = new Store(undefined, true, false, true, true, false, true);
+
+      expect(store.keep(i => (i ? 1 : undefined))).toStrictEqual(
+        new Store(undefined, 1, 1, 1, 1)
+      );
+      expect(store).toStrictEqual(new Store(undefined, 1, 1, 1, 1));
+    });
+
+    it("export Store with any properties & type", () => {
+      expect(new Store({ prop: "value" }, 1, 2, 3).toJSON()).toMatchObject({
+        type: "Store",
+        prop: "value",
+        items: [1, 2, 3]
+      });
+    });
+
+    it("import a Store from literal", () => {
+      let store = Store.from({ type: "Store", prop: "prop", items: [1, 2, 3] });
+      expect(store).toHaveProperty("items", [1, 2, 3]);
+      expect(store).toHaveProperty("prop", "prop");
+    });
+
+    it("import a Store from literal with builder callback", () => {
+      let store = Store.from(
+        {
+          type: "Store",
+          items: [
+            { type: "Model", value: 1 },
+            { type: "Model", value: 2 },
+            { type: "Model", value: 3 }
+          ]
+        },
+        Model
+      );
+
+      expect(store.items).toEqual(
+        expect.arrayContaining([
+          expect.any(Model),
+          expect.any(Model),
+          expect.any(Model)
+        ])
+      );
+    });
+
+    it("import a Store from literal with builder callback on two or more levels", () => {
+      let store = Store.from(
+        {
+          type: "Store",
+          items: [
+            {
+              type: "Store",
+              items: [{ type: "Model", value: 1 }]
+            },
+            {
+              type: "Store",
+              items: [{ type: "Model", value: 2 }]
+            }
+          ]
+        },
+        Store,
+        Model
+      );
+
+      expect(store.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ items: [expect.any(Model)] }),
+          expect.objectContaining({ items: [expect.any(Model)] })
+        ])
+      );
+    });
   });
 });

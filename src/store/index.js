@@ -36,7 +36,13 @@ export default new Vuex.Store({
   },
   actions: {
     saveToDB(context, payload) {
-      return this._vm.$pouch.put(payload);
+      let asJSON = JSON.parse(JSON.stringify(payload));
+      asJSON._id || (asJSON._id = `${asJSON.type}-${Date.now()}`);
+      return this._vm.$pouch.put(asJSON).then(res => {
+        payload._id = res.id;
+        payload._rev = res.rev;
+        return payload;
+      });
     },
     deleteFromDB(context, payload) {
       return this._vm.$pouch.remove(payload);

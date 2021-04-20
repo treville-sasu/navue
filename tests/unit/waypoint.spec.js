@@ -3,28 +3,46 @@ import { Waypoint, Location } from "@/models/Waypoint.js";
 import LatLon from "geodesy/latlon-spherical.js";
 import { Altitude, Speed, Azimuth } from "../../src/models/Quantities";
 
+expect.extend({
+  toBeClose(actual, expected, precision = 2) {
+    const pass = Math.abs(expected - actual) < Math.pow(10, -precision) / 2;
+    if (pass) {
+      return {
+        message: () => `expected ${actual} not to be close ${expected}`,
+        pass: true
+      };
+    } else {
+      return {
+        message: () => `expected ${actual} to be close ${expected}`,
+        pass: false
+      };
+    }
+  }
+});
+
 describe("waypoint", () => {
   it("create Waypoint with defaults", () => {
     expect(new Waypoint()).toMatchObject({
       latitude: undefined,
       longitude: undefined,
-      altitude: undefined,
-      name: undefined,
-      notes: undefined
+      altitude: undefined
     });
   });
   it("create Waypoint with properties", () => {
-    expect(new Waypoint(0, 0, 1, "Echo", "Some note")).toMatchObject({
-      name: "Echo",
+    expect(
+      new Waypoint(0, 0, 1, { name: "Echo", notes: "Some note" })
+    ).toMatchObject({
       latitude: 0,
       longitude: 0,
       altitude: new Altitude(1),
+      name: "Echo",
       notes: "Some note"
     });
   });
   it("import Waypoint from object or return it if object is Waypoint", () => {
     expect(
       Waypoint.from({
+        type: "Waypoint",
         latitude: 0,
         longitude: 0,
         altitude: { value: 1 },
@@ -41,6 +59,7 @@ describe("waypoint", () => {
 
     expect(
       Waypoint.from({
+        type: "Waypoint",
         latlng: { lat: 0, lng: 0 }
       })
     ).toMatchObject({
@@ -95,16 +114,18 @@ describe("waypoint", () => {
       wp.destinationPoint(1, 45);
       expect(wp.point.rhumbDestinationPoint).toHaveBeenCalledWith(1, 45);
     });
+
     it("export to GeoJSON as a Feature", () => {
       const wp = Waypoint.from({
+        type: "Waypoint",
         name: "null Island",
         latitude: 0,
         longitude: 0
       });
 
-      expect(wp.toGeoJSON()).toEqual({
+      expect(wp.toGeoJSON()).toStrictEqual({
         type: "Feature",
-        properties: { name: "null Island" },
+        properties: { altitude: undefined, name: "null Island" },
         geometry: {
           type: "Point",
           coordinates: [0, 0]
@@ -116,14 +137,11 @@ describe("waypoint", () => {
 });
 
 describe("location", () => {
-  it("creates Location with defaults", () => {
+  it("creates with defaults", () => {
     expect(new Location()).toMatchObject({
-      type: "location",
       latitude: undefined,
       longitude: undefined,
       altitude: undefined,
-      name: undefined,
-      notes: undefined,
       timestamp: undefined,
       accuracy: undefined,
       heading: undefined,
@@ -131,49 +149,48 @@ describe("location", () => {
       verticalSpeed: undefined
     });
   });
+
   it("creates with properties", () => {
     expect(
-      new Location(
-        0,
-        0,
-        1,
-        20,
-        undefined,
-        undefined,
-        undefined,
-        Date.now,
-        "Echo",
-        "Some note"
-      )
-    ).toMatchObject({
-      latitude: 0,
-      longitude: 0,
-      accuracy: 20,
-      altitude: new Altitude(1),
-      name: "Echo",
-      notes: "Some note"
-    });
-  });
-  it("imports from object", () => {
-    expect(
-      Location.from({
-        latitude: 0,
-        longitude: 0,
-        accuracy: 100,
-        altitude: { value: 10, unit: "m", reference: "WGS84" },
-        speed: { value: 10 },
-        verticalSpeed: { value: 0.0508001016002032, unit: "ft/min" },
-        timestamp: 1000
+      new Location(0, 0, 1, {
+        accuracy: 20,
+        timestamp: Date.now(),
+        name: "Echo",
+        notes: "Some note"
       })
     ).toMatchObject({
       latitude: 0,
       longitude: 0,
-      accuracy: 100,
-      altitude: new Altitude(10, "m", "WGS84"),
-      speed: new Speed(10),
-      verticalSpeed: new Speed(10, "ft/min"),
-      timestamp: 1000
+      altitude: new Altitude(1),
+      accuracy: 20,
+      timestamp: expect.any(Number),
+      name: "Echo",
+      notes: "Some note"
     });
+  });
+
+  it("imports from literal", () => {
+    expect(
+      Location.from({
+        type: "Location",
+        latitude: 0,
+        longitude: 0,
+        altitude: { value: 10, unit: "m", reference: "WGS84" },
+        accuracy: 100,
+        verticalSpeed: { value: 10, unit: "ft/min" },
+        speed: { value: 10 },
+        heading: { value: 180, unit: "°" },
+        timestamp: 1000
+      })
+    ).toStrictEqual(
+      new Location(0, 0, new Altitude(10, "m", { reference: "WGS84" }), {
+        accuracy: 100,
+        verticalSpeed: new Speed(10, "ft/min"),
+        speed: new Speed(10),
+        heading: new Azimuth(180, "°"),
+        timestamp: 1000
+      })
+    );
   });
   it("imports from GeolocationPosition", () => {
     expect(
@@ -189,14 +206,19 @@ describe("location", () => {
         },
         timestamp: 1234567890
       })
-    ).toMatchObject({
-      latitude: 0,
-      longitude: 0,
-      accuracy: 100,
-      altitude: new Altitude(10, "m", "WGS84", { accuracy: 10 }),
-      speed: new Speed(10, "m/s"),
-      timestamp: 1234567890
-    });
+    ).toStrictEqual(
+      new Location(
+        0,
+        0,
+        new Altitude(10, "m", { reference: "WGS84", accuracy: 10 }),
+        {
+          accuracy: 100,
+          speed: new Speed(10, "m/s"),
+          heading: new Azimuth(270, "°"),
+          timestamp: 1234567890
+        }
+      )
+    );
   });
   it("imports from Locate (Leaflet LocationEvent)", () => {
     expect(
@@ -210,18 +232,24 @@ describe("location", () => {
         speed: 10,
         timestamp: 1234567890
       })
-    ).toMatchObject({
-      latitude: 0,
-      longitude: 0,
-      accuracy: 100,
-      altitude: new Altitude(10, "m", "WGS84", { accuracy: 10 }),
-      speed: new Speed(10, "m/s"),
-      timestamp: 1234567890
-    });
+    ).toStrictEqual(
+      new Location(
+        0,
+        0,
+        new Altitude(10, "m", { reference: "WGS84", accuracy: 10 }),
+        {
+          accuracy: 100,
+          speed: new Speed(10, "m/s"),
+          heading: new Azimuth(270, "°"),
+          timestamp: 1234567890
+        }
+      )
+    );
   });
 
   it("computes movements from last Location", () => {
     const location = Location.from({
+      type: "Location",
       latitude: 0,
       longitude: 0,
       altitude: { value: 10, unit: "m", reference: "WGS84" },
@@ -231,20 +259,22 @@ describe("location", () => {
     expect(
       location.movementFrom(
         Location.from({
+          type: "Location",
           latitude: 1,
           longitude: 0,
           altitude: { value: 0, unit: "m", reference: "WGS84" },
           timestamp: 0
         })
       )
-    ).toMatchObject({
-      heading: new Azimuth(180, "°"),
+    ).toStrictEqual({
+      heading: new Azimuth(180, "°", { _precision: 3 }),
       speed: new Speed(111194.92664455874),
       verticalSpeed: new Speed(10)
     });
     expect(() =>
       location.movementFrom(
         Location.from({
+          type: "Location",
           latitude: 1,
           longitude: 0
         })
@@ -254,26 +284,41 @@ describe("location", () => {
 
   it("gives a bounding box from accuracy or arguents", () => {
     expect(
-      Location.from({ latitude: 0, longitude: 0, accuracy: 100 }).toBounds()
+      Location.from({
+        type: "Location",
+        latitude: 0,
+        longitude: 0,
+        accuracy: 100
+      }).toBounds()
     ).toEqual([
       [-0.0004491576385357491, -0.0004491576385357491],
       [0.0004491576385357491, 0.0004491576385357491]
     ]);
     expect(
-      Location.from({ latitude: 0, longitude: 0, accuracy: 1 }).toBounds(100)
+      Location.from({
+        type: "Location",
+        latitude: 0,
+        longitude: 0,
+        accuracy: 1
+      }).toBounds(100)
     ).toEqual([
       [-0.0004491576385357491, -0.0004491576385357491],
       [0.0004491576385357491, 0.0004491576385357491]
     ]);
-    expect(Location.from({ latitude: 0, longitude: 0 }).toBounds(100)).toEqual([
+    expect(
+      Location.from({ type: "Location", latitude: 0, longitude: 0 }).toBounds(
+        100
+      )
+    ).toEqual([
       [-0.0004491576385357491, -0.0004491576385357491],
       [0.0004491576385357491, 0.0004491576385357491]
     ]);
   });
 
-  it("provide a new position, in seconds, for a constante course", () => {
+  it("provide a new position, in seconds, for a constant course", () => {
     expect(() => {
       Location.from({
+        type: "Location",
         latitude: 0,
         longitude: 0
       }).positionInSeconds(60);
@@ -282,9 +327,10 @@ describe("location", () => {
     );
     expect(() => {
       Location.from({
+        type: "Location",
         latitude: 0,
         longitude: 0,
-        speed: 1
+        speed: { value: 100 }
       }).positionInSeconds(60);
     }).toThrow(
       "cannot calculate futur position, speed & heading should be provided"
@@ -292,13 +338,28 @@ describe("location", () => {
 
     expect(
       Location.from({
+        type: "Location",
         latitude: 0,
         longitude: 0,
-        speed: 100,
-        heading: 180
-      }).positionInSeconds(60)
-    ).toEqual(new Location(0, 0));
+        speed: { value: 111.32 },
+        heading: { value: 0, unit: "°" }
+      }).positionInSeconds(10)
+    ).toMatchObject({
+      latitude: expect.toBeClose(0.01, 4),
+      longitude: expect.toBeClose(0, 4)
+    });
+
+    expect(
+      Location.from({
+        type: "Location",
+        latitude: 0,
+        longitude: 0,
+        speed: { value: 111.32 },
+        heading: { value: 90, unit: "°" }
+      }).positionInSeconds(10)
+    ).toMatchObject({
+      latitude: expect.toBeClose(0, 4),
+      longitude: expect.toBeClose(0.01, 4)
+    });
   });
 });
-
-//TODO: spec Import methods

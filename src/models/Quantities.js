@@ -1,13 +1,59 @@
 import { Model } from "@/models/Base.js";
 
 export class Quantity extends Model {
-  constructor(value = 0, unit, properties = {}) {
-    if (isNaN(value)) throw `first argument should be a Number got ${value}`;
-    else value = Number(value);
+  // eslint-disable-next-line no-unused-vars
+  constructor(value, unit, { type, _precision, ...properties } = {}) {
+    super(properties);
 
-    super({ value, unit, ...properties });
+    if (unit) this.unit = unit;
+    else this._unit = undefined;
+    if (value || value === 0) this.value = value;
+    else this._value = undefined;
+    if (_precision) this.precision = _precision;
+  }
 
-    if (unit) this.displayValue = value;
+  get value() {
+    return this.constructor.significantValue(
+      this._to(this._value),
+      this._precision
+    );
+  }
+
+  set value(val) {
+    if (isNaN(val)) throw `${val} is not a number`;
+    else {
+      this._value = this._from(val);
+      this.precision = this.constructor.getSignificativeDigits(val);
+    }
+  }
+
+  get unit() {
+    return this._unit || this.constructor.baseUnit;
+  }
+
+  set unit(val) {
+    if (!this.constructor.units[val]) throw `'${val}' is not an available unit`;
+    else this._unit = val;
+  }
+
+  get factor() {
+    return this.constructor.units[this.unit];
+  }
+
+  get precision() {
+    return this._precision;
+  }
+
+  set precision(val) {
+    this._precision = Math.max(1, Math.min(21, parseInt(val)));
+  }
+
+  _from(val, unit = this.unit) {
+    return Number(val) / this._factor(unit);
+  }
+
+  _to(val, unit = this.unit) {
+    return Number(val) * this._factor(unit);
   }
 
   _factor(unit) {
@@ -15,78 +61,87 @@ export class Quantity extends Model {
     else throw `'${unit}' is not an available unit`;
   }
 
-  _convertFrom(val, unit) {
-    if (this._factor(unit)) return Number(val) / this._factor(unit);
-    return val;
-  }
-
-  _convertTo(val, unit) {
-    if (this._factor(unit)) return val * this._factor(unit);
-  }
-
-  get displayValue() {
-    return this._convertTo(this.value, this.displayUnit);
-  }
-
-  set displayValue(val) {
-    this.value = this._convertFrom(val, this.displayUnit);
-  }
-
-  get displayUnit() {
-    return this.unit || this.constructor._baseUnit;
-  }
-
-  set displayUnit(val) {
-    if (this.constructor.units[val]) this.unit = val;
-    else throw `'${val}' is not an available unit`;
-  }
-
   to(unit) {
-    return this._convertTo(this.value, unit);
+    return this._to(this.value, unit);
   }
 
-  as(unit) {
-    return this.constructor.from({ ...this, unit });
+  as(_unit, _precision) {
+    return Object.assign(this.constructor.from(this), { _unit, _precision });
   }
 
   valueOf() {
-    return this.value;
+    return this._value;
   }
 
-  toString(precision = 2) {
-    try {
-      let roundedValue;
-      if (precision < 0) {
-        const fact = 10 ** precision;
-        roundedValue =
-          Math.round(this.displayValue * fact + Number.EPSILON) / fact;
-      }
-      if (
-        (roundedValue || this.displayValue || this.displayValue === 0) &&
-        this.displayUnit
-      )
-        // TODO : merge default with method options
-        return `${(roundedValue || this.displayValue).toLocaleString(
-          undefined,
-          {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: Math.max(precision, 0)
-          }
-        )} ${this.displayUnit}`;
-      // eslint-disable-next-line no-empty
-    } catch {}
+  toString() {
+    return `${
+      isNaN(this.value)
+        ? "-"
+        : this.value.toLocaleString(undefined, {
+            minimumSignificantDigits: this.precision,
+            maximumSignificantDigits: this.precision
+          })
+    } ${this.unit}`;
   }
+
+  toJSON() {
+    // eslint-disable-next-line no-unused-vars
+    let { _value, _unit, _precision, ...properties } = this;
+    return {
+      ...properties,
+      value: this.value,
+      unit: this.unit,
+      type: this.constructor.name
+    };
+  }
+
+  static getSignificativeDigits(val) {
+    // https://replit.com/@caub/significant-digits
+    let x = Math.abs(val);
+    if (x === 0) return 0;
+    let p = Math.floor(Math.log10(x)) + 1;
+    if (p > 0) x = x / 10 ** p;
+    else if (p < 0) x = x * 10 ** -p;
+    x = Math.round(x * 1e16) / 1e16; // remove floating points errors
+    return String(x).length - 2;
+  }
+
+  static significantValue(val, precision = 1) {
+    if (val === 0) return 0;
+    const fact = Math.pow(
+      10,
+      precision - Math.floor(Math.log(val < 0 ? -val : val) / Math.LN10) - 1
+    );
+    return Math.round(val * fact) / fact;
+  }
+
+  // static getFractionDigits(val) {
+  //   // from https://stackoverflow.com/questions/9539513/is-there-a-reliable-way-in-javascript-to-obtain-the-number-of-decimal-places-of
+  //   let m;
+  //   if (
+  //     (m = Number(val)
+  //       .toExponential()
+  //       .match(/(?:\.(\d+))?(?:e([+-]?\d+))?$/))
+  //   ) {
+  //     return Math.max(0, (m[1] || "").length - m[2]);
+  //   } else return 0;
+  // }
+
+  // static roundValue(val, precision = 0) {
+  //   const fact = 10 ** precision;
+  //   return Math.round(val * fact + Number.EPSILON) / fact;
+  // }
 
   static get units() {
-    throw "list of available units should be set on class.";
+    throw "list of available units should be set on constructor.";
   }
 
-  static get _baseUnit() {
+  static get baseUnit() {
     return Object.keys(this.units)[Object.values(this.units).indexOf(1)];
   }
 
-  static from({ value, ...properties }) {
-    return new this(value, undefined, properties);
+  static from({ type, value, unit, ...properties } = {}) {
+    if (!type || this.name == type) return new this(value, unit, properties);
   }
 }
 
@@ -104,10 +159,10 @@ export class Distance extends Quantity {
 }
 
 export class Altitude extends Distance {
-  constructor(value = 0, unit, reference, properties = {}) {
+  constructor(value, unit, { reference, ...properties } = {}) {
     if (unit == "FL") reference = "QNE";
     else if (unit && !reference)
-      throw `third argument 'reference' should be given, got '${reference}'`;
+      throw `property 'reference' should be given, got '${reference}'`;
 
     super(value, unit, { ...properties, reference });
   }
@@ -120,12 +175,21 @@ export class Altitude extends Distance {
   //   );
   // }
 
-  toString(precision) {
-    if (this.displayUnit == "FL") {
-      const value = Math.round(this.displayValue * 0.1 + Number.EPSILON) / 0.1;
-      return `FL${value.toString().padStart(3, "0")}`;
+  get value() {
+    if (this.unit == "FL")
+      return this.constructor.significantValue(this._to(this._value), 2);
+    else return this._to(this._value);
+  }
+
+  set value(val) {
+    super.value = val;
+  }
+
+  toString() {
+    if (this.unit == "FL") {
+      return `FL${String(this.value).padStart(3, "0")}`;
     } else if (this.value && this.reference) {
-      return `${super.toString(precision)} ${this.reference}`;
+      return `${super.toString()} ${this.reference}`;
     }
   }
 
@@ -139,10 +203,6 @@ export class Altitude extends Distance {
       ft: 3.28084,
       FL: 0.0328084
     };
-  }
-
-  static from({ value, reference, ...properties }) {
-    return new this(value, undefined, reference, properties);
   }
 }
 
@@ -158,7 +218,6 @@ export class Speed extends Quantity {
   }
 
   // TAS(altitude, temperature) {}
-  // Mach() {}
 }
 
 export class Volume extends Quantity {
@@ -173,15 +232,8 @@ export class Volume extends Quantity {
 }
 
 export class Consumption extends Volume {
-  constructor(value = 0, unit, reference) {
-    super(value, unit);
-    if (unit == "FL") this.reference = "QNE";
-    else if (unit && !reference)
-      throw `third argument 'reference' should be given, got '${reference}'`;
-    else this.reference = reference;
-  }
   static get references() {
-    return ["h", "1000ft", "each"];
+    return ["h", "1000ft", "u"];
   }
 
   toString(precision) {
@@ -193,8 +245,8 @@ export class Weight extends Quantity {
   static get units() {
     return {
       kg: 1,
-      lb: 0.453592,
-      t: 1000
+      lb: 2.20462,
+      t: 0.001
     };
   }
 }
@@ -212,25 +264,23 @@ export class Angle extends Quantity {
 }
 
 export class Azimuth extends Angle {
-  get displayValue() {
-    return this._convertTo(
-      (this.value + 2 * Math.PI) % (2 * Math.PI),
-      this.displayUnit
-    );
+  get value() {
+    //FIXME: 0 should give 360
+    return this._to((this._value + 2 * Math.PI) % (2 * Math.PI));
   }
-  set displayValue(val) {
-    super.displayValue = val;
+
+  set value(val) {
+    super.value = val;
   }
 }
 
 export class Bearing extends Angle {
-  get displayValue() {
-    return this._convertTo(
-      ((this.value + 3 * Math.PI) % (2 * Math.PI)) - Math.PI,
-      this.displayUnit
-    );
+  get value() {
+    //FIXME: 180 % should give 180
+    return this._to(((this._value + 3 * Math.PI) % (2 * Math.PI)) - Math.PI);
   }
-  set displayValue(val) {
-    super.displayValue = val;
+
+  set value(val) {
+    super.value = val;
   }
 }
