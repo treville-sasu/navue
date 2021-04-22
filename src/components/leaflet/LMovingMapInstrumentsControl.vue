@@ -19,9 +19,11 @@
 
 <script>
 import { LControl } from "vue2-leaflet";
+import UnitSystem from "@/mixins/UnitSystem";
 
 export default {
   name: "LMovingMapInstrumentsControl",
+  mixins: [UnitSystem],
   components: {
     LControl
   },
