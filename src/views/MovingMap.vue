@@ -1,20 +1,5 @@
 <template>
   <section style="height: 100%">
-    <b-modal
-      v-model="settings.navigationSelect"
-      trap-focus
-      destroy-on-hide
-      has-modal-card
-      aria-role="dialog"
-      aria-modal
-      @after-leave="tool = null"
-    >
-      <template #default="props">
-        <div class="modal-card">
-          <NavigationManager @input="props.close" select />
-        </div>
-      </template>
-    </b-modal>
     <l-map
       ref="movingMap"
       v-bind="settings.map"
@@ -88,8 +73,6 @@ body,
 </style>
 
 <script>
-import NavigationManager from "@/components/NavigationManager.vue";
-
 import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
@@ -116,7 +99,6 @@ import { WakeLock } from "@/mixins/apputils.js";
 export default {
   name: "MovingMap",
   components: {
-    NavigationManager,
     LMap,
     LControlZoom,
     LPolyline,

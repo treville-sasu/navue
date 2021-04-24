@@ -11,7 +11,7 @@
       </div>
     </section>
     <section class="section">
-      <AircraftManager select create save />
+      <AircraftManager edit />
       <b-tabs position="is-centered" multiline expanded v-if="aircraft">
         <b-tab-item label="Identification">
           <b-field label="Registration" horizontal>

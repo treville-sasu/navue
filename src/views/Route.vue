@@ -1,21 +1,5 @@
 <template>
   <section style="height: 100%">
-    <b-modal
-      v-model="isNavigationManagerActive"
-      trap-focus
-      destroy-on-hide
-      has-modal-card
-      aria-role="dialog"
-      aria-modal
-      @after-leave="tool = null"
-    >
-      <template #default="props">
-        <div class="modal-card">
-          <NavigationManager select create save @input="props.close" />
-        </div>
-      </template>
-    </b-modal>
-
     <l-map v-bind="fullMapSettings" v-on="mapEvents">
       <l-base-layer-group />
 
@@ -29,7 +13,6 @@
           defaultMarkGeocode: false
         }"
       />
-
       <l-route-toolbox-control v-model="tool" position="bottomleft" />
 
       <l-route-layer-group
@@ -76,7 +59,6 @@ body,
 </style>
 
 <script>
-import NavigationManager from "@/components/NavigationManager.vue";
 import L from "leaflet";
 import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
@@ -95,7 +77,6 @@ import { MapTools } from "@/mixins/MapTools";
 export default {
   name: "Route",
   components: {
-    NavigationManager,
     LMap,
     LPolyline,
     LBaseLayerGroup,

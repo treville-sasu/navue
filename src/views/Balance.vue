@@ -13,8 +13,8 @@
       </div>
     </section>
     <section class="section">
-      <AircraftManager select v-if="!aircraft" />
-      <div class="columns" v-else>
+      <AircraftManager />
+      <div class="columns" v-if="aircraft">
         <div class="column">
           <div v-for="(weight, index) in aircraft.balance" :key="index">
             <b-field :label="weight.name" horizontal expanded>

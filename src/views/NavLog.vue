@@ -4,15 +4,17 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Navigation</p>
-          <NavigationManager select v-if="!navigation" />
-          <p class="title" v-else>{{ navigation.name }}</p>
+          <NavigationManager>
+            <p class="title">{{ navigation && navigation.name }}</p>
+          </NavigationManager>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Aircraft</p>
-          <AircraftManager select v-if="!aircraft" />
-          <p class="title" v-else>{{ aircraft.registration }}</p>
+          <AircraftManager>
+            <p class="title">{{ aircraft && aircraft.registration }}</p>
+          </AircraftManager>
         </div>
       </div>
       <div class="level-item has-text-centered">

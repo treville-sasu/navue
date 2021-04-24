@@ -1,110 +1,85 @@
 <template>
-  <div class="columns is-multiline is-centered">
-    <div class="column">
-      <div class="box">
-        <b-field label="Choose a navigation" v-if="!selectedData">
-          <b-autocomplete
-            placeholder="LFxx > LFxx..."
-            v-model="search"
-            :data="availableData || []"
-            @select="useData"
-            icon="magnify"
-            field="name"
-            open-on-focus
-            keep-first
-            clear-on-select
-            clearable
-          >
-            <template slot="header" v-if="create">
-              <a @click="useData(newNavigation)">
-                <span> Create a new one... </span>
-              </a>
-            </template>
-            <template slot="empty"> No results for {{ search }}</template>
-          </b-autocomplete>
-        </b-field>
-        <b-field label="Current Navigation" v-else>
-          <b-input :value="selectedData.name" disabled />
-        </b-field>
-        <b-button
-          v-if="selectedData"
-          @click="useData(null)"
-          icon-left="selection-off"
-          type="is-primary"
-          expanded
-          label="Discard"
-        />
-      </div>
-    </div>
+  <b-dropdown :triggers="selectedData ? ['click'] : []" v-bind="$attrs">
+    <template v-if="selectedData" #trigger>
+      <slot name="default" :selected="selectedData">
+        <b-button type="is-primary" icon-right="chevron-down">
+          {{ selectedData.name }}
+        </b-button>
+      </slot>
+    </template>
 
-    <div class="column" v-if="create">
-      <div class="box">
-        <b-field class="file" v-if="!selectedData">
-          <b-upload
-            v-model="upload"
-            accept="application/json"
-            @input="importData"
-            drag-drop
-            expanded
+    <template v-else #trigger>
+      <b-autocomplete
+        placeholder="Open navigation"
+        v-model="search"
+        :data="availableData || []"
+        @select="selectedData = $event"
+        :field="searchedProperty"
+        open-on-focus
+        keep-first
+        clear-on-select
+        clearable
+      >
+        <template #header v-if="edit">
+          <a @click="selectedData = new constructor({ name: search })">
+            <span> Create {{ search }}</span>
+          </a>
+        </template>
+        <template #footer v-if="edit">
+          <b-field class="file is-primary">
+            <b-upload
+              class="file-label"
+              v-model="upload"
+              accept="application/json"
+              @input="importData"
+            >
+              <span class="file-cta">
+                <b-icon icon="upload" />
+                <span>Import from file</span>
+              </span>
+            </b-upload>
+          </b-field>
+        </template>
+        <template #empty v-if="!edit">
+          <span>
+            "<i>{{ search }}</i
+            >" not found</span
           >
-            <div class="content has-text-centered">
-              <p>
-                <b-icon icon="upload" size="is-large"></b-icon>
-              </p>
-              <p>Upload Navigation data</p>
-            </div>
-          </b-upload>
-        </b-field>
-        <b-button
-          v-if="selectedData"
-          @click="useData(cloneData(selectedData))"
-          icon-left="plus-circle-multiple-outline"
-          type="is-primary"
-          expanded
-          label="Clone Navigation"
-        />
-      </div>
-    </div>
-    <div class="column" v-if="selectedData && save">
-      <div class="box buttons">
-        <b-button
-          @click="exportData"
-          icon-left="download-outline"
-          type="is-primary"
-          expanded
-          label="Download"
-        />
-        <b-field>
-          <b-input
-            v-model="selectedData.name"
-            placeholder="Navigation name"
-            :lazy="true"
-            type="is-warning"
-            required
-            expanded
-          />
-          <p class="control">
-            <b-button
-              @click="saveData(selectedData)"
-              icon-left="cloud-upload-outline"
-              :type="
-                selectedData && selectedData._id ? 'is-primary' : 'is-warning'
-              "
-              label="Save"
-            />
-          </p>
-        </b-field>
-        <b-button
-          v-if="fromDB"
-          @click="deleteData"
-          icon-left="delete-outline"
-          type="is-danger"
-          expanded
-          label="Delete"
-        />
-      </div>
-    </div>
-  </div>
+        </template>
+      </b-autocomplete>
+    </template>
+
+    <template v-if="selectedData">
+      <b-dropdown-item custom>
+        <slot name="header" :selected="selectedData" />
+      </b-dropdown-item>
+      <b-dropdown-item @click="saveData" v-if="edit">
+        <b-icon icon="cloud-upload-outline" type="is-warning" />
+        Save
+      </b-dropdown-item>
+
+      <b-dropdown-item @click="selectedData = undefined">
+        <b-icon icon="selection-off" />
+        Discard
+      </b-dropdown-item>
+      <b-dropdown-item
+        @click="selectedData = cloneData(selectedData)"
+        :disabled="!fromDB"
+        v-if="edit"
+      >
+        <b-icon icon="plus-circle-multiple-outline" />
+        Clone
+      </b-dropdown-item>
+      <b-dropdown-item @click="exportData" v-if="edit">
+        <b-icon icon="download-outline" />
+        Download
+      </b-dropdown-item>
+      <b-dropdown-item @click="deleteData" :disabled="!fromDB" v-if="edit">
+        <b-icon icon="delete-outline" type="is-danger" />
+        Delete
+      </b-dropdown-item>
+    </template>
+  </b-dropdown>
 </template>
 
 <script>
@@ -115,37 +90,22 @@ export default {
   name: "NavigationManager",
   mixins: [DataManager],
   props: {
-    select: Boolean,
-    create: Boolean,
-    save: Boolean
+    edit: Boolean
   },
   data() {
     return {
-      dataType: "Navigation"
+      constructor: Navigation,
+      searchedProperty: "name"
     };
-  },
-  pouch: {
-    availableData() {
-      return {
-        database: "navue",
-        selector: {
-          type: this.dataType,
-          name: { $regex: RegExp(this.search, "i") }
-        }
-      };
-    }
   },
   computed: {
     selectedData: {
       get() {
         return this.$store.state.currentNavigation;
       },
-      set(val) {
-        this.$store.commit("currentNavigation", val);
+      set(data) {
+        this.$store.commit("currentNavigation", data);
       }
-    },
-    newNavigation() {
-      return new Navigation();
     }
   }
 };

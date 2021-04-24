@@ -1,11 +1,26 @@
 <template>
   <l-control v-bind="$attrs">
     <b-field>
-      <b-radio-button v-model="tool" native-value="select">
-        <b-tooltip label="open or save">
-          <b-icon icon="map-marker-path" />
-        </b-tooltip>
-      </b-radio-button>
+      <NavigationManager position="is-top-right" edit>
+        <template #default>
+          <b-button>
+            <b-tooltip label="open or save">
+              <b-icon icon="map-marker-path" />
+            </b-tooltip>
+          </b-button>
+        </template>
+        <template #header="{ selected }">
+          <b-input
+            v-model="selected.name"
+            placeholder="name"
+            :lazy="true"
+            type="is-warning"
+          />
+        </template>
+      </NavigationManager>
+      <!-- <b-button tag="router-link" to="NavLog">
+        <b-icon icon="clipboard-list-outline" />
+      </b-button> -->
       <b-radio-button v-model="tool" native-value="route">
         <b-tooltip label="new route">
           <b-icon icon="map-plus" />
@@ -29,11 +44,13 @@
 
 <script>
 import { LControl } from "vue2-leaflet";
+import NavigationManager from "@/components/NavigationManager";
 
 export default {
   name: "LRouteToolboxControl",
   components: {
-    LControl
+    LControl,
+    NavigationManager
   },
   props: { value: String },
   computed: {

@@ -4,8 +4,9 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Aircraft</p>
-          <AircraftManager select v-if="!aircraft" />
-          <p class="title" v-else>{{ aircraft.registration }}</p>
+          <AircraftManager>
+            <p class="title">{{ aircraft && aircraft.registration }}</p>
+          </AircraftManager>
         </div>
       </div>
     </nav>

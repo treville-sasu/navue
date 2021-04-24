@@ -51,24 +51,15 @@
     </template>
 
     <template slot="end">
-      <b-navbar-dropdown hoverable collapsible right arrowless>
-        <template slot="label">
-          {{ currentAircraft ? currentAircraft.registration : "Aircrafts" }}
-        </template>
-
-        <b-navbar-item
-          v-if="$route.name != 'Aircraft'"
-          tag="router-link"
-          :to="{
-            name: 'Aircraft'
-          }"
-        >
-          Manage Aircrafts
-        </b-navbar-item>
-        <b-navbar-item tag="div" style="min-width: 20vw;">
-          <AircraftManager select />
-        </b-navbar-item>
-      </b-navbar-dropdown>
+      <b-navbar-item>
+        <AircraftManager>
+          <template #header>
+            <router-link :to="{ name: 'Aircraft' }">
+              <a>Manage Aircrafts</a>
+            </router-link>
+          </template>
+        </AircraftManager>
+      </b-navbar-item>
       <b-navbar-dropdown hoverable collapsible right>
         <template slot="label">
           <b-icon icon="account" />
