@@ -81,8 +81,8 @@ export const MapTools = {
     selectRoute(id) {
       this.currentRoute = this.inactiveRoutes[id];
     },
-    addMarker({ latlng } = {}) {
-      this.navigation.addWaypoint({ latlng }, this.currentRoute);
+    addMarker({ latlng, insertBefore } = {}) {
+      this.navigation.addWaypoint({ latlng, insertBefore }, this.currentRoute);
     },
     removeMarker(id) {
       this.navigation.removeWaypoint(id, this.currentRoute);

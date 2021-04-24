@@ -11,6 +11,11 @@ export class Model {
     };
   }
 
+  // TODO write specs
+  clone() {
+    return this.constructor.from(JSON.parse(JSON.stringify(this)));
+  }
+
   static from({ type, ...properties } = {}) {
     if (arguments[0] instanceof this) return arguments[0];
     else if (type == this.name) return new this(properties);
