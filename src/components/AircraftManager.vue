@@ -3,7 +3,7 @@
     <template v-if="selectedData" #trigger>
       <slot name="default" :selected="selectedData">
         <b-button type="is-primary" icon-right="chevron-down">
-          {{ selectedData.registration }}
+          {{ selectedData.registration || "new" }}
         </b-button>
       </slot>
     </template>
@@ -41,10 +41,16 @@
           </b-field>
         </template>
         <template #empty v-if="!edit">
-          <span>
-            "<i>{{ search }}</i
-            >" not found</span
-          >
+          <ul class="content">
+            <li>
+              <i>{{ search }}</i> not found
+            </li>
+            <li>
+              <router-link :to="{ name: 'Aircraft' }">
+                <a>Manage Aircrafts</a>
+              </router-link>
+            </li>
+          </ul>
         </template>
       </b-autocomplete>
     </template>

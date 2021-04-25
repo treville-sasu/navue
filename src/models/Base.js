@@ -23,7 +23,7 @@ export class Model {
   }
 }
 
-// TODO : implementation for when Vuejs Suppots Array-like objects.
+// TODO : implementation for when Vuejs Supports Array-like objects.
 // export class Store extends Array {
 export class Store {
   constructor(properties = {}, ...items) {

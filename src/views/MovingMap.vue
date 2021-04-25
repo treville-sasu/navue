@@ -127,9 +127,9 @@ export default {
         zoomControl: false,
         inFlight: false,
         navigationSelect: false,
-        traceLength: 200,
+        traceLength: 500,
         minDestination: 100,
-        futurPositionDelay: 3 * 60,
+        futurPositionDelay: 3,
         map: {
           zoom: 10,
           center: { lat: 42.69597591582309, lng: 2.879308462142945 },
@@ -191,7 +191,7 @@ export default {
         selector: {
           type: this.traceType
         },
-        sort: ["timestamp"]
+        sort: [{ timestamp: "desc" }]
       };
     }
   },

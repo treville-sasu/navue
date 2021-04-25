@@ -1,21 +1,27 @@
 <template>
-  <l-layer-group>
-    <l-marker v-if="value.latlng" :lat-lng="value.latlng">
+  <l-layer-group v-if="this.value.latlng">
+    <l-marker :lat-lng="value.latlng">
       <l-icon class-name="leaflet-diamond-icon">
         <div></div>
       </l-icon>
     </l-marker>
     <l-circle
-      v-if="value.latlng && value.accuracy"
+      v-if="value.accuracy"
       :lat-lng="value.latlng"
       :radius="value.accuracy"
       className="accuracyCircle"
     />
     <l-polyline
-      v-if="this.value.latlng && this.value.heading && this.value.speed"
+      v-if="value.heading && value.speed"
       :lat-lngs="speedVector"
       className="speedVector"
     />
+
+    <l-marker :lat-lng="nMinutesPosition(n)" :key="n" v-for="n in delay">
+      <l-icon :class-name="`mdi mdi-numeric-${n}-circle mdi-18px`">
+        <div></div>
+      </l-icon>
+    </l-marker>
   </l-layer-group>
 </template>
 
@@ -58,16 +64,18 @@ export default {
     delay: {
       type: Number,
       default: () => {
-        return 60;
+        return 3;
       }
     }
   },
   computed: {
     speedVector() {
-      return [
-        this.value.latlng,
-        this.value.positionInSeconds(this.delay).latlng
-      ];
+      return [this.value.latlng, this.nMinutesPosition(this.delay)];
+    }
+  },
+  methods: {
+    nMinutesPosition(n) {
+      return this.value.positionInSeconds(n * 60).latlng;
     }
   }
 };
