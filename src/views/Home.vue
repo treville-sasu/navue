@@ -1,7 +1,5 @@
 <template>
   <section class="hero is-primary is-fullheight-with-navbar">
-    <div class="hero-head"></div>
-
     <div class="hero-body">
       <div class="container">
         <div class="columns is-vcentered">
@@ -42,6 +40,13 @@
               <a
                 target="_blank"
                 href="https://github.com/treville-sasu/navue/issues"
+                >Contribute</a
+              >
+            </li>
+            <li>
+              <a
+                target="_blank"
+                href="https://github.com/treville-sasu/navue/discussions"
                 >Get Help</a
               >
             </li>

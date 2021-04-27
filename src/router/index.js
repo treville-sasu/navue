@@ -20,14 +20,14 @@ const routes = [
     component: () => import("../views/MovingMap.vue")
   },
   {
-    path: "/checklists",
-    name: "Checklists",
-    component: () => import("../views/Checklists.vue")
+    path: "/replay",
+    name: "Replay",
+    component: () => import("../views/Wip.vue")
   },
   {
-    path: "/navlog",
-    name: "NavLog",
-    component: () => import("../views/NavLog.vue")
+    path: "/radar/:id?",
+    name: "Radar",
+    component: () => import("../views/Wip.vue")
   },
   {
     path: "/route/:id?",

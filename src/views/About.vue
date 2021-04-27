@@ -15,7 +15,7 @@
           </p>
           <p class="block">
             With navue we aim at a multiplatform, directly usable (no
-            installation, no dowload, no update), source of information, and
+            installation, no download, no update), source of information, and
             quick route planning.
           </p>
           <p class="block">
@@ -124,6 +124,19 @@ export default {
       build: process.env.VUE_APP_BUILD,
       isBrowserCheckActive: false
     };
+  },
+  methods: {
+    removeServiceWorkers() {
+      if (window.navigator && navigator.serviceWorker) {
+        navigator.serviceWorker
+          .getRegistrations()
+          .then(function(registrations) {
+            for (let registration of registrations) {
+              registration.unregister();
+            }
+          });
+      }
+    }
   }
 };
 </script>

@@ -24,30 +24,15 @@
           >Weight and Balance</b-navbar-item
         >
       </b-navbar-dropdown>
-      <b-navbar-dropdown label="Flying" hoverable collapsible>
-        <b-navbar-item tag="router-link" to="checklists"
-          >Checklists</b-navbar-item
-        >
-        <b-navbar-item tag="router-link" to="navlog"
-          >Navigation Log</b-navbar-item
-        >
-        <b-navbar-item tag="router-link" :to="{ name: 'MovingMap' }"
-          >Moving Map</b-navbar-item
-        >
-        <hr class="navbar-divider" />
-        <!-- <div class="control navbar-item">
-          <b-switch>Broadcast Position</b-switch>
-        </div> -->
-        <!-- <b-navbar-item tag="router-link" to="enroute"
-          >Follow aircrafts</b-navbar-item
-        > -->
-      </b-navbar-dropdown>
-      <!-- <b-navbar-dropdown label="Debriefing" hoverable collapsible>
-        <b-navbar-item tag="router-link" to="stats">Stats</b-navbar-item>
-        <b-navbar-item tag="router-link" to="replay">Replay</b-navbar-item>
-        <hr class="navbar-divider" />
-        <b-navbar-item tag="router-link" to="trace">Save trace</b-navbar-item>
-      </b-navbar-dropdown> -->
+      <b-navbar-item tag="router-link" :to="{ name: 'MovingMap' }"
+        >Fly</b-navbar-item
+      >
+      <b-navbar-item tag="router-link" :to="{ name: 'Replay' }" disabled
+        >Debriefing</b-navbar-item
+      >
+      <b-navbar-item tag="router-link" :to="{ name: 'Radar' }"
+        >Monitor</b-navbar-item
+      >
     </template>
 
     <template slot="end">
