@@ -115,7 +115,6 @@ export default {
   mixins: [WakeLock, MapHandlers],
   data() {
     return {
-      lastKnownLocation: undefined,
       lastKnownError: undefined,
       destination: undefined,
       traceDB: "navue_trace",
@@ -157,6 +156,14 @@ export default {
     },
     routes() {
       return this.navigation ? this.navigation.routes : [];
+    },
+    lastKnownLocation: {
+      get() {
+        return this.$store.state.currentLocation;
+      },
+      set(data) {
+        this.$store.commit("currentLocation", data);
+      }
     }
   },
   watch: {

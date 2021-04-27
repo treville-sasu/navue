@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import { Navigation } from "@/models/Navigation.js";
 import { Aircraft } from "@/models/Aircraft.js";
+import { Location } from "@/models/Waypoint.js";
 
 Vue.use(Vuex);
 
@@ -10,7 +11,8 @@ export default new Vuex.Store({
   state: {
     currentUser: null,
     currentAircraft: null,
-    currentNavigation: null
+    currentNavigation: null,
+    currentLocation: null
   },
   mutations: {
     currentUser: (state, payload) => {
@@ -32,6 +34,9 @@ export default new Vuex.Store({
     },
     currentNavigation(state, payload) {
       state.currentNavigation = payload ? Navigation.from(payload) : payload;
+    },
+    currentLocation(state, payload) {
+      state.currentLocation = payload ? Location.from(payload) : payload;
     }
   },
   actions: {

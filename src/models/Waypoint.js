@@ -145,6 +145,7 @@ export class Location extends Waypoint {
     timestamp,
     ...waypoint
   } = {}) {
+    if (arguments[0] instanceof this) return arguments[0];
     //TODO accuracy should be a Distance.
     if (verticalSpeed) verticalSpeed = Speed.from(verticalSpeed);
     if (speed) speed = Speed.from(speed);
