@@ -1,61 +1,59 @@
 <template>
-  <l-control v-bind="$attrs">
-    <nav class="level is-mobile box">
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">
-            <b-icon
-              :type="isEnroute ? 'is-danger' : 'is-primary'"
-              :icon="isEnroute ? 'airplane-landing' : 'airplane-takeoff'"
-            />
-          </p>
-          <p
-            class="title is-clickable"
-            @click="isEnroute ? null : startFlight()"
-            @contextmenu.prevent.stop="isEnroute ? stopFlight() : null"
-          >
-            {{ fromStart | asDuration }}
-          </p>
+  <nav class="level is-mobile box">
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">
+          <b-icon
+            :type="isEnroute ? 'is-danger' : 'is-primary'"
+            :icon="isEnroute ? 'airplane-landing' : 'airplane-takeoff'"
+          />
+        </p>
+        <p
+          class="title is-clickable"
+          @click="isEnroute ? null : startFlight()"
+          @contextmenu.prevent.stop="isEnroute ? stopFlight() : null"
+        >
+          {{ fromStart | asDuration }}
+        </p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">
+          <b-icon
+            icon="timer-outline"
+            :type="chronoTime ? 'is-danger' : 'is-primary'"
+          />
+        </p>
+        <p
+          class="title is-clickable"
+          @click="startChrono"
+          @contextmenu.prevent.stop="stopChrono"
+        >
+          {{ chrono | asDuration }}
+        </p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">
+          <b-icon icon="alarm-plus" />
+        </p>
+        <div
+          class="is-clickable timelist"
+          @click.stop="addTime"
+          @contextmenu.prevent.stop="removeTime"
+        >
+          <ul>
+            <li v-for="time in markedTimes" :key="time">
+              {{ time | asDuration }}
+            </li>
+          </ul>
+          <span class="title"> - </span>
         </div>
       </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">
-            <b-icon
-              icon="timer-outline"
-              :type="chronoTime ? 'is-danger' : 'is-primary'"
-            />
-          </p>
-          <p
-            class="title is-clickable"
-            @click="startChrono"
-            @contextmenu.prevent.stop="stopChrono"
-          >
-            {{ chrono | asDuration }}
-          </p>
-        </div>
-      </div>
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">
-            <b-icon icon="alarm-plus" />
-          </p>
-          <div
-            class="is-clickable timelist"
-            @click.stop="addTime"
-            @contextmenu.prevent.stop="removeTime"
-          >
-            <ul>
-              <li v-for="time in markedTimes" :key="time">
-                {{ time | asDuration }}
-              </li>
-            </ul>
-            <span class="title"> - </span>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </l-control>
+    </div>
+  </nav>
 </template>
 
 <style scoped>
@@ -68,14 +66,10 @@
 </style>
 
 <script>
-import { LControl } from "vue2-leaflet";
 import UnitSystem from "@/mixins/UnitSystem.js";
 
 export default {
-  name: "LTimeControl",
-  components: {
-    LControl
-  },
+  name: "TimerToolbar",
   mixins: [UnitSystem],
   data() {
     return {

@@ -6,36 +6,43 @@
       @ready="setupMap"
       @contextmenu="setDestination"
     >
-      <l-moving-map-settings-control
-        position="topleft"
-        v-bind="settings"
-        @update:settings="updateSettings"
-        @delete-track="removeLocations"
-      />
+      <l-control position="topleft">
+        <MovingMapSettings
+          v-bind="settings"
+          @update:settings="updateSettings"
+          @delete-track="removeLocations"
+        />
+        <DataToolbar />
+      </l-control>
+
       <l-control-zoom v-if="settings.zoomControl" position="topleft" />
-      <l-moving-map-toolbox-control
-        position="bottomleft"
-        v-if="!settings.inFlight"
-        @update:settings="updateSettings"
-      />
-      <l-moving-map-instruments-control
-        v-bind="lastKnownLocation"
-        position="topright"
-      />
-      <l-moving-map-destination-control
-        v-if="lastKnownLocation && destination"
-        :from="lastKnownLocation"
-        :to="destination"
-        position="bottomleft"
-      />
-      <l-time-control
-        @update:settings="updateSettings"
-        position="bottomright"
-      />
+
+      <l-control position="bottomleft">
+        <ReportToolbar />
+      </l-control>
+
+      <l-control position="topright">
+        <InstrumentsDisplay
+          v-if="lastKnownLocation"
+          v-bind="lastKnownLocation"
+        />
+      </l-control>
+
+      <l-control position="bottomleft">
+        <DestinationDisplay
+          v-if="lastKnownLocation && destination"
+          :from="lastKnownLocation"
+          :to="destination"
+        />
+      </l-control>
+      <l-control position="bottomright">
+        <TimerToolbar @update:settings="updateSettings" />
+      </l-control>
 
       <l-base-layer-group />
 
       <l-location-marker
+        :v-if="lastKnownLocation"
         :value="lastKnownLocation"
         :delay="settings.futurPositionDelay"
       />
@@ -76,18 +83,18 @@ body,
 import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
-import { LMap, LPolyline, LControlZoom } from "vue2-leaflet";
+import { LMap, LControlZoom, LControl, LPolyline } from "vue2-leaflet";
 
 import { MapHandlers } from "@/mixins/MapHandlers";
 
+import MovingMapSettings from "@/components/MovingMapSettings.vue";
+import InstrumentsDisplay from "@/components/InstrumentsDisplay.vue";
+import DestinationDisplay from "@/components/DestinationDisplay.vue";
+import TimerToolbar from "@/components/TimerToolbar.vue";
+import ReportToolbar from "@/components/ReportToolbar.vue";
+import DataToolbar from "@/components/DataToolbar.vue";
+
 import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup.vue";
-
-import LMovingMapSettingsControl from "@/components/leaflet/LMovingMapSettingsControl.vue";
-import LMovingMapToolboxControl from "@/components/leaflet/LMovingMapToolboxControl.vue";
-import LMovingMapInstrumentsControl from "@/components/leaflet/LMovingMapInstrumentsControl.vue";
-import LMovingMapDestinationControl from "@/components/leaflet/LMovingMapDestinationControl.vue";
-import LTimeControl from "@/components/leaflet/LTimeControl.vue";
-
 import LLocationMarker from "@/components/leaflet/LLocationMarker.vue";
 import LDestinationMarker from "@/components/leaflet/LDestinationMarker.vue";
 import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
@@ -101,13 +108,15 @@ export default {
   components: {
     LMap,
     LControlZoom,
+    LControl,
     LPolyline,
+    MovingMapSettings,
+    InstrumentsDisplay,
+    DestinationDisplay,
+    TimerToolbar,
+    ReportToolbar,
+    DataToolbar,
     LBaseLayerGroup,
-    LMovingMapSettingsControl,
-    LMovingMapToolboxControl,
-    LMovingMapInstrumentsControl,
-    LMovingMapDestinationControl,
-    LTimeControl,
     LLocationMarker,
     LRouteLayerGroup,
     LDestinationMarker
