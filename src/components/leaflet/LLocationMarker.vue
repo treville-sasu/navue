@@ -11,17 +11,14 @@
       :radius="value.accuracy"
       className="accuracyCircle"
     />
-    <l-polyline
-      v-if="value.heading && value.speed"
-      :lat-lngs="speedVector"
-      className="speedVector"
-    />
-
-    <l-marker :lat-lng="nMinutesPosition(n)" :key="n" v-for="n in delay">
-      <l-icon :class-name="`mdi mdi-numeric-${n}-circle mdi-18px`">
-        <div></div>
-      </l-icon>
-    </l-marker>
+    <template v-if="value.heading && value.speed">
+      <l-polyline :lat-lngs="speedVector" className="speedVector" />
+      <l-marker :lat-lng="nMinutesPosition(n)" :key="n" v-for="n in delay">
+        <l-icon class-name="leaflet-number-icon" :iconSize="['1em', '1em']">
+          <div>{{ n }}</div>
+        </l-icon>
+      </l-marker>
+    </template>
   </l-layer-group>
 </template>
 
@@ -39,6 +36,15 @@
 .leaflet-diamond-icon {
   background: black;
   border: 2px solid #ffffff;
+}
+.leaflet-number-icon {
+  line-height: 1.1em;
+  padding: 0.1em;
+  margin: -0.5em;
+  background: #ffffff;
+  border: 2px solid #000000;
+  border-radius: 1em;
+  text-align: center;
 }
 </style>
 
