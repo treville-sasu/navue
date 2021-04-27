@@ -19,7 +19,7 @@ module.exports = {
     workboxPluginMode: "InjectManifest",
     workboxOptions: {
       swSrc: "src/service-worker.js",
-      exclude: ["CNAME", "robots.txt"]
+      exclude: ["CNAME", "robots.txt", /^.*map$/]
     },
     themeColor: "#34495e",
     msTileColor: "#34495e",
