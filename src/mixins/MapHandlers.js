@@ -12,7 +12,7 @@ export const MapHandlers = {
       },
       settings: {
         maxAccuracy: 150,
-        minSpeed: 1000 / 3600,
+        minSpeed: 0.2,
         minDistance: 1
       }
     };
@@ -65,10 +65,6 @@ export const MapHandlers = {
         location.distanceTo(this.lastKnownLocation) <= this.settings.minDistance
       )
         return;
-
-      if (this.lastKnownLocation instanceof Location)
-        Object.assign(location, location.movementFrom(this.lastKnownLocation));
-
       if (
         location.altitude &&
         location.altitude.accuracy > this.settings.maxAccuracy
@@ -99,6 +95,7 @@ export const MapHandlers = {
           ...this.lastKnownLocation,
           accuracy: this.settings.maxAccuracy / 2
         });
+
         this._locationFound(location);
       } else {
         delete e.sourceTarget;
@@ -117,7 +114,9 @@ export const MapHandlers = {
       latitude = 0,
       longitude = 0,
       accuracy = 20,
-      altitude = 1000
+      altitude = 1000,
+      speed = 50,
+      heading = 0
     }) {
       console.debug("Faking around:", {
         latitude,
@@ -135,6 +134,8 @@ export const MapHandlers = {
         accuracy: accuracy + rand(),
         altitude: altitude + rand(10),
         altitudeAccuracy: accuracy + rand(),
+        heading: heading + rand(10),
+        speed: speed + rand(),
         timestamp: Date.now()
       };
     }

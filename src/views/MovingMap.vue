@@ -22,10 +22,7 @@
       </l-control>
 
       <l-control position="topright">
-        <InstrumentsDisplay
-          v-if="lastKnownLocation"
-          v-bind="lastKnownLocation"
-        />
+        <InstrumentsDisplay />
       </l-control>
 
       <l-control position="bottomleft">
@@ -134,8 +131,7 @@ export default {
         fullScreen: !!document.fullscreenElement,
         zoomControl: false,
         inFlight: false,
-        navigationSelect: false,
-        traceLength: 500,
+        traceLength: 250,
         minDestination: 100,
         futurPositionDelay: 3,
         map: {
