@@ -237,7 +237,7 @@ export default {
     bestView(location) {
       let bounds = location.toBounds(
         location.speed
-          ? location.speed * this.settings.futurPositionDelay
+          ? location.speed * this.settings.futurPositionDelay * 60
           : location.accuracy
       );
       this.map.flyToBounds(bounds, { padding: [100, 100] });
