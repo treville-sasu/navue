@@ -7,11 +7,13 @@
       @contextmenu="setDestination"
     >
       <l-control position="topleft">
-        <MovingMapSettings
-          v-bind="settings"
-          @update:settings="updateSettings"
-          @delete-track="removeLocations"
-        />
+        <b-field>
+          <MovingMapSettings
+            v-bind="settings"
+            @update:settings="updateSettings"
+            position="is-bottom-right"
+            :triggers="['click', 'hover']"
+          />
           <DataToolbar
             navigation
             aircraft
@@ -22,24 +24,24 @@
               triggers: ['click', 'hover']
             }"
           />
+        </b-field>
       </l-control>
 
       <l-control-zoom v-if="settings.zoomControl" position="topleft" />
 
       <l-control position="bottomleft">
-        <ReportToolbar />
+        <ReportToolbar :tooltip="{ position: 'is-top' }" />
       </l-control>
-
-      <l-control position="topright">
-        <InstrumentsDisplay />
-      </l-control>
-
       <l-control position="bottomleft">
         <DestinationDisplay
           v-if="lastKnownLocation && destination"
           :from="lastKnownLocation"
           :to="destination"
         />
+
+        <l-control position="topright">
+          <InstrumentsDisplay />
+        </l-control>
       </l-control>
       <l-control position="bottomright">
         <TimerToolbar @update:settings="updateSettings" />

@@ -5,6 +5,17 @@
 
       <vue-leaflet-minimap v-bind="miniMapSettings" />
 
+      <l-control position="topleft">
+        <DataToolbar
+          navigation
+          aircraft
+          :dropdown="{
+            position: 'is-bottom-right',
+            triggers: ['click', 'hover']
+          }"
+        />
+      </l-control>
+
       <l-control-geocoder
         :options="{
           position: 'topleft',
@@ -13,7 +24,13 @@
           defaultMarkGeocode: false
         }"
       />
-      <l-route-toolbox-control v-model="tool" position="bottomleft" />
+
+      <l-control position="bottomleft">
+        <ReportToolbar :tooltip="{ position: 'is-top' }" />
+      </l-control>
+      <l-control position="topright">
+        <RouteToolbox v-model="tool" :tooltip="{ position: 'is-bottom' }" />
+      </l-control>
 
       <l-route-layer-group
         v-if="currentRoute"
@@ -63,14 +80,17 @@ import L from "leaflet";
 import "@/mixins/leaflet.patch";
 import "leaflet/dist/leaflet.css";
 
-import { LMap, LPolyline } from "vue2-leaflet";
+import { LMap, LPolyline, LControl } from "vue2-leaflet";
 import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup.vue";
 
-import LRouteToolboxControl from "@/components/leaflet/LRouteToolboxControl.vue";
 import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
 
 import LControlGeocoder from "@/components/leaflet/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
+
+import DataToolbar from "@/components/DataToolbar.vue";
+import RouteToolbox from "@/components/RouteToolbox";
+import ReportToolbar from "@/components/ReportToolbar.vue";
 
 import { MapTools } from "@/mixins/MapTools";
 
@@ -79,11 +99,14 @@ export default {
   components: {
     LMap,
     LPolyline,
+    LControl,
     LBaseLayerGroup,
     LRouteLayerGroup,
-    LRouteToolboxControl,
     VueLeafletMinimap,
-    LControlGeocoder
+    LControlGeocoder,
+    DataToolbar,
+    RouteToolbox,
+    ReportToolbar
   },
   mixins: [MapTools],
   data() {
@@ -94,6 +117,7 @@ export default {
         center: { lat: 42.69597591582309, lng: 2.879308462142945 },
         options: {
           zoomSnap: 0.5,
+          zoomControl: false,
           attributionControl: false
         }
       },

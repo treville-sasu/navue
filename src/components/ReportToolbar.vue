@@ -5,8 +5,8 @@
       native-value="navigation-log"
       :disabled="!navigation"
     >
-      <b-tooltip label="Navigation Log">
-        <b-icon icon="clipboard-list-outline" />
+      <b-tooltip label="Navigation Log" v-bind="tooltip">
+        <b-icon icon="clipboard-list-outline" v-bind="icon" />
       </b-tooltip>
     </b-radio-button>
 
@@ -15,28 +15,32 @@
       native-value="checklists"
       :disabled="!aircraft"
     >
-      <b-tooltip label="Checklists">
-        <b-icon icon="list-status" />
+      <b-tooltip label="Checklists" v-bind="tooltip">
+        <b-icon icon="list-status" v-bind="icon" />
       </b-tooltip>
     </b-radio-button>
     <b-radio-button v-model="modalName" native-value="vac" disabled>
-      <b-tooltip label="VAC">
-        <b-icon icon="airport" />
+      <b-tooltip label="VAC" v-bind="tooltip">
+        <b-icon icon="airport" v-bind="icon" />
       </b-tooltip>
     </b-radio-button>
     <b-radio-button v-model="modalName" native-value="weather" disabled>
-      <b-tooltip label="Weather">
-        <b-icon icon="windsock" />
+      <b-tooltip label="Weather" v-bind="tooltip">
+        <b-icon icon="windsock" v-bind="icon" />
       </b-tooltip>
     </b-radio-button>
     <b-radio-button v-model="modalName" native-value="notam" disabled>
-      <b-tooltip label="Notam">
-        <b-icon icon="message-flash" />
+      <b-tooltip label="Notam" v-bind="tooltip">
+        <b-icon icon="message-flash" v-bind="icon" />
       </b-tooltip>
     </b-radio-button>
-    <b-radio-button v-model="modalName" native-value="notes" disabled>
-      <b-tooltip label="Notes">
-        <b-icon icon="pencil" />
+    <b-radio-button
+      v-model="modalName"
+      native-value="notepad"
+      :disabled="!flight"
+    >
+      <b-tooltip label="Notes" v-bind="tooltip">
+        <b-icon icon="pencil" v-bind="icon" />
       </b-tooltip>
     </b-radio-button>
     <b-modal
@@ -50,15 +54,18 @@
 <script>
 import NavigationLog from "@/components/NavigationLog";
 import Checklists from "@/components/Checklists";
+import Notepad from "@/components/Notepad";
 
 export default {
   name: "ReportToolbar",
+  props: { tooltip: Object, icon: Object },
   data() {
     return {
       modalName: null,
       modals: {
         "navigation-log": NavigationLog,
-        checklists: Checklists
+        checklists: Checklists,
+        notepad: Notepad
       }
     };
   },
@@ -80,8 +87,11 @@ export default {
     aircraft() {
       return this.$store.state.currentAircraft;
     },
-    location() {
-      return this.$store.state.currentLocation;
+    // location() {
+    //   return this.$store.state.currentLocation;
+    // },
+    flight() {
+      return this.$store.state.currentFlight;
     }
   }
 };
