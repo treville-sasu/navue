@@ -2,11 +2,19 @@ import { ImportExport, UIHelpers } from "@/mixins/apputils";
 
 export const DataManager = {
   mixins: [ImportExport, UIHelpers],
+  props: {
+    create: Boolean,
+    edit: Boolean,
+    persistent: Boolean
+  },
   data() {
     return {
       search: "",
       upload: []
     };
+  },
+  mounted() {
+    if (this.persistent) this.createData();
   },
   computed: {
     dataType() {
@@ -16,6 +24,14 @@ export const DataManager = {
       return (
         this.selectedData && this.selectedData._id && this.selectedData._rev
       );
+    },
+    selectedData: {
+      get() {
+        return this.$store.state[this.storeKey];
+      },
+      set(data) {
+        this.$store.commit(this.storeKey, data);
+      }
     }
   },
   pouch: {
@@ -30,6 +46,9 @@ export const DataManager = {
     }
   },
   methods: {
+    createData() {
+      this.selectedData = new this.constructor();
+    },
     saveData() {
       this.$store
         .dispatch("saveToDB", this.selectedData)
@@ -86,7 +105,6 @@ export const DataManager = {
       delete clone._rev;
       if (clone.name) clone.name += "-1";
       if (clone.registration) clone.registration += "(cloned)";
-
       return clone;
     }
   }

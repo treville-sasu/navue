@@ -12,7 +12,16 @@
           @update:settings="updateSettings"
           @delete-track="removeLocations"
         />
-        <DataToolbar />
+          <DataToolbar
+            navigation
+            aircraft
+            flight
+            :traceDB="traceDB"
+            :dropdown="{
+              position: 'is-bottom-right',
+              triggers: ['click', 'hover']
+            }"
+          />
       </l-control>
 
       <l-control-zoom v-if="settings.zoomControl" position="topleft" />
@@ -169,6 +178,14 @@ export default {
       set(data) {
         this.$store.commit("currentLocation", data);
       }
+    },
+    flight: {
+      get() {
+        return this.$store.state.currentFlight;
+      },
+      set(data) {
+        this.$store.commit("currentFlight", data);
+      }
     }
   },
   watch: {
@@ -227,17 +244,6 @@ export default {
       let asJSON = JSON.parse(JSON.stringify(payload));
       asJSON._id = payload.timestamp.toString();
       return this.$pouch[this.traceDB].put(asJSON, {});
-    },
-    removeLocations() {
-      this.$pouch[this.traceDB]
-        .destroy()
-        .then(() => {
-          // MEMO: this is a workaround for updating livefeed
-          let keep = this.traceType;
-          this.traceType = null;
-          this.traceType = keep;
-        })
-        .catch(console.error);
     },
     setDestination({ latlng, latitude, longitude, altitude } = {}) {
       this.destination = Waypoint.from({

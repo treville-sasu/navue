@@ -11,7 +11,13 @@
       </div>
     </section>
     <section class="section">
-      <AircraftManager edit />
+      <AircraftManager create edit v-slot="{ selected }">
+        <b-button type="is-primary" icon-right="chevron-down">
+          {{
+            selected ? selected.registration || "unsaved" : "Select an aircraft"
+          }}
+        </b-button>
+      </AircraftManager>
       <b-tabs position="is-centered" multiline expanded v-if="aircraft">
         <b-tab-item label="Identification">
           <b-field label="Registration" horizontal>

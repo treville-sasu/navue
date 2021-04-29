@@ -1,84 +1,94 @@
 <template>
-  <b-dropdown :triggers="selectedData ? ['click'] : []" v-bind="$attrs">
-    <template v-if="selectedData" #trigger>
+  <b-dropdown v-bind="$attrs">
+    <template #trigger>
       <slot name="default" :selected="selectedData">
-        <b-button type="is-primary" icon-right="chevron-down">
-          {{ selectedData.name }}
+        <b-button>
+          <b-tooltip
+            position="is-bottom"
+            :label="selectedData ? selectedData.name : 'Navigation'"
+          >
+            <b-icon
+              icon="map-marker-path"
+              :type="selectedData ? 'is-success' : ''"
+            />
+          </b-tooltip>
         </b-button>
       </slot>
     </template>
-
-    <template v-else #trigger>
-      <b-autocomplete
-        placeholder="Open navigation"
-        v-model="search"
-        :data="availableData || []"
-        @select="selectedData = $event"
-        :field="searchedProperty"
-        open-on-focus
-        keep-first
-        clear-on-select
-        clearable
-      >
-        <template #header v-if="edit">
-          <a @click="selectedData = new constructor({ name: search })">
-            <span> Create {{ search }}</span>
-          </a>
-        </template>
-        <template #footer v-if="edit">
-          <b-field class="file is-primary">
-            <b-upload
-              class="file-label"
-              v-model="upload"
-              accept="application/json"
-              @input="importData"
-            >
-              <span class="file-cta">
-                <b-icon icon="upload" />
-                <span>Import from file</span>
-              </span>
-            </b-upload>
-          </b-field>
-        </template>
-        <template #empty v-if="!edit">
-          <span>
-            "<i>{{ search }}</i
-            >" not found</span
-          >
-        </template>
-      </b-autocomplete>
-    </template>
-
     <template v-if="selectedData">
-      <b-dropdown-item custom>
+      <b-dropdown-item custom v-if="$slots.header || $scopedSlots.header">
         <slot name="header" :selected="selectedData" />
       </b-dropdown-item>
-      <b-dropdown-item @click="saveData" v-if="edit">
-        <b-icon icon="cloud-upload-outline" type="is-warning" />
-        Save
-      </b-dropdown-item>
+      <b-dropdown-item separator v-if="$slots.header || $scopedSlots.header" />
 
+      <template v-if="edit">
+        <b-dropdown-item @click="saveData">
+          <b-icon icon="cloud-upload-outline" type="is-warning" />
+          Save
+        </b-dropdown-item>
+        <b-dropdown-item @click="exportData">
+          <b-icon icon="download-outline" />
+          Export
+        </b-dropdown-item>
+        <b-dropdown-item
+          @click="selectedData = cloneData(selectedData)"
+          :disabled="!fromDB"
+          v-if="create"
+        >
+          <b-icon icon="plus-circle-multiple-outline" />
+          Clone
+        </b-dropdown-item>
+        <b-dropdown-item @click="deleteData" :disabled="!fromDB">
+          <b-icon icon="delete-outline" type="is-danger" />
+          Delete
+        </b-dropdown-item>
+      </template>
       <b-dropdown-item @click="selectedData = undefined">
         <b-icon icon="selection-off" />
         Discard
       </b-dropdown-item>
-      <b-dropdown-item
-        @click="selectedData = cloneData(selectedData)"
-        :disabled="!fromDB"
-        v-if="edit"
-      >
-        <b-icon icon="plus-circle-multiple-outline" />
-        Clone
+    </template>
+
+    <template v-else>
+      <b-dropdown-item custom>
+        <b-autocomplete
+          placeholder="Choose an navigation"
+          v-model="search"
+          :data="availableData || []"
+          @select="selectedData = $event"
+          :field="searchedProperty"
+          open-on-focus
+          keep-first
+          clear-on-select
+          clearable
+          append-to-body
+        >
+          <template #empty>
+            <i>{{ search }}</i> not found
+          </template>
+        </b-autocomplete>
       </b-dropdown-item>
-      <b-dropdown-item @click="exportData" v-if="edit">
-        <b-icon icon="download-outline" />
-        Download
+      <b-dropdown-item @click="createData" v-if="create">
+        <b-icon icon="plus-circle-outline" />
+        New Navigation
       </b-dropdown-item>
-      <b-dropdown-item @click="deleteData" :disabled="!fromDB" v-if="edit">
-        <b-icon icon="delete-outline" type="is-danger" />
-        Delete
+      <b-dropdown-item v-if="create">
+        <b-upload
+          v-model="upload"
+          accept="application/json"
+          @input="importData"
+        >
+          <b-icon icon="upload" />
+          Import
+        </b-upload>
       </b-dropdown-item>
     </template>
+
+    <b-dropdown-item has-link v-if="$route.name != 'Route'">
+      <router-link :to="{ name: 'Route' }">
+        Edit Navigation
+      </router-link>
+    </b-dropdown-item>
   </b-dropdown>
 </template>
 
@@ -89,24 +99,12 @@ import { Navigation } from "@/models/Navigation";
 export default {
   name: "NavigationManager",
   mixins: [DataManager],
-  props: {
-    edit: Boolean
-  },
   data() {
     return {
       constructor: Navigation,
+      storeKey: "currentNavigation",
       searchedProperty: "name"
     };
-  },
-  computed: {
-    selectedData: {
-      get() {
-        return this.$store.state.currentNavigation;
-      },
-      set(data) {
-        this.$store.commit("currentNavigation", data);
-      }
-    }
   }
 };
 </script>

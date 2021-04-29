@@ -1,32 +1,47 @@
 <template>
   <b-field>
-    <NavigationManager position="is-bottom-right">
-      <template #default>
-        <b-button>
-          <b-tooltip label="Open Navigation">
-            <b-icon icon="map-marker-path" />
-          </b-tooltip>
-        </b-button>
-      </template>
+    <NavigationManager v-if="navigation" v-bind="dropdown">
       <template #header="{ selected }">
         {{ selected.name }}
       </template>
     </NavigationManager>
-    <b-button disabled>
-      <b-tooltip label="Save Trace">
-        <b-icon icon="record-rec" />
-      </b-tooltip>
-    </b-button>
+    <AircraftManager v-if="aircraft" v-bind="dropdown">
+      <template #header="{ selected }">
+        {{ selected.registration }}
+      </template>
+    </AircraftManager>
+    <FlightManager
+      v-if="flight"
+      :traceDB="traceDB"
+      persistent
+      build
+      v-bind="dropdown"
+    >
+      <template #header="{ selected }">
+        <b-input v-model="selected.name" placeholder="Flight n°" />
+      </template>
+    </FlightManager>
   </b-field>
 </template>
 
 <script>
 import NavigationManager from "@/components/NavigationManager";
+import AircraftManager from "@/components/AircraftManager";
+import FlightManager from "@/components/FlightManager";
 
 export default {
   name: "DataToolbar",
   components: {
-    NavigationManager
+    NavigationManager,
+    AircraftManager,
+    FlightManager
+  },
+  props: {
+    traceDB: String,
+    navigation: Boolean,
+    aircraft: Boolean,
+    flight: Boolean,
+    dropdown: Object
   }
 };
 </script>

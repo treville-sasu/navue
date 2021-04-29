@@ -13,7 +13,13 @@
       </div>
     </section>
     <section class="section">
-      <AircraftManager />
+      <AircraftManager v-slot="{ selected }">
+        <b-button type="is-primary" icon-right="chevron-down">
+          {{
+            selected ? selected.registration || "unsaved" : "Select an aircraft"
+          }}
+        </b-button>
+      </AircraftManager>
       <div class="columns" v-if="aircraft">
         <div class="column">
           <div v-for="(weight, index) in aircraft.balance" :key="index">

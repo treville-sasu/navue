@@ -1,5 +1,5 @@
 <template>
-  <b-dropdown>
+  <b-dropdown v-bind="$attrs">
     <b-button slot="trigger">
       <b-icon icon="cog-outline" />
     </b-button>
@@ -31,9 +31,6 @@
         @input="$emit('update:settings', { zoomControl: $event })"
         >Display zoom control</b-switch
       >
-    </b-dropdown-item>
-    <b-dropdown-item @click="$emit('delete-track')">
-      <b-icon icon="map-marker-remove-outline" />Delete trace
     </b-dropdown-item>
     <b-dropdown-item separator />
     <b-dropdown-item custom>

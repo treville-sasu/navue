@@ -37,12 +37,10 @@
 
     <template slot="end">
       <b-navbar-item>
-        <AircraftManager>
-          <template #header>
-            <router-link :to="{ name: 'Aircraft' }">
-              <a>Manage Aircrafts</a>
-            </router-link>
-          </template>
+        <AircraftManager :triggers="['click', 'hover']" v-slot="{ selected }">
+          <b-button type="is-primary" icon-right="chevron-down">
+            {{ selected ? selected.registration : "Select an aircraft" }}
+          </b-button>
         </AircraftManager>
       </b-navbar-item>
       <b-navbar-dropdown hoverable collapsible right>
