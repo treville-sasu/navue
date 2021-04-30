@@ -53,13 +53,17 @@
           placeholder="Choose an aircraft"
           v-model="search"
           :data="availableData || []"
-          @select="selectedData = $event"
+          @select="
+            (data, e) => {
+              e.stopPropagation();
+              this.selectedData = data;
+            }
+          "
           :field="searchedProperty"
           open-on-focus
           keep-first
           clear-on-select
           clearable
-          append-to-body
         >
           <template #empty>
             <i>{{ search }}</i> not found
@@ -75,6 +79,7 @@
           v-model="upload"
           accept="application/json"
           @input="importData"
+          expanded
         >
           <b-icon icon="upload" />
           Import
@@ -89,13 +94,6 @@
     </b-dropdown-item>
   </b-dropdown>
 </template>
-
-<style scoped>
-.upload .upload-draggable {
-  padding: 0.25em;
-  border: 0;
-}
-</style>
 
 <script>
 import { DataManager } from "@/mixins/DataManager";

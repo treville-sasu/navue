@@ -63,13 +63,17 @@
         placeholder="Open Flight"
         v-model="search"
         :data="availableData || []"
-        @select="selectedData = $event"
+        @select="
+          (data, e) => {
+            e.stopPropagation();
+            this.selectedData = data;
+          }
+        "
         :field="searchedProperty"
         open-on-focus
         keep-first
         clear-on-select
         clearable
-        append-to-body
       >
         <template #header v-if="edit">
           <a @click="selectedData = new constructor({ name: search })">
@@ -126,6 +130,7 @@ export default {
         include_docs: true
       });
       rows.forEach(l => this.selectedData.addLocation(l.doc));
+      return rows.length > 0;
     },
     async deleteLocations() {
       // FIXME this do not update the livefeed in other components.

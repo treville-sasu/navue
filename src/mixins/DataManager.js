@@ -30,8 +30,31 @@ export const DataManager = {
         return this.$store.state[this.storeKey];
       },
       set(data) {
-        this.$store.commit(this.storeKey, data);
+        try {
+          this.$store.commit(this.storeKey, data);
+        } catch (err) {
+          this.$buefy.dialog.alert({
+            title: "Cannot load item",
+            message: `Selected record is corrupted. It will be purged from database. Do you want to download it localy before ?`,
+            type: "is-danger",
+            hasIcon: true,
+            trapFocus: true,
+            icon: "cloud-download-outline",
+            confirmText: "Download & Delete",
+            onConfirm: () => {
+              this.downloadJSON(data, `navue-corrupted-item.json`);
+            },
+            canCancel: true,
+            cancelText: "Just delete it"
+          });
+          this.$store.dispatch("deleteFromDB", data);
+        }
       }
+    },
+    selectedName() {
+      return this.selectedData
+        ? this.selectedData[this.searchedProperty]
+        : undefined;
     }
   },
   pouch: {
@@ -46,50 +69,42 @@ export const DataManager = {
     }
   },
   methods: {
-    createData() {
-      this.selectedData = new this.constructor();
+    createData(seed) {
+      this.selectedData = new this.constructor(seed);
     },
-    saveData() {
-      this.$store
-        .dispatch("saveToDB", this.selectedData)
-        .then(data => {
-          this.selectedData = data;
-          this.openWarning("Saved");
-        })
-        .catch(err => {
-          console.error(err);
-          this.openWarning(err);
-        });
+    async saveData() {
+      try {
+        let savedData = await this.$store.dispatch(
+          "saveToDB",
+          this.selectedData
+        );
+        this.selectedData = savedData;
+        this.openWarning(`"${this.selectedName}" saved`);
+      } catch (err) {
+        this.dispatchError(err);
+      }
     },
-    deleteData() {
-      this.$store
-        .dispatch("deleteFromDB", this.selectedData)
-        .then(() => {
-          this.selectedData = null;
-          this.openWarning("Deleted");
-        })
-        .catch(err => {
-          console.error(err);
-          this.openWarning(err);
-        });
+    async deleteData() {
+      try {
+        await this.$store.dispatch("deleteFromDB", this.selectedData);
+        this.selectedData = null;
+        this.openWarning(`"${this.selectedName}" deleted`);
+      } catch (err) {
+        this.dispatchError(err);
+      }
     },
-    importData(file) {
-      this.uploadJSON(file)
-        .then(res => {
-          this.selectedData = this.cloneData(res);
-          this.openWarning("Imported");
-        })
-        .catch(err => {
-          console.error(err);
-          this.openWarning(err);
-        });
+    async importData(file) {
+      try {
+        let importedData = await this.uploadJSON(file);
+        this.selectedData = this.cloneData(importedData);
+        this.openWarning(`"${this.selectedName}" imported`);
+      } catch (err) {
+        this.dispatchError(err);
+      }
     },
     exportData() {
       if (this.selectedData)
-        this.downloadJSON(
-          this.selectedData,
-          `${this.selectedData[this.searchedProperty]}.json`
-        );
+        this.downloadJSON(this.selectedData, `${this.selectedName}.json`);
     },
     cloneData(data) {
       // function incrementString(str) {
@@ -106,6 +121,10 @@ export const DataManager = {
       if (clone.name) clone.name += "-1";
       if (clone.registration) clone.registration += "(cloned)";
       return clone;
+    },
+    dispatchError(err) {
+      console.error(err);
+      this.openWarning(err);
     }
   }
 };

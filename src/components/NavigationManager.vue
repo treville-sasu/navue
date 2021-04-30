@@ -55,13 +55,17 @@
           placeholder="Choose an navigation"
           v-model="search"
           :data="availableData || []"
-          @select="selectedData = $event"
+          @select="
+            (data, e) => {
+              e.stopPropagation();
+              this.selectedData = data;
+            }
+          "
           :field="searchedProperty"
           open-on-focus
           keep-first
           clear-on-select
           clearable
-          append-to-body
         >
           <template #empty>
             <i>{{ search }}</i> not found
