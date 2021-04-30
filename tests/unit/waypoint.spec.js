@@ -1,7 +1,12 @@
 /* eslint-disable jest/no-hooks */
 import { Waypoint, Location } from "@/models/Waypoint.js";
 import LatLon from "geodesy/latlon-spherical.js";
-import { Altitude, Speed, Azimuth } from "../../src/models/Quantities";
+import {
+  Distance,
+  Altitude,
+  Speed,
+  Azimuth
+} from "../../src/models/Quantities";
 
 expect.extend({
   toBeClose(actual, expected, precision = 2) {
@@ -176,7 +181,7 @@ describe("location", () => {
         latitude: 0,
         longitude: 0,
         altitude: { value: 10, unit: "m", reference: "WGS84" },
-        accuracy: 100,
+        accuracy: { type: "Distance", unit: "m", value: 100 },
         verticalSpeed: { value: 10, unit: "ft/min" },
         speed: { value: 10 },
         heading: { value: 180, unit: "°" },
@@ -184,7 +189,7 @@ describe("location", () => {
       })
     ).toStrictEqual(
       new Location(0, 0, new Altitude(10, "m", { reference: "WGS84" }), {
-        accuracy: 100,
+        accuracy: new Distance(100, "m"),
         verticalSpeed: new Speed(10, "ft/min"),
         speed: new Speed(10),
         heading: new Azimuth(180, "°"),
@@ -212,7 +217,7 @@ describe("location", () => {
         0,
         new Altitude(10, "m", { reference: "WGS84", accuracy: 10 }),
         {
-          accuracy: 100,
+          accuracy: new Distance(100, "m"),
           speed: new Speed(10, "m/s"),
           heading: new Azimuth(270, "°"),
           timestamp: 1234567890
@@ -238,7 +243,7 @@ describe("location", () => {
         0,
         new Altitude(10, "m", { reference: "WGS84", accuracy: 10 }),
         {
-          accuracy: 100,
+          accuracy: new Distance(100, "m"),
           speed: new Speed(10, "m/s"),
           heading: new Azimuth(270, "°"),
           timestamp: 1234567890

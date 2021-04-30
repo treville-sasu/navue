@@ -1,5 +1,5 @@
 <template>
-  <l-layer-group v-if="this.value.latlng">
+  <l-layer-group v-if="this.value && this.value.latlng">
     <l-marker :lat-lng="value.latlng">
       <l-icon class-name="leaflet-diamond-icon">
         <div></div>
@@ -8,7 +8,7 @@
     <l-circle
       v-if="value.accuracy"
       :lat-lng="value.latlng"
-      :radius="value.accuracy"
+      :radius="value.accuracy.value"
       className="accuracyCircle"
     />
     <template v-if="value.heading && value.speed">

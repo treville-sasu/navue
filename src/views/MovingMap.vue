@@ -132,7 +132,6 @@ export default {
   mixins: [WakeLock, MapHandlers],
   data() {
     return {
-      lastKnownError: undefined,
       destination: undefined,
       traceDB: "navue_trace",
       traceType: "Location",

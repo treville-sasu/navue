@@ -137,59 +137,47 @@ export class Location extends Waypoint {
       throw "cannot calculate futur position, speed & heading should be provided";
   }
 
-  static from({
-    accuracy,
-    verticalSpeed,
-    speed,
-    heading,
-    timestamp,
-    ...waypoint
-  } = {}) {
+  static from({ accuracy, speed, heading, timestamp, ...waypoint } = {}) {
     if (arguments[0] instanceof this) return arguments[0];
-    //TODO accuracy should be a Distance.
-    if (verticalSpeed) verticalSpeed = Speed.from(verticalSpeed);
+
+    if (accuracy) accuracy = new Distance(accuracy, "m");
     if (speed) speed = Speed.from(speed);
     if (heading) heading = Azimuth.from(heading);
 
     return super.from({
       ...waypoint,
       accuracy,
-      verticalSpeed,
+
       speed,
       heading,
       timestamp
     });
   }
 
-  static fromGeolocationPosition({
-    coords: {
-      latitude,
-      longitude,
-      altitude,
-      accuracy,
-      altitudeAccuracy,
-      heading,
-      speed
-    },
-    timestamp
-  }) {
-    if (altitude)
-      altitude = new Altitude(altitude, "m", {
+  static fromGeolocationPosition(position) {
+    let altitude, speed, heading, accuracy;
+
+    if (position.coords.altitude)
+      altitude = new Altitude(position.coords.altitude, "m", {
         reference: "WGS84",
-        accuracy: altitudeAccuracy
+        accuracy: position.coords.altitudeAccuracy
       });
-    if (speed) speed = new Speed(speed, "m/s");
-    if (heading) heading = new Azimuth(heading, "°");
+
+    if (position.coords.accuracy)
+      accuracy = new Distance(position.coords.accuracy, "m");
+    if (position.coords.speed) speed = new Speed(position.coords.speed, "m/s");
+    if (position.coords.heading)
+      heading = new Azimuth(position.coords.heading, "°");
 
     return this.from({
       type: "Location",
-      latitude,
-      longitude,
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude,
       accuracy,
       altitude,
       speed,
       heading,
-      timestamp
+      timestamp: position.timestamp
     });
   }
 
@@ -208,6 +196,7 @@ export class Location extends Waypoint {
         reference: "WGS84",
         accuracy: altitudeAccuracy
       });
+    if (accuracy) accuracy = new Distance(accuracy, "m");
     if (speed) speed = new Speed(speed, "m/s");
     if (heading) heading = new Azimuth(heading, "°");
 

@@ -5,7 +5,6 @@ export const MapHandlers = {
   data() {
     return {
       geoOptions: {
-        watch: true,
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 1000
@@ -20,32 +19,41 @@ export const MapHandlers = {
   mixins: [UIHelpers],
   methods: {
     stopLocate() {
-      this.map.stopLocate();
       this.lastKnownLocation = undefined;
 
-      // if (navigator.geolocation && navigator.geolocation.clearWatch) {
-      //   navigator.geolocation.clearWatch(this._locationWatchId);
-      // }
+      if (navigator.geolocation && navigator.geolocation.clearWatch) {
+        navigator.geolocation.clearWatch(this._locationWatchId);
+      }
     },
     startLocate() {
-      this.map.locate(this.geoOptions);
+      if (!("geolocation" in navigator)) {
+        this._locationError({
+          code: 0,
+          message: "Geolocation not supported."
+        });
+        return this;
+      }
 
-      // if (!("geolocation" in navigator)) {
-      //   this._locationError({
-      //     code: 0,
-      //     message: "Geolocation not supported."
-      //   });
-      //   return this;
-      // }
-
-      // this._locationWatchId = navigator.geolocation.watchPosition(
-      //   this._locationFound,
-      //   this._locationError,
-      //   this.geoOptions
-      // );
+      this._locationWatchId = navigator.geolocation.watchPosition(
+        this._locationFound,
+        this._locationError,
+        this.geoOptions
+      );
     },
+
     _locationFound(e) {
-      let location = Location.fromLocate(e);
+      let location = Location.fromGeolocationPosition(e);
+
+      //////////////////
+      if (process.env.NODE_ENV == "development") {
+        location = Location.fromLocate(
+          this._fakeLocation({
+            ...location,
+            accuracy: this.settings.maxAccuracy / 2
+          })
+        );
+      }
+      ///////////////////
 
       try {
         if (location.accuracy > this.settings.maxAccuracy)
@@ -88,26 +96,12 @@ export const MapHandlers = {
       }
     },
 
-    _locationError(e) {
-      if (process.env.NODE_ENV == "development") {
-        const location = this._fakeLocation({
-          e,
-          ...this.lastKnownLocation,
-          accuracy: this.settings.maxAccuracy / 2
-        });
-
-        this._locationFound(location);
-      } else {
-        delete e.sourceTarget;
-        delete e.target;
-        this.lastKnownError = { ...e };
-
-        this.openWarning(
-          e.message,
-          "Stop GNSS",
-          () => (this.settings.getLocation = false)
-        );
-      }
+    _locationError({ message }) {
+      this.openWarning(
+        message,
+        "Stop GNSS",
+        () => (this.settings.getLocation = false)
+      );
     },
 
     _fakeLocation({
@@ -118,21 +112,17 @@ export const MapHandlers = {
       speed = 50,
       heading = 0
     }) {
-      console.debug("Faking around:", {
-        latitude,
-        longitude,
-        altitude
-      });
+      console.debug("Faking around");
 
       let rand = (s = 1) => {
         return (Math.random() - 0.5) * s;
       };
 
       return {
-        latitude: latitude + rand(),
-        longitude: longitude + rand(),
+        latitude: latitude + rand(0.3),
+        longitude: longitude + rand(0.3),
         accuracy: accuracy + rand(),
-        altitude: altitude + rand(10),
+        altitude: altitude + rand(100),
         altitudeAccuracy: accuracy + rand(),
         heading: heading + rand(10),
         speed: speed + rand(),
