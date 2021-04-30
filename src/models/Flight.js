@@ -2,10 +2,13 @@ import { Model, Store } from "@/models/Base.js";
 import { Location } from "@/models/Waypoint.js";
 
 export class Flight extends Model {
-  constructor({ name, notes } = {}, ...locations) {
+  constructor(
+    { name, notes, checked = [], markedTimes = [] } = {},
+    ...locations
+  ) {
     locations = new Store({}, ...locations);
 
-    super({ name, notes, locations });
+    super({ name, notes, locations, checked, markedTimes });
   }
 
   addLocation(location) {

@@ -1,5 +1,5 @@
 <template>
-  <nav class="level is-mobile box">
+  <nav v-if="flight" class="level is-mobile box">
     <div class="level-item has-text-centered">
       <div>
         <p class="heading">
@@ -13,7 +13,7 @@
           @click="isEnroute ? null : startFlight()"
           @contextmenu.prevent.stop="isEnroute ? stopFlight() : null"
         >
-          {{ fromStart | asDuration }}
+          {{ flightDuration | asDuration }}
         </p>
       </div>
     </div>
@@ -45,7 +45,7 @@
           @contextmenu.prevent.stop="removeTime"
         >
           <ul>
-            <li v-for="time in markedTimes" :key="time">
+            <li v-for="(time, index) in flight.markedTimes" :key="index">
               {{ time | asDuration }}
             </li>
           </ul>
@@ -73,17 +73,16 @@ export default {
   mixins: [UnitSystem],
   data() {
     return {
-      startTime: undefined,
-      endTime: undefined,
       currentTime: undefined,
       currentUpdater: undefined,
       chronoTime: undefined,
-      markedTimes: []
+      finishedAt: null,
+      startedAt: null
     };
   },
   mounted() {
     this.currentUpdater = setInterval(() => {
-      this.currentTime = Date.now();
+      this.currentTime = new Date();
     }, 1000);
   },
   destroyed() {
@@ -91,12 +90,12 @@ export default {
   },
   computed: {
     isEnroute() {
-      return !!this.startTime && !this.endTime;
+      return !!this.startedAt && !this.finishedAt;
     },
-    fromStart() {
-      if (this.endTime) return this.endTime - this.startTime;
-      return this.startTime
-        ? Math.max(0, this.currentTime - this.startTime)
+    flightDuration() {
+      if (this.finishedAt) return this.finishedAt - this.startedAt;
+      return this.startedAt
+        ? Math.max(0, this.currentTime - this.startedAt)
         : null;
     },
     chrono() {
@@ -106,29 +105,32 @@ export default {
     },
     timesCount() {
       return this.markedTimes.length;
+    },
+    flight() {
+      return this.$store.state.currentFlight;
     }
   },
   methods: {
     startFlight() {
-      this.endTime = undefined;
-      this.startTime = Date.now();
+      this.finishedAt = undefined;
+      this.startedAt = new Date();
       this.$emit("update:settings", { inFlight: this.isEnroute });
     },
     stopFlight() {
-      this.endTime = Date.now();
+      this.finishedAt = new Date();
       this.$emit("update:settings", { inFlight: this.isEnroute });
     },
     startChrono() {
-      this.chronoTime = Date.now();
+      this.chronoTime = new Date();
     },
     stopChrono() {
       this.chronoTime = undefined;
     },
     addTime() {
-      this.markedTimes.unshift(Date.now());
+      this.flight.markedTimes.unshift(new Date());
     },
     removeTime() {
-      this.markedTimes.shift();
+      this.flight.markedTimes.shift();
     }
   }
 };

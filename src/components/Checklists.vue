@@ -1,16 +1,6 @@
 <template>
   <section class="section">
-    <nav class="level" v-if="!aircraft">
-      <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">Aircraft</p>
-          <AircraftManager>
-            <p class="title">{{ aircraft && aircraft.registration }}</p>
-          </AircraftManager>
-        </div>
-      </div>
-    </nav>
-    <b-tabs v-else class="box" v-model="currentCL" multiline>
+    <b-tabs class="box" v-model="currentCL" multiline>
       <b-tab-item label="Paces" v-if="paces">
         <div class="grid">
           <div
@@ -27,11 +17,7 @@
           </div>
         </div>
       </b-tab-item>
-      <b-tab-item
-        v-for="cl in aircraft.checklists"
-        :label="cl.name"
-        :key="cl.name"
-      >
+      <b-tab-item v-for="cl in checklists" :label="cl.name" :key="cl.name">
         <b-table
           :data="cl.items"
           checkable
@@ -63,7 +49,7 @@
           <template v-slot:bottom-left>
             <b-button
               type="is-primary"
-              @click="currentCL = (currentCL + 1) % aircraft.checklists.length"
+              @click="currentCL = (currentCL + 1) % (checklists.length + 1)"
               >Next C/L</b-button
             >
           </template>
@@ -74,25 +60,27 @@
 </template>
 
 <script>
-import AircraftManager from "@/components/AircraftManager.vue";
-import { WakeLock } from "@/mixins/apputils.js";
-
 export default {
   name: "Checklists",
-  mixins: [WakeLock],
-  components: { AircraftManager },
   data() {
     return {
-      currentCL: 0,
-      checked: []
+      currentCL: 0
     };
   },
   computed: {
-    aircraft() {
-      return this.$store.state.currentAircraft;
+    checklists() {
+      return this.$store.state.currentAircraft.checklists;
     },
     paces() {
-      return this.aircraft.paces;
+      return this.$store.state.currentAircraft.paces;
+    },
+    checked: {
+      get() {
+        return this.$store.state.currentFlight.checked;
+      },
+      set(val) {
+        this.$store.state.currentFlight.checked = val;
+      }
     }
   }
 };

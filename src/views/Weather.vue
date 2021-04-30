@@ -167,7 +167,7 @@ import WeatherMessage from "@/components/WeatherMessage.vue";
 
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";
-import Timer from "@/components/Timer.vue";
+import Timer from "@/components/buefy/Timer.vue";
 
 import Aeroweb from "@/mixins/Aeroweb";
 

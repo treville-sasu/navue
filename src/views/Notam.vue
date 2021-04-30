@@ -174,7 +174,7 @@ import BIcao from "@/components/buefy/BIcao.vue";
 import NotamMessage from "@/components/NotamMessage.vue";
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";
-import Timer from "@/components/Timer.vue";
+import Timer from "@/components/buefy/Timer.vue";
 import Sia from "@/mixins/Sia";
 
 import Pdf from "vue-pdf";
