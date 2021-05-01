@@ -26,27 +26,36 @@
           :checked-rows.sync="checked"
           :header-checkable="false"
           :mobile-cards="false"
-          :row-class="(row, index) => row.action && 'is-selected'"
+          :row-class="row => row.action && 'is-selected'"
         >
-          <b-table-column field="name" label="Name" v-slot="props">{{
-            props.row.name
-          }}</b-table-column>
-          <!-- TODO: fix visible, centered and colspan https://github.com/buefy/buefy/issues/2980 -->
-          <!-- :centered="!props.row.expect" -->
-          <!-- :colspan="!props.row.expect ? 2 : 1" -->
+          <b-table-column
+            field="name"
+            label="Name"
+            :td-attrs="
+              row =>
+                row.expect
+                  ? { colspan: 1 }
+                  : { colspan: 2, class: 'has-text-centered' }
+            "
+            v-slot="props"
+            >{{ props.row.name }}</b-table-column
+          >
+          <b-table-column
+            field="expect"
+            label="Expectation"
+            :td-attrs="row => (row.expect ? {} : { class: 'is-hidden' })"
+            v-slot="props"
+            >{{ props.row.expect }}</b-table-column
+          >
 
-          <b-table-column field="expect" label="Expectation" v-slot="props">{{
-            props.row.expect
-          }}</b-table-column>
-          <!-- :visible="!!props.row.expect" -->
-          <template v-slot:empty>
+          <template #empty>
             <section class="section">
               <div class="content has-text-grey has-text-centered">
                 <p>Nothing here. Configure the aircraft first.</p>
               </div>
             </section>
           </template>
-          <template v-slot:bottom-left>
+          <template #bottom-left>
             <b-button
               type="is-primary"
               @click="currentCL = (currentCL + 1) % (checklists.length + 1)"
