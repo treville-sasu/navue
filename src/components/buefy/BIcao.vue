@@ -4,7 +4,12 @@
     autocomplete
     :data="filteredList"
     @typing="updateList"
-    v-bind="attributes"
+    icon="label-multiple-outline"
+    placeholder="ICAO code or name"
+    field="id"
+    :maxlength="4"
+    :maxtags="50"
+    v-bind="$attrs"
     v-on="$listeners"
   >
     <template slot-scope="props">
@@ -25,7 +30,6 @@
 
 export default {
   name: "BIcao",
-  inheritAttrs: false,
   props: {
     data: {
       default() {
@@ -48,18 +52,6 @@ export default {
   watch: {
     codes(newVal) {
       this.$emit("input", newVal);
-    }
-  },
-  computed: {
-    attributes() {
-      return {
-        icon: "label-multiple-outline",
-        placeholder: "ICAO code or name",
-        field: "id",
-        maxlength: "4",
-        maxtags: "50",
-        ...this.$attrs
-      };
     }
   },
   methods: {

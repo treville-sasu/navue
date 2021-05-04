@@ -5,8 +5,7 @@
     :max="duration"
     v-bind="$attrs"
   >
-    <!-- <slot v-bind:elapsed="elapsed"></slot>
-    <slot name="bar" v-bind:elapsed="elapsed"></slot> -->
+    <slot />
   </b-progress>
 </template>
 
@@ -23,10 +22,6 @@ export default {
       type: Boolean,
       default: false
     }
-    // infinite: {
-    //   type: Boolean,
-    //   default: false,
-    // },
   },
   data() {
     return {
@@ -64,17 +59,12 @@ export default {
       this.elapsed = 0;
     },
     async hold(func) {
-      //   const status = this.running;
-      //   if (status) this.stop();
       this.indeterminate = true;
       await func.apply();
       this.indeterminate = false;
-      //   if (status) this.start();
     },
     countup(i) {
       if (this.elapsed >= this.duration) {
-        // this.infinite ?
-        // this.flyback() :
         this.stop();
         this.$emit("timesup", this.elapsed, this.duration);
       } else this.elapsed += i;
