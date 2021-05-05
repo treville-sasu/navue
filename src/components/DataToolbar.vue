@@ -1,26 +1,32 @@
 <template>
   <b-field>
-    <NavigationManager v-if="navigation" v-bind="dropdown">
-      <template #header="{ selected }">
-        {{ selected.name }}
-      </template>
-    </NavigationManager>
-    <AircraftManager v-if="aircraft" v-bind="dropdown">
-      <template #header="{ selected }">
-        {{ selected.registration }}
-      </template>
-    </AircraftManager>
-    <FlightManager
-      v-if="flight"
-      :traceDB="traceDB"
-      persistent
-      build
-      v-bind="dropdown"
-    >
-      <template #header="{ selected }">
-        <b-input v-model="selected.name" placeholder="Flight n°" />
-      </template>
-    </FlightManager>
+    <b-field>
+      <NavigationManager v-if="navigation" v-bind="dropdown" editable>
+        <template #header="{ selected }">
+          {{ selected.name }}
+        </template>
+      </NavigationManager>
+    </b-field>
+    <b-field>
+      <AircraftManager v-if="aircraft" v-bind="dropdown">
+        <template #header="{ selected }">
+          {{ selected.registration }}
+        </template>
+      </AircraftManager>
+    </b-field>
+    <b-field>
+      <FlightManager
+        v-if="flight"
+        :traceDB="traceDB"
+        persistent
+        build
+        v-bind="dropdown"
+      >
+        <template #header="{ selected }">
+          <b-input v-model="selected.name" placeholder="Flight n°" />
+        </template>
+      </FlightManager>
+    </b-field>
   </b-field>
 </template>
 

@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "Timer",
+  name: "BTimer",
   props: {
     duration: Number,
     precision: {

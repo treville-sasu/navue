@@ -1,6 +1,6 @@
 <template>
-  <section class="box">
-    <b-field grouped>
+  <section>
+    <b-field grouped group-multiline>
       <b-field label="Meteorological Zone" expanded>
         <b-select
           placeholder="Select a zone"

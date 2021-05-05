@@ -122,7 +122,7 @@
 
 <script>
 export default {
-  name: "LMovingMapSettingsControl",
+  name: "MovingMapSettingsControl",
   props: {
     getLocation: Boolean,
     setView: Boolean,

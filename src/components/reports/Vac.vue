@@ -1,54 +1,43 @@
 <template>
   <section class="box">
-    <b-field grouped>
+    <b-field grouped group-multiline>
       <b-loading :is-full-page="false" :active="baseURL === null && !error" />
       <b-field label="Airports ICAO Code" expanded>
         <b-icao v-model="searchCodes" />
       </b-field>
       <b-field v-if="poi" label="POI">
-        <b-checkbox-button
-          v-model="selectedPoi"
-          v-for="id in poi"
-          :key="id"
-          size="is-small"
-          :native-value="id"
-        >
-          {{ id }}
-        </b-checkbox-button>
+        <b-poi v-model="searchCodes" :items="poi" />
       </b-field>
     </b-field>
 
-    <div class="columns is-multiline">
-      <div
-        class="column is-one-quarter"
-        v-for="(map, key) in codesList"
+    <div class="grid">
+      <ChartCartridge
+        v-for="(map, key) in searchCodes"
         :key="key"
+        v-bind="map"
+        :url="VACurl(map.id, baseURL)"
+        :tags="{
+          info: 'Airport'
+        }"
+        @click="openChartUrl = $event"
+        card
       >
-        <ChartCartridge
-          v-bind="map"
-          :url="VACurl(map.id, baseURL)"
-          :tags="{
-            info: 'Airport'
-          }"
-          @click="openChartUrl = $event"
-          card
-        >
-          <figure class="image">
-            <pdf
-              :src="VACurl(map.id, baseURL).toString()"
-              :page="1"
-              style="height: 100%"
-            />
-          </figure>
-        </ChartCartridge>
-      </div>
-      <PDFModal v-model="openChartUrl" :active="!!openChartUrl" />
+        <figure class="image">
+          <pdf
+            :src="VACurl(map.id, baseURL).toString()"
+            :page="1"
+            style="height: 100%"
+          />
+        </figure>
+      </ChartCartridge>
     </div>
+    <PDFModal v-model="openChartUrl" :active="!!openChartUrl" />
   </section>
 </template>
 
 <script>
 import BIcao from "@/components/buefy/BIcao.vue";
+import BPoi from "@/components/buefy/BPoi.vue";
 
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import PDFModal from "@/components/PDFModal.vue";
@@ -59,6 +48,7 @@ export default {
   name: "Vac",
   components: {
     BIcao,
+    BPoi,
     ChartCartridge,
     PDFModal,
     Pdf
@@ -71,7 +61,6 @@ export default {
     return {
       error: false,
       searchCodes: [],
-      selectedPoi: [],
       baseURL: null,
       openChartUrl: null
     };
@@ -80,14 +69,8 @@ export default {
     this.baseURL = await this.getCycleUrl();
   },
   computed: {
-    codesList() {
-      this.selectedPoi;
-      return [
-        ...this.selectedPoi.map(id => {
-          return { id, name: id };
-        }),
-        ...this.searchCodes
-      ];
+    poiList() {
+      return this.poi.map(id => ({ id, name: id }));
     }
   },
   methods: {

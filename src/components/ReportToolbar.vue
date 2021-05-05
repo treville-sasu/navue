@@ -35,13 +35,23 @@
     </b-radio-button>
 
     <b-radio-button
-      v-if="notam"
+      v-if="aip"
       v-model="modalName"
-      native-value="Notam"
-      disabled
+      native-value="AeronauticalInformations"
     >
-      <b-tooltip label="Notam" v-bind="tooltip">
+      <b-tooltip label="AIP & Notams" v-bind="tooltip">
         <b-icon icon="message-flash" v-bind="icon" />
+      </b-tooltip>
+    </b-radio-button>
+
+    <b-radio-button
+      v-if="balance"
+      v-model="modalName"
+      native-value="Balance"
+      :disabled="!aircraft"
+    >
+      <b-tooltip label="Balance" v-bind="tooltip">
+        <b-icon icon="weight" v-bind="icon" />
       </b-tooltip>
     </b-radio-button>
 
@@ -57,10 +67,10 @@
     </b-radio-button>
 
     <b-modal
-      :parent="$parent.$parent"
       :component="currentModal"
       v-model="isModalActive"
       :props="{ edit, poi }"
+      can-cancel
     />
   </b-field>
 </template>
@@ -72,6 +82,8 @@ import NavigationLog from "@/components/NavigationLog";
 import Checklists from "@/components/Checklists";
 import Vac from "@/components/reports/Vac";
 import Weather from "@/components/reports/Weather";
+import AeronauticalInformations from "@/components/reports/AeronauticalInformations";
+import Balance from "@/components/reports/Balance";
 import Notepad from "@/components/Notepad";
 
 export default {
@@ -81,6 +93,8 @@ export default {
     Checklists,
     Vac,
     Weather,
+    AeronauticalInformations,
+    Balance,
     Notepad
   },
   props: {
@@ -91,7 +105,8 @@ export default {
     checklists: Boolean,
     vac: Boolean,
     weather: Boolean,
-    notam: Boolean,
+    aip: Boolean,
+    balance: Boolean,
     notepad: Boolean
   },
   data() {

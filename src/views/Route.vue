@@ -6,14 +6,29 @@
       <vue-leaflet-minimap v-bind="miniMapSettings" />
 
       <l-control position="topleft">
-        <DataToolbar
-          navigation
-          aircraft
-          :dropdown="{
-            position: 'is-bottom-right',
-            triggers: ['click', 'hover']
-          }"
-        />
+        <b-field class="stackable" addons>
+          <b-field>
+            <NavigationManager
+              position="is-bottom-right"
+              :triggers="['click', 'hover']"
+              edit
+            >
+              <template #header="{ selected }">
+                <b-input v-model="selected.name" />
+              </template>
+            </NavigationManager>
+          </b-field>
+          <b-field>
+            <AircraftManager
+              position="is-bottom-right"
+              :triggers="['click', 'hover']"
+            >
+              <template #header="{ selected }">
+                {{ selected.registration }}
+              </template>
+            </AircraftManager>
+          </b-field>
+        </b-field>
       </l-control>
 
       <l-control-geocoder
@@ -26,7 +41,16 @@
       />
 
       <l-control position="bottomleft">
-        <ReportToolbar :tooltip="{ position: 'is-top' }" />
+        <ReportToolbar
+          :tooltip="{ position: 'is-top' }"
+          class="stackable"
+          edit
+          navlog
+          vac
+          weather
+          aip
+          balance
+        />
       </l-control>
       <l-control position="topright">
         <RouteToolbox v-model="tool" :tooltip="{ position: 'is-bottom' }" />
@@ -88,7 +112,9 @@ import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
 import LControlGeocoder from "@/components/leaflet/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 
-import DataToolbar from "@/components/DataToolbar.vue";
+import NavigationManager from "@/components/NavigationManager";
+import AircraftManager from "@/components/AircraftManager";
+
 import RouteToolbox from "@/components/RouteToolbox";
 import ReportToolbar from "@/components/ReportToolbar.vue";
 
@@ -104,7 +130,8 @@ export default {
     LRouteLayerGroup,
     VueLeafletMinimap,
     LControlGeocoder,
-    DataToolbar,
+    NavigationManager,
+    AircraftManager,
     RouteToolbox,
     ReportToolbar
   },

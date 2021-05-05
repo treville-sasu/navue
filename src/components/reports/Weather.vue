@@ -3,7 +3,23 @@
     <b-loading
       :is-full-page="false"
       :active="validated === undefined && !error"
-    />
+    >
+      <b-notification
+        has-icon
+        icon="alert-circle-outline"
+        :closable="false"
+        aria-close-label="Close notification"
+      >
+        <h4 class="title">Aeroweb Server Unavailable</h4>
+        <p class="heading">
+          Check your connection or use Meteo France server directly
+        </p>
+        <a href="https://aviation.meteo.fr" target="_blank"
+          >https://aviation.meteo.fr</a
+        >
+      </b-notification>
+    </b-loading>
+
     <b-tabs position="is-centered">
       <b-tab-item label="Bulletin">
         <WeatherBulletin :poi="poi" />

@@ -9,21 +9,9 @@
       </b-navbar-item>
     </template>
     <template slot="start">
-      <b-navbar-dropdown label="Briefing" collapsible hoverable>
-        <b-navbar-item tag="router-link" :to="{ name: 'Route' }"
-          >Trace routes</b-navbar-item
-        >
-        <b-navbar-item tag="router-link" :to="{ name: 'Approach' }"
-          >Approach Charts</b-navbar-item
-        >
-        <b-navbar-item tag="router-link" :to="{ name: 'Weather' }"
-          >Weather</b-navbar-item
-        >
-        <b-navbar-item tag="router-link" to="notam">NOTAM, AZBA</b-navbar-item>
-        <b-navbar-item tag="router-link" :to="{ name: 'Balance' }"
-          >Weight and Balance</b-navbar-item
-        >
-      </b-navbar-dropdown>
+      <b-navbar-item tag="router-link" :to="{ name: 'Route' }"
+        >Briefing</b-navbar-item
+      >
       <b-navbar-item tag="router-link" :to="{ name: 'MovingMap' }"
         >Fly</b-navbar-item
       >

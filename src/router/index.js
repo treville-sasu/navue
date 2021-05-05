@@ -15,6 +15,11 @@ const routes = [
     component: () => import("../views/Aircraft.vue")
   },
   {
+    path: "/route/:id?",
+    name: "Route",
+    component: () => import("../views/Route.vue")
+  },
+  {
     path: "/moving-map/:id?",
     name: "MovingMap",
     component: () => import("../views/MovingMap.vue")
@@ -33,26 +38,6 @@ const routes = [
     path: "/route/:id?",
     name: "Route",
     component: () => import("../views/Route.vue")
-  },
-  {
-    path: "/weather",
-    name: "Weather",
-    component: () => import("../views/Weather.vue")
-  },
-  {
-    path: "/notam",
-    name: "Notam",
-    component: () => import("../views/Notam.vue")
-  },
-  {
-    path: "/approach",
-    name: "Approach",
-    component: () => import("../views/ApproachChart.vue")
-  },
-  {
-    path: "/balance/:id?",
-    name: "Balance",
-    component: () => import("../views/Balance.vue")
   },
   {
     path: "/about",

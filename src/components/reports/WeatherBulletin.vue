@@ -1,6 +1,6 @@
 <template>
-  <section class="box">
-    <b-field grouped>
+  <section>
+    <b-field grouped group-multiline>
       <b-field label="ICAO Code for FIR or Airports" expanded>
         <b-icao
           v-model="searchCodes"
@@ -11,15 +11,7 @@
         />
       </b-field>
       <b-field v-if="poi" label="POI">
-        <b-checkbox-button
-          v-model="selectedPoi"
-          v-for="id in poi"
-          :key="id"
-          size="is-small"
-          :native-value="id"
-        >
-          {{ id }}
-        </b-checkbox-button>
+        <b-poi v-model="searchCodes" :items="poi" />
       </b-field>
       <b-field label="Message type">
         <b-checkbox-button
@@ -33,7 +25,7 @@
       </b-field>
     </b-field>
     <b-field>
-      <Timer
+      <b-timer
         ref="searchTimer"
         :duration="1000"
         countdown
@@ -71,11 +63,11 @@
 </template>
 
 <script>
-//TODO: Check why messages request are sent twice.
 import BIcao from "@/components/buefy/BIcao.vue";
+import BPoi from "@/components/buefy/BPoi.vue";
+import BTimer from "@/components/buefy/BTimer.vue";
 
 import WeatherMessage from "@/components/WeatherMessage.vue";
-import Timer from "@/components/buefy/Timer.vue";
 
 import Aeroweb from "@/mixins/Aeroweb";
 
@@ -83,7 +75,8 @@ export default {
   name: "WeatherBulletin",
   components: {
     BIcao,
-    Timer,
+    BPoi,
+    BTimer,
     WeatherMessage
   },
   mixins: [Aeroweb],
@@ -93,7 +86,6 @@ export default {
   data() {
     return {
       searchCodes: [],
-      selectedPoi: [],
       searchCategories: ["OPMET"],
       resultsMessages: {}
     };
@@ -101,14 +93,10 @@ export default {
   computed: {
     navigation() {
       return this.$store.state.currentNavigation;
-    },
-    codesList() {
-      this.selectedPoi;
-      return [...this.selectedPoi, ...this.searchCodes];
     }
   },
   watch: {
-    codesList(codes) {
+    searchCodes(codes) {
       this.$refs.searchTimer.running
         ? this.$refs.searchTimer.flyback()
         : this.$refs.searchTimer.start();
@@ -122,7 +110,7 @@ export default {
         });
 
       this.getMessages(
-        this.codesList,
+        this.searchCodes,
         newVal.filter(x => !oldVal.includes(x))
       );
     }

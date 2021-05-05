@@ -1,6 +1,6 @@
 <template>
   <b-taginput
-    v-model="codes"
+    :value="value"
     autocomplete
     :data="filteredList"
     @typing="updateList"
@@ -9,6 +9,7 @@
     field="id"
     :maxlength="4"
     :maxtags="50"
+    :has-counter="false"
     v-bind="$attrs"
     v-on="$listeners"
   >
@@ -26,11 +27,10 @@
 //let transpose = Object.keys(matrix[0]).map(colNumber => matrix.map(rowNumber => rowNumber[colNumber]));
 //return transpose.map(item => ({ id: item[0], name: item[1], type: "heliport" }))
 
-//TODO : allow parent v-model to fill current input
-
 export default {
   name: "BIcao",
   props: {
+    value: Array,
     data: {
       default() {
         return require("@/store/vac.json");

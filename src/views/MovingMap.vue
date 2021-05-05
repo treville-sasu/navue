@@ -7,7 +7,7 @@
       @contextmenu="setDestination"
     >
       <l-control position="topleft">
-        <b-field>
+        <b-field class="stackable" addons>
           <MovingMapSettings
             v-bind="settings"
             @update:settings="updateSettings"
@@ -30,7 +30,16 @@
       <l-control-zoom v-if="settings.zoomControl" position="topleft" />
 
       <l-control position="bottomleft">
-        <ReportToolbar :tooltip="{ position: 'is-top' }" />
+        <ReportToolbar
+          :tooltip="{ position: 'is-top' }"
+          class="stackable"
+          navlog
+          checklists
+          vac
+          weather
+          aip
+          notepad
+        />
       </l-control>
       <l-control position="bottomleft">
         <DestinationDisplay
@@ -38,10 +47,9 @@
           :from="lastKnownLocation"
           :to="destination"
         />
-
-        <l-control position="topright">
-          <InstrumentsDisplay />
-        </l-control>
+      </l-control>
+      <l-control position="topright">
+        <InstrumentsDisplay class="stackable" />
       </l-control>
       <l-control position="bottomright">
         <TimerToolbar @update:settings="updateSettings" />

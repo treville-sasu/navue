@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <Navbar />
-    <!-- TODO: limit keep alive to flying views and componnents include="Checklists, MovingMap, LTimeControl, NavLog" -->
-    <keep-alive>
-      <router-view />
-    </keep-alive>
+    <router-view />
   </div>
 </template>
 
@@ -25,14 +22,20 @@ $modal-z: $navbar-fixed-z + 100;
   cursor: pointer !important;
 }
 
+.stackable .field.has-addons,
+.stackable.tags {
+  @include until($desktop) {
+    flex-direction: column;
+    align-items: end;
+  }
+}
+
 .notices {
   z-index: $navbar-fixed-z + 1000;
 }
 
-.modal .animation-content .modal-card {
-  overflow: visible !important;
-}
-
+.modal-content,
+.modal-card,
 .modal-card-body {
   overflow: visible !important;
 }
