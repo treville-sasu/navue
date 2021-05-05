@@ -1,37 +1,33 @@
 <template>
   <section class="box">
-    <div class="columns" v-if="aircraft">
+    <div class="columns">
       <div class="column">
         <b-field
-          :label="weight.name"
-          v-for="(weight, index) in aircraft.balance"
+          v-for="({ name, mass }, index) in moments"
+          :label="name"
           :key="index"
           grouped
         >
           <b-slider
-            v-model="weight.value"
-            :min="weight.min"
-            :max="weight.max"
-            :tooltip="false"
+            v-model="mass.value"
+            :min="mass.min"
+            :max="mass.max"
+            :custom-formatter="() => mass.toString()"
           />
-          <p class="control">
-            <b-tag type="is-dark">{{ weight }}</b-tag>
-          </p>
         </b-field>
       </div>
       <div class="column">
-        <BalanceChart
-          :chart-data="datasets"
-          v-if="aircraft.envelopes.length > 0"
-        />
+        <BalanceChart :chart-data="datasets" v-if="envelopes.length > 0" />
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import BalanceChart from "@/components/BalanceChart.vue";
+import BalanceChart from "@/components/BalanceChart";
 import { ChartSettings } from "@/mixins/apputils";
+import { Store } from "@/models/Base";
+import { Moment } from "@/models/Quantities";
 
 export default {
   name: "Balance",
@@ -39,14 +35,16 @@ export default {
     BalanceChart
   },
   mixins: [ChartSettings],
+  data() {
+    return { moments: new Store() };
+  },
   methods: {
-    getCenterGravity(weights) {
-      let cg = weights.reduce(
-        (acc, w) => {
-          let weight = w.value * (w.densitiy || 1);
+    getCenterGravity(moments) {
+      let cg = moments.reduce(
+        (acc, { mass, lever }) => {
           return {
-            x: acc.x + weight * w.arm,
-            y: acc.y + weight
+            x: acc.x + mass * lever,
+            y: acc.y + mass
           };
         },
         { x: 0, y: 0 }
@@ -56,21 +54,23 @@ export default {
     }
   },
   computed: {
-    aircraft() {
-      return this.$store.state.currentAircraft;
+    balance() {
+      return this.$store.state.currentAircraft.balance;
     },
+    envelopes() {
+      return this.$store.state.currentAircraft.envelopes;
+    },
+
     cgFullTank() {
-      return this.getCenterGravity(this.aircraft.balance.items);
+      return this.getCenterGravity(this.moments.items);
     },
     cgEmptyTank() {
-      return this.getCenterGravity(
-        this.aircraft.balance.items.filter(w => !w.tank)
-      );
+      return this.getCenterGravity(this.moments.items.filter(w => !w.tank));
     },
     datasets() {
       return {
         datasets: [
-          ...this.aircraft.envelopes.items.map(e => {
+          ...this.envelopes.items.map(e => {
             return {
               ...this.envelopesDataset,
               label: e.name,
@@ -81,6 +81,14 @@ export default {
           { ...this.cgDataset, data: [this.cgEmptyTank], label: "Empty tank" }
         ]
       };
+    }
+  },
+  watch: {
+    balance: {
+      immediate: true,
+      handler(val) {
+        this.moments = Store.from(JSON.parse(JSON.stringify(val)), Moment);
+      }
     }
   }
 };

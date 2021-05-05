@@ -246,7 +246,9 @@ export class Weight extends Quantity {
     return {
       kg: 1,
       lb: 2.20462,
-      t: 0.001
+      t: 0.001,
+      "L-avgas": 0.7,
+      "L-JetA1": 0.8
     };
   }
 }
@@ -282,5 +284,54 @@ export class Bearing extends Angle {
 
   set value(val) {
     super.value = val;
+  }
+}
+
+export class Moment extends Model {
+  constructor(mass, lever, properties = {}) {
+    if (!mass) mass = new Weight();
+    if (!lever) lever = new Distance();
+
+    super({ mass, lever, ...properties });
+  }
+
+  get value() {
+    return this.mass.value * this.lever.value;
+  }
+
+  get _value() {
+    return this.mass * this.lever;
+  }
+
+  // get unit() {
+  //   return `${this.mass.unit}.${this.lever.unit}`;
+  // }
+
+  valueOf() {
+    return this._value;
+  }
+
+  toJSON() {
+    return {
+      ...this,
+      // value: this.value,
+      // unit: this.unit,
+      type: this.constructor.name
+    };
+  }
+  toCoords() {
+    return {
+      x: this.lever.value,
+      y: this.mass.value
+    };
+  }
+
+  static from({ type, mass, lever, ...properties } = {}) {
+    if (arguments[0] instanceof this) return arguments[0];
+    else if (type == this.name) {
+      if (mass) mass = Weight.from(mass);
+      if (lever) lever = Distance.from(lever);
+      return new this(mass, lever, properties);
+    } else throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
   }
 }

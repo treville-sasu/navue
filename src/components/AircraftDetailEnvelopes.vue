@@ -17,40 +17,19 @@
               <b-input v-model="envelope.name" required />
             </b-field>
             <b-table :data="envelope.items">
-              <b-table-column label="Arm" v-slot="props">
-                <b-field>
-                  <b-numberinput
-                    v-model="props.row.mass.value"
-                    :step="0.001"
-                    :controls="false"
-                  />
-                  <b-select v-model="props.row.mass.unit" required>
-                    <option
-                      v-for="(ratio, name) in props.row.mass.constructor.units"
-                      :value="name"
-                      :key="name"
-                    >
-                      {{ name }}
-                    </option>
-                  </b-select>
-                </b-field>
-              </b-table-column>
               <b-table-column label="Mass" v-slot="props">
-                <b-field>
-                  <b-numberinput
-                    v-model="props.row.lever.value"
-                    :controls="false"
-                  />
-                  <b-select v-model="props.row.lever.unit" required>
-                    <option
-                      v-for="(ratio, name) in props.row.lever.constructor.units"
-                      :value="name"
-                      :key="name"
-                    >
-                      {{ name }}
-                    </option>
-                  </b-select>
-                </b-field>
+                <b-weight
+                  :controls="false"
+                  :step="0.1"
+                  v-model="props.row.mass"
+                />
+              </b-table-column>
+              <b-table-column label="Arm" v-slot="props">
+                <b-distance
+                  :controls="false"
+                  :step="0.1"
+                  v-model="props.row.lever"
+                />
               </b-table-column>
               <b-table-column v-slot="props">
                 <b-button
@@ -85,11 +64,14 @@ import BalanceChart from "@/components/BalanceChart.vue";
 import { ChartSettings } from "@/mixins/apputils";
 
 import { Store } from "@/models/Base.js";
-import { Moment } from "@/models/Aircraft.js";
+import { Moment } from "@/models/Quantities.js";
+
+import BDistance from "@/components/buefy/BDistance";
+import BWeight from "@/components/buefy/BWeight";
 
 export default {
   name: "AircraftDetailEnvelopes",
-  components: { BalanceChart },
+  components: { BDistance, BWeight, BalanceChart },
   props: ["value"],
   mixins: [ChartSettings],
   data() {

@@ -6,16 +6,7 @@
       </b-table-column>
       <b-table-column label="Speed" v-slot="props">
         <b-field>
-          <b-numberinput v-model="props.row.value" :controls="false" />
-          <b-select v-model="props.row.unit" required>
-            <option
-              v-for="(ratio, name) in props.row.constructor.units"
-              :value="name"
-              :key="name"
-            >
-              {{ name }}
-            </option>
-          </b-select>
+          <b-speed v-model="props.row" :controls="false" />
         </b-field>
       </b-table-column>
       <b-table-column v-slot="props">
@@ -36,10 +27,12 @@
 <style scoped lang="scss"></style>
 
 <script>
-import { Speed } from "@/models/Quantities.js";
+import { Speed } from "@/models/Quantities";
+import BSpeed from "@/components/buefy/BSpeed";
 
 export default {
   name: "AircraftDetailPaces",
+  components: { BSpeed },
   props: ["value"],
   data() {
     return {

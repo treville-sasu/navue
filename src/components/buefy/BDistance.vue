@@ -17,38 +17,25 @@
         {{ name }}
       </option>
     </b-select>
-
-    <b-input
-      v-if="$attrs.readonly"
-      v-model="value.reference"
-      v-bind="$attrs"
-      readonly
-    />
-    <b-select v-else v-model="value.reference" v-bind="$attrs" required>
-      <option v-for="ref in references" :value="ref" :key="ref">
-        {{ ref }}
-      </option>
-    </b-select>
   </b-field>
 </template>
 
 <script>
-import { Altitude } from "@/models/Quantities.js";
+import { Distance } from "@/models/Quantities.js";
 
 export default {
-  name: "BAltitude",
+  name: "BDistance",
   props: {
     value: {
-      type: Altitude,
+      type: Distance,
       default() {
-        return new Altitude();
+        return new Distance();
       }
     }
   },
   data() {
     return {
-      references: Altitude.references,
-      units: Altitude.units
+      units: Distance.units
     };
   },
 
@@ -56,10 +43,6 @@ export default {
     value: {
       deep: true,
       handler(val) {
-        if ("FL" == val.unit) val.reference = "QNE";
-        else if (!val.reference) val.reference = "MSL";
-        if (!val.unit) val.unit = "ft";
-
         this.$emit("input", val);
       }
     }

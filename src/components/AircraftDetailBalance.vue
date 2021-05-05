@@ -15,35 +15,26 @@
         <b-input v-model="props.row.name" />
       </b-table-column>
       <b-table-column label="Arm" v-slot="props">
-        <b-numberinput :controls="false" :step="0.1" v-model="props.row.arm" />
+        <b-distance :controls="false" :step="0.1" v-model="props.row.lever" />
       </b-table-column>
       <b-table-column label="Minimum" v-slot="props">
-        <b-numberinput :controls="false" :step="0.1" v-model="props.row.min" />
-      </b-table-column>
-      <b-table-column label="Maximum" v-slot="props">
-        <b-numberinput :controls="false" :step="0.1" v-model="props.row.max" />
-      </b-table-column>
-      <b-table-column label="Weight" v-slot="props">
-        <b-field>
-          <b-numberinput v-model="props.row.value" :controls="false" />
-          <b-select v-model="props.row.unit" required>
-            <option
-              v-for="(ratio, name) in props.row.constructor.units"
-              :value="name"
-              :key="name"
-            >
-              {{ name }}
-            </option>
-          </b-select>
-        </b-field>
-      </b-table-column>
-      <b-table-column label="Density" v-slot="props">
         <b-numberinput
-          v-model="props.row.density"
           :controls="false"
-          :step="0.001"
+          :step="0.1"
+          v-model="props.row.mass.min"
         />
       </b-table-column>
+      <b-table-column label="Maximum" v-slot="props">
+        <b-numberinput
+          :controls="false"
+          :step="0.1"
+          v-model="props.row.mass.max"
+        />
+      </b-table-column>
+      <b-table-column label="Weight" v-slot="props">
+        <b-weight :controls="false" :step="0.1" v-model="props.row.mass" />
+      </b-table-column>
+
       <b-table-column v-slot="props">
         <b-checkbox-button
           v-model="props.row.tank"
@@ -52,6 +43,7 @@
           >Tank</b-checkbox-button
         >
       </b-table-column>
+
       <b-table-column v-slot="props">
         <b-button
           @click="removeItem(props.row)"
@@ -68,12 +60,13 @@
 </template>
 
 <script>
-// TODO: implement density in Weight and allow easy Fuel input
-
-import { Weight } from "@/models/Quantities.js";
+import { Moment } from "@/models/Quantities.js";
+import BDistance from "@/components/buefy/BDistance";
+import BWeight from "@/components/buefy/BWeight";
 
 export default {
   name: "AircraftDetailBalance",
+  components: { BDistance, BWeight },
   props: ["value"],
   computed: {
     // TODO: check if still needed with buefy 0.9.3
@@ -89,7 +82,7 @@ export default {
   methods: {
     addItem() {
       this.value.add(
-        new Weight(undefined, undefined, undefined, { name: undefined })
+        new Moment(undefined, undefined, undefined, { name: undefined })
       );
     },
     removeItem(item) {
