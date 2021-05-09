@@ -67,8 +67,11 @@
           clear-on-select
           clearable
         >
-          <template #empty>
+          <template #empty v-if="search">
             <i>{{ search }}</i> not found
+          </template>
+          <template #empty v-else>
+            No navigation prepared
           </template>
         </b-autocomplete>
       </b-dropdown-item>

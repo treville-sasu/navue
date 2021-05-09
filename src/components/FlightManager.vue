@@ -95,11 +95,11 @@
             </b-upload>
           </b-field>
         </template>
-        <template #empty v-if="!edit">
-          <span>
-            "<i>{{ search }}</i
-            >" not found</span
-          >
+        <template #empty v-if="!edit && search">
+          <i>{{ search }}</i> not found
+        </template>
+        <template #empty v-else>
+          No Flight recorded
         </template>
       </b-autocomplete>
     </template>
