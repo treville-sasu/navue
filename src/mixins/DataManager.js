@@ -74,11 +74,10 @@ export const DataManager = {
     },
     async saveData() {
       try {
-        let savedData = await this.$store.dispatch(
+        this.selectedData = await this.$store.dispatch(
           "saveToDB",
           this.selectedData
         );
-        this.selectedData = savedData;
         this.openWarning(`"${this.selectedName}" saved`);
       } catch (err) {
         this.dispatchError(err);
@@ -124,7 +123,7 @@ export const DataManager = {
     },
     dispatchError(err) {
       console.error(err);
-      this.openWarning(err);
+      this.openWarning(err.message);
     }
   }
 };

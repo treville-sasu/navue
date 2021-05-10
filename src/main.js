@@ -11,10 +11,6 @@ Vue.use(Buefy, {
 });
 
 import PouchDB from "pouchdb-browser";
-// import PouchFind from "pouchdb-find";
-// PouchDB.plugin(PouchFind);
-// import PouchLiveFind from "pouchdb-live-find";
-// PouchDB.plugin(PouchLiveFind);
 import PouchAuthentication from "pouchdb-authentication";
 PouchDB.plugin(PouchAuthentication);
 
