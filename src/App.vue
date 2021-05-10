@@ -40,6 +40,10 @@ $modal-z: $navbar-fixed-z + 100;
   overflow: visible !important;
 }
 
+.dropdown.is-mobile-modal > .dropdown-menu {
+  overflow: visible !important;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
