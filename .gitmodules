@@ -1,3 +1,0 @@
-[submodule "proxy"]
-	path = proxy
-	url = git@github.com:treville-sasu/secure-content-proxy.git
