@@ -35,9 +35,10 @@ const routes = [
     component: () => import("../views/Wip.vue")
   },
   {
-    path: "/route/:id?",
-    name: "Route",
-    component: () => import("../views/Route.vue")
+    path: "/local",
+    name: "Local",
+    props: route => ({ codes: route.query.poi.split(",") }),
+    component: () => import("../views/Local.vue")
   },
   {
     path: "/about",
