@@ -140,9 +140,12 @@ export class Location extends Waypoint {
   static from({ accuracy, speed, heading, timestamp, ...waypoint } = {}) {
     if (arguments[0] instanceof this) return arguments[0];
 
-    if (accuracy) accuracy = new Distance(accuracy, "m");
+    if (accuracy) accuracy = Distance.from(accuracy);
     if (speed) speed = Speed.from(speed);
     if (heading) heading = Azimuth.from(heading);
+
+    delete waypoint._id;
+    delete waypoint._rev;
 
     return super.from({
       ...waypoint,

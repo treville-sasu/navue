@@ -12,8 +12,6 @@ export class Flight extends Model {
   }
 
   addLocation(location) {
-    delete location._id;
-    delete location._rev;
     this.locations.add(Location.from(location));
     return this;
   }

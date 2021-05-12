@@ -158,7 +158,7 @@ describe("location", () => {
   it("creates with properties", () => {
     expect(
       new Location(0, 0, 1, {
-        accuracy: 20,
+        accuracy: new Distance(20),
         timestamp: Date.now(),
         name: "Echo",
         notes: "Some note"
@@ -167,7 +167,7 @@ describe("location", () => {
       latitude: 0,
       longitude: 0,
       altitude: new Altitude(1),
-      accuracy: 20,
+      accuracy: new Distance(20),
       timestamp: expect.any(Number),
       name: "Echo",
       notes: "Some note"
@@ -177,24 +177,47 @@ describe("location", () => {
   it("imports from literal", () => {
     expect(
       Location.from({
-        type: "Location",
-        latitude: 0,
+        latitude: 43,
         longitude: 0,
-        altitude: { value: 10, unit: "m", reference: "WGS84" },
-        accuracy: { type: "Distance", unit: "m", value: 100 },
-        verticalSpeed: { value: 10, unit: "ft/min" },
-        speed: { value: 10 },
-        heading: { value: 180, unit: "°" },
-        timestamp: 1000
+        altitude: {
+          accuracy: 50,
+          reference: "WGS84",
+          value: 1000,
+          unit: "m",
+          type: "Altitude"
+        },
+        accuracy: {
+          value: 100,
+          unit: "m",
+          type: "Distance"
+        },
+        speed: {
+          value: 10,
+          unit: "m/s",
+          type: "Speed"
+        },
+        heading: {
+          value: 180,
+          unit: "°",
+          type: "Azimuth"
+        },
+        timestamp: 1620672163861,
+        type: "Location",
+        _id: "1620672163861",
+        _rev: "1-ad4a6ac12faa5c391774a3120af8c39d"
       })
     ).toStrictEqual(
-      new Location(0, 0, new Altitude(10, "m", { reference: "WGS84" }), {
-        accuracy: new Distance(100, "m"),
-        verticalSpeed: new Speed(10, "ft/min"),
-        speed: new Speed(10),
-        heading: new Azimuth(180, "°"),
-        timestamp: 1000
-      })
+      new Location(
+        43,
+        0,
+        new Altitude(1000, "m", { reference: "WGS84", accuracy: 50 }),
+        {
+          accuracy: new Distance(100, "m"),
+          speed: new Speed(10, "m/s"),
+          heading: new Azimuth(180, "°"),
+          timestamp: 1620672163861
+        }
+      )
     );
   });
   it("imports from GeolocationPosition", () => {
@@ -293,9 +316,9 @@ describe("location", () => {
         type: "Location",
         latitude: 0,
         longitude: 0,
-        accuracy: 100
+        accuracy: new Distance(100)
       }).toBounds()
-    ).toEqual([
+    ).toStrictEqual([
       [-0.0004491576385357491, -0.0004491576385357491],
       [0.0004491576385357491, 0.0004491576385357491]
     ]);
@@ -306,7 +329,7 @@ describe("location", () => {
         longitude: 0,
         accuracy: 1
       }).toBounds(100)
-    ).toEqual([
+    ).toStrictEqual([
       [-0.0004491576385357491, -0.0004491576385357491],
       [0.0004491576385357491, 0.0004491576385357491]
     ]);
@@ -314,7 +337,7 @@ describe("location", () => {
       Location.from({ type: "Location", latitude: 0, longitude: 0 }).toBounds(
         100
       )
-    ).toEqual([
+    ).toStrictEqual([
       [-0.0004491576385357491, -0.0004491576385357491],
       [0.0004491576385357491, 0.0004491576385357491]
     ]);

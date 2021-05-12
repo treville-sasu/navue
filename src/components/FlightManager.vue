@@ -23,9 +23,7 @@
       <b-dropdown-item separator v-if="$slots.header || $scopedSlots.header" />
 
       <template v-if="persistent && build">
-        <b-dropdown-item
-          @click="importLocations() && saveData() && deleteLocations()"
-        >
+        <b-dropdown-item @click="buildFromLocal">
           <b-icon icon="cloud-upload-outline" type="is-warning" />
           Save
         </b-dropdown-item>
@@ -125,6 +123,11 @@ export default {
     };
   },
   methods: {
+    async buildFromLocal() {
+      this.importLocations()
+        .then(this.saveData)
+        .then(this.deleteLocations);
+    },
     async importLocations() {
       let { rows } = await this.$pouch[this.traceDB].allDocs({
         include_docs: true
@@ -133,8 +136,6 @@ export default {
       return rows.length > 0;
     },
     async deleteLocations() {
-      // FIXME this do not update the livefeed in other components.
-      // update vue-pouchdb-lite with destroy event handling
       await this.$pouch[this.traceDB].destroy();
     }
   }
