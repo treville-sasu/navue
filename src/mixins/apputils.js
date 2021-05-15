@@ -56,11 +56,12 @@ export const UIHelpers = {
     openWarning(message, actionText, onAction) {
       this.$buefy.snackbar.open({
         message,
+        actionText,
+        onAction,
         position: "is-bottom",
         type: "is-danger",
         duration: 5000,
-        actionText,
-        onAction
+        queue: false
       });
     }
   }

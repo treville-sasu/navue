@@ -60,6 +60,7 @@
       <l-location-marker
         :v-if="lastKnownLocation"
         :value="lastKnownLocation"
+        :unsure="!!lastKnowError"
         :delay="settings.futurPositionDelay"
       />
 
@@ -141,6 +142,7 @@ export default {
   data() {
     return {
       destination: undefined,
+      lastKnowError: undefined,
       traceDB: "navue_trace",
       traceType: "Location",
       settings: {
@@ -172,7 +174,17 @@ export default {
       return this.$refs.movingMap.mapObject;
     },
     trace() {
-      return (this.reportedLocations || []).map(p => [p.latitude, p.longitude]);
+      return (
+        this.reportedLocations &&
+        this.reportedLocations.reduce(
+          function(rv, { latitude, longitude }) {
+            if (latitude && longitude) rv[0].unshift([latitude, longitude]);
+            else rv.unshift([]);
+            return rv;
+          },
+          [[]]
+        )
+      );
     },
     navigation() {
       return this.$store.state.currentNavigation;
@@ -208,6 +220,7 @@ export default {
       val ? this.startLocate() : this.stopLocate();
     },
     "settings.inFlight": function(val) {
+      if (!val) this.addLocation({ type: "EndFlight", timestamp: Date.now() });
       this.settings.fullScreen = val;
     },
     navigation(nav) {
@@ -226,9 +239,7 @@ export default {
       return {
         database: this.traceDB,
         limit: this.settings.traceLength,
-        selector: {
-          type: this.traceType
-        },
+        selector: { type: { $gt: null } },
         sort: [{ timestamp: "desc" }]
       };
     }
@@ -252,7 +263,7 @@ export default {
     addLocation(payload) {
       let asJSON = JSON.parse(JSON.stringify(payload));
       asJSON._id = payload.timestamp.toString();
-      return this.$pouch[this.traceDB].put(asJSON, {});
+      return this.$pouch[this.traceDB].put(asJSON);
     },
     setDestination({ latlng, latitude, longitude, altitude } = {}) {
       this.destination = Waypoint.from({
