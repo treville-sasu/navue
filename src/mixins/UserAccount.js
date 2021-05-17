@@ -1,15 +1,52 @@
 export const UserAccount = {
-  // With couchDB 3.x only an admin can create users. disable this with :
-  // https://github.com/apache/couchdb-documentation/issues/513
-  //
-  // /_node/couchdb@127.0.0.1/_config/couchdb/users_db_security_editable true
-  // /_users/_security {"members":{"roles":[]},"admins":{"roles":["_admin"]}}
-  // /_node/couchdb@127.0.0.1/_config/couchdb/users_db_security_editable false
   data() {
     return {
       syncHandle: null,
       remoteDbUrl: new URL(process.env.VUE_APP_COUCHDB_URL)
     };
+  },
+  async created() {
+    let _rev, views, isNew;
+
+    let userDesign = {
+      _id: "_design/user",
+      views: {
+        /* eslint-disable no-undef */
+        "count-items": {
+          map: function(doc) {
+            emit(doc.type);
+          }.toString(),
+          reduce: "_count"
+        },
+        stats: {
+          map: function(doc) {
+            switch (doc.type) {
+              // case "Aircraft": emit(doc.type, doc.length);
+              case "Navigation":
+                emit("NavigationDistance", doc.length || 0);
+                break;
+              case "Flight":
+                emit("FlightTime", doc.duration || 0);
+                break;
+              default:
+                emit(doc.type);
+            }
+          }.toString(),
+          reduce: "_sum"
+        }
+        /* eslint-enable no-undef */
+      }
+    };
+
+    try {
+      ({ _rev, views } = await this.$pouch.get(userDesign._id));
+    } catch {
+      isNew = true;
+    } finally {
+      // TODO this is a very poor assertion, objective is not to deploy a designdocument if it is not changed.
+      if (isNew || JSON.stringify(views) != JSON.stringify(userDesign.views))
+        await this.$pouch.put({ _rev, ...userDesign });
+    }
   },
   computed: {
     remoteDB() {
@@ -45,25 +82,29 @@ export const UserAccount = {
           .join("")
       );
     },
-    // TODO: make a design document of it.
     getUserStats(userDB) {
-      return userDB
-        .query(
-          {
-            map: (doc, emit) => {
-              // if (doc.type == "trace")
-              //   emit("flightduration", { ETE: doc.duration });
-              emit(doc.type);
-            },
-            reduce: "_count" // _stats _count _sum _approx_count_distinct
-          },
-          {
+      return Promise.allSettled([
+        userDB
+          .query("user/count-items", {
             group: true
-          }
-        )
-        .then(res => {
-          return res.rows.reduce((acc, row) => {
-            acc[row.key] = row.value;
+          })
+          .then(({ rows }) => {
+            return rows.reduce((acc, row) => {
+              acc[row.key] = row.value;
+              return acc;
+            }, {});
+          }),
+        //  this.$pouch
+        //     .query("user/stats", {
+        //       group: true
+        //     }),
+        navigator.storage.estimate().then(({ usage, quota }) => {
+          return { storage: usage / quota };
+        })
+      ])
+        .then(results => {
+          return results.reduce((acc, { status, value }) => {
+            if (status == "fulfilled") acc = { ...acc, ...value };
             return acc;
           }, {});
         })

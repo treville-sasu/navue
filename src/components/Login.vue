@@ -1,20 +1,34 @@
 <template>
   <div class="container">
-    <b-loading :is-full-page="false" :active="!!error">
-      <b-notification
-        has-icon
-        icon="alert-circle-outline"
-        :closable="false"
-        aria-close-label="Close notification"
-      >
-        <h4 class="title">Navue User Server Unavailable</h4>
-        <p class="heading">
-          Check your connection
-        </p>
-      </b-notification>
-    </b-loading>
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Aircrafts</p>
+          <p class="title">{{ userStats.Aircraft || 0 }}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Navigations</p>
+          <p class="title">{{ userStats.Navigation || 0 }}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Flights</p>
+          <p class="title">{{ userStats.Flight || 0 }}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Storage</p>
+          <p class="title">{{ (userStats.storage || 0) | percent }}</p>
+        </div>
+      </div>
+    </nav>
+    <b-loading :is-full-page="false" :active="!!error" />
     <fieldset v-if="!currentUser">
-      <b-field label="Email">
+      <b-field label="Email" horizontal>
         <b-input
           v-model="username"
           type="email"
@@ -23,7 +37,7 @@
           required
         />
       </b-field>
-      <b-field label="Password">
+      <b-field label="Password" horizontal>
         <b-input
           v-model="password"
           type="password"
@@ -63,32 +77,6 @@
         </div>
         <div class="level-item has-text-centered">
           <h5 class="title is-5">{{ currentUser.name }}</h5>
-        </div>
-      </nav>
-      <nav class="level">
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Aircrafts</p>
-            <p class="title">{{ userStats.Aircraft || 0 }}</p>
-          </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Navigations</p>
-            <p class="title">{{ userStats.Navigation || 0 }}</p>
-          </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Flight hours</p>
-            <p class="title">{{ userStats.flightduration || 0 }}</p>
-          </div>
-        </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Storage Quota</p>
-            <p class="title">{{ (userStats.quota || 0) | percent }}</p>
-          </div>
         </div>
       </nav>
       <nav class="level">
@@ -159,6 +147,7 @@ export default {
   mixins: [UserAccount],
   data() {
     return {
+      statsFeed: undefined,
       openDetails: false,
       username: null,
       password: null,
@@ -195,12 +184,29 @@ export default {
     }
   },
   created() {
+    this.statsFeed = this.$pouch
+      .changes({
+        since: "now",
+        live: true,
+        view: "user/count-items",
+        filter: "_view",
+        group: true,
+        include_docs: true
+      })
+      .on("change", () => {
+        this.setUserStats();
+      });
+
+    this.setUserStats();
+
     this.setCurrentUser()
       .then(this.startSync)
-      .catch(err => {
-        console.info(err.message);
-      })
-      .finally(this.setUserStats);
+      .catch(({ message }) => {
+        console.info(message);
+      });
+  },
+  beforeDestroy() {
+    this.statsFeed.cancel();
   },
   methods: {
     async checkServer(user) {
@@ -244,16 +250,8 @@ export default {
         );
       });
     },
-    setUserStats() {
-      return this.getUserStats(this.$pouch)
-        .then(stats => {
-          return (this.userStats = { ...stats });
-        })
-        .finally(() => {
-          navigator.storage.estimate().then(estimate => {
-            this.userStats.quota = estimate.usage / estimate.quota;
-          });
-        });
+    async setUserStats() {
+      this.userStats = await this.getUserStats(this.$pouch);
     },
     checkSession() {
       return this.setCurrentUser().catch(this.logoutUser);
@@ -268,7 +266,6 @@ export default {
     //         .on("active", () => (this.syncIcon = "cloud-sync-outline fade"))
     //         .on("change", () => (this.syncIcon = "cloud-sync-outline fade"))
     //         .on("paused", () => (this.syncIcon = "cloud-check-outline"));
-    //         .on("paused", this.setUserStats)
     //     })
     //     .catch(err => {
     //       this.openToast(err);
@@ -282,7 +279,6 @@ export default {
         .on("active", () => (this.syncIcon = "cloud-sync-outline fade"))
         .on("active", () => console.info("Syncing."))
         .on("change", () => (this.syncIcon = "cloud-sync-outline fade"))
-        .on("change", this.setUserStats)
         .on("paused", () => (this.syncIcon = "cloud-check-outline"))
         .on("complete", () => (this.syncIcon = "cloud-off-outline"))
         .on("error", this.openToast)
@@ -298,7 +294,7 @@ export default {
         .destroy()
         .then(() => {
           this.userStats = {};
-          this.currentUser = null;
+          this.currentUser = undefined;
         })
         .then(() => {
           return this.$pouch.getDB("trace").destroy();

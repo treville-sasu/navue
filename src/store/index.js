@@ -10,26 +10,19 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentUser: null,
-    currentAircraft: null,
-    currentNavigation: null,
-    currentLocation: null,
-    currentFlight: null
+    currentUser: undefined,
+    currentAircraft: undefined,
+    currentNavigation: undefined,
+    currentLocation: undefined,
+    currentFlight: undefined
   },
   mutations: {
-    currentUser: (state, payload) => {
-      /* eslint-disable no-unused-vars */
-      if (payload) {
-        let {
-          derived_key,
-          iterations,
-          password_scheme,
-          salt,
-          ...rest
-        } = payload;
-        /* eslint-enable no-unused-vars */
-        state.currentUser = rest;
-      } else state.currentUser = null;
+    currentUser: (
+      state,
+      // eslint-disable-next-line no-unused-vars
+      { derived_key, iterations, password_scheme, salt, ...user } = {}
+    ) => {
+      state.currentUser = Object.keys(user).length == 0 ? undefined : user;
     },
     currentAircraft(state, payload) {
       state.currentAircraft = payload ? Aircraft.from(payload) : payload;
