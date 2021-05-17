@@ -64,7 +64,7 @@
         :delay="settings.futurPositionDelay"
       />
 
-      <l-polyline v-if="!!trace" :lat-lngs="trace" className="traceLine" />
+      <l-polyline :lat-lngs="trace" className="traceLine" />
 
       <l-route-layer-group
         v-for="(route, id) in routes"
@@ -145,6 +145,7 @@ export default {
       lastKnowError: undefined,
       traceDB: "navue_trace",
       traceType: "Location",
+      trace: [[]],
       settings: {
         getLocation: true,
         setView: true,
@@ -166,25 +167,31 @@ export default {
       }
     };
   },
+  async created() {
+    this.$pouch.getDB(this.traceDB);
+    this.trace = await this.reducedTrace(this.$pouch[this.traceDB]);
+
+    this.traceFeed = this.$pouch[this.traceDB]
+      .on("destroyed", () => {
+        this.trace = [[]];
+      })
+      .changes({
+        since: "now",
+        live: true,
+        include_docs: true
+      })
+      .on("change", ({ doc: { latitude, longitude } }) => {
+        if (latitude && longitude) this.trace[0].unshift([latitude, longitude]);
+        else this.trace.unshift([]);
+      });
+  },
   beforeDestroy() {
+    this.traceFeed.cancel();
     this.stopLocate();
   },
   computed: {
     map() {
       return this.$refs.movingMap.mapObject;
-    },
-    trace() {
-      return (
-        this.reportedLocations &&
-        this.reportedLocations.reduce(
-          function(rv, { latitude, longitude }) {
-            if (latitude && longitude) rv[0].unshift([latitude, longitude]);
-            else rv.unshift([]);
-            return rv;
-          },
-          [[]]
-        )
-      );
     },
     navigation() {
       return this.$store.state.currentNavigation;
@@ -234,22 +241,29 @@ export default {
       }
     }
   },
-  pouch: {
-    reportedLocations() {
-      return {
-        database: this.traceDB,
-        limit: this.settings.traceLength,
-        selector: { type: { $gt: null } },
-        sort: [{ timestamp: "desc" }]
-      };
-    }
-  },
   methods: {
-    setupMap(map) {
-      map
-        .on("locationfound", this._locationFound, this)
-        .on("locationerror", this._locationError, this);
-
+    reducedTrace(db) {
+      return db
+        .query(
+          {
+            map: (doc, emit) => {
+              if (doc.latitude && doc.longitude)
+                emit(0, [doc.latitude, doc.longitude]);
+            },
+            reduce: (keys, values) => {
+              return values;
+            }
+          },
+          { group: true }
+        )
+        .then(({ rows }) => {
+          return rows.reduce((acc, row) => {
+            acc.unshift(row.value);
+            return acc;
+          }, []);
+        });
+    },
+    setupMap() {
       if (this.settings.getLocation) this.startLocate();
     },
     bestView(location) {
