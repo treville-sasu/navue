@@ -1,9 +1,11 @@
 import { Location } from "@/models/Waypoint.js";
 import { UIHelpers } from "@/mixins/apputils";
 
-export const MapHandlers = {
+export const LocationHandler = {
+  mixins: [UIHelpers],
   data() {
     return {
+      lastKnowError: undefined,
       geoOptions: {
         enableHighAccuracy: true,
         timeout: 5000,
@@ -16,7 +18,9 @@ export const MapHandlers = {
       }
     };
   },
-  mixins: [UIHelpers],
+  beforeDestroy() {
+    this.stopLocate();
+  },
   methods: {
     stopLocate() {
       this.lastKnownLocation = undefined;
@@ -29,7 +33,7 @@ export const MapHandlers = {
       if (!("geolocation" in navigator)) {
         this._locationError({
           code: 0,
-          message: "Geolocation not supported."
+          message: "Geolocation not supported by your device."
         });
         return this;
       }
@@ -58,7 +62,6 @@ export const MapHandlers = {
       if (location.accuracy > this.settings.maxAccuracy) {
         this._locationError({
           location,
-          type: "LocationError",
           code: 99,
           message: `Geolocation error: too low accuracy (${location.accuracy}m)`
         });
@@ -95,11 +98,13 @@ export const MapHandlers = {
     },
 
     _locationError({ message, code }) {
-      console.error(arguments[0]);
+      if (process.env.NODE_ENV == "development") console.error(arguments[0]);
+
       let actionText = "Stop GNSS";
       let onAction = () => (this.settings.getLocation = false);
 
       switch (code) {
+        case 0: //
         case 1: //PERMISSION_DENIED
           message =
             "You should grant location access in order use these feature. Please change your browser settings";
@@ -114,8 +119,7 @@ export const MapHandlers = {
       }
 
       this.lastKnowError = code;
-      if (this.settings.inFlight)
-        this.addLocation({ type: "LocationError", timestamp: Date.now() });
+      if (this.settings.inFlight) this.addLeg();
 
       this.openWarning(message, actionText, onAction);
     },
@@ -140,7 +144,7 @@ export const MapHandlers = {
         accuracy: accuracy + rand(),
         altitude: altitude + rand(100),
         altitudeAccuracy: accuracy + rand(),
-        heading: heading + rand(10),
+        heading: heading + rand(180),
         speed: speed + rand(),
         timestamp: Date.now()
       };

@@ -15,6 +15,7 @@
             :triggers="['click', 'hover']"
           />
           <DataToolbar
+            v-if="!settings.inFlight"
             navigation
             aircraft
             flight
@@ -102,7 +103,9 @@ import "leaflet/dist/leaflet.css";
 
 import { LMap, LControlZoom, LControl, LPolyline } from "vue2-leaflet";
 
-import { MapHandlers } from "@/mixins/MapHandlers";
+import { LocationHandler } from "@/mixins/LocationHandler";
+import { TraceHandler } from "@/mixins/TraceHandler";
+import { DestinationHandler } from "@/mixins/DestinationHandler";
 
 import MovingMapSettings from "@/components/MovingMapSettings.vue";
 import InstrumentsDisplay from "@/components/InstrumentsDisplay.vue";
@@ -116,10 +119,8 @@ import LLocationMarker from "@/components/leaflet/LLocationMarker.vue";
 import LDestinationMarker from "@/components/leaflet/LDestinationMarker.vue";
 import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
 
-import { Waypoint } from "@/models/Waypoint.js";
 import { WakeLock } from "@/mixins/apputils.js";
 
-// FIXME: Setview with futur and past value
 export default {
   name: "MovingMap",
   components: {
@@ -138,23 +139,16 @@ export default {
     LRouteLayerGroup,
     LDestinationMarker
   },
-  mixins: [WakeLock, MapHandlers],
+  mixins: [WakeLock, LocationHandler, TraceHandler, DestinationHandler],
   data() {
     return {
-      destination: undefined,
-      lastKnowError: undefined,
-      traceDB: "navue_trace",
-      traceType: "Location",
-      trace: [[]],
+      startedAt: undefined,
       settings: {
         getLocation: true,
         setView: true,
         fullScreen: !!document.fullscreenElement,
         zoomControl: false,
         inFlight: false,
-        traceLength: 250,
-        minDestination: 100,
-        futurPositionDelay: 3,
         map: {
           zoom: 10,
           center: { lat: 42.69597591582309, lng: 2.879308462142945 },
@@ -166,28 +160,6 @@ export default {
         }
       }
     };
-  },
-  async created() {
-    this.$pouch.getDB(this.traceDB);
-    this.trace = await this.reducedTrace(this.$pouch[this.traceDB]);
-
-    this.traceFeed = this.$pouch[this.traceDB]
-      .on("destroyed", () => {
-        this.trace = [[]];
-      })
-      .changes({
-        since: "now",
-        live: true,
-        include_docs: true
-      })
-      .on("change", ({ doc: { latitude, longitude } }) => {
-        if (latitude && longitude) this.trace[0].unshift([latitude, longitude]);
-        else this.trace.unshift([]);
-      });
-  },
-  beforeDestroy() {
-    this.traceFeed.cancel();
-    this.stopLocate();
   },
   computed: {
     map() {
@@ -227,14 +199,14 @@ export default {
       val ? this.startLocate() : this.stopLocate();
     },
     "settings.inFlight": function(val) {
-      if (!val) this.addLocation({ type: "EndFlight", timestamp: Date.now() });
+      if (val) this.addLeg();
       this.settings.fullScreen = val;
     },
     navigation(nav) {
       try {
         let bounds = nav.toBounds();
         this.map.flyToBounds(bounds, {
-          padding: [50, 50]
+          padding: [25, 25]
         });
       } catch {
         /* continue regardless of error */
@@ -242,26 +214,9 @@ export default {
     }
   },
   methods: {
-    reducedTrace(db) {
-      return db
-        .query(
-          {
-            map: (doc, emit) => {
-              if (doc.latitude && doc.longitude)
-                emit(0, [doc.latitude, doc.longitude]);
-            },
-            reduce: (keys, values) => {
-              return values;
-            }
-          },
-          { group: true }
-        )
-        .then(({ rows }) => {
-          return rows.reduce((acc, row) => {
-            acc.unshift(row.value);
-            return acc;
-          }, []);
-        });
+    addLeg() {
+      this.trace.unshift([]);
+      this.startedAt = Date.now();
     },
     setupMap() {
       if (this.settings.getLocation) this.startLocate();
@@ -276,27 +231,8 @@ export default {
     },
     addLocation(payload) {
       let asJSON = JSON.parse(JSON.stringify(payload));
-      asJSON._id = payload.timestamp.toString();
+      asJSON._id = `${this.startedAt}-${payload.timestamp}`;
       return this.$pouch[this.traceDB].put(asJSON);
-    },
-    setDestination({ latlng, latitude, longitude, altitude } = {}) {
-      this.destination = Waypoint.from({
-        latlng,
-        latitude,
-        longitude,
-        altitude,
-        type: "Waypoint"
-      });
-    },
-    getDestination(lastDestination) {
-      //TODO : on route select, set a Next Destination
-      if (
-        this.destination &&
-        lastDestination.distanceTo(this.destination) <
-          this.settings.minDestination
-      ) {
-        this.destination = this.navigation.getNextWaypoint(this.destination);
-      } else return;
     },
     updateSettings(opts) {
       this.settings = { ...this.settings, ...opts };

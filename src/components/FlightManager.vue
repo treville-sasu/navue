@@ -136,7 +136,8 @@ export default {
       return rows.length > 0;
     },
     async deleteLocations() {
-      await this.$pouch[this.traceDB].destroy();
+      await this.$pouch[this.traceDB].viewCleanup();
+      return await this.$pouch[this.traceDB].destroy();
     }
   }
 };
