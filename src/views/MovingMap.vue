@@ -159,7 +159,7 @@ export default {
           zoom: 10,
           center: { lat: 42.69597591582309, lng: 2.879308462142945 },
           options: {
-            zoomSnap: 0.5,
+            zoomSnap: 0.1,
             zoomControl: false,
             attributionControl: false
           }
@@ -269,10 +269,10 @@ export default {
     bestView(location) {
       let bounds = location.toBounds(
         location.speed
-          ? location.speed * this.settings.futurPositionDelay * 60
+          ? location.speed * this.settings.futurPositionDelay * 60 * 2
           : location.accuracy
       );
-      this.map.flyToBounds(bounds, { padding: [100, 100] });
+      this.map.flyToBounds(bounds, { padding: [25, 25] });
     },
     addLocation(payload) {
       let asJSON = JSON.parse(JSON.stringify(payload));
