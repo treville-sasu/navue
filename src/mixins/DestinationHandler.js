@@ -3,7 +3,7 @@ import { Waypoint } from "@/models/Waypoint.js";
 export const DestinationHandler = {
   data() {
     return {
-      destination: undefined,
+      currentDestination: undefined,
       settings: {
         minDestination: 100,
         futurPositionDelay: 3
@@ -12,7 +12,7 @@ export const DestinationHandler = {
   },
   methods: {
     setDestination({ latlng, latitude, longitude, altitude } = {}) {
-      this.destination = Waypoint.from({
+      this.currentDestination = Waypoint.from({
         latlng,
         latitude,
         longitude,
@@ -27,7 +27,9 @@ export const DestinationHandler = {
         lastDestination.distanceTo(this.destination) <
           this.settings.minDestination
       ) {
-        this.destination = this.navigation.getNextWaypoint(this.destination);
+        this.currentDestination = this.navigation.getNextWaypoint(
+          this.currentDestination
+        );
       } else return;
     }
   }

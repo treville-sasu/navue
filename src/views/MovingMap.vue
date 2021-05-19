@@ -44,9 +44,9 @@
       </l-control>
       <l-control position="bottomleft">
         <DestinationDisplay
-          v-if="lastKnownLocation && destination"
-          :from="lastKnownLocation"
-          :to="destination"
+          v-if="currentLocation && currentDestination"
+          :from="currentLocation"
+          :to="currentDestination"
         />
       </l-control>
       <l-control position="topright">
@@ -59,9 +59,9 @@
       <l-base-layer-group />
 
       <l-location-marker
-        :v-if="lastKnownLocation"
-        :value="lastKnownLocation"
-        :unsure="!!lastKnowError"
+        :v-if="currentLocation"
+        :value="currentLocation"
+        :unsure="!!lastError"
         :delay="settings.futurPositionDelay"
       />
 
@@ -74,7 +74,10 @@
         :active="false"
         @contextmenu-waypoint="setDestination(route.items[$event])"
       />
-      <l-destination-marker v-model="destination" :origin="lastKnownLocation" />
+      <l-destination-marker
+        v-model="currentDestination"
+        :origin="currentLocation"
+      />
     </l-map>
   </section>
 </template>
@@ -190,7 +193,7 @@ export default {
   },
   watch: {
     "settings.setView": function(val) {
-      if (val && this.lastKnownLocation) this.bestView(this.lastKnownLocation);
+      if (val && this.currentLocation) this.bestView(this.currentLocation);
     },
     "settings.fullScreen": function(val) {
       this.toggleFullscreen(this.map.getContainer(), val);
@@ -199,7 +202,10 @@ export default {
       val ? this.startLocate() : this.stopLocate();
     },
     "settings.inFlight": function(val) {
-      if (val) this.addLeg();
+      if (val) {
+        this.addLeg();
+        this.addLocation(this.currentLocation);
+      }
       this.settings.fullScreen = val;
     },
     navigation(nav) {
@@ -210,6 +216,14 @@ export default {
         });
       } catch {
         /* continue regardless of error */
+      }
+    },
+    currentLocation(location) {
+      if (location && this.settings.setView) this.bestView(location);
+      if (location && this.settings.inFlight) this.addLocation(location);
+      if (location && this.navigation) {
+        let nextDestination = this.getDestination(location);
+        if (nextDestination) this.setDestination(nextDestination);
       }
     }
   },

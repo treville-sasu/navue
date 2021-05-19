@@ -42,7 +42,7 @@ export class Flight extends Model {
     else if (type != this.name)
       throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
     else {
-      if (locations) locations = Store.from(locations, Location);
+      if (locations) locations = Store.from(locations, Store, Location);
 
       let imported = new this(properties, ...locations);
       if (_id && _rev) Object.assign(imported, { _id, _rev });

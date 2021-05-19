@@ -32,7 +32,7 @@ export const TraceHandler = {
           include_docs: true
         })
         .on("change", ({ doc: { latitude, longitude } }) => {
-          if (latitude && longitude)
+          if (this.trace[0] && latitude && longitude)
             this.trace[0].unshift([latitude, longitude]);
           else this.trace.unshift([]);
         });
@@ -41,9 +41,9 @@ export const TraceHandler = {
       return db
         .query(
           {
-            map: (doc, emit) => {
-              if (doc.latitude && doc.longitude)
-                emit(doc._id.split("-")[0], [doc.latitude, doc.longitude]);
+            map: ({ _id, latitude, longitude }, emit) => {
+              if (latitude && longitude)
+                emit(_id.split("-")[0], [latitude, longitude]);
             },
             reduce: (keys, values) => {
               return values;

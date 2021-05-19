@@ -124,16 +124,32 @@ export default {
   },
   methods: {
     async buildFromLocal() {
-      this.importLocations()
+      return await this.importLocations()
         .then(this.saveData)
         .then(this.deleteLocations);
     },
     async importLocations() {
-      let { rows } = await this.$pouch[this.traceDB].allDocs({
-        include_docs: true
-      });
-      rows.forEach(l => this.selectedData.addLocation(l.doc));
-      return rows.length > 0;
+      let traces = await this.$pouch[this.traceDB]
+        .query(
+          {
+            // eslint-disable-next-line no-unused-vars
+            map: ({ _id, _rev, ...location }, emit) => {
+              if (location.type == "Location")
+                emit(_id.split("-")[0], location);
+            },
+            reduce: (keys, values) => {
+              return values;
+            }
+          },
+          { group: true }
+        )
+        .then(({ rows }) => {
+          return rows.map(row => {
+            this.selectedData.addTrace(row.key, row.value);
+          });
+        });
+
+      return traces.length > 0;
     },
     async deleteLocations() {
       await this.$pouch[this.traceDB].viewCleanup();

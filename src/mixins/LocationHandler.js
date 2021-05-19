@@ -5,7 +5,7 @@ export const LocationHandler = {
   mixins: [UIHelpers],
   data() {
     return {
-      lastKnowError: undefined,
+      lastError: undefined,
       geoOptions: {
         enableHighAccuracy: true,
         timeout: 5000,
@@ -23,7 +23,7 @@ export const LocationHandler = {
   },
   methods: {
     stopLocate() {
-      this.lastKnownLocation = undefined;
+      this.currentLocation = undefined;
 
       if (navigator.geolocation && navigator.geolocation.clearWatch) {
         navigator.geolocation.clearWatch(this._locationWatchId);
@@ -70,8 +70,8 @@ export const LocationHandler = {
 
       // // now we have a location, let's polish it & use it.
       if (
-        this.lastKnownLocation instanceof Location &&
-        location.distanceTo(this.lastKnownLocation) <= this.settings.minDistance
+        this.currentLocation instanceof Location &&
+        location.distanceTo(this.currentLocation) <= this.settings.minDistance
       )
         return;
 
@@ -86,15 +86,8 @@ export const LocationHandler = {
         location.heading = undefined;
       }
 
-      if (this.settings.inFlight) this.addLocation(location);
-
-      this.lastKnowError = undefined;
-
-      const nextDestination = this.getDestination(location);
-      if (nextDestination) this.setDestination(nextDestination);
-
-      this.lastKnownLocation = location;
-      if (this.settings.setView) this.bestView(location);
+      this.lastError = undefined;
+      this.currentLocation = location;
     },
 
     _locationError({ message, code }) {
@@ -118,8 +111,8 @@ export const LocationHandler = {
         // case 99: // LOWACCURACY
       }
 
-      this.lastKnowError = code;
-      if (this.settings.inFlight) this.addLeg();
+      if (this.settings.inFlight && this.lastError == code) this.addLeg();
+      this.lastError = code;
 
       this.openWarning(message, actionText, onAction);
     },
