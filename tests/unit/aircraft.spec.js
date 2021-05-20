@@ -1,10 +1,10 @@
-import { Aircraft, Moment } from "@/models/Aircraft.js";
+import { Aircraft } from "../../src/models/Aircraft";
 import { Model, Store } from "../../src/models/Base";
 import {
   Consumption,
   Distance,
   Speed,
-  Weight
+  Moment
 } from "../../src/models/Quantities";
 
 describe("aircraft", () => {
@@ -32,7 +32,7 @@ describe("aircraft", () => {
       notes: "some text", //not allowed
       paces: new Store(undefined, new Speed(), new Distance()),
       consumptions: new Store(new Consumption(), new Distance()),
-      balance: new Store({ date: "any date" }, new Weight(), new Distance()),
+      balance: new Store({ date: "any date" }, new Moment()),
       envelopes: new Store(
         undefined,
         new Store({ name: "U" }, 1, 2, 3),
@@ -53,7 +53,7 @@ describe("aircraft", () => {
     );
     expect(aircraft).toHaveProperty(
       "balance",
-      new Store({ date: "any date" }, new Weight())
+      new Store({ date: "any date" }, new Moment())
     );
     expect(aircraft).toHaveProperty(
       "envelopes",
@@ -98,8 +98,11 @@ describe("aircraft", () => {
         type: "Store",
         date: "any date",
         items: [
-          { type: "Weight", value: undefined, unit: undefined },
-          { type: "Distance", value: undefined, unit: undefined }
+          {
+            type: "Moment",
+            mass: { type: "Weight", value: undefined, unit: undefined },
+            lever: { type: "Distance", value: undefined, unit: undefined }
+          }
         ]
       },
       envelopes: {
@@ -150,7 +153,7 @@ describe("aircraft", () => {
         manufacturer: "manufacturer",
         paces: new Store(undefined, new Speed()),
         consumptions: new Store({}, new Consumption()),
-        balance: new Store({ date: "any date" }, new Weight()),
+        balance: new Store({ date: "any date" }, new Moment()),
         envelopes: new Store(
           undefined,
           new Store({ name: "U" }, new Moment(), new Moment()),

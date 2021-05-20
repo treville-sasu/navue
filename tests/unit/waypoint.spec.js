@@ -119,25 +119,39 @@ describe("waypoint", () => {
       wp.destinationPoint(1, 45);
       expect(wp.point.rhumbDestinationPoint).toHaveBeenCalledWith(1, 45);
     });
-
-    it("export to GeoJSON as a Feature", () => {
-      const wp = Waypoint.from({
-        type: "Waypoint",
-        name: "null Island",
-        latitude: 0,
-        longitude: 0
-      });
-
-      expect(wp.toGeoJSON()).toStrictEqual({
-        type: "Feature",
-        properties: { altitude: undefined, name: "null Island" },
-        geometry: {
-          type: "Point",
-          coordinates: [0, 0]
-        }
-      });
-      expect(wp.point.toGeoJSON).toHaveBeenCalled();
+  });
+  it("export to GeoJSON as given type", () => {
+    const wp = Waypoint.from({
+      type: "Waypoint",
+      name: "null Island",
+      latitude: 0,
+      longitude: 0,
+      altitude: new Altitude(1, "m", { reference: "WGS84" })
     });
+
+    expect(wp.toGeoJSON("Position")).toStrictEqual([0, 0, 1]);
+
+    expect(wp.toGeoJSON("Point")).toStrictEqual({
+      type: "Point",
+      coordinates: [0, 0, 1]
+    });
+    expect(wp.toGeoJSON("Feature")).toStrictEqual({
+      type: "Feature",
+      properties: {
+        altitude: {
+          reference: "WGS84",
+          type: "Altitude",
+          unit: "m",
+          value: 1
+        },
+        name: "null Island"
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [0, 0, 1]
+      }
+    });
+    expect(wp.toGeoJSON()).toStrictEqual(wp.toGeoJSON("Feature"));
   });
 });
 
@@ -150,8 +164,7 @@ describe("location", () => {
       timestamp: undefined,
       accuracy: undefined,
       heading: undefined,
-      speed: undefined,
-      verticalSpeed: undefined
+      speed: undefined
     });
   });
 
@@ -299,15 +312,17 @@ describe("location", () => {
       speed: new Speed(111194.92664455874),
       verticalSpeed: new Speed(10)
     });
+
     expect(() =>
       location.movementFrom(
         Location.from({
           type: "Location",
           latitude: 1,
-          longitude: 0
+          longitude: 0,
+          timestamp: 1000
         })
       )
-    ).toThrow;
+    ).toThrow("Teleportation is not yet a possibility");
   });
 
   it("gives a bounding box from accuracy or arguents", () => {

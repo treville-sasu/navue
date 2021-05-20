@@ -11,7 +11,7 @@ describe("model", () => {
       new Model({ a: 1, b: 2 })
     );
     expect(() => Model.from({ a: 1, b: 2 })).toThrow(
-      "Supplied object is no Model"
+      "Invalid data : 'type' should be 'Model' got 'undefined'"
     );
 
     let model = new Model({ a: 1, b: 2 });
@@ -29,28 +29,35 @@ describe("model", () => {
 });
 
 describe("store", () => {
-  describe("as an Array Subclass", () => {
+  // TODO : implementation for when Vuejs Supports Array-like objects.
+  describe.skip("as an Array Subclass", () => {
     it("extends Array", () => {
       expect(Store.prototype).toBeInstanceOf(Array);
     });
 
     it("create a Store with values & properties", () => {
-      expect(new Store()).toEqual(expect.arrayContaining([]));
-      expect(new Store({ name: "name" })).toEqual(expect.arrayContaining([]));
-      expect(new Store({ name: "name" }).name).toEqual("name");
-      expect(new Store(undefined, 1, 2, 3)).toEqual(
+      expect(new Store()).toStrictEqual(expect.arrayContaining([]));
+      expect(new Store({ name: "name" })).toStrictEqual(
+        expect.arrayContaining([])
+      );
+      expect(new Store({ name: "name" }).name).toStrictEqual("name");
+      expect(new Store(undefined, 1, 2, 3)).toStrictEqual(
         expect.arrayContaining([1, 2, 3])
       );
     });
 
     it("get items from store", () => {
-      expect(new Store().items).toEqual([]);
-      expect(new Store({ name: "name" }, 1, 2, 3).items).toEqual([1, 2, 3]);
+      expect(new Store().items).toStrictEqual([]);
+      expect(new Store({ name: "name" }, 1, 2, 3).items).toStrictEqual([
+        1,
+        2,
+        3
+      ]);
     });
 
     it("get properties from store", () => {
-      expect(new Store().properties).toEqual({});
-      expect(new Store({ name: "name" }, 1, 2, 3).properties).toEqual({
+      expect(new Store().properties).toStrictEqual({});
+      expect(new Store({ name: "name" }, 1, 2, 3).properties).toStrictEqual({
         name: "name"
       });
     });
@@ -59,7 +66,7 @@ describe("store", () => {
       let store = new Store(undefined, 1, 2, 3);
       expect(store.name).toBeUndefined();
       store.name = "name";
-      expect(store.name).toEqual("name");
+      expect(store.name).toStrictEqual("name");
     });
 
     // it("remove item from store by value", () => {
@@ -96,7 +103,7 @@ describe("store", () => {
 
     it("import a Store from literal", () => {
       let store = Store.from({ type: "Store", prop: "prop", items: [1, 2, 3] });
-      expect(store).toEqual(expect.arrayContaining([1, 2, 3]));
+      expect(store).toStrictEqual(expect.arrayContaining([1, 2, 3]));
       expect(store).toHaveProperty("prop", "prop");
     });
 
@@ -113,7 +120,7 @@ describe("store", () => {
         Model
       );
 
-      expect(store).toEqual(
+      expect(store).toStrictEqual(
         expect.arrayContaining([
           expect.any(Model),
           expect.any(Model),
@@ -141,7 +148,7 @@ describe("store", () => {
         Model
       );
 
-      expect(store).toEqual(
+      expect(store).Equal(
         expect.arrayContaining([
           expect.arrayContaining([expect.any(Model)]),
           expect.arrayContaining([expect.any(Model)])
@@ -149,25 +156,30 @@ describe("store", () => {
       );
     });
   });
-  describe.only("as an Object with items Array", () => {
+
+  describe("as an Object with items Array", () => {
     it("extends Array", () => {
       expect(Store.prototype).toBeInstanceOf(Object);
     });
 
     it("create a Store with values & properties", () => {
-      expect(new Store().items).toEqual(expect.arrayContaining([]));
-      expect(new Store({ name: "name" }).items).toEqual(
+      expect(new Store().items).toStrictEqual(expect.arrayContaining([]));
+      expect(new Store({ name: "name" }).items).toStrictEqual(
         expect.arrayContaining([])
       );
-      expect(new Store({ name: "name" }).name).toEqual("name");
-      expect(new Store(undefined, 1, 2, 3).items).toEqual(
+      expect(new Store({ name: "name" }).name).toStrictEqual("name");
+      expect(new Store(undefined, 1, 2, 3).items).toStrictEqual(
         expect.arrayContaining([1, 2, 3])
       );
     });
 
     it("get items from store", () => {
-      expect(new Store().items).toEqual([]);
-      expect(new Store({ name: "name" }, 1, 2, 3).items).toEqual([1, 2, 3]);
+      expect(new Store().items).toStrictEqual([]);
+      expect(new Store({ name: "name" }, 1, 2, 3).items).toStrictEqual([
+        1,
+        2,
+        3
+      ]);
     });
 
     it("get length from store items", () => {
@@ -182,8 +194,8 @@ describe("store", () => {
     });
 
     it("get properties from store", () => {
-      expect(new Store().properties).toEqual({});
-      expect(new Store({ name: "name" }, 1, 2, 3).properties).toEqual({
+      expect(new Store().properties).toStrictEqual({});
+      expect(new Store({ name: "name" }, 1, 2, 3).properties).toStrictEqual({
         name: "name"
       });
     });
@@ -192,7 +204,7 @@ describe("store", () => {
       let store = new Store(undefined, 1, 2, 3);
       expect(store.name).toBeUndefined();
       store.name = "name";
-      expect(store.name).toEqual("name");
+      expect(store.name).toStrictEqual("name");
     });
 
     it("add or insert item to store", () => {
@@ -261,7 +273,7 @@ describe("store", () => {
         Model
       );
 
-      expect(store.items).toEqual(
+      expect(store.items).toStrictEqual(
         expect.arrayContaining([
           expect.any(Model),
           expect.any(Model),
@@ -289,7 +301,7 @@ describe("store", () => {
         Model
       );
 
-      expect(store.items).toEqual(
+      expect(store.items).toStrictEqual(
         expect.arrayContaining([
           expect.objectContaining({ items: [expect.any(Model)] }),
           expect.objectContaining({ items: [expect.any(Model)] })

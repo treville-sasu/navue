@@ -37,14 +37,25 @@ export class Waypoint extends Model {
     return new this.constructor(point.lat, point.lng);
   }
 
-  toGeoJSON() {
-    // eslint-disable-next-line no-unused-vars
-    const { latitude, longitude, ...properties } = this;
-    return {
-      type: "Feature",
-      properties,
-      geometry: this.point.toGeoJSON()
-    };
+  toGeoJSON(type = "Feature") {
+    const { latitude, longitude, altitude, ...properties } = this;
+    switch (type) {
+      case "Feature":
+        return {
+          type,
+          properties: { ...properties, altitude: altitude.toJSON() },
+          geometry: this.toGeoJSON("Point")
+        };
+      case "Point":
+        return {
+          type,
+          coordinates: this.toGeoJSON("Position")
+        };
+      case "Position":
+        return [latitude, longitude, Number(altitude)];
+      default:
+        throw "not a valid GeoJSON object";
+    }
     // or with : https://www.npmjs.com/package/geojson >>>> GeoJSON.parse(data, { Point: ['lat', 'lng'] });
   }
 
@@ -68,11 +79,10 @@ export class Location extends Waypoint {
     latitude,
     longitude,
     altitude,
-    { accuracy, verticalSpeed, speed, heading, timestamp, ...properties } = {}
+    { accuracy, speed, heading, timestamp, ...properties } = {}
   ) {
     super(latitude, longitude, altitude, {
       accuracy,
-      verticalSpeed,
       speed,
       heading,
       timestamp,
@@ -80,36 +90,24 @@ export class Location extends Waypoint {
     });
   }
 
-  _delayFrom(other) {
-    return this.timestamp - other.timestamp;
+  _delayFrom({ timestamp }) {
+    return this.timestamp - timestamp;
   }
 
-  _climbFrom(other) {
-    return this.altitude - other.altitude;
+  _climbFrom({ altitude }) {
+    return this.altitude - altitude;
   }
 
   _speedFrom(other) {
-    try {
-      if (this._delayFrom(other) == 0)
-        throw "Teleportation is not yet a possibility";
-      return new Speed(
-        (this.distanceTo(other) / this._delayFrom(other)) * 1000
-      );
-    } catch {
-      return undefined;
-    }
+    if (this._delayFrom(other) == 0)
+      throw "Teleportation is not yet a possibility";
+    return new Speed((this.distanceTo(other) / this._delayFrom(other)) * 1000);
   }
 
   _verticalSpeedFrom(other) {
-    try {
-      if (this._delayFrom(other) == 0)
-        throw "Teleportation is not yet a possibility";
-      return new Speed(
-        (this._climbFrom(other) / this._delayFrom(other)) * 1000
-      );
-    } catch {
-      return undefined;
-    }
+    if (this._delayFrom(other) == 0)
+      throw "Teleportation is not yet a possibility";
+    return new Speed((this._climbFrom(other) / this._delayFrom(other)) * 1000);
   }
 
   movementFrom(other) {

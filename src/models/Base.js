@@ -34,37 +34,42 @@ export class Store {
   // get items() {
   //   return [...this];
   // }
-
+  // TODO : remove
   [Symbol.iterator]() {
     return this.items[Symbol.iterator]();
   }
 
+  // TODO : remove
   get length() {
     return this.items.length;
   }
 
+  // TODO : remove
   valueOf() {
     return this.items;
   }
 
   get properties() {
-    // eslint-disable-next-line no-unused-vars
-    let { items, ...props } = { ...this };
-    return props;
     // return Object.fromEntries(
     //   Object.entries(this).filter(([key]) => isNaN(key))
     // );
+    // eslint-disable-next-line no-unused-vars
+    let { items, ...props } = { ...this };
+    return props;
   }
 
   get first() {
+    // return this[0];
     return this.items[0];
   }
 
   get last() {
+    // return this[this.length - 1];
     return this.items[this.length - 1];
   }
 
   add(item, index) {
+    // index ? this.splice(index, 0, item) : this.push(item);
     index ? this.items.splice(index, 0, item) : this.items.push(item);
     return this.length;
   }

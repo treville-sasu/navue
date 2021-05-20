@@ -33,6 +33,7 @@ export const DataManager = {
         try {
           this.$store.commit(this.storeKey, data);
         } catch (err) {
+          if (process.env.NODE_ENV == "development") console.error(err);
           this.$buefy.dialog.alert({
             title: "Cannot load item",
             message: `Selected record is corrupted. It will be purged from database. Do you want to download it localy before ?`,
@@ -106,14 +107,6 @@ export const DataManager = {
         this.downloadJSON(this.selectedData, `${this.selectedName}.json`);
     },
     cloneData(data) {
-      // function incrementString(str) {
-      //   // Find the trailing number or it will match the empty string
-      //   var count = str.match(/\d*$/);
-
-      //   // Take the substring up until where the integer was matched
-      //   // Concatenate it to the matched count incremented by 1
-      //   return str.substr(0, count.index) + ++count[0];
-      // }
       let clone = data.clone();
       delete clone._id;
       delete clone._rev;

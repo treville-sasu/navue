@@ -1,0 +1,99 @@
+{
+  "name": "Fixture",
+  "notes": "some stuff",
+  "locations": [
+    [
+      {
+        "latitude": 43.42173780154349,
+        "longitude": -0.37592911818056424,
+        "altitude": {
+          "accuracy": 75.47549119035168,
+          "reference": "WGS84",
+          "value": 974.745483588706,
+          "unit": "m",
+          "type": "Altitude"
+        },
+        "accuracy": {
+          "value": 74.88337485607397,
+          "unit": "m",
+          "type": "Distance"
+        },
+        "speed": {
+          "value": 49.77274617746323,
+          "unit": "m/s",
+          "type": "Speed"
+        },
+        "heading": {
+          "value": 322.91307315742955,
+          "unit": "°",
+          "type": "Azimuth"
+        },
+        "timestamp": 1621436827165,
+        "type": "Location"
+      },
+      {
+        "latitude": 43.35158218238678,
+        "longitude": -0.394352740677683,
+        "altitude": {
+          "accuracy": 75.48275531774489,
+          "reference": "WGS84",
+          "value": 1014.2498616293805,
+          "unit": "m",
+          "type": "Altitude"
+        },
+        "accuracy": {
+          "value": 74.5419678997506,
+          "unit": "m",
+          "type": "Distance"
+        },
+        "speed": {
+          "value": 50.19929914311654,
+          "unit": "m/s",
+          "type": "Speed"
+        },
+        "heading": {
+          "value": 324.3007601189933,
+          "unit": "°",
+          "type": "Azimuth"
+        },
+        "timestamp": 1621436832083,
+        "type": "Location"
+      }
+    ],
+    [
+      {
+        "latitude": 43.359593020493556,
+        "longitude": -0.3841041381961341,
+        "altitude": {
+          "accuracy": 74.73206670357781,
+          "reference": "WGS84",
+          "value": 1030.762731215022,
+          "unit": "m",
+          "type": "Altitude"
+        },
+        "accuracy": {
+          "value": 74.55342572630838,
+          "unit": "m",
+          "type": "Distance"
+        },
+        "speed": {
+          "value": 49.65466589164299,
+          "unit": "m/s",
+          "type": "Speed"
+        },
+        "heading": {
+          "value": 89.0530377229343,
+          "unit": "°",
+          "type": "Azimuth"
+        },
+        "timestamp": 1621436897234,
+        "type": "Location"
+      }
+    ]
+  ],
+  "checked": [],
+  "milestones": [],
+  "type": "Flight",
+  "_id": "Flight-1621437190027",
+  "_rev": "1-415c19c5b5d1a534dfc429735749ba46"
+}

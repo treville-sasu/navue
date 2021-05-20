@@ -145,7 +145,7 @@ export default {
         )
         .then(({ rows }) => {
           return rows.map(row => {
-            this.selectedData.addTrace(row.key, row.value);
+            this.selectedData.addTrace(row.value);
           });
         });
 
