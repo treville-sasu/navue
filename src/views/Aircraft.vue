@@ -70,7 +70,7 @@
   </section>
 </template>
 <script>
-import AircraftManager from "@/components/AircraftManager.vue";
+import AircraftManager from "@/components/managers/AircraftManager.vue";
 
 import AircraftDetailPaces from "@/components/AircraftDetailPaces.vue";
 import AircraftDetailBalance from "@/components/AircraftDetailBalance.vue";

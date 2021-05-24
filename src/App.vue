@@ -22,8 +22,8 @@ $modal-z: $navbar-fixed-z + 100;
   cursor: pointer !important;
 }
 
-.stackable .field.has-addons,
-.stackable.tags {
+.is-stackable .field.has-addons,
+.is-stackable.tags {
   @include until($desktop) {
     flex-direction: column;
     align-items: end;

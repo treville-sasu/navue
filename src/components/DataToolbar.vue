@@ -1,39 +1,43 @@
 <template>
   <b-field>
-    <b-field>
-      <NavigationManager v-if="navigation" v-bind="dropdown" editable>
+    <p class="control">
+      <NavigationManager
+        v-if="navigation"
+        v-bind="{ ...navigation, ...dropdown }"
+      >
         <template #header="{ selected }">
-          {{ selected.name }}
+          <b-input
+            v-if="navigation.edit"
+            v-model="selected.name"
+            placeholder="from > to"
+          />
+          <span v-else>
+            {{ selected.name }}
+          </span>
         </template>
       </NavigationManager>
-    </b-field>
-    <b-field>
-      <AircraftManager v-if="aircraft" v-bind="dropdown">
+    </p>
+    <p class="control">
+      <AircraftManager v-if="aircraft" v-bind="{ ...aircraft, ...dropdown }">
         <template #header="{ selected }">
           {{ selected.registration }}
         </template>
       </AircraftManager>
-    </b-field>
-    <b-field>
-      <FlightManager
-        v-if="flight"
-        :traceDB="traceDB"
-        persistent
-        build
-        v-bind="dropdown"
-      >
+    </p>
+    <p class="control">
+      <FlightManager v-if="flight" v-bind="{ ...flight, ...dropdown }">
         <template #header="{ selected }">
           <b-input v-model="selected.name" placeholder="Flight n°" />
         </template>
       </FlightManager>
-    </b-field>
+    </p>
   </b-field>
 </template>
 
 <script>
-import NavigationManager from "@/components/NavigationManager";
-import AircraftManager from "@/components/AircraftManager";
-import FlightManager from "@/components/FlightManager";
+import NavigationManager from "@/components/managers/NavigationManager";
+import AircraftManager from "@/components/managers/AircraftManager";
+import FlightManager from "@/components/managers/FlightManager";
 
 export default {
   name: "DataToolbar",
@@ -43,10 +47,9 @@ export default {
     FlightManager
   },
   props: {
-    traceDB: String,
-    navigation: Boolean,
-    aircraft: Boolean,
-    flight: Boolean,
+    navigation: [Boolean, Object],
+    aircraft: [Boolean, Object],
+    flight: [Boolean, Object],
     dropdown: Object
   }
 };

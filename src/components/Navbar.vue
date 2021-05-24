@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import AircraftManager from "@/components/AircraftManager.vue";
+import AircraftManager from "@/components/managers/AircraftManager.vue";
 import Login from "@/components/Login.vue";
 
 export default {

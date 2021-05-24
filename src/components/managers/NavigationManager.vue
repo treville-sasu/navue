@@ -5,9 +5,12 @@
         <b-button>
           <b-tooltip
             position="is-bottom"
-            :label="selectedData ? selectedData.registration : 'Aircraft'"
+            :label="selectedData ? selectedData.name : 'Navigation'"
           >
-            <b-icon icon="airplane" :type="selectedData ? 'is-success' : ''" />
+            <b-icon
+              icon="map-marker-path"
+              :type="selectedData ? 'is-success' : ''"
+            />
           </b-tooltip>
         </b-button>
       </slot>
@@ -41,7 +44,9 @@
           Delete
         </b-dropdown-item>
       </template>
-      <b-dropdown-item @click="selectedData = undefined">
+      <b-dropdown-item
+        v-on="persistent ? { click: createData } : { click: discardData }"
+      >
         <b-icon icon="selection-off" />
         Discard
       </b-dropdown-item>
@@ -50,7 +55,7 @@
     <template v-else>
       <b-dropdown-item custom>
         <b-autocomplete
-          placeholder="Choose an aircraft"
+          placeholder="Choose an navigation"
           v-model="search"
           :data="availableData || []"
           @select="
@@ -69,20 +74,19 @@
             <i>{{ search }}</i> not found
           </template>
           <template #empty v-else>
-            No aircraft registered
+            No navigation prepared
           </template>
         </b-autocomplete>
       </b-dropdown-item>
       <b-dropdown-item @click="createData" v-if="create">
         <b-icon icon="plus-circle-outline" />
-        New Aircraft
+        New Navigation
       </b-dropdown-item>
       <b-dropdown-item v-if="create">
         <b-upload
           v-model="upload"
           accept="application/json"
           @input="importData"
-          expanded
         >
           <b-icon icon="upload" />
           Import
@@ -90,9 +94,9 @@
       </b-dropdown-item>
     </template>
 
-    <b-dropdown-item has-link v-if="$route.name != 'Aircraft'">
-      <router-link :to="{ name: 'Aircraft' }">
-        Manage Aircrafts
+    <b-dropdown-item has-link v-if="$route.name != 'Route'">
+      <router-link :to="{ name: 'Route' }">
+        Edit Navigation
       </router-link>
     </b-dropdown-item>
   </b-dropdown>
@@ -100,16 +104,16 @@
 
 <script>
 import { DataManager } from "@/mixins/DataManager";
-import { Aircraft } from "@/models/Aircraft";
+import { Navigation } from "@/models/Navigation";
 
 export default {
-  name: "AircraftManager",
+  name: "NavigationManager",
   mixins: [DataManager],
   data() {
     return {
-      constructor: Aircraft,
-      storeKey: "currentAircraft",
-      searchedProperty: "registration"
+      constructor: Navigation,
+      storeKey: "currentNavigation",
+      searchedProperty: "name"
     };
   }
 };

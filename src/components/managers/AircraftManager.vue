@@ -5,16 +5,14 @@
         <b-button>
           <b-tooltip
             position="is-bottom"
-            :label="selectedData ? selectedData.name : 'Navigation'"
+            :label="selectedData ? selectedData.registration : 'Aircraft'"
           >
-            <b-icon
-              icon="map-marker-path"
-              :type="selectedData ? 'is-success' : ''"
-            />
+            <b-icon icon="airplane" :type="selectedData ? 'is-success' : ''" />
           </b-tooltip>
         </b-button>
       </slot>
     </template>
+
     <template v-if="selectedData">
       <b-dropdown-item custom v-if="$slots.header || $scopedSlots.header">
         <slot name="header" :selected="selectedData" />
@@ -43,7 +41,9 @@
           Delete
         </b-dropdown-item>
       </template>
-      <b-dropdown-item @click="selectedData = undefined">
+      <b-dropdown-item
+        v-on="persistent ? { click: createData } : { click: discardData }"
+      >
         <b-icon icon="selection-off" />
         Discard
       </b-dropdown-item>
@@ -52,7 +52,7 @@
     <template v-else>
       <b-dropdown-item custom>
         <b-autocomplete
-          placeholder="Choose an navigation"
+          placeholder="Choose an aircraft"
           v-model="search"
           :data="availableData || []"
           @select="
@@ -71,19 +71,20 @@
             <i>{{ search }}</i> not found
           </template>
           <template #empty v-else>
-            No navigation prepared
+            No aircraft registered
           </template>
         </b-autocomplete>
       </b-dropdown-item>
       <b-dropdown-item @click="createData" v-if="create">
         <b-icon icon="plus-circle-outline" />
-        New Navigation
+        New Aircraft
       </b-dropdown-item>
       <b-dropdown-item v-if="create">
         <b-upload
           v-model="upload"
           accept="application/json"
           @input="importData"
+          expanded
         >
           <b-icon icon="upload" />
           Import
@@ -91,9 +92,9 @@
       </b-dropdown-item>
     </template>
 
-    <b-dropdown-item has-link v-if="$route.name != 'Route'">
-      <router-link :to="{ name: 'Route' }">
-        Edit Navigation
+    <b-dropdown-item has-link v-if="$route.name != 'Aircraft'">
+      <router-link :to="{ name: 'Aircraft' }">
+        Manage Aircrafts
       </router-link>
     </b-dropdown-item>
   </b-dropdown>
@@ -101,16 +102,16 @@
 
 <script>
 import { DataManager } from "@/mixins/DataManager";
-import { Navigation } from "@/models/Navigation";
+import { Aircraft } from "@/models/Aircraft";
 
 export default {
-  name: "NavigationManager",
+  name: "AircraftManager",
   mixins: [DataManager],
   data() {
     return {
-      constructor: Navigation,
-      storeKey: "currentNavigation",
-      searchedProperty: "name"
+      constructor: Aircraft,
+      storeKey: "currentAircraft",
+      searchedProperty: "registration"
     };
   }
 };

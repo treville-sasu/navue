@@ -6,28 +6,19 @@
       <vue-leaflet-minimap v-bind="miniMapSettings" />
 
       <l-control position="topleft">
-        <b-field class="stackable" addons>
-          <b-field>
-            <NavigationManager
-              position="is-bottom-right"
-              :triggers="['click', 'hover']"
-              edit
-            >
-              <template #header="{ selected }">
-                <b-input v-model="selected.name" />
-              </template>
-            </NavigationManager>
-          </b-field>
-          <b-field>
-            <AircraftManager
-              position="is-bottom-right"
-              :triggers="['click', 'hover']"
-            >
-              <template #header="{ selected }">
-                {{ selected.registration }}
-              </template>
-            </AircraftManager>
-          </b-field>
+        <b-field class="is-stackable" addons>
+          <DataToolbar
+            :navigation="{
+              exist: true,
+              create: true,
+              edit: true
+            }"
+            aircraft
+            :dropdown="{
+              position: 'is-bottom-right',
+              triggers: ['click', 'hover']
+            }"
+          />
         </b-field>
       </l-control>
 
@@ -112,8 +103,7 @@ import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
 import LControlGeocoder from "@/components/leaflet/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 
-import NavigationManager from "@/components/NavigationManager";
-import AircraftManager from "@/components/AircraftManager";
+import DataToolbar from "@/components/DataToolbar.vue";
 
 import RouteToolbox from "@/components/RouteToolbox";
 import ReportToolbar from "@/components/ReportToolbar.vue";
@@ -130,8 +120,7 @@ export default {
     LRouteLayerGroup,
     VueLeafletMinimap,
     LControlGeocoder,
-    NavigationManager,
-    AircraftManager,
+    DataToolbar,
     RouteToolbox,
     ReportToolbar
   },

@@ -5,7 +5,8 @@ export const DataManager = {
   props: {
     create: Boolean,
     edit: Boolean,
-    persistent: Boolean
+    persistent: Boolean,
+    exist: Boolean
   },
   data() {
     return {
@@ -14,7 +15,8 @@ export const DataManager = {
     };
   },
   mounted() {
-    if (this.persistent) this.createData();
+    if ((this.persistent || this.exist) && !this.selectedData)
+      this.createData();
   },
   computed: {
     dataType() {
@@ -83,6 +85,9 @@ export const DataManager = {
       } catch (err) {
         this.dispatchError(err);
       }
+    },
+    discardData() {
+      this.selectedData = undefined;
     },
     async deleteData() {
       try {

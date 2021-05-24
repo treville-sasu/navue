@@ -7,7 +7,7 @@
       @contextmenu="setDestination"
     >
       <l-control position="topleft">
-        <b-field class="stackable" addons>
+        <b-field class="is-stackable" addons>
           <MovingMapSettings
             v-bind="settings"
             @update:settings="updateSettings"
@@ -18,8 +18,7 @@
             v-if="!settings.inFlight"
             navigation
             aircraft
-            flight
-            :traceDB="traceDB"
+            :flight="{ persistent: true, trace: traceDB }"
             :dropdown="{
               position: 'is-bottom-right',
               triggers: ['click', 'hover']
@@ -33,7 +32,7 @@
       <l-control position="bottomleft">
         <ReportToolbar
           :tooltip="{ position: 'is-top' }"
-          class="stackable"
+          class="is-stackable"
           navlog
           checklists
           vac
@@ -50,7 +49,7 @@
         />
       </l-control>
       <l-control position="topright">
-        <InstrumentsDisplay class="stackable" />
+        <InstrumentsDisplay class="is-stackable" />
       </l-control>
       <l-control position="bottomright">
         <TimerToolbar @update:settings="updateSettings" />

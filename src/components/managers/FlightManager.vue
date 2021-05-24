@@ -22,12 +22,12 @@
       </b-dropdown-item>
       <b-dropdown-item separator v-if="$slots.header || $scopedSlots.header" />
 
-      <template v-if="persistent && build">
+      <template v-if="persistent">
         <b-dropdown-item @click="buildFromLocal">
           <b-icon icon="cloud-upload-outline" type="is-warning" />
           Save
         </b-dropdown-item>
-        <b-dropdown-item @click="deleteLocations" v-if="traceDB">
+        <b-dropdown-item @click="deleteLocations" v-if="trace">
           <b-icon icon="map-marker-remove-outline" type="is-danger" />Delete
           trace
         </b-dropdown-item>
@@ -49,7 +49,7 @@
         </b-dropdown-item>
       </template>
       <b-dropdown-item
-        @click="persistent ? createData : () => (selectedData = undefined)"
+        v-on="persistent ? { click: createData } : { click: discardData }"
       >
         <b-icon icon="selection-off" />
         Discard
@@ -112,8 +112,7 @@ export default {
   name: "FlightManager",
   mixins: [DataManager],
   props: {
-    build: Boolean,
-    traceDB: String
+    trace: String
   },
   data() {
     return {
@@ -129,7 +128,7 @@ export default {
         .then(this.deleteLocations);
     },
     async importLocations() {
-      let traces = await this.$pouch[this.traceDB]
+      let traces = await this.$pouch[this.trace]
         .query(
           {
             // eslint-disable-next-line no-unused-vars
@@ -152,8 +151,8 @@ export default {
       return traces.length > 0;
     },
     async deleteLocations() {
-      await this.$pouch[this.traceDB].viewCleanup();
-      return await this.$pouch[this.traceDB].destroy();
+      await this.$pouch[this.trace].viewCleanup();
+      return await this.$pouch[this.trace].destroy();
     }
   }
 };
