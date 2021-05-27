@@ -49,7 +49,10 @@
         />
       </l-control>
       <l-control position="topright">
-        <InstrumentsDisplay class="is-stackable" />
+        <InstrumentsDisplay
+          class="is-stackable"
+          :parameters="currentLocation"
+        />
       </l-control>
       <l-control position="bottomright">
         <TimerToolbar @update:settings="updateSettings" />
@@ -144,7 +147,7 @@ export default {
   mixins: [WakeLock, LocationHandler, TraceHandler, DestinationHandler],
   data() {
     return {
-      startedAt: undefined,
+      legStart: undefined,
       settings: {
         getLocation: true,
         setView: true,
@@ -173,7 +176,7 @@ export default {
     routes() {
       return this.navigation ? this.navigation.routes : [];
     },
-    lastKnownLocation: {
+    currentLocation: {
       get() {
         return this.$store.state.currentLocation;
       },
@@ -202,7 +205,7 @@ export default {
     },
     "settings.inFlight": function(val) {
       if (val) {
-        this.addLeg();
+        this.newLeg();
         this.addLocation(this.currentLocation);
       }
       this.settings.fullScreen = val;
@@ -227,9 +230,9 @@ export default {
     }
   },
   methods: {
-    addLeg() {
+    newLeg() {
       this.trace.unshift([]);
-      this.startedAt = Date.now();
+      this.legStart = Date.now();
     },
     setupMap() {
       if (this.settings.getLocation) this.startLocate();
@@ -244,7 +247,7 @@ export default {
     },
     addLocation(payload) {
       let asJSON = JSON.parse(JSON.stringify(payload));
-      asJSON._id = `${this.startedAt}-${payload.timestamp}`;
+      asJSON._id = `${this.legStart}-${payload.timestamp}`;
       return this.$pouch[this.traceDB].put(asJSON);
     },
     updateSettings(opts) {

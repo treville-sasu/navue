@@ -111,7 +111,7 @@ export const LocationHandler = {
         // case 99: // LOWACCURACY
       }
 
-      if (this.settings.inFlight && this.lastError == code) this.addLeg();
+      if (this.settings.inFlight && this.lastError == code) this.newLeg();
       this.lastError = code;
 
       this.openWarning(message, actionText, onAction);
