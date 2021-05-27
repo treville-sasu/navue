@@ -10,6 +10,16 @@ export class Navigation extends Model {
     super({ name, notes, routes });
   }
 
+  // TODO write specs
+  get waypoints() {
+    return this.routes.items.map(r => r.items).flat();
+  }
+
+  //TODO write specs
+  get poi() {
+    return this.waypoints.map(wp => wp.name).filter(i => /^[A-Z]{4}$/.test(i));
+  }
+
   addRoute(...args) {
     this.routes.add(new Store({}, ...args));
     return this.routes.last;
@@ -55,29 +65,19 @@ export class Navigation extends Model {
     else if (Number.isInteger(objindex)) return objindex;
     else return this.routes.length - 1;
   }
-  // TODO write specs
-  get waypoints() {
-    return this.routes.items.map(r => r.items).flat();
-  }
 
-  // toGeoJSON() {}
+
   toBounds() {
-    return this.waypoints.reduce((minmax, wp, index) => {
+    return this.waypoints.reduce((bounds, { latitude, longitude }, index) => {
       if (index == 0)
         return [
-          [wp.latitude, wp.longitude],
-          [wp.latitude, wp.longitude]
+          [latitude, longitude],
+          [latitude, longitude]
         ];
       else
         return [
-          [
-            Math.min(wp.latitude, minmax[0][0]),
-            Math.min(wp.longitude, minmax[0][1])
-          ],
-          [
-            Math.max(wp.latitude, minmax[1][0]),
-            Math.max(wp.longitude, minmax[1][1])
-          ]
+          [Math.min(latitude, bounds[0][0]), Math.min(longitude, bounds[0][1])],
+          [Math.max(latitude, bounds[1][0]), Math.max(longitude, bounds[1][1])]
         ];
     }, undefined);
   }

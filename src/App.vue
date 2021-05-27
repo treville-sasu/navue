@@ -34,12 +34,6 @@ $modal-z: $navbar-fixed-z + 100;
   z-index: $navbar-fixed-z + 1000;
 }
 
-.modal-content,
-.modal-card,
-.modal-card-body {
-  overflow: visible !important;
-}
-
 .dropdown.is-mobile-modal > .dropdown-menu {
   overflow: visible !important;
 }
