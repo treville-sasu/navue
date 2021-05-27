@@ -63,7 +63,7 @@ export const LocationHandler = {
         this._locationError({
           location,
           code: 99,
-          message: `Geolocation error: too low accuracy (${location.accuracy}m)`
+          message: `Geolocation error: too low accuracy (${location.accuracy})`
         });
         return;
       }
