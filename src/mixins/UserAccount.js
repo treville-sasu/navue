@@ -13,29 +13,32 @@ export const UserAccount = {
       views: {
         /* eslint-disable no-undef */
         "count-items": {
-          map: function(doc) {
-            emit(doc.type);
+          map: function({ type }) {
+            emit(type);
           }.toString(),
           reduce: "_count"
         },
         stats: {
-          map: function(doc) {
-            switch (doc.type) {
-              // case "Aircraft": emit(doc.type, doc.length);
+          map: function({ type, length, duration }) {
+            switch (type) {
+              // case "Aircraft": emit(type, length);
               case "Navigation":
-                emit("NavigationDistance", doc.length || 0);
+                emit("NavigationDistance", length || 0);
                 break;
               case "Flight":
-                emit("FlightTime", doc.duration || 0);
+                emit("FlightTime", duration || 0);
                 break;
               default:
-                emit(doc.type);
+                emit(type);
             }
           }.toString(),
           reduce: "_sum"
         }
         /* eslint-enable no-undef */
       }
+      // validate_doc_update: function(newDoc, oldDoc, userCtx) {
+      //   throw { forbidden: "not able now!" };
+      // }.toString()
     };
 
     try {
@@ -94,7 +97,7 @@ export const UserAccount = {
               return acc;
             }, {});
           }),
-        //  this.$pouch
+        //  userDB
         //     .query("user/stats", {
         //       group: true
         //     }),

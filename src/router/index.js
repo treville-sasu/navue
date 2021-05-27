@@ -35,11 +35,6 @@ const routes = [
     component: () => import("../views/Wip.vue")
   },
   {
-    path: "/route/:id?",
-    name: "Route",
-    component: () => import("../views/Route.vue")
-  },
-  {
     path: "/about",
     name: "About",
     component: () => import("../views/About.vue")
