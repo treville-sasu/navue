@@ -27,6 +27,43 @@ $modal-z: $navbar-fixed-z + 100;
   @include until($desktop) {
     flex-direction: column;
     align-items: end;
+    :first-child:not(:only-child) .button,
+    :first-child:not(:only-child) .input,
+    :first-child:not(:only-child) .select select {
+      border-top-left-radius: $control-radius;
+      border-top-right-radius: $control-radius;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    :last-child:not(:only-child) .button,
+    :last-child:not(:only-child) .input,
+    :last-child:not(:only-child) .select select {
+      border-bottom-left-radius: $control-radius;
+      border-bottom-right-radius: $control-radius;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+  @include from($desktop) {
+    :first-child:not(:only-child) .button,
+    :first-child:not(:only-child) .input,
+    :first-child:not(:only-child) .select select {
+      border-top-left-radius: $control-radius;
+      border-bottom-left-radius: $control-radius;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    :last-child:not(:only-child) .button,
+    :last-child:not(:only-child) .input,
+    :last-child:not(:only-child) .select select {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: $control-radius;
+      border-top-right-radius: $control-radius;
+    }
+  }
+  .button {
+    border-width: 0px;
   }
 }
 
