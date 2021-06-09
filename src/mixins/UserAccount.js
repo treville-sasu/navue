@@ -52,24 +52,33 @@ export const UserAccount = {
     }
   },
   computed: {
+    currentUser: {
+      get() {
+        return this.$store.state.currentUser;
+      },
+      set(val) {
+        this.$store.commit("currentUser", val);
+      }
+    },
     remoteDB() {
       return this.$pouch.getDB(this.remoteDbUrl);
     }
   },
   methods: {
-    getCurrentUser() {
-      return this.remoteDB
-        .getSession()
-        .then(res => {
-          return new Promise((resolve, reject) => {
-            res.userCtx.name
-              ? resolve(res.userCtx.name)
-              : reject(new Error("No session available."));
-          });
-        })
-        .then(name => {
-          return this.remoteDB.getUser(name);
-        });
+    async setCurrentUser() {
+      try {
+        const {
+          userCtx: { name }
+        } = await this.remoteDB.getSession();
+        if (name) {
+          this.currentUser = await this.remoteDB.getUser(name);
+          return this.$pouch.getDB(
+            new URL(this.userDBname(this.currentUser.name), this.remoteDbUrl)
+          );
+        } else new Error("No session available.");
+      } catch (e) {
+        console.error(e);
+      }
     },
     userDBname(name) {
       return (
@@ -113,23 +122,38 @@ export const UserAccount = {
         })
         .catch(console.error);
     },
+    startSync(userDB, handler) {
+      this.stopSync();
+      this.syncHandle = this.$pouch.sync(userDB, {
+        // filter: function(doc) {
+        //   return !!doc._id.indexOf("_design");
+        // }
+      });
+      if (handler)
+        this.syncHandle
+          .on("active", e => handler("active", e))
+          .on("change", e => handler("change", e))
+          .on("paused", e => handler("paused", e))
+          .on("complete", e => handler("complete", e))
+          .on("error", e => handler("error", e))
+          .on("denied", e => handler("denied", e));
+
+      if (process.env.NODE_ENV == "development")
+        this.syncHandle
+          .on("active", () => console.info("start Sync."))
+          .on("complete", () => console.info("stop Sync."));
+    },
     stopSync() {
       if (this.syncHandle) return this.syncHandle.cancel();
     },
-    confirmAction(content) {
-      return this.$buefy.dialog.confirm({
-        type: "is-danger",
-        hasIcon: true,
-        ...content
-      });
-    },
-    openToast(e) {
-      this.$buefy.toast.open({
-        duration: 2000,
-        position: "is-top",
-        type: "is-danger",
-        ...e
-      });
+    async cleanLocal() {
+      await this.$pouch.viewCleanup();
+      try {
+        await this.$pouch.destroy();
+      } finally {
+        if (process.env.NODE_ENV == "development")
+          console.info("browser cleaned.");
+      }
     }
   }
 };
