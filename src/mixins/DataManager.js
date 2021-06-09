@@ -81,7 +81,7 @@ export const DataManager = {
           "saveToDB",
           this.selectedData
         );
-        this.openWarning(`"${this.selectedName}" saved`);
+        this.openWarning({ message: `"${this.selectedName}" saved` });
       } catch (err) {
         this.dispatchError(err);
       }
@@ -93,7 +93,7 @@ export const DataManager = {
       try {
         await this.$store.dispatch("deleteFromDB", this.selectedData);
         this.selectedData = null;
-        this.openWarning(`"${this.selectedName}" deleted`);
+        this.openWarning({ message: `"${this.selectedName}" deleted` });
       } catch (err) {
         this.dispatchError(err);
       }
@@ -102,7 +102,7 @@ export const DataManager = {
       try {
         let importedData = await this.uploadJSON(file);
         this.selectedData = this.cloneData(importedData);
-        this.openWarning(`"${this.selectedName}" imported`);
+        this.openWarning({ message: `"${this.selectedName}" imported` });
       } catch (err) {
         this.dispatchError(err);
       }
@@ -119,9 +119,9 @@ export const DataManager = {
       if (clone.registration) clone.registration += "(cloned)";
       return clone;
     },
-    dispatchError(err) {
-      console.error(err);
-      this.openWarning(err.message);
+    dispatchError(e) {
+      console.error(e);
+      this.openWarning(e);
     }
   }
 };

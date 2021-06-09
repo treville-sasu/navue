@@ -53,17 +53,30 @@ export const ImportExport = {
 
 export const UIHelpers = {
   methods: {
-    openWarning(message, actionText, onAction) {
-      this.$buefy.snackbar.open({
-        message,
-        actionText,
-        onAction,
+    openWarning(content) {
+      return this.$buefy.snackbar.open({
         position: "is-bottom",
         type: "is-danger",
         duration: 5000,
-        queue: false
+        queue: false,
+        ...content
+      });
+    },
+    confirmAction(content) {
+      return this.$buefy.dialog.confirm({
+        type: "is-danger",
+        hasIcon: true,
+        ...content
       });
     }
+    // openToast(content) {
+    //   return this.$buefy.toast.open({
+    //     type: "is-danger",
+    //     position: "is-top",
+    //     duration: 2000,
+    //     ...content
+    //   });
+    // }
   }
 };
 
