@@ -4,6 +4,7 @@
       v-model="value.value"
       v-bind="$attrs"
       :editable="!$attrs.readonly"
+      lazy
     />
 
     <b-input
