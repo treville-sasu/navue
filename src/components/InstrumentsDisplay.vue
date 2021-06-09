@@ -9,7 +9,13 @@
     <b-tag type="is-info" size="is-medium">{{
       parameters.altitude | as("ft", 2)
     }}</b-tag>
-    <b-tag type="is-dark" size="is-medium">-</b-tag>
+    <b-tag type="is-dark" size="is-medium" v-if="linkStatus">
+      <b-icon
+        :icon="
+          linkStatus > 0 ? `wifi-strength-${linkStatus}` : 'wifi-strength-off'
+        "
+      />
+    </b-tag>
   </b-taglist>
 </template>
 
@@ -21,6 +27,33 @@ export default {
   name: "InstrumentsDisplay",
   mixins: [UnitSystem],
   props: { parameters: Location },
+  data() {
+    return {
+      linkStatus: undefined
+    };
+  },
+  /* eslint-disable compat/compat */
+  mounted() {
+    if (navigator.connection) {
+      this.setLink({ currentTarget: navigator.connection });
+      navigator.connection.addEventListener("change", this.setLink);
+    }
+  },
+  beforeDestroy() {
+    if (navigator.connection)
+      navigator.connection.removeEventListener("change", this.setLink);
+  },
+  methods: {
+    setLink({ currentTarget }) {
+      if (currentTarget.downlink && currentTarget.downlinkMax)
+        this.linkStatus = Math.round(
+          (currentTarget.downlink / currentTarget.downlinkMax) * 4
+        );
+      if (currentTarget.downlink && !currentTarget.downlinkMax)
+        this.linkStatus = Math.min(
+          Math.round((currentTarget.downlink / 5) * 4),
+          4
+        );
     }
   }
 };

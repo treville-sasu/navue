@@ -77,7 +77,7 @@ export default {
         {
           api: "Online State",
           feature: "Better online/offline switch",
-          test: "onLine" in navigator
+          test: "connection" in navigator
         },
         {
           api: "IndexedDB",
