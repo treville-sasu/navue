@@ -22,21 +22,21 @@
 </template>
 
 <script>
-import { Speed } from "@/models/Quantities.js";
+import { Frequency } from "@/models/Quantities.js";
 
 export default {
-  name: "BSpeed",
+  name: "BFrequency",
   props: {
     value: {
-      type: Speed,
+      type: Frequency,
       default() {
-        return new Speed();
+        return new Frequency();
       }
     }
   },
   data() {
     return {
-      units: Speed.units
+      units: Frequency.units
     };
   },
 

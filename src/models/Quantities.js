@@ -287,6 +287,48 @@ export class Bearing extends Angle {
   }
 }
 
+export class Pressure extends Quantity {
+  static get units() {
+    return {
+      Pa: 1,
+      hPa: 100,
+      Psi: 6894.76,
+      atm: 101325,
+      bar: 100000,
+      mmHg: 101325 / 760 // ~133.322
+    };
+  }
+}
+
+// TODO Spec it !
+export class Temperature extends Quantity {
+  static get units() {
+    return {
+      "°C": [1, 0],
+      K: [1, 273.15],
+      "°F": [9 / 5.32]
+    };
+  }
+
+  _from(val, unit = this.unit) {
+    return Number(val) / this._factor(unit)[0] + this._factor(unit)[1];
+  }
+
+  _to(val, unit = this.unit) {
+    return (Number(val) - this._factor(unit)[1]) * this._factor(unit)[0];
+  }
+}
+export class Frequency extends Quantity {
+  static get units() {
+    return {
+      Hz: 1,
+      KHz: 1000,
+      MHz: 100000,
+      GHz: 100000000
+    };
+  }
+}
+
 export class Moment extends Model {
   constructor(mass, lever, properties = {}) {
     if (!mass) mass = new Weight();
@@ -303,10 +345,6 @@ export class Moment extends Model {
     return this.mass * this.lever;
   }
 
-  // get unit() {
-  //   return `${this.mass.unit}.${this.lever.unit}`;
-  // }
-
   valueOf() {
     return this._value;
   }
@@ -314,8 +352,6 @@ export class Moment extends Model {
   toJSON() {
     return {
       ...this,
-      // value: this.value,
-      // unit: this.unit,
       type: this.constructor.name
     };
   }

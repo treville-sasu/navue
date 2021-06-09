@@ -1,13 +1,13 @@
 <template>
-  <b-taglist v-if="location">
+  <b-taglist v-if="parameters">
     <b-tag type="is-primary" size="is-medium">{{
-      location.speed | as("kt", 2)
+      parameters.speed | as("kt", 2)
     }}</b-tag>
     <b-tag type="is-success" size="is-medium">{{
-      location.heading | as("°", 2)
+      parameters.heading | as("°", 2)
     }}</b-tag>
     <b-tag type="is-info" size="is-medium">{{
-      location.altitude | as("ft", 2)
+      parameters.altitude | as("ft", 2)
     }}</b-tag>
     <b-tag type="is-dark" size="is-medium">-</b-tag>
   </b-taglist>
@@ -15,13 +15,12 @@
 
 <script>
 import UnitSystem from "@/mixins/UnitSystem";
+import { Location } from "@/models/Waypoint.js";
 
 export default {
   name: "InstrumentsDisplay",
   mixins: [UnitSystem],
-  computed: {
-    location() {
-      return this.$store.state.currentLocation;
+  props: { parameters: Location },
     }
   }
 };

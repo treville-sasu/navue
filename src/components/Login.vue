@@ -56,7 +56,7 @@
           >Sign in</b-button
         >
         <b-button
-          @click="newUser(username, password)"
+          @click="createUser(username, password)"
           class="is-primary is-light"
           icon-left="account-plus-outline"
           >Create Account</b-button
@@ -73,7 +73,7 @@
     <div v-else>
       <nav class="level is-mobile">
         <div class="level-item has-text-centered">
-          <b-icon :icon="syncIcon" />
+          <b-icon :icon="syncIcons[syncStatus]" />
         </div>
         <div class="level-item has-text-centered">
           <h5 class="title is-5">{{ currentUser.name }}</h5>
@@ -90,29 +90,13 @@
         </div>
         <div class="level-item has-text-centered">
           <b-button
-            @click="openDetails = true"
+            @click="openDetails"
             type="is-primary is-light"
             icon-left="account-edit-outline"
             >Edit</b-button
           >
         </div>
       </nav>
-      <b-modal
-        v-model="openDetails"
-        v-if="currentUser"
-        has-modal-card
-        trap-focus
-        aria-role="dialog"
-        aria-modal
-      >
-        <template #default="props">
-          <UserEdit
-            v-model="currentUser"
-            @close="props.close"
-            @update-user="checkSession"
-          ></UserEdit>
-        </template>
-      </b-modal>
     </div>
   </div>
 </template>
@@ -135,31 +119,36 @@
 </style>
 
 <script>
-// TODO Gray out login form if db server is unreachable.
-import UserEdit from "@/components/UserEdit.vue";
+import UserDetails from "@/components/modals/UserDetails.vue";
 import { UserAccount } from "@/mixins/UserAccount.js";
+import { UIHelpers } from "@/mixins/apputils";
 
 export default {
   name: "Login",
-  components: {
-    UserEdit
-  },
-  mixins: [UserAccount],
+  mixins: [UserAccount, UIHelpers],
   data() {
     return {
       statsFeed: undefined,
-      openDetails: false,
       username: null,
       password: null,
       userStats: {},
-      syncIcon: "cloud-off-outline",
-      // importData: {
-      //   title: "Import data",
-      //   type: "is-warning",
-      //   message:
-      //     "Some data are present in this device. Would you like to import them into your account ?",
-      //   confirmText: "Import & Sync"
-      // }
+      importData: {
+        title: "Import data",
+        type: "is-warning",
+        message:
+          "Some data are present in this device. Would you like to import them into your account ?",
+        confirmText: "Yes",
+        cancelText: "No"
+      },
+      syncStatus: "complete",
+      syncIcons: {
+        active: "cloud-sync-outline fade",
+        change: "cloud-sync-outline fade",
+        paused: "cloud-check-outline",
+        complete: "cloud-off-outline",
+        error: "weather-cloudy-alert",
+        denied: "weather-cloudy-alert"
+      },
       serverPresent: undefined,
       error: false
     };
@@ -167,46 +156,19 @@ export default {
   async mounted() {
     this.serverPresent = await this.checkServer("navue");
   },
+  async created() {
+    await this.setupUser();
+  },
+  beforeDestroy() {
+    if (this.statsFeed) this.statsFeed.cancel();
+  },
   computed: {
-    currentUser: {
-      get() {
-        return this.$store.state.currentUser;
-      },
-      set(val) {
-        this.$store.commit("currentUser", val);
-      }
-    },
     gotLocalData() {
       return (
         this.userStats.constructor === Object &&
-        Object.keys(this.userStats).length > 0
+        Object.keys(this.userStats).length > 1
       );
     }
-  },
-  created() {
-    this.statsFeed = this.$pouch
-      .changes({
-        since: "now",
-        live: true,
-        view: "user/count-items",
-        filter: "_view",
-        group: true,
-        include_docs: true
-      })
-      .on("change", () => {
-        this.setUserStats();
-      });
-
-    this.setUserStats();
-
-    this.setCurrentUser()
-      .then(this.startSync)
-      .catch(({ message }) => {
-        console.info(message);
-      });
-  },
-  beforeDestroy() {
-    this.statsFeed.cancel();
   },
   methods: {
     async checkServer(user) {
@@ -219,87 +181,101 @@ export default {
         this.error = setTimeout(this.checkServer, 3000, user);
       }
     },
-    newUser(username, password) {
-      return this.remoteDB
-        .signUp(username, password)
-        .then(this.loginUser(username, password))
-        .catch(this.openToast);
-    },
-    loginUser(username, password) {
-      return this.remoteDB
-        .logIn(username, password)
-        .catch(this.openToast)
-        .then(this.setCurrentUser)
-        .then(this.startSync)
-        .finally(() => {
-          this.username = this.password = null;
+    async createUser(username, password) {
+      try {
+        await this.remoteDB.signUp(username, password, {
+          metadata: { created_at: new Date() }
         });
+        this.openWarning({ message: "Welcome on navue !", duration: 5000 });
+        await this.loginUser(username, password);
+      } catch (e) {
+        this.openWarning(e);
+      }
     },
-    logoutUser() {
-      return this.remoteDB
-        .logOut()
-        .then(this.stopSync)
-        .catch(this.openToast)
-        .finally(this.cleanLocal);
+    async setupUser() {
+      try {
+        this.setUserStats();
+        this.setStatsFeed();
+        const userDB = await this.setCurrentUser();
+        if (userDB) {
+          await this.startSync(userDB, this.syncHandler);
+          return true;
+        }
+      } catch (e) {
+        console.error(e);
+      }
     },
-    setCurrentUser() {
-      return this.getCurrentUser().then(user => {
-        this.currentUser = user;
-        return this.$pouch.getDB(
-          new URL(this.userDBname(user.name), this.remoteDbUrl)
-        );
-      });
+    async loginUser(username, password) {
+      this.stopSync();
+      try {
+        await this.remoteDB.logIn(username, password);
+        if (this.gotLocalData) {
+          const { result } = await this.confirmAction(this.importData);
+          if (!result) this.cleanLocal();
+        }
+        await this.setupUser();
+
+        this.openWarning({ message: "You're in !", duration: 1000 });
+        this.username = this.password = null;
+      } catch (e) {
+        this.openWarning(e);
+      }
+    },
+    async logoutUser() {
+      this.stopSync();
+      try {
+        await this.remoteDB.logOut();
+        this.currentUser = undefined;
+        this.openWarning({ message: "You're out !", duration: 1000 });
+      } catch (e) {
+        this.openWarning(e);
+      } finally {
+        this.cleanLocal();
+      }
+    },
+    setStatsFeed() {
+      this.statsFeed = this.$pouch
+        .getDB()
+        .on("destroyed", e => {
+          if (e) {
+            this.$pouch.getDB();
+            if (this.statsFeed) this.statsFeed.cancel();
+            this.setUserStats();
+            this.statsFeed = this.setStatsFeed();
+          }
+        })
+        .changes({
+          since: "now",
+          live: true,
+          view: "user/count-items",
+          filter: "_view"
+        })
+        .on("change", this.setUserStats);
     },
     async setUserStats() {
       this.userStats = await this.getUserStats(this.$pouch);
     },
-    checkSession() {
-      return this.setCurrentUser().catch(this.logoutUser);
+    async checkSession() {
+      try {
+        return await this.setCurrentUser();
+      } catch {
+        this.logoutUser();
+      }
     },
-    // smarter but broken implementation
-    // startSync(userDB) {
-    //   return this.$pouch
-    //     .ecoSync(userDB)
-    //     .then(handle => {
-    //       this.syncIcon = "cloud-sync-outline fade";
-    //       this.syncHandle = handle
-    //         .on("active", () => (this.syncIcon = "cloud-sync-outline fade"))
-    //         .on("change", () => (this.syncIcon = "cloud-sync-outline fade"))
-    //         .on("paused", () => (this.syncIcon = "cloud-check-outline"));
-    //     })
-    //     .catch(err => {
-    //       this.openToast(err);
-    //       this.syncIcon = "weather-cloudy-alert";
-    //     });
-    // },
-    startSync(userDB) {
-      if (this.syncHandle) this.stopSync();
-      this.syncHandle = this.$pouch
-        .sync(userDB)
-        .on("active", () => (this.syncIcon = "cloud-sync-outline fade"))
-        .on("active", () => console.info("Syncing."))
-        .on("change", () => (this.syncIcon = "cloud-sync-outline fade"))
-        .on("paused", () => (this.syncIcon = "cloud-check-outline"))
-        .on("complete", () => (this.syncIcon = "cloud-off-outline"))
-        .on("error", this.openToast)
-        .on("error", () => (this.syncIcon = "weather-cloudy-alert"))
-        .on("denied", this.openToast)
-        .on("denied", () => (this.syncIcon = "weather-cloudy-alert"));
-
-      Promise.resolve(this.syncHandle);
+    syncHandler(type, e) {
+      this.syncStatus = type;
+      if (type in ["error", "denied"]) this.openWarning(e);
     },
-
-    cleanLocal() {
-      return this.$pouch
-        .destroy()
-        .then(() => {
-          this.userStats = {};
-          this.currentUser = undefined;
-        })
-        .then(() => {
-          return this.$pouch.getDB("trace").destroy();
-        })
-        .then(console.info("Browser cleaned."));
+    openDetails() {
+      this.modal = this.$buefy.modal.open({
+        parent: this,
+        component: UserDetails,
+        props: { value: this.currentUser },
+        events: { "update-user": this.checkSession },
+        hasModalCard: false,
+        trapFocus: true,
+        "append-to-body": true
+      });
     }
   },
   filters: {

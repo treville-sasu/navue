@@ -1,51 +1,51 @@
 <template>
   <nav v-if="flight" class="level is-mobile box">
     <div class="level-item has-text-centered">
-      <div>
+      <div
+        class="is-clickable"
+        @click="isEnroute ? null : startFlight()"
+        @contextmenu.prevent.stop="isEnroute ? stopFlight() : null"
+      >
         <p class="heading">
           <b-icon
             :type="isEnroute ? 'is-danger' : 'is-primary'"
             :icon="isEnroute ? 'airplane-landing' : 'airplane-takeoff'"
           />
         </p>
-        <p
-          class="title is-clickable"
-          @click="isEnroute ? null : startFlight()"
-          @contextmenu.prevent.stop="isEnroute ? stopFlight() : null"
-        >
+        <p class="title">
           {{ flightDuration | asDuration }}
         </p>
       </div>
     </div>
     <div class="level-item has-text-centered">
-      <div>
+      <div
+        class="is-clickable"
+        @click="startChrono"
+        @contextmenu.prevent.stop="stopChrono"
+      >
         <p class="heading">
           <b-icon
             icon="timer-outline"
             :type="chronoTime ? 'is-danger' : 'is-primary'"
           />
         </p>
-        <p
-          class="title is-clickable"
-          @click="startChrono"
-          @contextmenu.prevent.stop="stopChrono"
-        >
+        <p class="title ">
           {{ chrono | asDuration }}
         </p>
       </div>
     </div>
     <div class="level-item has-text-centered">
-      <div>
+      <div
+        class="is-clickable"
+        @click.stop="addTime"
+        @contextmenu.prevent.stop="removeTime"
+      >
         <p class="heading">
           <b-icon icon="alarm-plus" />
         </p>
-        <div
-          class="is-clickable timelist"
-          @click.stop="addTime"
-          @contextmenu.prevent.stop="removeTime"
-        >
+        <div class="timelist">
           <ul>
-            <li v-for="(time, index) in flight.markedTimes" :key="index">
+            <li v-for="(time, index) in flight.milestones" :key="index">
               {{ time | asDuration }}
             </li>
           </ul>
@@ -104,7 +104,7 @@ export default {
         : null;
     },
     timesCount() {
-      return this.markedTimes.length;
+      return this.milestones.length;
     },
     flight() {
       return this.$store.state.currentFlight;
@@ -127,10 +127,10 @@ export default {
       this.chronoTime = undefined;
     },
     addTime() {
-      this.flight.markedTimes.unshift(new Date());
+      this.flight.milestones.unshift(new Date());
     },
     removeTime() {
-      this.flight.markedTimes.shift();
+      this.flight.milestones.shift();
     }
   }
 };

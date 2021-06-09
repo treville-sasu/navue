@@ -1,10 +1,7 @@
 <template>
   <b-field>
-    <p class="control">
-      <NavigationManager
-        v-if="navigation"
-        v-bind="{ ...navigation, ...dropdown }"
-      >
+    <p class="control" v-if="navigation">
+      <NavigationManager v-bind="{ ...navigation, ...dropdown }">
         <template #header="{ selected }">
           <b-input
             v-if="navigation.edit"
@@ -17,15 +14,15 @@
         </template>
       </NavigationManager>
     </p>
-    <p class="control">
-      <AircraftManager v-if="aircraft" v-bind="{ ...aircraft, ...dropdown }">
+    <p class="control" v-if="aircraft">
+      <AircraftManager v-bind="{ ...aircraft, ...dropdown }">
         <template #header="{ selected }">
           {{ selected.registration }}
         </template>
       </AircraftManager>
     </p>
-    <p class="control">
-      <FlightManager v-if="flight" v-bind="{ ...flight, ...dropdown }">
+    <p class="control" v-if="flight">
+      <FlightManager v-bind="{ ...flight, ...dropdown }">
         <template #header="{ selected }">
           <b-input v-model="selected.name" placeholder="Flight n°" />
         </template>

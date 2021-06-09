@@ -63,7 +63,7 @@ export const LocationHandler = {
         this._locationError({
           location,
           code: 99,
-          message: `Geolocation error: too low accuracy (${location.accuracy}m)`
+          message: `Geolocation error: too low accuracy (${location.accuracy})`
         });
         return;
       }
@@ -93,9 +93,6 @@ export const LocationHandler = {
     _locationError({ message, code }) {
       if (process.env.NODE_ENV == "development") console.error(arguments[0]);
 
-      let actionText = "Stop GNSS";
-      let onAction = () => (this.settings.getLocation = false);
-
       switch (code) {
         case 0: //
         case 1: //PERMISSION_DENIED
@@ -111,10 +108,14 @@ export const LocationHandler = {
         // case 99: // LOWACCURACY
       }
 
-      if (this.settings.inFlight && this.lastError == code) this.addLeg();
+      if (this.settings.inFlight && this.lastError == code) this.newLeg();
       this.lastError = code;
 
-      this.openWarning(message, actionText, onAction);
+      this.openWarning({
+        message,
+        actionText: "Stop GNSS",
+        onAction: () => (this.settings.getLocation = false)
+      });
     },
 
     _fakeLocation({

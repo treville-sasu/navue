@@ -9,7 +9,6 @@
         <b-field class="is-stackable" addons>
           <DataToolbar
             :navigation="{
-              exist: true,
               create: true,
               edit: true
             }"
@@ -34,9 +33,7 @@
       <l-control position="bottomleft">
         <ReportToolbar
           :tooltip="{ position: 'is-top' }"
-          class="stackable"
-          edit
-          navlog
+          class="is-stackable"
           vac
           weather
           aip
@@ -44,7 +41,11 @@
         />
       </l-control>
       <l-control position="topright">
-        <RouteToolbox v-model="tool" :tooltip="{ position: 'is-bottom' }" />
+        <RouteToolbox
+          :tooltip="{ position: 'is-bottom' }"
+          class="is-stackable"
+          v-model="tool"
+        />
       </l-control>
 
       <l-route-layer-group
