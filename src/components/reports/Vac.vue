@@ -13,7 +13,7 @@
     <div class="grid">
       <ChartCartridge
         v-for="(map, key) in searchCodes"
-        :key="key"
+        :key="'search_' + key"
         v-bind="map"
         :url="VACurl(map.id, baseURL)"
         :tags="{
@@ -28,6 +28,20 @@
             :page="1"
             style="height: 100%"
           />
+        </figure>
+      </ChartCartridge>
+      <ChartCartridge
+        v-for="(request, key) in cachedUrls"
+        :key="'cached_' + key"
+        :url="request.url"
+        :tags="{
+          info: 'Airport'
+        }"
+        @click="openChartUrl = $event"
+        card
+      >
+        <figure class="image">
+          <pdf :src="request.url" :page="1" style="height: 100%" />
         </figure>
       </ChartCartridge>
     </div>
@@ -62,11 +76,22 @@ export default {
       error: false,
       searchCodes: [],
       baseURL: null,
-      openChartUrl: null
+      openChartUrl: null,
+      cachedUrls: []
     };
   },
   async mounted() {
     this.baseURL = await this.getCycleUrl();
+
+    await caches.open("naVue_SIA_VAC").then(c => {
+      c.add(
+        "https://navue-proxy.treville.workers.dev/?cors=https%3A%2F%2Fwww.sia.aviation-civile.gouv.fr%2Fdvd%2FeAIP_20_MAY_2021%2FAtlas-VAC%2FPDF_AIPparSSection%2FVAC%2FAD%2FAD-2.LFFY.pdf"
+      );
+      c.add(
+        "https://navue-proxy.treville.workers.dev/?cors=https://www.sia.aviation-civile.gouv.fr/dvd/eAIP_20_MAY_2021/Atlas-VAC/PDF_AIPparSSection/VAC/AD/AD-2.LFIX.pdf"
+      );
+    });
+    this.cachedUrls = await caches.open("naVue_SIA_VAC").then(c => c.keys());
   },
   computed: {
     poiList() {
