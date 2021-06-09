@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import "./registerServiceWorker";
+import wb from "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 
@@ -23,7 +23,7 @@ new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount("#app");
+}).$mount("#app").$sw = wb;
 
 if (process.env.NODE_ENV == "development") {
   var genuine_fetch = fetch;

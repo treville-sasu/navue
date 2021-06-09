@@ -3,31 +3,35 @@
 import { Workbox } from "workbox-window";
 import { SnackbarProgrammatic as Snackbar } from "buefy";
 
-if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
-  const wb = new Workbox(`${process.env.BASE_URL}service-worker.js`);
+const wb = new Workbox(`${process.env.BASE_URL}service-worker.js`);
+export default wb;
+
+if ("serviceWorker" in navigator) {
+  // if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+  const snack = {
+    type: "is-warning",
+    actionText: null,
+    indefinite: false,
+    duration: 1000
+  };
 
   wb.addEventListener("installed", event => {
     if (!event.isUpdate) {
       Snackbar.open({
-        type: "is-warning",
-        message: "naVue is now installed on your device.",
-        actionText: null,
-        indefinite: false,
-        duration: 1000
+        ...snack,
+        message: "naVue is now installed on your device."
       });
     } else {
       Snackbar.open({
-        type: "is-warning",
-        message: "Loading new version of naVue.",
-        actionText: null,
-        indefinite: false,
-        duration: 1000
+        ...snack,
+        message: "Loading new version of naVue."
       });
     }
   });
+
   wb.addEventListener("waiting", () => {
     Snackbar.open({
-      type: "is-warning",
+      ...snack,
       indefinite: true,
       message: "A new version of naVue is available.",
       actionText: "Use it now",
@@ -43,11 +47,8 @@ if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
 
   wb.addEventListener("activated", () => {
     Snackbar.open({
-      type: "is-warning",
-      message: "Welcome to the new version of naVue.",
-      actionText: null,
-      indefinite: false,
-      duration: 1000
+      ...snack,
+      message: "Welcome to the new version of naVue."
     });
   });
 

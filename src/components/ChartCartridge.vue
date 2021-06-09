@@ -17,6 +17,13 @@
         <b-tag v-for="(tag, key) in tags" :key="key" :type="'is-' + key">{{
           tag
         }}</b-tag>
+        <b-tag
+          type="is-primary is-light"
+          closable
+          attached
+          :close-icon="cached ? 'cloud-check-outline' : 'cloud-off-outline'"
+        />
+        <!-- @close="toogleCache" -->
       </b-taglist>
     </div>
   </article>
@@ -35,6 +42,28 @@ export default {
     name: String,
     url: [String, URL],
     tags: Object
+  },
+  watch: {
+    url: {
+      immediate: true,
+      async handler(val) {
+        this.cached = await this.isCached(val);
+      }
+    }
+  },
+  data() {
+    return { cached: false };
+  },
+  methods: {
+    async isCached(url) {
+      return !!(await caches.match(url));
+    }
+    // toogleCache(url) {
+    //   this.$sw.messageSW({
+    //     type: "CACHE_URLS",
+    //     payload: { urlsToCache: [url] }
+    //   });
+    // }
   }
 };
 </script>
