@@ -17,11 +17,11 @@ export default new Vuex.Store({
     currentFlight: undefined
   },
   mutations: {
-    currentUser: (
+    currentUser(
       state,
       // eslint-disable-next-line no-unused-vars
       { derived_key, iterations, password_scheme, salt, ...user } = {}
-    ) => {
+    ) {
       state.currentUser = Object.keys(user).length == 0 ? undefined : user;
     },
     currentAircraft(state, payload) {
@@ -35,6 +35,13 @@ export default new Vuex.Store({
     },
     currentLocation(state, payload) {
       state.currentLocation = payload ? Location.from(payload) : payload;
+    },
+    cleanStore(state) {
+      state.currentUser = undefined;
+      state.currentAircraft = undefined;
+      state.currentNavigation = undefined;
+      state.currentFlight = undefined;
+      state.currentLocation = undefined;
     }
   },
   actions: {
