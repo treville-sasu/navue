@@ -94,8 +94,8 @@
       </b-dropdown-item>
     </template>
 
-    <b-dropdown-item has-link v-if="$route.name != 'Route'">
-      <router-link :to="{ name: 'Route' }">
+    <b-dropdown-item has-link v-if="$route.name != 'Briefing'">
+      <router-link :to="{ name: 'Briefing' }">
         Edit Navigation
       </router-link>
     </b-dropdown-item>

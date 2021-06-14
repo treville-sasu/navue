@@ -72,7 +72,7 @@ import WeatherMessage from "@/components/WeatherMessage.vue";
 import Aeroweb from "@/mixins/Aeroweb";
 
 export default {
-  name: "WeatherBulletin",
+  name: "AerowebBulletin",
   components: {
     BIcao,
     BPoi,
@@ -118,7 +118,7 @@ export default {
   methods: {
     getBulletin() {
       this.$refs.searchTimer.hold(async () => {
-        await this.getMessages(this.codesList);
+        await this.getMessages(this.searchCodes);
       });
     }
   }

@@ -10,28 +10,28 @@ const routes = [
     component: () => import("../views/Home.vue")
   },
   {
-    path: "/aircraft/:id?",
+    path: "/aircraft",
     name: "Aircraft",
     component: () => import("../views/Aircraft.vue")
   },
   {
-    path: "/route/:id?",
-    name: "Route",
-    component: () => import("../views/Route.vue")
+    path: "/brief",
+    name: "Briefing",
+    component: () => import("../views/Briefing.vue")
   },
   {
-    path: "/moving-map/:id?",
-    name: "MovingMap",
-    component: () => import("../views/MovingMap.vue")
+    path: "/fly",
+    name: "Fly",
+    component: () => import("../views/Fly.vue")
   },
   {
-    path: "/replay",
-    name: "Replay",
+    path: "/debrief",
+    name: "Debriefing",
     component: () => import("../views/Wip.vue")
   },
   {
-    path: "/radar/:id?",
-    name: "Radar",
+    path: "/monitor",
+    name: "Monitor",
     component: () => import("../views/Wip.vue")
   },
   {

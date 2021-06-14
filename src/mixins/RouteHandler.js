@@ -1,6 +1,6 @@
 import { Navigation } from "@/models/Navigation.js";
 
-export const MapTools = {
+export const RouteHandler = {
   data() {
     return {
       tool: null,

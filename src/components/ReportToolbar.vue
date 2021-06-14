@@ -22,7 +22,7 @@
       </b-tooltip>
     </b-radio-button>
 
-    <b-radio-button v-if="vac" v-model="modalName" native-value="Vac">
+    <b-radio-button v-if="vac" v-model="modalName" native-value="SiaVac">
       <b-tooltip label="VAC" v-bind="tooltip">
         <b-icon icon="airport" v-bind="icon" />
       </b-tooltip>
@@ -62,7 +62,7 @@
 
 import NavigationLog from "@/components/NavigationLog";
 import Checklists from "@/components/Checklists";
-import Vac from "@/components/reports/Vac";
+import SiaVac from "@/components/reports/SiaVac";
 import Weather from "@/components/reports/Weather";
 import AeronauticalInformations from "@/components/reports/AeronauticalInformations";
 import Balance from "@/components/reports/Balance";
@@ -72,7 +72,7 @@ export default {
   components: {
     NavigationLog,
     Checklists,
-    Vac,
+    SiaVac,
     Weather,
     AeronauticalInformations,
     Balance
@@ -116,7 +116,7 @@ export default {
           props: { poi: this.poi },
           hasModalCard: false,
           trapFocus: true,
-          "append-to-body": true,
+          appendToBody: true,
           onCancel: () => (this.modalName = undefined)
         });
     }

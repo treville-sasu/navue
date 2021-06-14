@@ -9,16 +9,14 @@
       </b-navbar-item>
     </template>
     <template slot="start">
-      <b-navbar-item tag="router-link" :to="{ name: 'Route' }"
+      <b-navbar-item tag="router-link" :to="{ name: 'Briefing' }"
         >Briefing</b-navbar-item
       >
-      <b-navbar-item tag="router-link" :to="{ name: 'MovingMap' }"
-        >Fly</b-navbar-item
-      >
-      <b-navbar-item tag="router-link" :to="{ name: 'Replay' }" disabled
+      <b-navbar-item tag="router-link" :to="{ name: 'Fly' }">Fly</b-navbar-item>
+      <b-navbar-item tag="router-link" :to="{ name: 'Debriefing' }" disabled
         >Debriefing</b-navbar-item
       >
-      <b-navbar-item tag="router-link" :to="{ name: 'Radar' }"
+      <b-navbar-item tag="router-link" :to="{ name: 'Monitor' }"
         >Monitor</b-navbar-item
       >
     </template>

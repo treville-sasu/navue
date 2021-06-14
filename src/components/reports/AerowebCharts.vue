@@ -71,7 +71,7 @@ import PDFModal from "@/components/PDFModal.vue";
 import Aeroweb from "@/mixins/Aeroweb";
 
 export default {
-  name: "Weather",
+  name: "AerowebCharts",
   components: {
     ChartCartridge,
     PDFModal
@@ -101,18 +101,6 @@ export default {
         newVal.filter(x => !oldVal.includes(x))
       );
     }
-  },
-  methods: {
-    // async validateUser(user) {
-    //   try {
-    //     clearTimeout(this.error);
-    //     this.error = false;
-    //     return await this.aerowebInstance.VALIDATION(user);
-    //   } catch (err) {
-    //     console.error(err);
-    //     this.error = setTimeout(this.validateUser, 3000, user);
-    //   }
-    // }
   }
 };
 </script>

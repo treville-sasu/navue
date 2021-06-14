@@ -45,7 +45,7 @@ import Pdf from "vue-pdf";
 import Sia from "@/mixins/Sia";
 
 export default {
-  name: "Vac",
+  name: "SiaVac",
   components: {
     BIcao,
     BPoi,
