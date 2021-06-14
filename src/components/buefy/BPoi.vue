@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     list() {
-      return this.items.map(id => ({ id, name: id }));
+      return [...new Set(this.items)].map(id => ({ id, name: id }));
     }
   }
 };
