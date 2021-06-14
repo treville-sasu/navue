@@ -1,89 +1,114 @@
 <template>
   <div class="modal-card">
     <header class="modal-card-head">
-      <h2 class="tite">
+      <p class="modal-card-title">
         ATIS
-      </h2>
+      </p>
+      <b-button
+        label="Add"
+        @click="$emit('append', asText), $emit('close')"
+        type="is-primary"
+      />
     </header>
     <section class="modal-card-body">
-      <!-- <b-direction :min="12" :max="36" double /> -->
-      <!-- :picker-size="faceSize" -->
-      <!-- :face-numbers="isSelectingHour ? hours : minutes"
-        :disabled-values="faceDisabledValues"
-        :value="isSelectingHour ? hoursSelected : minutesSelected"
-        @input="onClockInput"
-        @change="onClockChange" -->
       <b-field grouped horizontal label="QNH">
-        <b-slider v-model="qnh" :min="9.5" :max="10.4" :step="0.1" expanded>
-          <b-slider-tick :value="9.5">{{ 950 | P("hPa") }}</b-slider-tick>
-          <b-slider-tick :value="10.13">Sdt</b-slider-tick>
-          <b-slider-tick :value="10.4">{{ 1040 | P("hPa") }}</b-slider-tick>
+        <b-slider
+          :value="qnh.value"
+          @input="qnh.value.value = $event"
+          :min="qnh.min.value"
+          :max="qnh.max.value"
+          :step="qnh.step"
+          expanded
+          :tooltip="false"
+        >
+          <b-slider-tick :value="qnh.min.value">{{ qnh.min }}</b-slider-tick>
+          <b-slider-tick :value="qnh.standart.value">Sdt</b-slider-tick>
+          <b-slider-tick :value="qnh.max.value">{{ qnh.max }}</b-slider-tick>
         </b-slider>
         <p class="control">
-          <b-tag>{{ qnh | P("hPa") }}</b-tag>
+          <b-tag>{{ qnh.value }}</b-tag>
         </p>
       </b-field>
-      <b-field horizontal label="Wind direction">
-        <b-slider v-model="wind.direction" :min="0" :max="360" :step="10">
-          <b-slider-tick :value="0">N</b-slider-tick>
-          <b-slider-tick :value="90">E</b-slider-tick>
-          <b-slider-tick :value="180">S</b-slider-tick>
-          <b-slider-tick :value="270">W</b-slider-tick>
-          <b-slider-tick :value="360">N</b-slider-tick>
+      <b-field horizontal label="Wind Direction">
+        <b-slider
+          :value="windDirection.value"
+          @input="windDirection.value.value = $event"
+          :min="windDirection.N.value"
+          :max="windDirection.max.value"
+          :step="windDirection.step"
+          expanded
+          :tooltip="false"
+        >
+          <b-slider-tick :value="windDirection.N.value">N</b-slider-tick>
+          <b-slider-tick :value="windDirection.E.value">E</b-slider-tick>
+          <b-slider-tick :value="windDirection.S.value">S</b-slider-tick>
+          <b-slider-tick :value="windDirection.W.value">W</b-slider-tick>
         </b-slider>
         <p class="control">
-          <b-tag>{{ wind.direction | A("°") }}</b-tag>
+          <b-tag>{{ windDirection.value }}</b-tag>
         </p>
       </b-field>
       <b-field horizontal label="Wind Speed">
-        <b-slider v-model="wind.speed" :min="0" :max="60" :step="5" />
+        <b-slider
+          :value="windSpeed.value"
+          @input="windSpeed.value.value = $event"
+          :max="windSpeed.max.value"
+          :step="windSpeed.step"
+          expanded
+          :tooltip="false"
+        />
         <p class="control">
-          <b-tag>{{ wind.speed | S("kt") }}</b-tag>
+          <b-tag>{{ windSpeed.value }}</b-tag>
         </p>
       </b-field>
       <b-field horizontal grouped label="Visibility">
-        <b-slider v-model="visibility" :min="0" :max="10000" :step="500">
+        <b-slider
+          :value="visibility.value"
+          @input="visibility.value.value = $event"
+          :max="visibility.max.value"
+          :step="visibility.step"
+          expanded
+          :tooltip="false"
+        >
           <b-slider-tick :value="0">{{ 0 | D("Km") }}</b-slider-tick>
-          <b-slider-tick :value="1500">VFR-S</b-slider-tick>
-          <b-slider-tick :value="2000">{{ 2 | D("Km") }}</b-slider-tick>
-          <b-slider-tick :value="5000">VFR</b-slider-tick>
-          <b-slider-tick :value="10000">> {{ 10 | D("Km") }}</b-slider-tick>
+          <b-slider-tick :value="visibility.VFRS.value"
+            >> {{ visibility.VFRS }}</b-slider-tick
+          >
+          <b-slider-tick :value="visibility.VFR.value"
+            >> {{ visibility.VFR }}</b-slider-tick
+          >
+          <b-slider-tick :value="visibility.max.value"
+            >> {{ visibility.max }}</b-slider-tick
+          >
         </b-slider>
         <p class="control">
-          <b-tag>{{ visibility | D("Km") }}</b-tag>
+          <b-tag>{{ visibility.value }}</b-tag>
         </p>
       </b-field>
       <b-field horizontal label="Temperature">
-        <b-slider v-model="temperature" :min="-50" :max="50" :step="1">
-          <b-slider-tick :value="-20">{{ -20 | T("°C") }}</b-slider-tick>
-          <b-slider-tick :value="-10">{{ -10 | T("°C") }}</b-slider-tick>
-          <b-slider-tick :value="0">{{ 0 | T("°C") }}</b-slider-tick>
-          <b-slider-tick :value="15">{{ 15 | T("°C") }}</b-slider-tick>
-          <b-slider-tick :value="20">{{ 20 | T("°C") }}</b-slider-tick>
-          <b-slider-tick :value="30">{{ 30 | T("°C") }}</b-slider-tick>
+        <b-slider
+          :value="temperature.value"
+          @input="temperature.value = $event"
+          :min="temperature.min.value"
+          :max="temperature.max.value"
+          :step="temperature.step"
+          expanded
+          :tooltip="false"
+        >
+          <b-slider-tick :value="0">{{ 0 }}</b-slider-tick>
+          <b-slider-tick :value="15">{{ 15 }}</b-slider-tick>
         </b-slider>
         <p class="control">
           <b-tag
-            >{{ Math.min(temperature) | T("°C") }} /
-            {{ Math.max(temperature) | T("°C") }}</b-tag
+            >{{ Math.min(...temperature.value) }} /
+            {{ Math.max(...temperature.value) }}</b-tag
           >
         </p>
       </b-field>
       <div class="content">
-        <pre>
-        {{ asText }}
-      </pre
-        >
+        <pre>{{ asText }}</pre>
       </div>
     </section>
-    <footer class="modal-card-foot">
-      <b-button label="Close" @click="$emit('close')" />
-      <b-button
-        label="Add"
-        @click="$emit('append', asText)"
-        type="is-primary"
-      />
-    </footer>
   </div>
 </template>
 
@@ -93,8 +118,6 @@
 }
 </style>
 <script>
-import BDirection from "@/components/buefy/BDirection";
-
 // eslint-disable-next-line no-unused-vars
 import {
   Pressure,
@@ -106,42 +129,58 @@ import {
 
 export default {
   name: "BAtis",
-  components: [BDirection],
   data() {
     return {
-      qnh: 1.034,
-      wind: { direction: undefined, speed: undefined },
-      visibility: 10000,
+      qnh: {
+        min: new Pressure(950, "hPa"),
+        max: new Pressure(1040, "hPa"),
+        standart: new Pressure(1013.25, "hPa"),
+        step: 1,
+        value: new Pressure(1013, "hPa")
+      },
+      windDirection: {
+        N: new Azimuth(0, "°"),
+        E: new Azimuth(90, "°"),
+        S: new Azimuth(180, "°"),
+        W: new Azimuth(270, "°"),
+        max: { value: 360 },
+        step: 10,
+        value: new Azimuth(0, "°")
+      },
+      windSpeed: {
+        max: new Speed(60, "kt"),
+        step: 5,
+        value: new Speed(0, "kt")
+      },
+      visibility: {
+        VFR: new Distance(1.5, "Km"),
+        VFRS: new Distance(5, "Km"),
+        max: new Distance(10, "Km"),
+        step: 0.5,
+        value: new Distance(10, "Km")
+      },
+      temperature: {
+        min: new Temperature(-40, "°C"),
+        max: new Temperature(40, "°C"),
+        zero: new Temperature(0, "°C"),
+        standart: new Temperature(15, "°C"),
+        step: 1,
+        value: [new Temperature(10, "°C"), new Temperature(15, "°C")]
+      },
       clouds: [
         { height: undefined, cover: undefined },
         { height: undefined, cover: undefined },
         { height: undefined, cover: undefined }
-      ],
-      temperature: [10, 15]
+      ]
     };
   },
   computed: {
     asText() {
-      return `Q${this.qnh} W${this.wind.direction}/${this.wind.peed} V${
-        this.visibility
-      } T${Math.max(...this.temperature)}/${Math.min(...this.temperature)}`;
-    }
-  },
-  filters: {
-    P(val, unit) {
-      return new Pressure(val, unit);
-    },
-    A(val, unit) {
-      return new Azimuth(val, unit);
-    },
-    T(val, unit) {
-      return new Temperature(val, unit);
-    },
-    D(val, unit) {
-      return new Distance(val, unit);
-    },
-    S(val, unit) {
-      return new Speed(val, unit);
+      return `Q${this.qnh.value} | W${this.windDirection.value}/${
+        this.windSpeed.value
+      } | V${this.visibility.value} | T${Math.max(
+        ...this.temperature.value
+      )}/${Math.min(...this.temperature.value)}`;
     }
   }
 };

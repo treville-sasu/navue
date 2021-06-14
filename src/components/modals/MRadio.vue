@@ -1,14 +1,23 @@
 <template>
   <div class="modal-card">
     <header class="modal-card-head">
-      <h2 class="tite">
-        ATIS
-      </h2>
+      <p class="modal-card-title">
+        Frequency
+      </p>
+      <b-button
+        label="Add"
+        @click="$emit('append', asText), $emit('close')"
+        type="is-primary"
+      />
     </header>
     <section class="modal-card-body">
-      <b-field>
-        <b-input v-model="freq.name" />
-        <b-numberinput v-model="freq.value" />
+      <b-field grouped group-multiline>
+        <b-input v-model="freq.name" aria-placeholder="name" />
+        <b-numberinput
+          v-model="freq.value"
+          controls-position="compact"
+          min="0"
+        />
         <b-field>
           <b-radio-button
             v-model="freq.unit"
@@ -31,14 +40,6 @@
         </b-radio-button>
       </b-field>
     </section>
-    <footer class="modal-card-foot">
-      <b-button label="Close" @click="$emit('close')" />
-      <b-button
-        label="Add"
-        @click="$emit('append', asText), $emit('close')"
-        type="is-primary"
-      />
-    </footer>
   </div>
 </template>
 
