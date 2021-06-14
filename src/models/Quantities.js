@@ -291,11 +291,11 @@ export class Pressure extends Quantity {
   static get units() {
     return {
       Pa: 1,
-      hPa: 100,
-      Psi: 6894.76,
-      atm: 101325,
-      bar: 100000,
-      mmHg: 101325 / 760 // ~133.322
+      hPa: 0.01,
+      Psi: 1 / 6894.76,
+      atm: 1 / 101325,
+      bar: 0.00001,
+      inHg: 1 / 3386.389
     };
   }
 }
@@ -322,9 +322,9 @@ export class Frequency extends Quantity {
   static get units() {
     return {
       Hz: 1,
-      KHz: 1000,
-      MHz: 100000,
-      GHz: 100000000
+      KHz: 0.001,
+      MHz: 0.00001,
+      GHz: 0.00000001
     };
   }
 }

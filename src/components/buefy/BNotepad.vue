@@ -6,10 +6,10 @@
     custom-class="has-fixed-size"
     icon="radio-tower"
     icon-clickable
-    @icon-click="modalName = 'BRadio'"
+    @icon-click="modalWidget('BRadio')"
     icon-right="windsock"
     icon-right-clickable
-    @icon-right-click="modalName = 'BAtis'"
+    @icon-right-click="modalWidget('BAtis')"
     v-bind="$attrs"
   />
 </template>
@@ -39,11 +39,6 @@ export default {
   },
   // eslint-disable-next-line vue/no-unused-components
   components: { BAtis, BRadio },
-  data() {
-    return {
-      modalName: null
-    };
-  },
   computed: {
     computedValue: {
       get() {
@@ -55,29 +50,23 @@ export default {
     }
   },
   methods: {
-    appendLine(content) {
-      let notes = String(this.value);
-      if (!notes.match(/.*(\n$)/)) notes += "\n";
-      if (content) notes += content;
-      if (!notes.match(/.*(\n$)/)) notes += "\n";
-      this.$emit("input", notes);
+    appendLine(newLine) {
+      if (newLine)
+        // positive lookbehind in replace() : string should not be empty
+        this.$emit("input", this.value.replace(/(?<=.+)\n*$/, "\n") + newLine);
+    },
+    modalWidget(name) {
+      this.$buefy.modal.open({
+        parent: this,
+        component: this.$options.components[name],
+        events: { append: this.appendLine },
+        hasModalCard: false
+      });
     }
   },
   watch: {
     value(value) {
       this.newValue = value;
-    },
-    modalName(name) {
-      if (name)
-        this.modal = this.$buefy.modal.open({
-          parent: this,
-          component: this.$options.components[name],
-          // props: { navigation: this.navigation },
-          events: { append: this.appendLine },
-          hasModalCard: false,
-          trapFocus: true,
-          onCancel: () => (this.modalName = undefined)
-        });
     }
   }
 };
