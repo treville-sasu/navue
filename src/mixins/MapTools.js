@@ -121,7 +121,7 @@ export const MapTools = {
       }
     },
     currentRoute(route) {
-      if (!route) this.tool = null;
+      this.tool = !route ? null : "route";
     }
   }
 };
