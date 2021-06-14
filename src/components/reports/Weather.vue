@@ -22,10 +22,10 @@
 
     <b-tabs position="is-centered">
       <b-tab-item label="Bulletin">
-        <WeatherBulletin :poi="poi" />
+        <AerowebBulletin :poi="poi" />
       </b-tab-item>
       <b-tab-item label="Charts">
-        <WeatherCharts />
+        <AerowebCharts />
       </b-tab-item>
       <b-tab-item label="Radar" disabled> </b-tab-item>
     </b-tabs>
@@ -33,16 +33,16 @@
 </template>
 
 <script>
-import WeatherBulletin from "@/components/reports/WeatherBulletin.vue";
-import WeatherCharts from "@/components/reports/WeatherCharts.vue";
+import AerowebBulletin from "@/components/reports/AerowebBulletin.vue";
+import AerowebCharts from "@/components/reports/AerowebCharts.vue";
 
 import Aeroweb from "@/mixins/Aeroweb";
 
 export default {
   name: "Weather",
   components: {
-    WeatherBulletin,
-    WeatherCharts
+    AerowebBulletin,
+    AerowebCharts
   },
   mixins: [Aeroweb],
   props: {

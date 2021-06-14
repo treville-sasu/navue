@@ -49,7 +49,7 @@ import Sia from "@/mixins/Sia";
 import Pdf from "vue-pdf";
 
 export default {
-  name: "Azba",
+  name: "SiaAzba",
   components: {
     ChartCartridge,
     PDFModal,

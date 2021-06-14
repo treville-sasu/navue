@@ -141,7 +141,7 @@ import NotamMessage from "@/components/NotamMessage.vue";
 import Sia from "@/mixins/Sia";
 
 export default {
-  name: "Notam",
+  name: "SiaNotam",
   components: {
     BIcao,
     BPoi,

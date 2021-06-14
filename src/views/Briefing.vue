@@ -109,7 +109,7 @@ import DataToolbar from "@/components/DataToolbar.vue";
 import RouteToolbox from "@/components/RouteToolbox";
 import ReportToolbar from "@/components/ReportToolbar.vue";
 
-import { MapTools } from "@/mixins/MapTools";
+import { RouteHandler } from "@/mixins/RouteHandler";
 
 export default {
   name: "Route",
@@ -125,7 +125,7 @@ export default {
     RouteToolbox,
     ReportToolbar
   },
-  mixins: [MapTools],
+  mixins: [RouteHandler],
   data() {
     return {
       isNavigationManagerActive: false,

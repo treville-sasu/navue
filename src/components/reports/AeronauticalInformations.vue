@@ -2,10 +2,10 @@
   <section class="box">
     <b-tabs position="is-centered">
       <b-tab-item label="Notam">
-        <Notam :poi="poi" />
+        <SiaNotam :poi="poi" />
       </b-tab-item>
       <b-tab-item label="AZBA">
-        <Azba />
+        <SiaAzba />
       </b-tab-item>
       <b-tab-item label="Sup AIP" disabled> </b-tab-item>
     </b-tabs>
@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import Notam from "@/components/reports/Notam.vue";
-import Azba from "@/components/reports/Azba.vue";
+import SiaNotam from "@/components/reports/SiaNotam.vue";
+import SiaAzba from "@/components/reports/SiaAzba.vue";
 
 export default {
   name: "AeronauticalInformations",
   components: {
-    Notam,
-    Azba
+    SiaNotam,
+    SiaAzba
   },
   props: {
     poi: Array
