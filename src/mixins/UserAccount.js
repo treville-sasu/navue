@@ -151,6 +151,7 @@ export const UserAccount = {
       try {
         await this.$pouch.destroy();
       } finally {
+        this.$store.commit("cleanStore");
         if (process.env.NODE_ENV == "development")
           console.info("browser cleaned.");
       }
