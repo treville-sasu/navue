@@ -1,5 +1,6 @@
 import { Model, Store } from "@/models/Base.js";
-import { Speed, Consumption, Moment } from "@/models/Quantities.js";
+import { Speed, Consumption } from "@/models/Quantities.js";
+import { Moment } from "@/models/Moment.js";
 
 export class Aircraft extends Model {
   constructor({

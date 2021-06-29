@@ -27,7 +27,7 @@
 import BalanceChart from "@/components/BalanceChart";
 import { ChartSettings } from "@/mixins/apputils";
 import { Store } from "@/models/Base";
-import { Moment } from "@/models/Quantities";
+import { Moment } from "@/models/Moment";
 
 export default {
   name: "Balance",

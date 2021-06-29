@@ -1,11 +1,7 @@
-import { Aircraft } from "../../src/models/Aircraft";
-import { Model, Store } from "../../src/models/Base";
-import {
-  Consumption,
-  Distance,
-  Speed,
-  Moment
-} from "../../src/models/Quantities";
+import { Aircraft } from "@/models/Aircraft";
+import { Model, Store } from "@/models/Base";
+import { Consumption, Distance, Speed } from "@/models/Quantities";
+import { Moment } from "@/models/Moment";
 
 describe("aircraft", () => {
   it("extends Model", () => {

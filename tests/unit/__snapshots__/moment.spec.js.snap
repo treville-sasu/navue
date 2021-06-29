@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`moment export toJSON 1`] = `
+Object {
+  "lever": Object {
+    "precision": 1,
+    "type": "Distance",
+    "unit": "m",
+    "value": 2,
+  },
+  "mass": Object {
+    "precision": 1,
+    "type": "Weight",
+    "unit": "kg",
+    "value": 0.5,
+  },
+  "type": "Moment",
+}
+`;
+
+exports[`moment import from literal 1`] = `
+Object {
+  "lever": Object {
+    "precision": 1,
+    "type": "Distance",
+    "unit": "m",
+    "value": 2,
+  },
+  "mass": Object {
+    "precision": 1,
+    "type": "Weight",
+    "unit": "kg",
+    "value": 0.5,
+  },
+  "type": "Moment",
+}
+`;
