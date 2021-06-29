@@ -142,7 +142,8 @@ describe("waypoint", () => {
           reference: "WGS84",
           type: "Altitude",
           unit: "m",
-          value: 1
+          value: 1,
+          precision: 1
         },
         name: "null Island"
       },

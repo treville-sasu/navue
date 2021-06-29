@@ -177,8 +177,8 @@ describe("flight", () => {
     expect(() => Flight.from({})).toThrow(
       "Invalid data : 'type' should be 'Flight' got 'undefined'"
     );
-
     expect(Flight.from(anyFlight)).toBe(anyFlight);
-    expect(Flight.from(theFlight)).toStrictEqual(theFlight);
+
+    expect(Flight.from(theFlight)).toMatchSnapshot();
   });
 });

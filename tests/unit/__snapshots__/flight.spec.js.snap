@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`flight create a Flight from literal 1`] = `
+Object {
+  "_id": "Flight-1621437190027",
+  "_rev": "1-415c19c5b5d1a534dfc429735749ba46",
+  "checked": Array [],
+  "locations": Array [
+    Array [
+      Object {
+        "accuracy": Object {
+          "precision": 16,
+          "type": "Distance",
+          "unit": "m",
+          "value": 74.88337485607397,
+        },
+        "altitude": Object {
+          "accuracy": 75.47549119035168,
+          "precision": 15,
+          "reference": "WGS84",
+          "type": "Altitude",
+          "unit": "m",
+          "value": 974.745483588706,
+        },
+        "heading": Object {
+          "precision": 17,
+          "type": "Azimuth",
+          "unit": "°",
+          "value": 322.91307315742955,
+        },
+        "latitude": 43.42173780154349,
+        "longitude": -0.37592911818056424,
+        "speed": Object {
+          "precision": 16,
+          "type": "Speed",
+          "unit": "m/s",
+          "value": 49.77274617746323,
+        },
+        "timestamp": 1621436827165,
+        "type": "Location",
+      },
+      Object {
+        "accuracy": Object {
+          "precision": 15,
+          "type": "Distance",
+          "unit": "m",
+          "value": 74.5419678997506,
+        },
+        "altitude": Object {
+          "accuracy": 75.48275531774489,
+          "precision": 17,
+          "reference": "WGS84",
+          "type": "Altitude",
+          "unit": "m",
+          "value": 1014.2498616293805,
+        },
+        "heading": Object {
+          "precision": 16,
+          "type": "Azimuth",
+          "unit": "°",
+          "value": 324.3007601189933,
+        },
+        "latitude": 43.35158218238678,
+        "longitude": -0.394352740677683,
+        "speed": Object {
+          "precision": 16,
+          "type": "Speed",
+          "unit": "m/s",
+          "value": 50.19929914311654,
+        },
+        "timestamp": 1621436832083,
+        "type": "Location",
+      },
+    ],
+    Array [
+      Object {
+        "accuracy": Object {
+          "precision": 16,
+          "type": "Distance",
+          "unit": "m",
+          "value": 74.55342572630838,
+        },
+        "altitude": Object {
+          "accuracy": 74.73206670357781,
+          "precision": 16,
+          "reference": "WGS84",
+          "type": "Altitude",
+          "unit": "m",
+          "value": 1030.762731215022,
+        },
+        "heading": Object {
+          "precision": 15,
+          "type": "Azimuth",
+          "unit": "°",
+          "value": 89.0530377229343,
+        },
+        "latitude": 43.359593020493556,
+        "longitude": -0.3841041381961341,
+        "speed": Object {
+          "precision": 16,
+          "type": "Speed",
+          "unit": "m/s",
+          "value": 49.65466589164299,
+        },
+        "timestamp": 1621436897234,
+        "type": "Location",
+      },
+    ],
+  ],
+  "milestones": Array [],
+  "name": "Fixture",
+  "notes": "some stuff",
+  "type": "Flight",
+}
+`;

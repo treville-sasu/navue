@@ -66,7 +66,6 @@ export class Navigation extends Model {
     else return this.routes.length - 1;
   }
 
-
   toBounds() {
     return this.waypoints.reduce((bounds, { latitude, longitude }, index) => {
       if (index == 0)
