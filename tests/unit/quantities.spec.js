@@ -15,39 +15,43 @@ import {
 } from "@/models/Quantities.js";
 
 describe("quantity", () => {
+  class QuantityWithUnits extends Quantity {
+    static get units() {
+      return { m: 1, mm: 1000, km: 0.001 };
+    }
+  }
+
   it("extends Quantity", () => {
     expect(Quantity.prototype).toBeInstanceOf(Model);
   });
 
-  // it("returns getFractionDigits of any number", () => {
-  //   expect(Quantity.getFractionDigits(-1)).toBe(0);
-  //   expect(Quantity.getFractionDigits(10)).toBe(0);
-  //   expect(Quantity.getFractionDigits(10.1)).toBe(1);
-  //   expect(Quantity.getFractionDigits(10.01)).toBe(2);
-  //   expect(Quantity.getFractionDigits(10.0000001)).toBe(7);
-  //   expect(Quantity.getFractionDigits(0.000000000000000000000001)).toBe(24);
-  //   expect(Quantity.getFractionDigits(Number.MIN_VALUE)).toBe(324);
-  //   expect(Quantity.getFractionDigits(Number.EPSILON)).toBe(31);
-  //   expect(Quantity.getFractionDigits(Number.MAX_VALUE)).toBe(0);
-  // });
+  it.each([
+    2342342,
+    "2000000",
+    232.3423,
+    "2.323000",
+    "00002.323000",
+    2.565432e5,
+    "2.500000e+5",
 
-  it("returns getSignificativeDigits of any number", () => {
-    expect(Quantity.getSignificativeDigits(-1)).toBe(1);
-    expect(Quantity.getSignificativeDigits(10)).toBe(1);
-    expect(Quantity.getSignificativeDigits(10.1)).toBe(3);
-    expect(Quantity.getSignificativeDigits(10.01)).toBe(4);
-    expect(Quantity.getSignificativeDigits(10.0000001)).toBe(9);
-    expect(Quantity.getSignificativeDigits(0.000000000000000000000001)).toBe(1);
+    -2342342,
+    "-2000000",
+    -232.3423,
+    "-2.323000",
+    "-00002.323000",
+    -2.565432e5,
+    "-2.500000e+5",
+
+    +2342342,
+    "+2000000",
+    +232.3423,
+    "+2.323000",
+    "+00002.323000",
+    +2.565432e5,
+    "+2.500000e+5"
+  ])("significant figures for %#", f => {
+    expect(Quantity.significantFigures(f)).toBe(7);
   });
-
-  // it("returns rounded value with precision", () => {
-  //   expect(Quantity.roundValue(1111.11)).toBe(1111);
-  //   expect(Quantity.roundValue(1111.11, 0)).toBe(1111);
-  //   expect(Quantity.roundValue(1111.11, -2)).toBe(1100);
-  //   expect(Quantity.roundValue(1111.15, 1)).toBe(1111.2);
-  //   expect(Quantity.roundValue(10.0000001, 2)).toBe(10);
-  //   expect(Quantity.roundValue(0.000000000000000000000001)).toBe(0);
-  // });
 
   it("returns significant value with precision", () => {
     expect(Quantity.significantValue(1111.11)).toBe(1000);
@@ -60,125 +64,133 @@ describe("quantity", () => {
     );
   });
 
-  it("create an undefined Quantity", () => {
-    expect(new Quantity()).toMatchObject({
-      _value: undefined,
-      _unit: undefined
-    });
-  });
-
-  it("throw an exception if `value` is not a Number", () => {
-    expect(() => new Quantity("1qsdqsd2")).toThrow("1qsdqsd2 is not a number");
-  });
-
-  it("set `properties` as third argument", () => {
-    expect(new Quantity(null, null, { accuracy: 1 }).accuracy).toBe(1);
-  });
-
-  describe("without `units` set", () => {
-    it("throw an exception if `units` is not set", () => {
-      expect(() => Quantity.units).toThrow(
-        "list of available units should be set on constructor."
-      );
-    });
-    it("set value & unit", () => {
-      expect(() => new Quantity(1)).toThrow(
-        "list of available units should be set on constructor."
-      );
-      expect(() => (new Quantity().value = 1)).toThrow(
-        "list of available units should be set on constructor."
-      );
-      expect(() => new Quantity(undefined, "u")).toThrow(
-        "list of available units should be set on constructor."
-      );
-      expect(() => (new Quantity().unit = "u")).toThrow(
-        "list of available units should be set on constructor."
-      );
-    });
-
-    it("methods cannot work", () => {
-      expect(() => new Quantity().factor).toThrow(
-        "list of available units should be set on constructor."
-      );
-      expect(() => new Quantity().to("u")).toThrow(
-        "list of available units should be set on constructor."
-      );
-      expect(() => new Quantity().toString()).toThrow(
-        "list of available units should be set on constructor."
-      );
-      expect(() => new Quantity().toJSON()).toThrow(
-        "list of available units should be set on constructor."
-      );
-    });
-  });
-
-  describe("with `units` set", () => {
-    let WithUnits;
-
-    beforeAll(() => {
-      WithUnits = Quantity;
-      Object.defineProperty(WithUnits, "units", {
-        get: function() {
-          return { m: 1, mm: 1000, km: 0.001 };
-        }
-      });
-    });
-
-    it("access `units` on Quantity", () => {
-      expect(WithUnits.units).toMatchObject({
-        m: 1,
-        mm: 1000,
-        km: 0.001
-      });
-    });
-
-    it("returns the baseUnit (SI)", () => {
-      expect(WithUnits.baseUnit).toBe("m");
-    });
-
-    it("creates a Quantity with value & optional unit", () => {
-      expect(new WithUnits(10)).toMatchObject({
-        _value: 10,
+  describe("constructor creates while", () => {
+    it("accepts undefined arguments", () => {
+      expect(new Quantity()).toMatchObject({
+        _value: undefined,
         _unit: undefined,
-        _precision: 1
-      });
-      expect(() => new WithUnits(10, "not listed")).toThrow(
-        "'not listed' is not an available unit"
-      );
-      expect(new WithUnits(10, "mm")).toMatchObject({
-        _value: 0.01,
-        _unit: "mm",
-        _precision: 1
-      });
-      expect(new WithUnits(1000, "mm")).toMatchObject({
-        _value: 1,
-        _unit: "mm",
-        _precision: 1
+        precision: undefined
       });
     });
 
+    it("returns given instance", () => {
+      let q = new Quantity();
+      expect(new Quantity(q)).toBe(q);
+    });
+
+    it("throw an exception if `value` is NaN", () => {
+      expect(() => new Quantity("1qsdqsd2")).toThrow(
+        "`1qsdqsd2` could not be coerced to a number"
+      );
+      expect(() => new Quantity("1.2")).not.toThrow(
+        "`1qsdqsd2` could not be coerced to a number"
+      );
+    });
+
+    it("allows any property as third argument", () => {
+      expect(new Quantity(null, null, { accuracy: 1 }).accuracy).toBe(1);
+    });
+
+    describe("when `units` is not set", () => {
+      it("throw an exception if `units` is not set", () => {
+        expect(() => Quantity.units).toThrow(
+          "list of available units should be set on constructor."
+        );
+      });
+
+      it("cannot set value nor unit", () => {
+        expect(() => new Quantity(1)).toThrow(
+          "list of available units should be set on constructor."
+        );
+        expect(() => (new Quantity().value = 1)).toThrow(
+          "list of available units should be set on constructor."
+        );
+        expect(() => new Quantity(undefined, "u")).toThrow(
+          "list of available units should be set on constructor."
+        );
+        expect(() => (new Quantity().unit = "u")).toThrow(
+          "list of available units should be set on constructor."
+        );
+      });
+
+      it("methods cannot work", () => {
+        expect(() => new Quantity().factor).toThrow(
+          "list of available units should be set on constructor."
+        );
+        expect(() => new Quantity().to("u")).toThrow(
+          "list of available units should be set on constructor."
+        );
+        expect(() => new Quantity().toString()).toThrow(
+          "list of available units should be set on constructor."
+        );
+        expect(() => new Quantity().toJSON()).toThrow(
+          "list of available units should be set on constructor."
+        );
+      });
+    });
+    describe("when `units` set", () => {
+      it("access `units` on Quantity", () => {
+        expect(QuantityWithUnits.units).toMatchObject({
+          m: 1,
+          mm: 1000,
+          km: 0.001
+        });
+      });
+
+      it("returns the baseUnit (SI)", () => {
+        expect(QuantityWithUnits.baseUnit).toBe("m");
+      });
+
+      it("creates a Quantity with value as baseUnit", () => {
+        expect(new QuantityWithUnits(10)).toMatchObject({
+          _value: 10,
+          _unit: undefined,
+          precision: 1
+        });
+      });
+
+      it("do not creates a Quantity with wrong unit", () => {
+        expect(() => new QuantityWithUnits(10, "not listed")).toThrow(
+          "'not listed' is not an available unit"
+        );
+      });
+      it("do creates a Quantity with existing unit", () => {
+        expect(new QuantityWithUnits(10, "m")).toMatchObject({
+          _value: 10,
+          _unit: "m",
+          precision: 1
+        });
+        expect(new QuantityWithUnits("1000", "mm")).toMatchObject({
+          _value: 1,
+          _unit: "mm",
+          precision: 4
+        });
+      });
+    });
+  });
+  describe("instances", () => {
     it("returns value & unit properties", () => {
-      let w = new WithUnits(10);
+      let w = new QuantityWithUnits(10);
       expect(w.value).toBe(10);
       expect(w.unit).toBe("m");
       expect(w.factor).toBe(1);
       expect(w.precision).toBe(1);
 
-      let wmm = new WithUnits(10.1, "mm");
+      let wmm = new QuantityWithUnits(10.1, "mm");
       expect(wmm.value).toBe(10.1);
       expect(wmm.unit).toBe("mm");
-      expect(wmm.factor).toBe(1000);
       expect(wmm.precision).toBe(3);
+      expect(wmm.factor).toBe(1000);
     });
 
     it("returns value with desired precision", () => {
-      let w = new WithUnits(10);
-      expect(w.value).toBe(10);
+      let w = new QuantityWithUnits(10);
       expect(w.precision).toBe(1);
+      expect(w.value).toBe(10);
       w.precision = 2;
       expect(w.value).toBe(10);
 
-      let wmm = new WithUnits(123.123456789);
+      let wmm = new QuantityWithUnits(123.123456789);
       expect(wmm.value).toBe(123.123456789);
       expect(wmm.precision).toBe(12);
       wmm.precision = 2;
@@ -187,8 +199,46 @@ describe("quantity", () => {
       expect(wmm.value).toBe(123.12346);
     });
 
+    it("adds up two quantities", () => {
+      class WithUnitsOtherType extends Quantity {
+        static get units() {
+          return { l: 1, ml: 1000, hl: 0.001 };
+        }
+      }
+      expect(() => {
+        new QuantityWithUnits(1).add(new WithUnitsOtherType("10"));
+      }).toThrow("operands should be of the same type");
+      expect(
+        new QuantityWithUnits("1.0").add(new QuantityWithUnits("10"))
+      ).toStrictEqual(new QuantityWithUnits(11));
+      expect(
+        new QuantityWithUnits(1, "mm").add(new QuantityWithUnits("10"))
+      ).toStrictEqual(new QuantityWithUnits(10001, "mm", { precision: 1 }));
+      expect(
+        new QuantityWithUnits(1).add(new QuantityWithUnits(10), { unit: "mm" })
+      ).toStrictEqual(new QuantityWithUnits(11000, "mm", { precision: 1 }));
+      expect(new QuantityWithUnits(1, "m").add(10)).toStrictEqual(
+        new QuantityWithUnits(11, "m")
+      );
+    });
+
+    it("prod() multiply by a scalar", () => {
+      expect(new QuantityWithUnits(1).prod(2)).toStrictEqual(
+        new QuantityWithUnits(2)
+      );
+      expect(new QuantityWithUnits(1).prod(0)).toStrictEqual(
+        new QuantityWithUnits(0)
+      );
+      expect(new QuantityWithUnits(1, "mm").prod(1 / 10)).toStrictEqual(
+        new QuantityWithUnits(0.1, "mm")
+      );
+      expect(new QuantityWithUnits(2).prod(10, { unit: "mm" })).toStrictEqual(
+        new QuantityWithUnits(20000, "mm", { precision: 1 })
+      );
+    });
+
     it("coerc to Number", () => {
-      let q = new WithUnits(10, "mm");
+      let q = new QuantityWithUnits(10, "mm");
       expect(q.valueOf()).toBe(q._value);
       expect(Number(q)).toStrictEqual(0.01);
       expect(q + q).toStrictEqual(0.02);
@@ -198,55 +248,56 @@ describe("quantity", () => {
 
     it("toString() coerc to String", () => {
       //TODO check for locale or set one
-      expect(new WithUnits().toString()).toBe("- m");
-      expect(String(new WithUnits())).toBe("- m");
-      expect(String(new WithUnits(0, "m"))).toBe("0 m");
-      expect(String(new WithUnits(123, "mm"))).toBe("123 mm");
-      expect(String(new WithUnits(123.123456789, "km"))).toBe(
+      expect(new QuantityWithUnits().toString()).toBe("- m");
+      expect(String(new QuantityWithUnits())).toBe("- m");
+      expect(String(new QuantityWithUnits(0, "m"))).toBe("0 m");
+      expect(String(new QuantityWithUnits(123, "mm"))).toBe("123 mm");
+      expect(String(new QuantityWithUnits(123.123456789, "km"))).toBe(
         "123.123456789 km"
       );
       expect(
-        String(new WithUnits(123.123456789, "km", { _precision: 6 }))
+        String(new QuantityWithUnits(123.123456789, "km", { precision: 6 }))
       ).toBe("123.123 km");
       expect(
-        String(new WithUnits(123.123456789, "km", { _precision: 1 }))
+        String(new QuantityWithUnits(123.123456789, "km", { precision: 1 }))
       ).toBe("100 km");
       expect(
-        String(new WithUnits(123.123456789, "km", { _precision: 2 }))
+        String(new QuantityWithUnits(123.123456789, "km", { precision: 2 }))
       ).toBe("120 km");
     });
     it("toJSON() coerc to JSON notation", () => {
-      expect(new WithUnits(10, "km", { prop: "prop" }).toJSON()).toStrictEqual({
+      expect(
+        new QuantityWithUnits(10, "km", { prop: "prop" }).toJSON()
+      ).toStrictEqual({
         value: 10,
         unit: "km",
+        precision: 1,
         prop: "prop",
-        type: "Quantity"
+        type: "QuantityWithUnits"
       });
     });
 
     it("creates a new Quantity from Object", () => {
       expect(
-        Quantity.from({ value: 1, unit: "km", name: "name" })
+        QuantityWithUnits.from({ value: 1, unit: "km", name: "name" })
       ).toMatchObject({
         _value: 1000,
         _unit: "km",
         name: "name"
       });
-      expect(() => Quantity.from({ value: 100, unit: "dam" })).not.toThrow(
-        "'not listed' is not an available unit"
-      );
+      expect(() =>
+        QuantityWithUnits.from({ value: 100, unit: "dam" })
+      ).not.toThrow("'not listed' is not an available unit");
     });
-    it.todo("method to...");
 
     it("create a new Quantity from original as`newUnit`", () => {
-      expect(new WithUnits(10, "m").as("mm")).toMatchObject({
-        value: 10000,
-        unit: "mm"
+      expect(new QuantityWithUnits(10, "m").as("mm")).toMatchObject({
+        _value: 10,
+        _unit: "mm"
       });
     });
   });
 });
-
 describe("distance", () => {
   it("extends Quantity", () => {
     expect(Distance.prototype).toBeInstanceOf(Quantity);

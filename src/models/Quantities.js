@@ -2,28 +2,36 @@ import { Model } from "@/models/Base.js";
 
 export class Quantity extends Model {
   // eslint-disable-next-line no-unused-vars
-  constructor(value, unit, { type, _precision, ...properties } = {}) {
-    super(properties);
+  constructor(value, _unit, { type, unit, precision, ...properties } = {}) {
+    if (arguments[0] instanceof Quantity) return arguments[0];
+    else {
+      super(properties);
 
-    if (unit) this.unit = unit;
-    else this._unit = undefined;
-    if (value || value === 0) this.value = value;
-    else this._value = undefined;
-    if (_precision) this.precision = _precision;
+      if (_unit) this.unit = _unit;
+      else this._unit = undefined;
+      if (value || value === 0) this.value = value;
+      else {
+        this._value = undefined;
+        this.precision = undefined;
+      }
+      if (precision) this.precision = precision;
+      if (unit) this.unit = unit;
+    }
   }
 
   get value() {
     return this.constructor.significantValue(
       this._to(this._value),
-      this._precision
+      this.precision
     );
   }
 
   set value(val) {
-    if (isNaN(val)) throw `${val} is not a number`;
+    let f = Number(val);
+    if (Number.isNaN(f)) throw `\`${val}\` could not be coerced to a number`;
     else {
-      this._value = this._from(val);
-      this.precision = this.constructor.getSignificativeDigits(val);
+      this._value = this._from(f);
+      this.precision = this.constructor.significantFigures(val);
     }
   }
 
@@ -38,14 +46,6 @@ export class Quantity extends Model {
 
   get factor() {
     return this.constructor.units[this.unit];
-  }
-
-  get precision() {
-    return this._precision;
-  }
-
-  set precision(val) {
-    this._precision = Math.max(1, Math.min(21, parseInt(val)));
   }
 
   _from(val, unit = this.unit) {
@@ -69,24 +69,46 @@ export class Quantity extends Model {
     return Object.assign(this.constructor.from(this), { _unit, _precision });
   }
 
+  add(other, props) {
+    if (typeof other == "number" || other instanceof this.constructor)
+      return new this.constructor(this + other, undefined, {
+        precision: Math.min(this.precision, other.precision),
+        unit: this._unit,
+        ...props
+      });
+    else throw "operands should be of the same type";
+  }
+
+  prod(scalar, props) {
+    return new this.constructor(this * scalar, undefined, {
+      precision: Math.min(
+        this.precision,
+        this.constructor.significantFigures(scalar)
+      ),
+      unit: this._unit,
+      ...props
+    });
+  }
+
   valueOf() {
     return this._value;
   }
 
   toString() {
+    let sf = Math.max(1, Math.min(this.precision, 21));
     return `${
       isNaN(this.value)
         ? "-"
         : this.value.toLocaleString(undefined, {
-            minimumSignificantDigits: this.precision,
-            maximumSignificantDigits: this.precision
+            minimumSignificantDigits: sf,
+            maximumSignificantDigits: sf
           })
     } ${this.unit}`;
   }
 
   toJSON() {
     // eslint-disable-next-line no-unused-vars
-    let { _value, _unit, _precision, ...properties } = this;
+    let { _value, _unit, ...properties } = this;
     return {
       ...properties,
       value: this.value,
@@ -95,15 +117,19 @@ export class Quantity extends Model {
     };
   }
 
-  static getSignificativeDigits(val) {
-    // https://replit.com/@caub/significant-digits
-    let x = Math.abs(val);
-    if (x === 0) return 0;
-    let p = Math.floor(Math.log10(x)) + 1;
-    if (p > 0) x = x / 10 ** p;
-    else if (p < 0) x = x * 10 ** -p;
-    x = Math.round(x * 1e16) / 1e16; // remove floating points errors
-    return String(x).length - 2;
+  static significantFigures(n) {
+    let s;
+    if (n === 0) {
+      return 0;
+    } else if (typeof n === "number") {
+      s = Math.abs(n).toExponential();
+    } else if (typeof n === "string" && !Number.isNaN(Number(n))) {
+      s = n.replace(/^\+|-/, "").replace(/^0+/, "");
+    } else return;
+
+    s = s.replace(".", "");
+    const i = s.lastIndexOf("e");
+    return i > 0 ? i : s.length;
   }
 
   static significantValue(val, precision = 1) {
@@ -114,23 +140,6 @@ export class Quantity extends Model {
     );
     return Math.round(val * fact) / fact;
   }
-
-  // static getFractionDigits(val) {
-  //   // from https://stackoverflow.com/questions/9539513/is-there-a-reliable-way-in-javascript-to-obtain-the-number-of-decimal-places-of
-  //   let m;
-  //   if (
-  //     (m = Number(val)
-  //       .toExponential()
-  //       .match(/(?:\.(\d+))?(?:e([+-]?\d+))?$/))
-  //   ) {
-  //     return Math.max(0, (m[1] || "").length - m[2]);
-  //   } else return 0;
-  // }
-
-  // static roundValue(val, precision = 0) {
-  //   const fact = 10 ** precision;
-  //   return Math.round(val * fact + Number.EPSILON) / fact;
-  // }
 
   static get units() {
     throw "list of available units should be set on constructor.";
@@ -247,8 +256,8 @@ export class Weight extends Quantity {
       kg: 1,
       lb: 2.20462,
       t: 0.001,
-      "L-avgas": 0.7,
-      "L-JetA1": 0.8
+      "L-avgas": 1 / 0.721,
+      "L-JetA1": 1 / 0.8
     };
   }
 }
