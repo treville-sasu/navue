@@ -64,7 +64,7 @@ import BalanceChart from "@/components/BalanceChart.vue";
 import { ChartSettings } from "@/mixins/apputils";
 
 import { Store } from "@/models/Base.js";
-import { Moment } from "@/models/Quantities.js";
+import { Moment } from "@/models/Moment.js";
 
 import BDistance from "@/components/buefy/BDistance";
 import BWeight from "@/components/buefy/BWeight";

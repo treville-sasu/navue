@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { Moment } from "@/models/Quantities.js";
+import { Moment } from "@/models/Moment.js";
 import BDistance from "@/components/buefy/BDistance";
 import BWeight from "@/components/buefy/BWeight";
 
