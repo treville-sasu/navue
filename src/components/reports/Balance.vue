@@ -2,22 +2,61 @@
   <section class="box">
     <div class="columns">
       <div class="column">
+        <div
+          v-if="balance.length == 0"
+          class="notification is-primary"
+          has-icon
+        >
+          At least one weight should be configured prior to use this tool.
+          <router-link :to="{ name: 'Aircraft', hash: '#moments' }"
+            >Set them before</router-link
+          >
+        </div>
         <b-field
           v-for="({ name, mass }, index) in moments"
           :label="name"
           :key="index"
           grouped
+          horizontal
         >
           <b-slider
             v-model="mass.value"
             :min="mass.min"
             :max="mass.max"
             :custom-formatter="() => mass.toString()"
+            :tooltip="false"
           />
+          <p class="control">
+            <b-tag>{{ mass }}</b-tag>
+          </p>
         </b-field>
+        <nav class="level">
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Total weight</p>
+              <p class="title">{{ cgFullTank.mass }}</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Mean Arm</p>
+              <p class="title">{{ cgFullTank.lever }}</p>
+            </div>
+          </div>
+        </nav>
       </div>
       <div class="column">
-        <BalanceChart :chart-data="datasets" v-if="envelopes.length > 0" />
+        <div
+          v-if="envelopes.length == 0"
+          class="notification is-primary"
+          has-icon
+        >
+          At least one envelope should be configured prior to use this tool.
+          <router-link :to="{ name: 'Aircraft', hash: '#envelops' }"
+            >Go, and set some</router-link
+          >
+        </div>
+        <BalanceChart :chart-data="datasets" v-else />
       </div>
     </div>
   </section>
@@ -38,21 +77,6 @@ export default {
   data() {
     return { moments: new Store() };
   },
-  methods: {
-    getCenterGravity(moments) {
-      let cg = moments.reduce(
-        (acc, { mass, lever }) => {
-          return {
-            x: acc.x + mass * lever,
-            y: acc.y + mass
-          };
-        },
-        { x: 0, y: 0 }
-      );
-      cg.x = Math.round((cg.x / cg.y + Number.EPSILON) * 1000) / 1000;
-      return cg;
-    }
-  },
   computed: {
     balance() {
       return this.$store.state.currentAircraft.balance;
@@ -60,12 +84,11 @@ export default {
     envelopes() {
       return this.$store.state.currentAircraft.envelopes;
     },
-
     cgFullTank() {
-      return this.getCenterGravity(this.moments.items);
+      return Moment.linearCoG(this.moments.items);
     },
     cgEmptyTank() {
-      return this.getCenterGravity(this.moments.items.filter(w => !w.tank));
+      return Moment.linearCoG(this.moments.items.filter(w => !w.tank));
     },
     datasets() {
       return {
@@ -74,13 +97,26 @@ export default {
             return {
               ...this.envelopesDataset,
               label: e.name,
-              data: e.items.map(i => i.toCoords())
+              data: e.items.map(i => this.toCoords(i))
             };
           }),
-          { ...this.cgDataset, data: [this.cgFullTank], label: "Full tank" },
-          { ...this.cgDataset, data: [this.cgEmptyTank], label: "Empty tank" }
+          {
+            ...this.cgDataset,
+            data: [this.toCoords(this.cgFullTank)],
+            label: "Full tank"
+          },
+          {
+            ...this.cgDataset,
+            data: [this.toCoords(this.cgEmptyTank)],
+            label: "Empty tank"
+          }
         ]
       };
+    }
+  },
+  methods: {
+    toCoords({ mass, lever }) {
+      return { x: Number(lever), y: Number(mass) };
     }
   },
   watch: {
