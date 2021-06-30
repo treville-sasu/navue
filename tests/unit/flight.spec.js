@@ -108,50 +108,104 @@ describe("flight", () => {
       [new Location(-1, 0, 0), new Location(0, 1, 1)],
       [new Location(0, -1, 1), new Location(1, 1, 0)]
     ]);
-    expect(testFlight.toGeoJSON("MultiPoint")).toStrictEqual({
-      type: "MultiPoint",
-      coordinates: [
-        [-1, 0, 0],
-        [0, 1, 1],
-        [0, -1, 1],
-        [1, 1, 0]
-      ]
-    });
-    expect(testFlight.toGeoJSON("MultiLineString")).toStrictEqual({
-      type: "MultiLineString",
-      coordinates: [
-        [
-          [-1, 0, 0],
-          [0, 1, 1]
-        ],
-        [
-          [0, -1, 1],
-          [1, 1, 0]
-        ]
-      ]
-    });
-    expect(testFlight.toGeoJSON("Feature")).toStrictEqual({
-      type: "Feature",
-      properties: {
-        checked: [],
-        milestones: [],
-        name: "test flight",
-        notes: "short one"
-      },
-      geometry: {
-        type: "MultiLineString",
-        coordinates: [
-          [
-            [-1, 0, 0],
-            [0, 1, 1]
+    expect(testFlight.toGeoJSON("MultiPoint")).toMatchInlineSnapshot(`
+      Object {
+        "coordinates": Array [
+          Array [
+            -1,
+            0,
+            0,
           ],
-          [
-            [0, -1, 1],
-            [1, 1, 0]
-          ]
-        ]
+          Array [
+            0,
+            1,
+            1,
+          ],
+          Array [
+            0,
+            -1,
+            1,
+          ],
+          Array [
+            1,
+            1,
+            0,
+          ],
+        ],
+        "type": "MultiPoint",
       }
-    });
+    `);
+    expect(testFlight.toGeoJSON("MultiLineString")).toMatchInlineSnapshot(`
+      Object {
+        "coordinates": Array [
+          Array [
+            Array [
+              -1,
+              0,
+              0,
+            ],
+            Array [
+              0,
+              1,
+              1,
+            ],
+          ],
+          Array [
+            Array [
+              0,
+              -1,
+              1,
+            ],
+            Array [
+              1,
+              1,
+              0,
+            ],
+          ],
+        ],
+        "type": "MultiLineString",
+      }
+    `);
+    expect(testFlight.toGeoJSON("Feature")).toMatchInlineSnapshot(`
+      Object {
+        "geometry": Object {
+          "coordinates": Array [
+            Array [
+              Array [
+                -1,
+                0,
+                0,
+              ],
+              Array [
+                0,
+                1,
+                1,
+              ],
+            ],
+            Array [
+              Array [
+                0,
+                -1,
+                1,
+              ],
+              Array [
+                1,
+                1,
+                0,
+              ],
+            ],
+          ],
+          "type": "MultiLineString",
+        },
+        "properties": Object {
+          "checked": Array [],
+          "milestones": Array [],
+          "name": "test flight",
+          "notes": "short one",
+        },
+        "type": "Feature",
+      }
+    `);
     expect(testFlight.toGeoJSON()).toStrictEqual(
       testFlight.toGeoJSON("Feature")
     );
@@ -178,7 +232,6 @@ describe("flight", () => {
       "Invalid data : 'type' should be 'Flight' got 'undefined'"
     );
     expect(Flight.from(anyFlight)).toBe(anyFlight);
-
     expect(Flight.from(theFlight)).toMatchSnapshot();
   });
 });

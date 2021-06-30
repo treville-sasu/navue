@@ -129,29 +129,47 @@ describe("waypoint", () => {
       altitude: new Altitude(1, "m", { reference: "WGS84" })
     });
 
-    expect(wp.toGeoJSON("Position")).toStrictEqual([0, 0, 1]);
+    expect(wp.toGeoJSON("Position")).toMatchInlineSnapshot(`
+      Array [
+        0,
+        0,
+        1,
+      ]
+    `);
 
-    expect(wp.toGeoJSON("Point")).toStrictEqual({
-      type: "Point",
-      coordinates: [0, 0, 1]
-    });
-    expect(wp.toGeoJSON("Feature")).toStrictEqual({
-      type: "Feature",
-      properties: {
-        altitude: {
-          reference: "WGS84",
-          type: "Altitude",
-          unit: "m",
-          value: 1,
-          precision: 1
-        },
-        name: "null Island"
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [0, 0, 1]
+    expect(wp.toGeoJSON("Point")).toMatchInlineSnapshot(`
+      Object {
+        "coordinates": Array [
+          0,
+          0,
+          1,
+        ],
+        "type": "Point",
       }
-    });
+    `);
+    expect(wp.toGeoJSON("Feature")).toMatchInlineSnapshot(`
+      Object {
+        "geometry": Object {
+          "coordinates": Array [
+            0,
+            0,
+            1,
+          ],
+          "type": "Point",
+        },
+        "properties": Object {
+          "altitude": Object {
+            "precision": 1,
+            "reference": "WGS84",
+            "type": "Altitude",
+            "unit": "m",
+            "value": 1,
+          },
+          "name": "null Island",
+        },
+        "type": "Feature",
+      }
+    `);
     expect(wp.toGeoJSON()).toStrictEqual(wp.toGeoJSON("Feature"));
   });
 });
