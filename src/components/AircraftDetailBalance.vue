@@ -1,6 +1,5 @@
 <template>
   <section>
-    <div class="notification is-warning">Do not USE, do not work for tanks</div>
     <b-field label="Balanced on">
       <b-datepicker
         v-model="curatedDate"
