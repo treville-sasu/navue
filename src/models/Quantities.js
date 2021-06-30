@@ -9,12 +9,15 @@ export class Quantity extends Model {
 
       if (_unit) this.unit = _unit;
       else this._unit = undefined;
+
       if (value || value === 0) this.value = value;
       else {
         this._value = undefined;
         this.precision = undefined;
       }
+
       if (precision) this.precision = precision;
+
       if (unit) this.unit = unit;
     }
   }
@@ -31,7 +34,7 @@ export class Quantity extends Model {
     if (Number.isNaN(f)) throw `\`${val}\` could not be coerced to a number`;
     else {
       this._value = this._from(f);
-      this.precision = this.constructor.significantFigures(val);
+      this.precision = Math.max(3, this.constructor.significantFigures(val));
     }
   }
 
@@ -65,8 +68,8 @@ export class Quantity extends Model {
     return this._to(this.value, unit);
   }
 
-  as(_unit, _precision) {
-    return Object.assign(this.constructor.from(this), { _unit, _precision });
+  as(unit, precision) {
+    return Object.assign(this.constructor.from(this), { unit, precision });
   }
 
   add(other, props) {
@@ -79,11 +82,12 @@ export class Quantity extends Model {
     else throw "operands should be of the same type";
   }
 
-  prod(scalar, props) {
-    return new this.constructor(this * scalar, undefined, {
+  // FIXME : prod with quantity should not return the type from this nor other.
+  prod(other, props) {
+    return new this.constructor(this * other, undefined, {
       precision: Math.min(
         this.precision,
-        this.constructor.significantFigures(scalar)
+        other.precision || this.constructor.significantFigures(other)
       ),
       unit: this._unit,
       ...props

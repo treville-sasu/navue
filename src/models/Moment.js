@@ -44,8 +44,10 @@ export class Moment extends Model {
 
   static linearCoG(...moments) {
     let result = moments.flat().reduce((acc, { mass, lever }) => {
-      acc.mass = acc.mass.add(mass);
-      acc.lever = acc.lever.add(mass * lever);
+      acc.mass = acc.mass.add(mass, { precision: mass.precision });
+      acc.lever = acc.lever.add(new Distance(lever).prod(mass), {
+        precision: lever.precision
+      });
       return acc;
     }, new Moment(0, 0));
 

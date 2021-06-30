@@ -51,7 +51,7 @@
       <l-control position="topright">
         <InstrumentsDisplay
           class="is-stackable"
-          :parameters="currentLocation"
+          v-bind="currentLocation"
         />
       </l-control>
       <l-control position="bottomright">

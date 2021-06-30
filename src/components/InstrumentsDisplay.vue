@@ -1,13 +1,13 @@
 <template>
-  <b-taglist v-if="parameters">
+  <b-taglist>
     <b-tag type="is-primary" size="is-medium">{{
-      parameters.speed | as("kt", 2)
+      speed | as("kt", 3)
     }}</b-tag>
     <b-tag type="is-success" size="is-medium">{{
-      parameters.heading | as("°", 2)
+      heading | as("°", 3)
     }}</b-tag>
     <b-tag type="is-info" size="is-medium">{{
-      parameters.altitude | as("ft", 2)
+      altitude | as("ft", 3)
     }}</b-tag>
     <b-tag type="is-dark" size="is-medium">-</b-tag>
   </b-taglist>
@@ -15,13 +15,15 @@
 
 <script>
 import UnitSystem from "@/mixins/UnitSystem";
-import { Location } from "@/models/Waypoint.js";
+import { Speed, Azimuth, Altitude } from "@/models/Quantities.js";
 
 export default {
   name: "InstrumentsDisplay",
   mixins: [UnitSystem],
-  props: { parameters: Location },
-    }
+  props: { 
+    speed: Speed, 
+    heading:Azimuth, 
+    altitude:Altitude
   }
 };
 </script>
