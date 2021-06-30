@@ -35,7 +35,23 @@ describe("moment", () => {
 
   it("export toJSON", () => {
     expect(moment).toHaveProperty("toJSON");
-    expect(moment.toJSON()).toMatchSnapshot();
+    expect(moment.toJSON()).toMatchInlineSnapshot(`
+      Object {
+        "lever": Object {
+          "precision": 1,
+          "type": "Distance",
+          "unit": "m",
+          "value": 2,
+        },
+        "mass": Object {
+          "precision": 1,
+          "type": "Weight",
+          "unit": "kg",
+          "value": 0.5,
+        },
+        "type": "Moment",
+      }
+    `);
   });
 
   it("import from literal", () => {
@@ -55,18 +71,80 @@ describe("moment", () => {
         },
         type: "Moment"
       })
-    ).toMatchSnapshot();
+    ).toMatchInlineSnapshot(`
+      Object {
+        "lever": Object {
+          "precision": 1,
+          "type": "Distance",
+          "unit": "m",
+          "value": 2,
+        },
+        "mass": Object {
+          "precision": 1,
+          "type": "Weight",
+          "unit": "kg",
+          "value": 0.5,
+        },
+        "type": "Moment",
+      }
+    `);
   });
 
   it("linearCoG(), creates moment from 1D lever & mass arrray", () => {
     expect(
       Moment.linearCoG({ mass: 1 / 2, lever: 2 }, { mass: 1 / 2, lever: -2 })
-    ).toStrictEqual(new Moment(1, 0));
-    expect(
-      Moment.linearCoG({ mass: 3, lever: 2 }, { mass: 2, lever: -2 })
-    ).toStrictEqual(new Moment(5, 0.4));
-    expect(
-      Moment.linearCoG({ mass: 1, lever: 1 }, { mass: 1, lever: -1 })
-    ).toStrictEqual(new Moment(2, 0));
+    ).toMatchInlineSnapshot(`
+      Object {
+        "lever": Object {
+          "precision": 1,
+          "type": "Distance",
+          "unit": "m",
+          "value": 0,
+        },
+        "mass": Object {
+          "precision": 1,
+          "type": "Weight",
+          "unit": "kg",
+          "value": 1,
+        },
+        "type": "Moment",
+      }
+    `);
+    expect(Moment.linearCoG({ mass: 3, lever: 2 }, { mass: 2, lever: -2 }))
+      .toMatchInlineSnapshot(`
+      Object {
+        "lever": Object {
+          "precision": 1,
+          "type": "Distance",
+          "unit": "m",
+          "value": 0.4,
+        },
+        "mass": Object {
+          "precision": 1,
+          "type": "Weight",
+          "unit": "kg",
+          "value": 5,
+        },
+        "type": "Moment",
+      }
+    `);
+    expect(Moment.linearCoG({ mass: 1, lever: 1 }, { mass: 1, lever: -1 }))
+      .toMatchInlineSnapshot(`
+      Object {
+        "lever": Object {
+          "precision": 1,
+          "type": "Distance",
+          "unit": "m",
+          "value": 0,
+        },
+        "mass": Object {
+          "precision": 1,
+          "type": "Weight",
+          "unit": "kg",
+          "value": 2,
+        },
+        "type": "Moment",
+      }
+    `);
   });
 });
