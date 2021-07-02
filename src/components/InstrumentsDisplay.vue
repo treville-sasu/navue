@@ -3,12 +3,8 @@
     <b-tag type="is-primary" size="is-medium">{{ speed | as("kt", 3) }}</b-tag>
     <b-tag type="is-success" size="is-medium">{{ heading | as("°", 3) }}</b-tag>
     <b-tag type="is-info" size="is-medium">{{ altitude | as("ft", 3) }}</b-tag>
-    <b-tag type="is-dark" size="is-medium" v-if="linkStatus">
-      <b-icon
-        :icon="
-          linkStatus > 0 ? `wifi-strength-${linkStatus}` : 'wifi-strength-off'
-        "
-      />
+    <b-tag type="is-dark" size="is-medium" v-if="linkStatus >= 0">
+      <b-icon :icon="`wifi-strength-${linkStatus > 0 ? linkStatus : 'off'}`" />
     </b-tag>
   </b-taglist>
 </template>
@@ -43,15 +39,16 @@ export default {
   },
   methods: {
     setLink({ currentTarget }) {
-      if (currentTarget.downlink && currentTarget.downlinkMax)
-        this.linkStatus = Math.round(
-          (currentTarget.downlink / currentTarget.downlinkMax) * 4
-        );
-      if (currentTarget.downlink && !currentTarget.downlinkMax)
-        this.linkStatus = Math.min(
-          Math.round((currentTarget.downlink / 5) * 4),
-          4
-        );
+      if (currentTarget.downlink)
+        if (currentTarget.downlinkMax)
+          this.linkStatus = Math.round(
+            (currentTarget.downlink / currentTarget.downlinkMax) * 4
+          );
+        else
+          this.linkStatus = Math.min(
+            Math.round((currentTarget.downlink / 5) * 4),
+            4
+          );
     }
   }
 };
