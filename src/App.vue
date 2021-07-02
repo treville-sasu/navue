@@ -26,7 +26,7 @@ $modal-z: $navbar-fixed-z + 100;
 .is-stackable.tags {
   @include until($desktop) {
     flex-direction: column;
-    align-items: end;
+    align-items: flex-end;
     :first-child:not(:only-child) .button,
     :first-child:not(:only-child) .input,
     :first-child:not(:only-child) .select select {
@@ -42,6 +42,9 @@ $modal-z: $navbar-fixed-z + 100;
       border-bottom-right-radius: $control-radius;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
+    }
+    .tag:last-child {
+      margin-right: 0.5em;
     }
   }
   @include from($desktop) {
