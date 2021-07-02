@@ -88,22 +88,21 @@ export const WakeLock = {
   },
   mixins: [UIHelpers],
   mounted() {
-    this.requestWakeLock();
-    document.addEventListener("visibilitychange", this.requestWakeLock);
+    if ("wakeLock" in navigator) {
+      this.requestWakeLock();
+      document.addEventListener("visibilitychange", this.requestWakeLock);
+    }
   },
   beforeDestroy() {
-    document.removeEventListener("visibilitychange", this.requestWakeLock);
-    if (this.wakeLock) this.wakeLock.release();
+    if ("wakeLock" in navigator) {
+      document.removeEventListener("visibilitychange", this.requestWakeLock);
+      if (this.wakeLock) this.wakeLock.release();
+    }
   },
   methods: {
     async requestWakeLock() {
-      try {
-        if ("wakeLock" in navigator && document.visibilityState === "visible") {
-          this.wakeLock = await navigator.wakeLock.request("screen");
-        } else throw "WakeLock unavaliable";
-      } catch (err) {
-        this.openWarning(err);
-      }
+      if (document.visibilityState === "visible")
+        this.wakeLock = await navigator.wakeLock.request("screen");
     }
   }
 };

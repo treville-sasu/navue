@@ -99,7 +99,7 @@ export class Quantity extends Model {
   }
 
   toString() {
-    let sf = Math.max(1, Math.min(this.precision, 21));
+    let sf = Math.max(1, Math.min(this.precision || 0, 21));
     return `${
       isNaN(this.value)
         ? "-"

@@ -12,7 +12,7 @@
             :icon="isEnroute ? 'airplane-landing' : 'airplane-takeoff'"
           />
         </p>
-        <p class="title">
+        <p class="subtitle">
           {{ flightDuration | asDuration }}
         </p>
       </div>
@@ -29,7 +29,7 @@
             :type="chronoTime ? 'is-danger' : 'is-primary'"
           />
         </p>
-        <p class="title ">
+        <p class="subtitle ">
           {{ chrono | asDuration }}
         </p>
       </div>
@@ -49,7 +49,7 @@
               {{ time | asDuration }}
             </li>
           </ul>
-          <span class="title"> - </span>
+          <span class="subtitle"> - </span>
         </div>
       </div>
     </div>
