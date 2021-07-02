@@ -41,18 +41,8 @@
           notepad
         />
       </l-control>
-      <l-control position="bottomleft">
-        <DestinationDisplay
-          v-if="currentLocation && currentDestination"
-          :from="currentLocation"
-          :to="currentDestination"
-        />
-      </l-control>
       <l-control position="topright">
-        <InstrumentsDisplay
-          class="is-stackable"
-          v-bind="currentLocation"
-        />
+        <InstrumentsDisplay class="is-stackable" v-bind="currentLocation" />
       </l-control>
       <l-control position="bottomright">
         <TimerToolbar @update:settings="updateSettings" />
@@ -77,8 +67,9 @@
         @contextmenu-waypoint="setDestination(route.items[$event])"
       />
       <l-destination-marker
-        v-model="currentDestination"
-        :origin="currentLocation"
+        :to="currentDestination"
+        :from="currentLocation"
+        @update="currentDestination = $event"
       />
     </l-map>
   </section>
@@ -114,7 +105,6 @@ import { DestinationHandler } from "@/mixins/DestinationHandler";
 
 import MovingMapSettings from "@/components/MovingMapSettings.vue";
 import InstrumentsDisplay from "@/components/InstrumentsDisplay.vue";
-import DestinationDisplay from "@/components/DestinationDisplay.vue";
 import TimerToolbar from "@/components/TimerToolbar.vue";
 import ReportToolbar from "@/components/ReportToolbar.vue";
 import DataToolbar from "@/components/DataToolbar.vue";
@@ -135,7 +125,6 @@ export default {
     LPolyline,
     MovingMapSettings,
     InstrumentsDisplay,
-    DestinationDisplay,
     TimerToolbar,
     ReportToolbar,
     DataToolbar,
