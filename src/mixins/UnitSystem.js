@@ -8,7 +8,7 @@ export default {
         ? (value instanceof Date
             ? value
             : new Date(value * factor)
-          ).toLocaleTimeString(undefined, {
+          ).toLocaleTimeString([], {
             timeZone: "UTC",
             hour12: false,
             hour: "2-digit",
