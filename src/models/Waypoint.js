@@ -22,14 +22,20 @@ export class Waypoint extends Model {
     return new LatLon(this.latitude, this.longitude);
   }
 
-  distanceTo(otherWP) {
-    return new Distance(this.point.rhumbDistanceTo(otherWP.point), "m");
+  distanceTo(otherWP, properties) {
+    return new Distance(
+      this.point.rhumbDistanceTo(otherWP.point),
+      "m",
+      properties
+    );
   }
 
-  bearingTo(otherWP) {
-    return new Azimuth(this.point.rhumbBearingTo(otherWP.point), "°", {
-      _precision: 3
-    });
+  bearingTo(otherWP, properties) {
+    return new Azimuth(
+      this.point.rhumbBearingTo(otherWP.point),
+      "°",
+      properties
+    );
   }
 
   destinationPoint(distance, heading) {
