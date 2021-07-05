@@ -24,36 +24,20 @@ export default {
     return {
       tileLayers: [
         {
-          name: "Satellite",
+          name: "Fond de carte naVue",
           attribution:
             "© <a href='https://apps.mapbox.com/feedback/'>Mapbox</a>",
           url:
             "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
           options: {
             username: process.env.VUE_APP_MAPBOX_USERNAME,
-            style_id: "ckfm71uvx26p119oc47tx5pxd",
+            style_id: "ckoleyexd2sem18pf9gmhzmgu",
             token: process.env.VUE_APP_MAPBOX_TOKEN,
-            maxZoom: 17,
-            minZoom: 11,
             tileSize: 512,
             zoomOffset: -1,
 
             format: "image/jpeg",
             style: "normal",
-            crossOrigin: true
-          }
-        },
-        {
-          name: "Frank",
-          attribution:
-            "© <a href='https://apps.mapbox.com/feedback/'>Mapbox</a>",
-          url:
-            "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
-          options: {
-            username: process.env.VUE_APP_MAPBOX_USERNAME,
-            style_id: "ckflgd4gu1gv519ocwjauheyd",
-            token: process.env.VUE_APP_MAPBOX_TOKEN,
-            maxZoom: 8,
             crossOrigin: true
           }
         },

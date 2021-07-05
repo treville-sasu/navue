@@ -143,7 +143,7 @@ export default {
           "https://api.mapbox.com/styles/v1/{username}/{style_id}/tiles/{z}/{x}/{y}?access_token={token}",
           {
             username: "mabrenac",
-            style_id: "ckflgd4gu1gv519ocwjauheyd",
+            style_id: "ckoleyexd2sem18pf9gmhzmgu",
             token:
               "pk.eyJ1IjoibWFicmVuYWMiLCJhIjoiY2sxbm1ueWhjMDd6aTNvcWZhNWVzejEyZiJ9.y6D5gNxGbMDJnzd0CSW9xQ",
             crossOrigin: true
