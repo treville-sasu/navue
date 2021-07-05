@@ -327,7 +327,7 @@ describe("location", () => {
         })
       )
     ).toStrictEqual({
-      heading: new Azimuth(180, "°", { _precision: 3 }),
+      heading: new Azimuth(180, "°"),
       speed: new Speed(111194.92664455874),
       verticalSpeed: new Speed(10)
     });

@@ -96,7 +96,7 @@ describe("moment", () => {
     ).toMatchInlineSnapshot(`
       Object {
         "lever": Object {
-          "precision": 1,
+          "precision": 0,
           "type": "Distance",
           "unit": "m",
           "value": 0,
@@ -132,7 +132,7 @@ describe("moment", () => {
       .toMatchInlineSnapshot(`
       Object {
         "lever": Object {
-          "precision": 1,
+          "precision": 0,
           "type": "Distance",
           "unit": "m",
           "value": 0,

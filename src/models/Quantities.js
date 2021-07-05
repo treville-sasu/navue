@@ -34,7 +34,7 @@ export class Quantity extends Model {
     if (Number.isNaN(f)) throw `\`${val}\` could not be coerced to a number`;
     else {
       this._value = this._from(f);
-      this.precision = Math.max(3, this.constructor.significantFigures(val));
+      this.precision = this.constructor.significantFigures(val);
     }
   }
 
