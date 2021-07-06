@@ -22,6 +22,7 @@ module.exports = {
       swSrc: "src/service-worker.js",
       exclude: ["CNAME", "robots.txt", /^.*map$/]
     },
+    manifestPath: "navue.webmanifest",
     themeColor: "#34495e",
     msTileColor: "#34495e",
     manifestOptions: {
@@ -32,6 +33,9 @@ module.exports = {
     display: "fullscreen",
     scope: "/",
     start_url: "/",
+    iconPaths: {
+      msTileImage: "/img/icons/mstile-150x150.png"
+    },
     icons: [
       {
         src: "/img/icons/android-chrome-192x192.png",
@@ -42,6 +46,58 @@ module.exports = {
         src: "/img/icons/android-chrome-512x512.png",
         sizes: "512x512",
         type: "image/png"
+      }
+    ],
+    screenshots: [
+      {
+        src: "azba-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
+      },
+      {
+        src: "fly-mobile-portrait.webp",
+        sizes: "1131x2442",
+        type: "image/webp"
+      },
+      {
+        src: "azba-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
+      },
+      {
+        src: "balance-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
+      },
+      {
+        src: "brief-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
+      },
+      {
+        src: "metar-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
+      },
+      {
+        src: "notam-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
+      },
+      {
+        src: "fly-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
+      },
+      {
+        src: "temsi-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
+      },
+      {
+        src: "vac-tablet-landscape.webp",
+        sizes: "2048x1536",
+        type: "image/webp"
       }
     ],
     splash_pages: null
