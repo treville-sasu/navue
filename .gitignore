@@ -21,3 +21,12 @@ pnpm-debug.log*
 *.sln
 *.sw?
 *.pem
+
+# Yarn 2.x
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
