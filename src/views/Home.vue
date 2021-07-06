@@ -13,19 +13,7 @@
             <h2 class="subtitle is-2">
               Easy, Secure & Free. Just fly !
             </h2>
-            <div class="notification is-warning">
-              <h1 class="title">Liability.</h1>
-              <h2 class="subtitle">Always use offical documentation.</h2>
-              As a pilot in command you will be the only liable person of your
-              flight and aircraft. You are responsible for the documents and
-              informations you use in flight.
-            </div>
-
-            <div class="notification is-danger">
-              <h1 class="title">Work in progress</h1>
-              <h2 class="subtitle">Evaluation only</h2>
-              Do not use this software
-            </div>
+            <liability />
           </div>
         </div>
       </div>
@@ -62,7 +50,9 @@
   </section>
 </template>
 <script>
+import Liability from "@/components/Liability";
 export default {
-  name: "Home"
+  name: "Home",
+  components: { Liability }
 };
 </script>

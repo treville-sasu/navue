@@ -6,6 +6,7 @@
           src="img/icons/android-chrome-192x192.png"
           alt="Navue, a navigation tool for general aviation."
         />
+        <b-tag type="is-danger">beta</b-tag>
       </b-navbar-item>
     </template>
     <template slot="start">
@@ -42,8 +43,8 @@
 </template>
 
 <script>
-import AircraftManager from "@/components/managers/AircraftManager.vue";
-import Login from "@/components/Login.vue";
+import AircraftManager from "@/components/managers/AircraftManager";
+import Login from "@/components/Login";
 
 export default {
   name: "Navbar",

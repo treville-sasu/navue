@@ -79,25 +79,10 @@
             <b-tag type="is-dark">{{ version }}</b-tag>
             <b-tag type="is-info">{{ build }}</b-tag>
           </b-taglist>
-          <pre></pre>
         </div>
       </div>
       <div class="tile is-vertical is-parent" id="legal">
-        <div class="tile is-child box">
-          <h1 class="title">Liability.</h1>
-          <h2 class="subtitle has-text-warning	">
-            Always use offical documentation.
-          </h2>
-          <p class="block">
-            As a pilot in command you will be the only liable person of your
-            flight and aircraft. You are responsible for the documents and
-            informations you use in flight.
-          </p>
-          <p class="block">
-            We gather imformations in our best abilities, but important
-            informations may be missing or outdated.
-          </p>
-        </div>
+        <liability class="tile is-child box" />
         <div class="tile is-child box">
           <h2 class="title">Licences</h2>
           <p class="block">
@@ -114,10 +99,12 @@
 </template>
 
 <script>
-import BrowserCheck from "@/components/BrowserCheck.vue";
+import BrowserCheck from "@/components/BrowserCheck";
+import Liability from "@/components/Liability";
+
 export default {
   name: "About",
-  components: { BrowserCheck },
+  components: { BrowserCheck, Liability },
   data() {
     return {
       version: process.env.VUE_APP_VERSION,
