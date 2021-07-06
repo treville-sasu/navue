@@ -1,9 +1,15 @@
 <template>
   <b-taglist>
-    <b-tag type="is-primary" size="is-medium">{{ speed | as("kt", 3) }}</b-tag>
-    <b-tag type="is-success" size="is-medium">{{ heading | as("°", 3) }}</b-tag>
-    <b-tag type="is-info" size="is-medium">{{ altitude | as("ft", 3) }}</b-tag>
-    <b-tag type="is-dark" size="is-medium" v-if="linkStatus >= 0">
+    <b-tag v-if="speed" type="is-primary" size="is-medium">{{
+      speed | as("kt", 3)
+    }}</b-tag>
+    <b-tag v-if="heading" type="is-success" size="is-medium">{{
+      heading | as("°", 3)
+    }}</b-tag>
+    <b-tag v-if="altitude" type="is-info" size="is-medium">{{
+      altitude | as("ft", 3)
+    }}</b-tag>
+    <b-tag v-if="linkStatus >= 0" type="is-dark" size="is-medium">
       <b-icon :icon="`wifi-strength-${linkStatus > 0 ? linkStatus : 'off'}`" />
     </b-tag>
   </b-taglist>
@@ -11,7 +17,7 @@
 
 <script>
 import UnitSystem from "@/mixins/UnitSystem";
-import { Speed, Azimuth, Altitude } from "@/models/Quantities.js";
+import { Speed, Azimuth, Altitude } from "@/models/Quantities";
 
 export default {
   name: "InstrumentsDisplay",

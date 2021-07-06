@@ -103,18 +103,18 @@ import { LocationHandler } from "@/mixins/LocationHandler";
 import { TraceHandler } from "@/mixins/TraceHandler";
 import { DestinationHandler } from "@/mixins/DestinationHandler";
 
-import MovingMapSettings from "@/components/MovingMapSettings.vue";
-import InstrumentsDisplay from "@/components/InstrumentsDisplay.vue";
-import TimerToolbar from "@/components/TimerToolbar.vue";
-import ReportToolbar from "@/components/ReportToolbar.vue";
-import DataToolbar from "@/components/DataToolbar.vue";
+import MovingMapSettings from "@/components/MovingMapSettings";
+import InstrumentsDisplay from "@/components/InstrumentsDisplay";
+import TimerToolbar from "@/components/TimerToolbar";
+import ReportToolbar from "@/components/ReportToolbar";
+import DataToolbar from "@/components/DataToolbar";
 
-import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup.vue";
-import LLocationMarker from "@/components/leaflet/LLocationMarker.vue";
-import LDestinationMarker from "@/components/leaflet/LDestinationMarker.vue";
-import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
+import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup";
+import LLocationMarker from "@/components/leaflet/LLocationMarker";
+import LDestinationMarker from "@/components/leaflet/LDestinationMarker";
+import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup";
 
-import { WakeLock } from "@/mixins/apputils.js";
+import { WakeLock } from "@/mixins/apputils";
 
 export default {
   name: "MovingMap",
