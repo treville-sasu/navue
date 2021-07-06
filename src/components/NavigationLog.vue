@@ -114,7 +114,7 @@
               </tr>
               <tr v-if="index + 1 < route.length" :key="'leg_' + index">
                 <td class="has-text-right is-size-4" rowspan="2">
-                  {{ legBearing(route, index) }}
+                  {{ legBearing(route, index) | as("°", 3) }}
                 </td>
                 <td class="has-text-right is-size-4" rowspan="2">
                   {{ legDistance(route, index) | as("NM", 3) }}

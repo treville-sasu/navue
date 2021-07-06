@@ -13,7 +13,7 @@
         sticky: true
       }"
     >
-      {{ bearing }} |
+      {{ bearing | as("°", 3) }} |
       {{ distance | as("NM", 3) }}
     </l-tooltip>
   </l-polyline>
