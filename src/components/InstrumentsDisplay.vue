@@ -9,8 +9,10 @@
     <b-tag v-if="altitude" type="is-info" size="is-medium">{{
       altitude | as("ft", 3)
     }}</b-tag>
-    <b-tag v-if="linkStatus >= 0" type="is-dark" size="is-medium">
-      <b-icon :icon="`wifi-strength-${linkStatus > 0 ? linkStatus : 'off'}`" />
+    <b-tag v-if="linkHealth >= 0" type="is-dark" size="is-medium">
+      <b-icon
+        :icon="`wifi-strength-${linkHealth > 0 ? linkHealth : 'alert-outline'}`"
+      />
     </b-tag>
   </b-taglist>
 </template>
@@ -29,7 +31,10 @@ export default {
   },
   data() {
     return {
-      linkStatus: undefined
+      linkStatus: undefined,
+      linkHealth: undefined,
+      goodBandwidth: 10,
+      stepsBandwith: 4
     };
   },
   /* eslint-disable compat/compat */
@@ -45,16 +50,11 @@ export default {
   },
   methods: {
     setLink({ currentTarget }) {
-      if (currentTarget.downlink)
-        if (currentTarget.downlinkMax)
-          this.linkStatus = Math.round(
-            (currentTarget.downlink / currentTarget.downlinkMax) * 4
-          );
-        else
-          this.linkStatus = Math.min(
-            Math.round((currentTarget.downlink / 5) * 4),
-            4
-          );
+      this.linkHealth = Math.round(
+        (Math.min(currentTarget.downlink, this.goodBandwidth) /
+          this.goodBandwidth) *
+          this.stepsBandwith
+      );
     }
   }
 };
