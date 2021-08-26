@@ -19,7 +19,6 @@
         :tags="{
           info: 'Airport'
         }"
-        @click="openChartUrl = $event"
         card
       >
         <figure class="image">
@@ -30,22 +29,7 @@
           />
         </figure>
       </ChartCartridge>
-      <ChartCartridge
-        v-for="(request, key) in cachedUrls"
-        :key="'cached_' + key"
-        :url="request.url"
-        :tags="{
-          info: 'Airport'
-        }"
-        @click="openChartUrl = $event"
-        card
-      >
-        <figure class="image">
-          <pdf :src="request.url" :page="1" style="height: 100%" />
-        </figure>
-      </ChartCartridge>
     </div>
-    <PDFModal v-model="openChartUrl" :active="!!openChartUrl" />
   </section>
 </template>
 
@@ -54,7 +38,6 @@ import BIcao from "@/components/buefy/BIcao.vue";
 import BPoi from "@/components/buefy/BPoi.vue";
 
 import ChartCartridge from "@/components/ChartCartridge.vue";
-import PDFModal from "@/components/PDFModal.vue";
 import Pdf from "vue-pdf";
 import Sia from "@/mixins/Sia";
 
@@ -64,7 +47,6 @@ export default {
     BIcao,
     BPoi,
     ChartCartridge,
-    PDFModal,
     Pdf
   },
   mixins: [Sia],
@@ -76,7 +58,6 @@ export default {
       error: false,
       searchCodes: [],
       baseURL: null,
-      openChartUrl: null,
       cachedUrls: []
     };
   },
@@ -108,11 +89,6 @@ export default {
         console.error(err);
         this.error = setTimeout(this.getCycleUrl, 3000);
       }
-    }
-  },
-  watch: {
-    baseURL(val) {
-      this.$emit("update-url", val);
     }
   }
 };

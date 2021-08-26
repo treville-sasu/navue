@@ -41,7 +41,6 @@
             info: map.niveau,
             warning: map.echeance
           }"
-          @click="openChartUrl = $event"
         >
           <b-icon
             :icon="
@@ -53,7 +52,6 @@
         </ChartCartridge>
       </div>
     </div>
-    <PDFModal v-model="openChartUrl" :active="!!openChartUrl" />
   </section>
 </template>
 
@@ -66,15 +64,13 @@
 
 <script>
 import ChartCartridge from "@/components/ChartCartridge.vue";
-import PDFModal from "@/components/PDFModal.vue";
 
 import Aeroweb from "@/mixins/Aeroweb";
 
 export default {
   name: "AerowebCharts",
   components: {
-    ChartCartridge,
-    PDFModal
+    ChartCartridge
   },
   mixins: [Aeroweb],
   props: {
@@ -82,10 +78,7 @@ export default {
   },
   data() {
     return {
-      searchZones: null,
-      searchTypes: ["AERO_TEMSI", "AERO_WINTEM"],
-      resultsMaps: {},
-      openChartUrl: null
+      resultsMaps: {}
     };
   },
   watch: {

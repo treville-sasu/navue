@@ -28,7 +28,6 @@
             warning: $options.filters.asTime(map.start),
             success: $options.filters.asTime(map.end)
           }"
-          @click="openChartUrl = $event"
           card
         >
           <figure class="image">
@@ -36,14 +35,12 @@
           </figure>
         </ChartCartridge>
       </div>
-      <PDFModal v-model="openChartUrl" :active="!!openChartUrl" />
     </div>
   </section>
 </template>
 
 <script>
 import ChartCartridge from "@/components/ChartCartridge.vue";
-import PDFModal from "@/components/PDFModal.vue";
 import Sia from "@/mixins/Sia";
 
 import Pdf from "vue-pdf";
@@ -52,7 +49,6 @@ export default {
   name: "SiaAzba",
   components: {
     ChartCartridge,
-    PDFModal,
     Pdf
   },
   mixins: [Sia],
