@@ -49,10 +49,7 @@
         />
       </l-control>
       <l-control position="topright">
-        <InstrumentsDisplay
-          class="is-stackable"
-          v-bind="currentLocation"
-        />
+        <InstrumentsDisplay class="is-stackable" v-bind="currentLocation" />
       </l-control>
       <l-control position="bottomright">
         <TimerToolbar @update:settings="updateSettings" />
