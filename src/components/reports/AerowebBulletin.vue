@@ -1,21 +1,23 @@
 <template>
   <section>
-    <b-field grouped group-multiline>
-      <b-field label="ICAO Code for FIR or Airports" expanded>
-        <b-icao
-          v-model="searchCodes"
-          maxtags="12"
-          :data="avaliableCodes"
-          allow-new
-          expanded
-        />
-      </b-field>
-      <b-field v-if="poi" label="POI">
-        <b-poi v-model="searchCodes" :items="poi" />
-      </b-field>
+    <b-field label="Weather Stations" expanded>
+      <b-icao
+        v-model="query.codes"
+        :presets="poi"
+        @typing="unbounce"
+        maxtags="12"
+        allow-new
+        expanded
+      />
+    </b-field>
+    <b-collapse :open="false" position="is-bottom">
+      <template #trigger="props">
+        <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
+        {{ !props.open ? "All options" : "Fewer options" }}
+      </template>
       <b-field label="Message type">
         <b-checkbox-button
-          v-model="searchCategories"
+          v-model="query.categories"
           v-for="category in avaliableCategories"
           :key="category"
           :native-value="category"
@@ -23,103 +25,65 @@
           {{ category }}
         </b-checkbox-button>
       </b-field>
-    </b-field>
-    <b-field>
-      <b-timer
-        ref="searchTimer"
-        :duration="1000"
-        countdown
-        @timesup="getBulletin()"
-        type="is-primary"
-        size="is-small"
-        class="mt-5"
-        style="height: 0.35em"
-      />
-    </b-field>
+    </b-collapse>
 
-    <div
-      class="block"
-      v-for="(stations, category) in resultsMessages"
-      :key="category"
-    >
-      <b-notification
-        v-for="(station, key1) in stations"
-        :key="`${category}_${station.oaci}`"
-        aria-close-label="Close notification"
-        @close="$delete(resultsMessages[category], key1)"
-      >
-        <h4>
-          {{ station.oaci }} -
-          {{ station.nom }}
-        </h4>
-        <WeatherMessage
-          v-for="(message, key2) in station.messages"
-          :key="`${category}_${station.oaci}_${key2}`"
-          :message="message"
-        />
-      </b-notification>
+    <div class="placeholder" v-if="!results.length">
+      Search for METAR & TAF.
+      <b-loading :is-full-page="false" :active="isLoading" />
     </div>
+    <b-message
+      v-else
+      v-for="station in results"
+      :key="station.oaci"
+      :closable="false"
+    >
+      <template #header> {{ station.oaci }} - {{ station.nom }} </template>
+      <pre
+        class="message"
+        v-for="(message, key2) in station.messages"
+        :key="`${station.oaci}_${key2}`"
+        >{{ message }}</pre
+      >
+      <pre class="opmet" v-if="!station.messages.length">nil</pre>
+    </b-message>
   </section>
 </template>
-
+<style>
+pre.message {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  white-space: pre-line;
+}
+</style>
 <script>
 import BIcao from "@/components/buefy/BIcao.vue";
-import BPoi from "@/components/buefy/BPoi.vue";
-import BTimer from "@/components/buefy/BTimer.vue";
-
-import WeatherMessage from "@/components/WeatherMessage.vue";
 
 import Aeroweb from "@/mixins/Aeroweb";
+import CachableSearch from "@/mixins/CachableSearch";
 
 export default {
   name: "AerowebBulletin",
   components: {
-    BIcao,
-    BPoi,
-    BTimer,
-    WeatherMessage
+    BIcao
   },
-  mixins: [Aeroweb],
-  props: {
-    poi: Array
-  },
+  mixins: [Aeroweb, CachableSearch],
   data() {
     return {
-      searchCodes: [],
-      searchCategories: ["OPMET"],
-      resultsMessages: {}
+      type: "metar",
+      query: {
+        codes: [],
+        categories: ["OPMET"]
+      },
+      isLoading: false
     };
   },
-  computed: {
-    navigation() {
-      return this.$store.state.currentNavigation;
-    }
-  },
-  watch: {
-    searchCodes(codes) {
-      this.$refs.searchTimer.running
-        ? this.$refs.searchTimer.flyback()
-        : this.$refs.searchTimer.start();
-      if (codes.length == 0) this.$refs.searchTimer.reset();
-    },
-    searchCategories(newVal, oldVal) {
-      oldVal
-        .filter(x => !newVal.includes(x))
-        .forEach(category => {
-          delete this.resultsMessages[category];
-        });
 
-      this.getMessages(
-        this.searchCodes,
-        newVal.filter(x => !oldVal.includes(x))
-      );
-    }
-  },
   methods: {
-    getBulletin() {
-      this.$refs.searchTimer.hold(async () => {
-        await this.getMessages(this.searchCodes);
-      });
+    async search() {
+      this.results = [];
+      this.isLoading = true;
+      this.results = (await this.getMessages(this.query)).flat();
+      this.isLoading = false;
     }
   }
 };

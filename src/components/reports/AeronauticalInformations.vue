@@ -1,8 +1,8 @@
 <template>
   <section class="box">
-    <b-tabs position="is-centered">
+    <b-tabs position="is-centered" destroy-on-hide>
       <b-tab-item label="Notam">
-        <SiaNotam :poi="poi" />
+        <SiaNotam />
       </b-tab-item>
       <b-tab-item label="AZBA">
         <SiaAzba />
@@ -21,9 +21,6 @@ export default {
   components: {
     SiaNotam,
     SiaAzba
-  },
-  props: {
-    poi: Array
   }
 };
 </script>

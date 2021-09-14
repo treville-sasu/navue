@@ -23,41 +23,38 @@ export default {
       ];
     },
     avaliableCategories() {
-      return ["OPMET", "SIGMET"]; // ["OPMET", "SIGMET", "VAA", "TCA", "MAA", "SW", "PREDEC"];
+      return ["OPMET", "SIGMET"]; //, "VAA", "TCA", "MAA", "SW", "PREDEC"];
     },
     avaliableMaps() {
       return AerowebJS.CARTES;
     }
   },
   methods: {
-    async getMessages(codes, categories) {
-      (categories || this.searchCategories).forEach(async category => {
-        try {
-          const data = await this.aerowebInstance[category](
-            codes.map(c => c.id || c)
-          );
-          this.$set(this.resultsMessages, category, data);
-        } catch (err) {
-          console.error(err);
-          this.error = true;
-          delete this.resultsMessages[category];
-        }
-      });
+    async getMessages({ codes, categories }) {
+      return Promise.all(
+        categories.map(async category => {
+          try {
+            return await this.aerowebInstance[category](
+              codes.map(c => c.id || c)
+            );
+          } catch (err) {
+            console.error(err);
+            this.error = true;
+          }
+        })
+      );
     },
-    async getMaps(zone, types) {
-      (types || this.searchTypes).forEach(async type => {
-        try {
-          const data = await this.aerowebInstance.CARTES(
-            zone || this.searchZone,
-            type
-          );
-          this.$set(this.resultsMaps, type, data);
-        } catch (err) {
-          console.error(err);
-          this.error = true;
-          delete this.resultsMaps[type];
-        }
-      });
+    async getMaps({ zone, types, altitude }) {
+      return Promise.all(
+        types.map(async type => {
+          try {
+            return await this.aerowebInstance.CARTES(zone, type, altitude);
+          } catch (err) {
+            console.error(err);
+            this.error = true;
+          }
+        })
+      );
     },
     groupByAttribute(xs, attribute, key_callback) {
       return xs.reduce((rv, x) => {

@@ -4,7 +4,7 @@
       v-if="navlog"
       v-model="modalName"
       native-value="NavigationLog"
-      :disabled="!navigation"
+      :disabled="!gotNavigation"
     >
       <b-tooltip label="Navigation Log" v-bind="tooltip">
         <b-icon icon="clipboard-list-outline" v-bind="icon" />
@@ -15,7 +15,7 @@
       v-if="checklists"
       v-model="modalName"
       native-value="Checklists"
-      :disabled="!aircraft"
+      :disabled="!gotAircraft"
     >
       <b-tooltip label="Checklists" v-bind="tooltip">
         <b-icon icon="list-status" v-bind="icon" />
@@ -48,7 +48,7 @@
       v-if="balance"
       v-model="modalName"
       native-value="Balance"
-      :disabled="!aircraft"
+      :disabled="!gotAircraft"
     >
       <b-tooltip label="Balance" v-bind="tooltip">
         <b-icon icon="weight" v-bind="icon" />
@@ -94,17 +94,11 @@ export default {
     };
   },
   computed: {
-    navigation() {
-      return this.$store.state.currentNavigation;
+    gotNavigation() {
+      return !!this.$store.state.currentNavigation;
     },
-    poi() {
-      return this.navigation && this.navigation.poi;
-    },
-    aircraft() {
-      return this.$store.state.currentAircraft;
-    },
-    flight() {
-      return this.$store.state.currentFlight;
+    gotAircraft() {
+      return !!this.$store.state.currentAircraft;
     }
   },
   watch: {
@@ -113,7 +107,6 @@ export default {
         this.modal = this.$buefy.modal.open({
           parent: this,
           component: this.$options.components[name],
-          props: { poi: this.poi },
           hasModalCard: false,
           trapFocus: true,
           appendToBody: true,

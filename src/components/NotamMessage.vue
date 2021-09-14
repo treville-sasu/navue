@@ -28,7 +28,7 @@ pre {
 export default {
   name: "NotamMessage",
   props: {
-    message: String,
+    message: String
   },
   computed: {
     notam() {
@@ -39,15 +39,15 @@ export default {
             this.message.matchAll(
               /([QABCDEFG])\) (.+?)(?=(?: |\n)+[QABCDEFG]\) |$)/gs
             )
-          ).map((m) => [m[1], m[2].trim()])
-        ),
+          ).map(m => [m[1], m[2].trim()])
+        )
       };
-    },
+    }
   },
   filters: {
     firstLine(value) {
       return value.split("\n")[0];
-    },
-  },
+    }
+  }
 };
 </script>

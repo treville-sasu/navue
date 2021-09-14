@@ -5,7 +5,11 @@
       :class="card ? 'card-content' : 'media-left'"
       @click="openPDF"
     >
-      <slot></slot>
+      <slot>
+        <figure class="image">
+          <pdf :src="sanitedUrl" :page="1" style="height: 100%" />
+        </figure>
+      </slot>
     </div>
     <div :class="card ? 'card-header' : 'media-content'">
       <p class="title is-5 heading">
@@ -24,12 +28,14 @@
 
 <script>
 import MPdf from "@/components/modals/MPdf.vue";
+import Pdf from "vue-pdf";
 
 export default {
   name: "ChartCartridge",
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    MPdf
+    MPdf,
+    Pdf
   },
   props: {
     card: Boolean,
@@ -37,6 +43,11 @@ export default {
     url: [String, URL],
     tags: Object,
     type: String
+  },
+  computed: {
+    sanitedUrl() {
+      return this.url.toString();
+    }
   },
   methods: {
     openPDF() {

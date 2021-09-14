@@ -1,24 +1,33 @@
 <template>
+  <!-- <b-field grouped> -->
   <b-taginput
     :value="value"
-    autocomplete
-    :data="filteredList"
+    v-bind="$attrs"
+    v-on="$listeners"
+    @input="search = ''"
     @typing="updateList"
+    autocomplete
+    open-on-focus
+    :data="shortList"
     icon="label-multiple-outline"
-    placeholder="ICAO code or name"
+    placeholder="ICAO code or location name"
     field="id"
     :maxlength="4"
     :maxtags="50"
     :has-counter="false"
-    v-bind="$attrs"
-    v-on="$listeners"
   >
     <template slot-scope="props">
       <b-icon :icon="icons[props.option.type]" size="is-small" />
       <strong> {{ props.option.id }} </strong>: <i>{{ props.option.name }}</i>
     </template>
-    <template slot="empty"> Code not found. </template>
+    <template slot="empty">Nothing found yet</template>
   </b-taginput>
+  <!-- <b-select @model="type">
+      <option v-for="t in types" :value="t" :key="t">
+        {{ t }}
+      </option>
+    </b-select>
+  </b-field> -->
 </template>
 
 <script>
@@ -35,12 +44,21 @@ export default {
       default() {
         return require("@/store/vac.json");
       }
+    },
+    presets: {
+      type: Array,
+      default: () => []
     }
+    // types: {
+    //   type: Array,
+    //   default: () => ["airport", "weather"]
+    // }
   },
   data() {
     return {
-      codes: [],
-      filteredList: [],
+      search: undefined,
+      // type: undefined,
+      results: [],
       icons: {
         airport: "airport",
         helistation: "helicopter",
@@ -49,25 +67,27 @@ export default {
       }
     };
   },
-  watch: {
-    codes(newVal) {
-      this.$emit("input", newVal);
+  computed: {
+    shortList() {
+      return this.search
+        ? this.results
+        : this.presets.map(p => this.searchQuery(p)).flat();
     }
   },
   methods: {
     updateList(text) {
-      this.filteredList = this.data.filter(option => {
-        return (
-          option.name
-            .toString()
-            .toLowerCase()
-            .indexOf(text.toLowerCase()) >= 0 ||
-          option.id
-            .toString()
-            .toLowerCase()
-            .indexOf(text.toLowerCase()) >= 0
-        );
-      });
+      this.search = text;
+      this.results = this.searchQuery(text);
+    },
+    searchQuery(text) {
+      return this.data.filter(item => this.assertQuery(item, text));
+    },
+    assertQuery({ id, name }, query) {
+      let reg = new RegExp(query, "i");
+      return (
+        // this.types.includes(type) &&
+        id.search(reg) >= 0 || name.search(reg) >= 0
+      );
     }
   }
 };

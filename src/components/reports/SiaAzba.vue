@@ -1,40 +1,38 @@
 <template>
   <section>
-    <div class="columns is-multiline">
-      <b-loading
-        :is-full-page="false"
-        :active="!azba || (azba.length == 0 && !error)"
+    <b-notification
+      has-icon
+      icon="alert-circle-outline"
+      :closable="false"
+      v-if="error"
+    >
+      <h4 class="title">SIA Server Unavailable</h4>
+      <p class="heading">
+        Check your connection or use SIA server directly
+      </p>
+      <a
+        href="https://www.sia.aviation-civile.gouv.fr/schedules"
+        target="_blank"
+        >https://www.sia.aviation-civile.gouv.fr/schedules</a
       >
-        <b-notification has-icon icon="alert-circle-outline" :closable="false">
-          <h4 class="title">SIA Server Unavailable</h4>
-          <p class="heading">
-            Check your connection or use SIA server directly
-          </p>
-          <a href="https://www.sia.aviation-civile.gouv.fr/" target="_blank"
-            >https://www.sia.aviation-civile.gouv.fr/</a
-          >
-        </b-notification>
-      </b-loading>
-      <div
-        class="column is-one-quarter"
-        v-for="(map, key) in azba"
+    </b-notification>
+    <div class="placeholder" v-else-if="!results.length">
+      Searching for AZBA charts
+      <b-loading :is-full-page="false" :active="isLoading" />
+    </div>
+    <div class="grid" v-else>
+      <ChartCartridge
+        v-for="(map, key) in results"
         :key="'azba' + key"
-      >
-        <ChartCartridge
-          v-bind="map"
-          :name="map.start | asDay"
-          :tags="{
-            danger: 'RTBA',
-            warning: $options.filters.asTime(map.start),
-            success: $options.filters.asTime(map.end)
-          }"
-          card
-        >
-          <figure class="image">
-            <pdf :src="map.url" :page="1" style="height: 100%" />
-          </figure>
-        </ChartCartridge>
-      </div>
+        v-bind="map"
+        :name="map.start | asDay"
+        :tags="{
+          danger: 'RTBA',
+          warning: $options.filters.asTime(map.start),
+          success: $options.filters.asTime(map.end)
+        }"
+        card
+      />
     </div>
   </section>
 </template>
@@ -43,37 +41,39 @@
 import ChartCartridge from "@/components/ChartCartridge.vue";
 import Sia from "@/mixins/Sia";
 
-import Pdf from "vue-pdf";
-
 export default {
   name: "SiaAzba",
   components: {
-    ChartCartridge,
-    Pdf
+    ChartCartridge
   },
-  mixins: [Sia],
   data() {
     return {
       error: false,
-      azba: [],
-      openChartUrl: null
+      results: [],
+      isLoading: false,
+      sia: new Sia()
     };
   },
   async mounted() {
-    this.azba = await this.getAZBA();
-  },
-  methods: {
-    async getAZBA() {
-      try {
-        clearTimeout(this.error);
-        this.error = false;
-        return await this.getAZBAfiles();
-      } catch (err) {
-        console.error(err);
-        this.error = setTimeout(this.getAZBA, 3000);
-      }
+    try {
+      this.results = await this.sia.getAZBA();
+      this.error = false;
+    } catch {
+      this.error = true;
     }
   },
+  // methods: {
+  //   async getAZBA() {
+  //     try {
+  //       clearTimeout(this.error);
+  //       this.error = false;
+  //       return await this.getAZBAfiles();
+  //     } catch (err) {
+  //       console.error(err);
+  //       this.error = setTimeout(this.getAZBA, 3000);
+  //     }
+  //   }
+  // },
   filters: {
     asTime(value) {
       return value.toLocaleString("fr-fr", {

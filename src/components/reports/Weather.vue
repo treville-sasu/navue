@@ -20,9 +20,9 @@
       </b-notification>
     </b-loading>
 
-    <b-tabs position="is-centered">
+    <b-tabs position="is-centered" destroy-on-hide>
       <b-tab-item label="Bulletin">
-        <AerowebBulletin :poi="poi" />
+        <AerowebBulletin />
       </b-tab-item>
       <b-tab-item label="Charts">
         <AerowebCharts />
@@ -45,9 +45,6 @@ export default {
     AerowebCharts
   },
   mixins: [Aeroweb],
-  props: {
-    poi: Array
-  },
   data() {
     return {
       validated: undefined,

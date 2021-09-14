@@ -14,7 +14,18 @@ export default new Vuex.Store({
     currentAircraft: undefined,
     currentNavigation: undefined,
     currentLocation: undefined,
-    currentFlight: undefined
+    currentFlight: undefined,
+    currentAssets: {}
+  },
+  getters: {
+    assets: state => type => {
+      return state.currentNavigation
+        ? state.currentNavigation.assets[type]
+        : state.currentAssets[type];
+    },
+    pois(state) {
+      return state.currentNavigation ? state.currentNavigation.poi : [];
+    }
   },
   mutations: {
     currentUser(
@@ -36,12 +47,22 @@ export default new Vuex.Store({
     currentLocation(state, payload) {
       state.currentLocation = payload ? Location.from(payload) : payload;
     },
+    currentAssets(state, { type, query }) {
+      Vue.set(
+        state.currentNavigation
+          ? state.currentNavigation.assets
+          : state.currentAssets,
+        type,
+        query
+      );
+    },
     cleanStore(state) {
       state.currentUser = undefined;
       state.currentAircraft = undefined;
       state.currentNavigation = undefined;
       state.currentFlight = undefined;
       state.currentLocation = undefined;
+      state.currentAssets = {};
     }
   },
   actions: {

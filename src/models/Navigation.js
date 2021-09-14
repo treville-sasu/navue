@@ -2,12 +2,11 @@ import { Model, Store } from "@/models/Base.js";
 import { Waypoint } from "@/models/Waypoint.js";
 
 export class Navigation extends Model {
-  constructor({ name, notes } = {}, ...routes) {
+  constructor({ name, notes, assets = {} } = {}, ...routes) {
     routes = new Store({}, ...routes).keep(r => {
       return r.keep(w => (w instanceof Waypoint ? w : undefined));
     });
-
-    super({ name, notes, routes });
+    super({ name, notes, assets, routes });
   }
 
   // TODO write specs

@@ -83,6 +83,16 @@ $modal-z: $navbar-fixed-z + 100;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: $column-gap;
 }
+
+.placeholder {
+  position: relative;
+  border-style: dashed;
+  border-radius: 0.5em;
+  height: 5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 
 <script>
