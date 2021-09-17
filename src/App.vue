@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar class=" is-hidden-printer" />
     <router-view />
   </div>
 </template>
@@ -92,6 +92,22 @@ $modal-z: $navbar-fixed-z + 100;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media print {
+  @page {
+    margin: 1cm;
+  }
+  section {
+    // break-before: always;
+    break-inside: avoid;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  .is-hidden-printer {
+    display: none !important;
+  }
 }
 </style>
 

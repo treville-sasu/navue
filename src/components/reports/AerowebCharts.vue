@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-field label="Meteorological Zone" expanded>
+    <b-field label="Meteorological Zone" class="is-hidden-printer" expanded>
       <b-select placeholder="Select a zone" v-model="query.zone" expanded>
         <option
           v-for="(option, key) in avaliableMaps.zones"
@@ -11,7 +11,7 @@
         </option>
       </b-select>
     </b-field>
-    <b-collapse :open="false" position="is-bottom">
+    <b-collapse :open="false" position="is-bottom" class="is-hidden-printer">
       <template #trigger="props">
         <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
         {{ !props.open ? "All options" : "Fewer options" }}
@@ -89,10 +89,7 @@ export default {
   },
   methods: {
     async search() {
-      this.results = [];
-      this.isLoading = true;
-      this.results = (await this.getMaps(this.query)).flat();
-      this.isLoading = false;
+      return (await this.getMaps(this.query)).flat();
     }
   },
   filters: {

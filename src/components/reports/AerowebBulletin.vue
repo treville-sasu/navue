@@ -1,16 +1,16 @@
 <template>
   <section>
-    <b-field label="Weather Stations" expanded>
+    <b-field label="Weather Stations" expanded class="is-hidden-printer">
       <b-icao
         v-model="query.codes"
         :presets="poi"
-        @typing="unbounce"
+        @typing="resetTimer"
         maxtags="12"
         allow-new
         expanded
       />
     </b-field>
-    <b-collapse :open="false" position="is-bottom">
+    <b-collapse :open="false" position="is-bottom" class="is-hidden-printer">
       <template #trigger="props">
         <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
         {{ !props.open ? "All options" : "Fewer options" }}
@@ -73,17 +73,13 @@ export default {
       query: {
         codes: [],
         categories: ["OPMET"]
-      },
-      isLoading: false
+      }
     };
   },
 
   methods: {
     async search() {
-      this.results = [];
-      this.isLoading = true;
-      this.results = (await this.getMessages(this.query)).flat();
-      this.isLoading = false;
+      return (await this.getMessages(this.query)).flat();
     }
   }
 };

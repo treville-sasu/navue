@@ -1,6 +1,6 @@
 <template>
-  <section class="box">
-    <b-field label="Airports" expanded>
+  <section>
+    <b-field label="Airports" expanded class="is-hidden-printer">
       <b-icao v-model="query" :presets="poi" />
     </b-field>
 
@@ -54,8 +54,7 @@ export default {
     return {
       type: "VAC",
       query: [],
-      error: false,
-      debounceTime: 1,
+      timeout: 1,
       sia: new Sia()
     };
   },
@@ -75,12 +74,10 @@ export default {
       }
     },
     async search() {
-      this.isLoading = true;
-      this.results = this.query.map(code => {
+      return this.query.map(code => {
         code.url = this.sia.getVAC(code.id);
         return code;
       });
-      this.isLoading = false;
     }
   }
 };

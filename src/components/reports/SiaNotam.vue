@@ -1,11 +1,11 @@
 <template>
   <section>
-    <b-field label="Airports & Waypoints" grouped>
+    <b-field label="Airports & Waypoints" grouped class="is-hidden-printer">
       <b-icao
         v-model="query.codes"
         maxtags="12"
         :presets="poi"
-        @typing="unbounce"
+        @typing="resetTimer"
         expanded
       />
       <b-field>
@@ -17,7 +17,7 @@
         </b-radio-button>
       </b-field>
     </b-field>
-    <b-collapse :open="false" position="is-bottom">
+    <b-collapse :open="false" position="is-bottom" class="is-hidden-printer">
       <template #trigger="props">
         <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
         {{ !props.open ? "All options" : "Fewer options" }}
@@ -180,27 +180,15 @@ export default {
         flightrules: "VFR",
         complementary: ["gps", "misc", "flyover"]
       },
-      instance: new Sia(),
-      error: false
+      sia: new Sia()
     };
   },
-
   methods: {
     async search() {
-      this.results = [];
-
-      if (this.query.codes.length) {
-        this.isLoading = true;
-        // new Date(Math.max(this.query.datetime, new Date()));
-        try {
-          this.results = await this.instance.getNOTAM(this.query);
-          this.error = false;
-        } catch (e) {
-          console.debug(e);
-          this.error = true;
-        }
-        this.isLoading = false;
+      if (this.query.datetime < new Date()) {
+        this.query.datetime = new Date();
       }
+      return await this.sia.getNOTAM(this.query);
     }
   }
 };

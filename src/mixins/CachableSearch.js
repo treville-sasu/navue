@@ -2,24 +2,19 @@ export default {
   data() {
     return {
       results: [],
-      debounceTime: 1000,
-      debounce: undefined,
+      error: false,
+      timeout: 1000,
+      timer: undefined,
       isLoading: false
     };
   },
   created() {
-    if (this.$store.getters.assets(this.type))
-      this.query = this.$store.getters.assets(this.type);
-  },
-  destroyed() {
-    this.$store.commit("currentAssets", {
-      type: this.type,
-      query: this.query
-    });
+    if (this.$store.state.currentQueries[this.type])
+      this.query = this.$store.state.currentQueries[this.type];
   },
   computed: {
     poi() {
-      return this.$store.getters.pois; //.map(id => ({ id, name: id }));
+      return this.$store.getters.pois;
     }
   },
   watch: {
@@ -27,14 +22,30 @@ export default {
       deep: true,
       immediate: true,
       handler() {
-        this.unbounce();
-        this.debounce = setTimeout(this.search, this.debounceTime);
+        if (!this.isLoading) {
+          this.resetTimer();
+          this.timer = setTimeout(this.triggerSearch, this.timeout);
+        }
       }
     }
   },
   methods: {
-    unbounce() {
-      clearTimeout(this.debounce);
+    resetTimer() {
+      clearTimeout(this.timer);
+    },
+    async triggerSearch() {
+      this.isLoading = true;
+      this.$store.commit("currentQueries", {
+        [this.type]: this.query
+      });
+      try {
+        this.results = await this.search();
+        this.error = false;
+      } catch (e) {
+        console.debug(e);
+        this.error = true;
+      }
+      this.isLoading = false;
     }
   }
 };

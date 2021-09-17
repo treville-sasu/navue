@@ -37,7 +37,6 @@ const routes = [
   {
     path: "/local",
     name: "Local",
-    props: route => ({ codes: route.query.poi.split(",") }),
     component: () => import("../views/Local.vue")
   },
   {
@@ -50,15 +49,14 @@ const routes = [
 const router = new VueRouter({
   mode: "history",
   routes,
-  linkActiveClass: "is-active",
-  scrollBehavior(to) {
-    if (to.hash) {
-      return {
-        selector: to.hash
-        // , offset: { x: 0, y: 10 }
-      };
-    }
-  }
+  linkActiveClass: "is-active"
+  // scrollBehavior({ hash }) {
+  //   if (hash) {
+  //     return {
+  //       selector: hash
+  //     };
+  //   }
+  // }
 });
 
 export default router;
