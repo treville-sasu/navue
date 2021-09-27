@@ -30,7 +30,9 @@
             </p>
             <div class="level-right">
               <p class="level-item">
-                <b-button icon-right="bookmark-plus">Add to bookmark</b-button>
+                <b-button icon-right="star-outline" disabled
+                  >Press {{ shortcut }} or
+                </b-button>
               </p>
             </div>
           </nav>
@@ -38,16 +40,12 @@
       </div>
     </section>
     <section class="section">
-      <h2 class="title">METAR & TAF</h2>
+      <h2 class="title">METAR, ...</h2>
       <AerowebBulletin :key="reloadDate" />
     </section>
     <section class="section">
       <h2 class="title">Forecast Charts</h2>
       <AerowebCharts :key="reloadDate" />
-    </section>
-    <section class="section">
-      <h2 class="title">Visual Approach Charts</h2>
-      <SiaVac :key="reloadDate" />
     </section>
     <section class="section">
       <h2 class="title">Notam</h2>
@@ -56,6 +54,10 @@
     <section class="section">
       <h2 class="title">RTBA - AZBA</h2>
       <SiaAzba :key="reloadDate" />
+    </section>
+    <section class="section">
+      <h2 class="title">Visual Approach Charts</h2>
+      <SiaVac :key="reloadDate" />
     </section>
   </section>
 </template>
@@ -118,6 +120,13 @@ export default {
     },
     queryAge() {
       return Math.floor((this.currentDate - this.reloadDate) / 1000 / 60);
+    },
+    shortcut() {
+      return (
+        (navigator.userAgent.toLowerCase().indexOf("mac") != -1
+          ? "Cmd"
+          : "CTRL") + " + D"
+      );
     }
   },
   watch: {

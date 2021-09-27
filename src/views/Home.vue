@@ -48,6 +48,9 @@
                 >Source Code</a
               >
             </li>
+            <li>
+              <a href="/preflight">Pre-flight</a>
+            </li>
           </ul>
         </div>
       </nav>
