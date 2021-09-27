@@ -35,9 +35,9 @@ const routes = [
     component: () => import("../views/Wip.vue")
   },
   {
-    path: "/local",
-    name: "Local",
-    component: () => import("../views/Local.vue")
+    path: "/preflight",
+    name: "Preflight",
+    component: () => import("../views/Preflight.vue")
   },
   {
     path: "/about",

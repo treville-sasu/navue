@@ -1,5 +1,6 @@
 <template>
-  <section>
+  <!-- à retirer quand on aura une modal avec background -->
+  <section class="box">
     <b-field label="Airports" expanded class="is-hidden-printer">
       <b-icao v-model="query" :presets="poi" />
     </b-field>

@@ -76,6 +76,8 @@ export const RouteHandler = {
   methods: {
     setupMap(e) {
       this.map = e;
+    },
+    locateAndCenter() {
       this.map.locate({ setView: true, maxZoom: 10 });
     },
     selectRoute(id) {

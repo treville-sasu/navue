@@ -75,7 +75,7 @@ import SiaNotam from "@/components/reports/SiaNotam.vue";
 import SiaAzba from "@/components/reports/SiaAzba.vue";
 
 export default {
-  name: "Local",
+  name: "Preflight",
   components: {
     AerowebBulletin,
     AerowebCharts,

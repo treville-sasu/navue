@@ -5,7 +5,7 @@
         <div class="columns is-vcentered">
           <div class="column">
             <figure class="image is-square">
-              <img src="@/assets/logo-transparent.svg" />
+              <img src="@/assets/logo-transparent.svg" alt="" />
             </figure>
           </div>
           <div class="column is-two-thirds has-text-centered">
@@ -27,6 +27,7 @@
             <li>
               <a
                 target="_blank"
+                rel="noopener"
                 href="https://github.com/treville-sasu/navue/issues"
                 >Contribute</a
               >
@@ -34,12 +35,16 @@
             <li>
               <a
                 target="_blank"
+                rel="noopener"
                 href="https://github.com/treville-sasu/navue/discussions"
                 >Get Help</a
               >
             </li>
             <li>
-              <a target="_blank" href="https://github.com/treville-sasu/navue"
+              <a
+                target="_blank"
+                rel="noopener"
+                href="https://github.com/treville-sasu/navue"
                 >Source Code</a
               >
             </li>

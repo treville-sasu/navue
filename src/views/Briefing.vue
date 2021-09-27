@@ -18,6 +18,13 @@
               triggers: ['click', 'hover']
             }"
           />
+          <p class="control">
+            <b-button @click="locateAndCenter">
+              <b-tooltip position="is-bottom" label="Locate">
+                <b-icon icon="map-marker" />
+              </b-tooltip>
+            </b-button>
+          </p>
         </b-field>
       </l-control>
 

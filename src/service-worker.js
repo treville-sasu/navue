@@ -52,13 +52,11 @@ const CorsProxyPlugin = {
 };
 
 const MonthlyExpirationPlugin = new workbox.expiration.Plugin({
-  maxEntries: 100,
   maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
   purgeOnQuotaError: true
 });
 
 const DailyExpirationPlugin = new workbox.expiration.Plugin({
-  maxEntries: 100,
   maxAgeSeconds: 24 * 60 * 60, // 1 Day
   purgeOnQuotaError: true
 });
@@ -94,7 +92,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   new RegExp("^.*www.sia.aviation-civile.gouv.fr/pub"),
-  new workbox.strategies.NetworkFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: `${CACHE_PREFIX}_SIA_AZBA`,
     networkTimeoutSeconds: 10,
     plugins: [CorsProxyPlugin, DailyExpirationPlugin]
@@ -103,7 +101,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   new RegExp("^.*www.sia.aviation-civile.gouv.fr/dvd"),
-  new workbox.strategies.NetworkFirst({
+  new workbox.strategies.CacheFirst({
     cacheName: `${CACHE_PREFIX}_SIA_VAC`,
     networkTimeoutSeconds: 10,
     plugins: [CorsProxyPlugin, MonthlyExpirationPlugin]
@@ -118,12 +116,19 @@ workbox.routing.registerRoute(
   })
 );
 
-// TODO: DO NOT CACHE root request
 workbox.routing.registerRoute(
   new RegExp("^.*notamweb.aviation-civile.gouv.fr"),
-  new workbox.strategies.NetworkOnly({
+  new workbox.strategies.NetworkFirst({
+    cacheName: `${CACHE_PREFIX}_SIA_NOTAM`,
     networkTimeoutSeconds: 10,
-    plugins: [MixedContentPlugin, CorsProxyPlugin]
+    plugins: [
+      MixedContentPlugin,
+      CorsProxyPlugin,
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 3 * 60 * 60,
+        purgeOnQuotaError: true
+      })
+    ]
   }),
   "POST"
 );
