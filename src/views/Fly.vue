@@ -7,7 +7,7 @@
       @contextmenu="setDestination"
     >
       <l-control position="topleft">
-        <b-field class="is-stackable" addons>
+        <b-field class="is-stackable">
           <MovingMapSettings
             v-bind="settings"
             @update:settings="updateSettings"

@@ -6,8 +6,10 @@
           src="img/icons/android-chrome-192x192.png"
           alt="Navue, a navigation tool for general aviation."
         />
-        <b-tag type="is-danger">beta</b-tag>
       </b-navbar-item>
+      <b-navbar-item tag="span">
+        <b-tag type="is-danger">beta</b-tag></b-navbar-item
+      >
     </template>
     <template slot="start">
       <b-navbar-item tag="router-link" :to="{ name: 'Briefing' }"

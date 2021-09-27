@@ -27,6 +27,7 @@ $modal-z: $navbar-fixed-z + 100;
   @include until($desktop) {
     flex-direction: column;
     align-items: flex-end;
+
     :first-child:not(:only-child) .button,
     :first-child:not(:only-child) .input,
     :first-child:not(:only-child) .select select {
@@ -34,6 +35,14 @@ $modal-z: $navbar-fixed-z + 100;
       border-top-right-radius: $control-radius;
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
+    }
+    :not(:first-child):not(:last-child):not(:only-child) .button,
+    :not(:first-child):not(:last-child):not(:only-child) .input,
+    :not(:first-child):not(:last-child):not(:only-child) .select select {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
     :last-child:not(:only-child) .button,
     :last-child:not(:only-child) .input,
@@ -53,6 +62,14 @@ $modal-z: $navbar-fixed-z + 100;
     :first-child:not(:only-child) .select select {
       border-top-left-radius: $control-radius;
       border-bottom-left-radius: $control-radius;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    :not(:first-child):not(:last-child):not(:only-child) .button,
+    :not(:first-child):not(:last-child):not(:only-child) .input,
+    :not(:first-child):not(:last-child):not(:only-child) .select select {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }

@@ -6,20 +6,19 @@
       <vue-leaflet-minimap v-bind="miniMapSettings" />
 
       <l-control position="topleft">
-        <b-field class="is-stackable" addons>
-          <DataToolbox
+        <DataToolbox
           class="is-stackable"
           location
-            :navigation="{
-              create: true,
-              edit: true
-            }"
-            aircraft
-            :dropdown="{
-              position: 'is-bottom-right',
-              triggers: ['click', 'hover']
-            }"
-          />
+          :navigation="{
+            create: true,
+            edit: true
+          }"
+          aircraft
+          :dropdown="{
+            position: 'is-bottom-right',
+            triggers: ['click', 'hover']
+          }"
+        />
       </l-control>
 
       <l-control position="bottomleft">
