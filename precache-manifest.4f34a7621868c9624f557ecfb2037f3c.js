@@ -8,28 +8,28 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/browserconfig.xml"
   },
   {
-    "revision": "6e216d3528fc35fafd1b",
+    "revision": "bc5780eadbbd0a7fddc1",
     "url": "/css/app.448b79ac.css"
   },
   {
-    "revision": "14b8931840531ed00c9b",
+    "revision": "ad800518869a68d5df14",
     "url": "/css/chunk-05ee3090.445a7757.css"
   },
   {
-    "revision": "16f11c58f25d23129893",
+    "revision": "89f298fba889115e1f71",
     "url": "/css/chunk-43e3b279.e5fee7d8.css"
   },
   {
-    "revision": "35afe47b04096408dedb",
+    "revision": "7f58c942e39e253c3b43",
+    "url": "/css/chunk-46bff41f.4a9605ab.css"
+  },
+  {
+    "revision": "064290e5a38601d20e26",
     "url": "/css/chunk-66ac656c.fbf42266.css"
   },
   {
-    "revision": "92e73c8a23bfb77e7cd0",
+    "revision": "45db326844fdbf8087d4",
     "url": "/css/chunk-6a3eae22.48d2b289.css"
-  },
-  {
-    "revision": "de6beb0d81b4deb9791e",
-    "url": "/css/chunk-a3fa1d48.0aac923c.css"
   },
   {
     "revision": "6e8829218028dbfed429",
@@ -145,7 +145,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   },
   {
     "revision": "0f0fc1fb970b3e4bb1e4dbab1593b598",
-    "url": "/img/screenshots/fly-mobile-portait.webp"
+    "url": "/img/screenshots/fly-mobile-portrait.webp"
   },
   {
     "revision": "58ec87755c115b8fde77a31c5a13e6a5",
@@ -176,59 +176,59 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/toggle.c82cf08c.svg"
   },
   {
-    "revision": "77eb0dc8c254044eeee9c08e676c837a",
+    "revision": "c8a21f17f718c2a1c116276638dac4dc",
     "url": "/index.html"
   },
   {
-    "revision": "6e216d3528fc35fafd1b",
-    "url": "/js/app.55ab173b.js"
+    "revision": "bc5780eadbbd0a7fddc1",
+    "url": "/js/app.ebeddaa9.js"
   },
   {
-    "revision": "14b8931840531ed00c9b",
-    "url": "/js/chunk-05ee3090.40d6abec.js"
+    "revision": "ad800518869a68d5df14",
+    "url": "/js/chunk-05ee3090.107bde01.js"
   },
   {
-    "revision": "cfe5094c8a8aeb47b6f4",
-    "url": "/js/chunk-0fc0d246.069e8789.js"
+    "revision": "13f82cd6da79311904fd",
+    "url": "/js/chunk-0fc0d246.47bcadc6.js"
   },
   {
-    "revision": "85e0c69624fc6d5da303",
-    "url": "/js/chunk-2d0c8dd2.59afee2c.js"
+    "revision": "515edb9460f6188e9a37",
+    "url": "/js/chunk-2d0c8dd2.3036b02a.js"
   },
   {
-    "revision": "4d650ac183c6f22a09ab",
-    "url": "/js/chunk-2d221f18.d56fab61.js"
+    "revision": "58bb4c3f3caab2603099",
+    "url": "/js/chunk-2d221f18.8e283700.js"
   },
   {
-    "revision": "7ce0306f1ce996545988",
-    "url": "/js/chunk-2f5398a4.e2e43611.js"
+    "revision": "17e338c01f4df327fb9d",
+    "url": "/js/chunk-2f5398a4.da9a93b9.js"
   },
   {
-    "revision": "16f11c58f25d23129893",
-    "url": "/js/chunk-43e3b279.f77bd5e1.js"
+    "revision": "89f298fba889115e1f71",
+    "url": "/js/chunk-43e3b279.54af5f91.js"
   },
   {
-    "revision": "35afe47b04096408dedb",
-    "url": "/js/chunk-66ac656c.7a74c14b.js"
+    "revision": "7f58c942e39e253c3b43",
+    "url": "/js/chunk-46bff41f.45d42b80.js"
   },
   {
-    "revision": "dd51a21326794d66d25c",
-    "url": "/js/chunk-698fb2b4.28965ea9.js"
+    "revision": "064290e5a38601d20e26",
+    "url": "/js/chunk-66ac656c.99b192f3.js"
   },
   {
-    "revision": "92e73c8a23bfb77e7cd0",
-    "url": "/js/chunk-6a3eae22.6fa35bf7.js"
+    "revision": "8972ecf7f49720556bcb",
+    "url": "/js/chunk-698fb2b4.912c2127.js"
   },
   {
-    "revision": "de6beb0d81b4deb9791e",
-    "url": "/js/chunk-a3fa1d48.2f26498a.js"
+    "revision": "45db326844fdbf8087d4",
+    "url": "/js/chunk-6a3eae22.08e388a1.js"
   },
   {
     "revision": "6e8829218028dbfed429",
     "url": "/js/chunk-vendors.7f1b302b.js"
   },
   {
-    "revision": "5936f20da493df72933d1db870e94361",
+    "revision": "352e1e054df58592122321e327a3271a",
     "url": "/navue.webmanifest"
   }
 ]);
