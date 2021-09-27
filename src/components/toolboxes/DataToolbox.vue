@@ -37,7 +37,7 @@ import AircraftManager from "@/components/managers/AircraftManager";
 import FlightManager from "@/components/managers/FlightManager";
 
 export default {
-  name: "DataToolbar",
+  name: "DataToolbox",
   components: {
     NavigationManager,
     AircraftManager,

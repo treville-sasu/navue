@@ -14,7 +14,7 @@
             position="is-bottom-right"
             :triggers="['click', 'hover']"
           />
-          <DataToolbar
+          <DataToolbox
             v-if="!settings.inFlight"
             navigation
             aircraft
@@ -30,7 +30,7 @@
       <l-control-zoom v-if="settings.zoomControl" position="topleft" />
 
       <l-control position="bottomleft">
-        <ReportToolbar
+        <ReportToolbox
           :tooltip="{ position: 'is-top' }"
           class="is-stackable"
           navlog
@@ -45,7 +45,7 @@
         <InstrumentsDisplay class="is-stackable" v-bind="currentLocation" />
       </l-control>
       <l-control position="bottomright">
-        <TimerToolbar @update:settings="updateSettings" />
+        <TimerToolbox @update:settings="updateSettings" />
       </l-control>
 
       <l-base-layer-group />
@@ -105,9 +105,10 @@ import { DestinationHandler } from "@/mixins/DestinationHandler";
 
 import MovingMapSettings from "@/components/MovingMapSettings";
 import InstrumentsDisplay from "@/components/InstrumentsDisplay";
-import TimerToolbar from "@/components/TimerToolbar";
-import ReportToolbar from "@/components/ReportToolbar";
-import DataToolbar from "@/components/DataToolbar";
+
+import TimerToolbox from "@/components/toolboxes/TimerToolbox";
+import ReportToolbox from "@/components/toolboxes/ReportToolbox";
+import DataToolbox from "@/components/toolboxes/DataToolbox";
 
 import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup";
 import LLocationMarker from "@/components/leaflet/LLocationMarker";
@@ -125,9 +126,9 @@ export default {
     LPolyline,
     MovingMapSettings,
     InstrumentsDisplay,
-    TimerToolbar,
-    ReportToolbar,
-    DataToolbar,
+    TimerToolbox,
+    ReportToolbox,
+    DataToolbox,
     LBaseLayerGroup,
     LLocationMarker,
     LRouteLayerGroup,

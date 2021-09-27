@@ -22,7 +22,7 @@
       </b-tooltip>
     </b-radio-button>
 
-    <b-radio-button v-if="vac" v-model="modalName" native-value="SiaVac">
+    <b-radio-button v-if="vac" v-model="modalName" native-value="Charts">
       <b-tooltip label="VAC" v-bind="tooltip">
         <b-icon icon="airport" v-bind="icon" />
       </b-tooltip>
@@ -62,17 +62,17 @@
 
 import NavigationLog from "@/components/NavigationLog";
 import Checklists from "@/components/Checklists";
-import SiaVac from "@/components/reports/SiaVac";
+import Charts from "@/components/reports/Charts";
 import Weather from "@/components/reports/Weather";
 import AeronauticalInformations from "@/components/reports/AeronauticalInformations";
 import Balance from "@/components/reports/Balance";
 
 export default {
-  name: "ReportToolbar",
+  name: "ReportToolbox",
   components: {
     NavigationLog,
     Checklists,
-    SiaVac,
+    Charts,
     Weather,
     AeronauticalInformations,
     Balance

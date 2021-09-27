@@ -7,7 +7,7 @@
 
       <l-control position="topleft">
         <b-field class="is-stackable" addons>
-          <DataToolbar
+          <DataToolbox
             :navigation="{
               create: true,
               edit: true
@@ -38,7 +38,7 @@
       />
 
       <l-control position="bottomleft">
-        <ReportToolbar
+        <ReportToolbox
           :tooltip="{ position: 'is-top' }"
           class="is-stackable"
           vac
@@ -111,10 +111,9 @@ import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
 import LControlGeocoder from "@/components/leaflet/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 
-import DataToolbar from "@/components/DataToolbar.vue";
-
-import RouteToolbox from "@/components/RouteToolbox";
-import ReportToolbar from "@/components/ReportToolbar.vue";
+import DataToolbox from "@/components/toolboxes/DataToolbox.vue";
+import RouteToolbox from "@/components/toolboxes/RouteToolbox";
+import ReportToolbox from "@/components/toolboxes/ReportToolbox.vue";
 
 import { RouteHandler } from "@/mixins/RouteHandler";
 
@@ -128,9 +127,9 @@ export default {
     LRouteLayerGroup,
     VueLeafletMinimap,
     LControlGeocoder,
-    DataToolbar,
+    DataToolbox,
     RouteToolbox,
-    ReportToolbar
+    ReportToolbox
   },
   mixins: [RouteHandler],
   data() {

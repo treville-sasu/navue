@@ -69,7 +69,7 @@
 import UnitSystem from "@/mixins/UnitSystem.js";
 
 export default {
-  name: "TimerToolbar",
+  name: "TimerToolbox",
   mixins: [UnitSystem],
   data() {
     return {
