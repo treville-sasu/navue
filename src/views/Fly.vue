@@ -16,6 +16,7 @@
           />
           <DataToolbox
             v-if="!settings.inFlight"
+            location
             navigation
             aircraft
             :flight="{ persistent: true, trace: traceDB }"
@@ -138,6 +139,7 @@ export default {
   data() {
     return {
       legStart: undefined,
+      map: undefined,
       settings: {
         getLocation: true,
         setView: true,
@@ -156,10 +158,12 @@ export default {
       }
     };
   },
+  provide: function() {
+    return {
+      getMap: this.getMap
+    };
+  },
   computed: {
-    map() {
-      return this.$refs.movingMap.mapObject;
-    },
     navigation() {
       return this.$store.state.currentNavigation;
     },
@@ -220,11 +224,15 @@ export default {
     }
   },
   methods: {
+    getMap() {
+      return this.map;
+    },
     newLeg() {
       this.trace.unshift([]);
       this.legStart = Date.now();
     },
-    setupMap() {
+    setupMap(e) {
+      this.map = e;
       if (this.settings.getLocation) this.startLocate();
     },
     bestView(location) {

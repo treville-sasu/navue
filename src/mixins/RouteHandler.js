@@ -3,9 +3,15 @@ import { Navigation } from "@/models/Navigation.js";
 export const RouteHandler = {
   data() {
     return {
+      map: undefined,
       tool: null,
       pointerPosition: null,
       currentRoute: null
+    };
+  },
+  provide: function() {
+    return {
+      getMap: this.getMap
     };
   },
   computed: {
@@ -77,8 +83,8 @@ export const RouteHandler = {
     setupMap(e) {
       this.map = e;
     },
-    locateAndCenter() {
-      this.map.locate({ setView: true, maxZoom: 10 });
+    getMap() {
+      return this.map;
     },
     selectRoute(id) {
       this.currentRoute = this.inactiveRoutes[id];

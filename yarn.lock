@@ -8436,6 +8436,18 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"leaflet-geosearch@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "leaflet-geosearch@npm:3.5.0"
+  dependencies:
+    leaflet: ^1.6.0
+  dependenciesMeta:
+    leaflet:
+      optional: true
+  checksum: caec13a216ef037a0a234bb9b81de7b2f8e85d6f2851a3de162e0999dfe7ece2f96890b6465f38f2652c6d92f998c0de072136720d94370192f7f9acedabe7e5
+  languageName: node
+  linkType: hard
+
 "leaflet-minimap@npm:^3.6.1":
   version: 3.6.1
   resolution: "leaflet-minimap@npm:3.6.1"
@@ -9426,6 +9438,7 @@ fsevents@~2.1.2:
     http-server: ^0.12.3
     leaflet: ^1.6.0
     leaflet-control-geocoder: ^1.13.0
+    leaflet-geosearch: ^3.5.0
     leaflet-minimap: ^3.6.1
     pouchdb: ^7.2.2
     pouchdb-authentication: ^1.1.3

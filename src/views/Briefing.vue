@@ -8,6 +8,8 @@
       <l-control position="topleft">
         <b-field class="is-stackable" addons>
           <DataToolbox
+          class="is-stackable"
+          location
             :navigation="{
               create: true,
               edit: true
@@ -18,24 +20,7 @@
               triggers: ['click', 'hover']
             }"
           />
-          <p class="control">
-            <b-button @click="locateAndCenter">
-              <b-tooltip position="is-bottom" label="Locate">
-                <b-icon icon="map-marker" />
-              </b-tooltip>
-            </b-button>
-          </p>
-        </b-field>
       </l-control>
-
-      <l-control-geocoder
-        :options="{
-          position: 'topleft',
-          showResultIcons: true,
-          showUniqueResult: true,
-          defaultMarkGeocode: false
-        }"
-      />
 
       <l-control position="bottomleft">
         <ReportToolbox
@@ -108,7 +93,6 @@ import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup.vue";
 
 import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup.vue";
 
-import LControlGeocoder from "@/components/leaflet/LControlGeocoder";
 import VueLeafletMinimap from "vue-leaflet-minimap";
 
 import DataToolbox from "@/components/toolboxes/DataToolbox.vue";
@@ -118,7 +102,7 @@ import ReportToolbox from "@/components/toolboxes/ReportToolbox.vue";
 import { RouteHandler } from "@/mixins/RouteHandler";
 
 export default {
-  name: "Route",
+  name: "Briefing",
   components: {
     LMap,
     LPolyline,
@@ -126,7 +110,6 @@ export default {
     LBaseLayerGroup,
     LRouteLayerGroup,
     VueLeafletMinimap,
-    LControlGeocoder,
     DataToolbox,
     RouteToolbox,
     ReportToolbox

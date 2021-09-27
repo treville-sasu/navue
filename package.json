@@ -24,6 +24,7 @@
     "geodesy": "^2.2.1",
     "leaflet": "^1.6.0",
     "leaflet-control-geocoder": "^1.13.0",
+    "leaflet-geosearch": "^3.5.0",
     "leaflet-minimap": "^3.6.1",
     "pouchdb": "^7.2.2",
     "pouchdb-authentication": "^1.1.3",
