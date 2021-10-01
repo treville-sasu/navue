@@ -11,18 +11,8 @@
         :lat-lngs="[from.latlng, to.latlng]"
         className="destinationVector"
       >
-        <l-tooltip
-          :options="{
-            className: 'routeLabel',
-            direction: 'center',
-            permanent: true
-          }"
-          :key="[to.latlng, from.latlng]"
-        >
-          <!-- sticky: true -->
-          {{ bearing }} | {{ ETE | asDuration(1000) }} |
-          {{ distance | as("NM", 3) }}
-        </l-tooltip>
+        <!-- {{ bearing }} | {{ ETE | asDuration(1000) }} |
+          {{ distance | as("NM", 3) }} -->
       </l-polyline>
     </l-layer-group>
   </span>
@@ -44,7 +34,7 @@
 </style>
 
 <script>
-import { LLayerGroup, LMarker, LIcon, LPolyline, LTooltip } from "vue2-leaflet";
+import { LLayerGroup, LMarker, LIcon, LPolyline } from "vue2-leaflet";
 
 import UnitSystem from "@/mixins/UnitSystem.js";
 
@@ -56,7 +46,6 @@ export default {
     LLayerGroup,
     LMarker,
     LIcon,
-    LTooltip,
     LPolyline
   },
   props: {
@@ -67,22 +56,22 @@ export default {
   computed: {
     destinationVector() {
       return [this.from.latlng, this.to.latlng];
-    },
-    distance() {
-      return this.from.distanceTo(this.to, { precision: 3 });
-    },
-    ETE() {
-      return this.distance / this.from.speed;
-    },
-    bearing() {
-      return this.from.bearingTo(this.to, { precision: 3 });
-      // },
-      // vertical_speed() {
-      //   return new Speed(
-      //     (this.to.altitude - this.from.altitude) / this.ETE,
-      //     "m/s"
-      //   );
     }
+    // distance() {
+    //   return this.from.distanceTo(this.to, { precision: 3 });
+    // },
+    // ETE() {
+    //   return this.distance / this.from.speed;
+    // },
+    // bearing() {
+    //   return this.from.bearingTo(this.to, { precision: 3 });
+    // },
+    // vertical_speed() {
+    //   return new Speed(
+    //     (this.to.altitude - this.from.altitude) / this.ETE,
+    //     "m/s"
+    //   );
+    // }
   }
 };
 </script>
