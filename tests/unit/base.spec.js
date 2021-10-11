@@ -40,7 +40,7 @@ describe("store", () => {
       expect(new Store({ name: "name" })).toStrictEqual(
         expect.arrayContaining([])
       );
-      expect(new Store({ name: "name" }).name).toStrictEqual("name");
+      expect(new Store({ name: "name" }).name).toBe("name");
       expect(new Store(undefined, 1, 2, 3)).toStrictEqual(
         expect.arrayContaining([1, 2, 3])
       );
@@ -66,7 +66,7 @@ describe("store", () => {
       let store = new Store(undefined, 1, 2, 3);
       expect(store.name).toBeUndefined();
       store.name = "name";
-      expect(store.name).toStrictEqual("name");
+      expect(store.name).toBe("name");
     });
 
     // it("remove item from store by value", () => {
@@ -167,7 +167,7 @@ describe("store", () => {
       expect(new Store({ name: "name" }).items).toStrictEqual(
         expect.arrayContaining([])
       );
-      expect(new Store({ name: "name" }).name).toStrictEqual("name");
+      expect(new Store({ name: "name" }).name).toBe("name");
       expect(new Store(undefined, 1, 2, 3).items).toStrictEqual(
         expect.arrayContaining([1, 2, 3])
       );
@@ -204,7 +204,7 @@ describe("store", () => {
       let store = new Store(undefined, 1, 2, 3);
       expect(store.name).toBeUndefined();
       store.name = "name";
-      expect(store.name).toStrictEqual("name");
+      expect(store.name).toBe("name");
     });
 
     it("add or insert item to store", () => {

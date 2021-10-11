@@ -240,10 +240,10 @@ describe("quantity", () => {
     it("coerc to Number", () => {
       let q = new QuantityWithUnits(10, "mm");
       expect(q.valueOf()).toBe(q._value);
-      expect(Number(q)).toStrictEqual(0.01);
-      expect(q + q).toStrictEqual(0.02);
-      expect(q + 1).toStrictEqual(1.01);
-      expect(q * q).toStrictEqual(0.0001);
+      expect(Number(q)).toBe(0.01);
+      expect(q + q).toBe(0.02);
+      expect(q + 1).toBe(1.01);
+      expect(q * q).toBe(0.0001);
     });
 
     it("toString() coerc to String", () => {

@@ -9,7 +9,7 @@
     "plugin:vue/essential",
     "eslint:recommended",
     "@vue/prettier",
-    "plugin:jest/all"
+    "plugin:jest/recommended"
   ],
   "plugins": [
     "jest"
@@ -18,7 +18,7 @@
     "ecmaVersion": 2020
   },
   "rules": {
-    "compat/compat": "error",
+    "compat/compat": "warn",
     "no-console": "off",
     "no-debugger": "off",
     "jest/prefer-expect-assertions": [
