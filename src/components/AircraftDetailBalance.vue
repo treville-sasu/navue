@@ -66,7 +66,12 @@ import BWeight from "@/components/buefy/BWeight";
 export default {
   name: "AircraftDetailBalance",
   components: { BDistance, BWeight },
-  props: ["value"],
+  props: ["balance"],
+  data() {
+    return {
+      value: this.balance
+    };
+  },
   computed: {
     // TODO: check if still needed with buefy 0.9.3
     curatedDate: {
@@ -92,7 +97,7 @@ export default {
     value: {
       deep: true,
       handler(val) {
-        this.$emit("input", val);
+        this.$emit("update:paces", val);
       }
     }
   }

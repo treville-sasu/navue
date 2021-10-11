@@ -52,7 +52,10 @@ import { Consumption } from "@/models/Quantities.js";
 
 export default {
   name: "AircraftDetailConsumptions",
-  props: ["value"],
+  props: ["consumptions"],
+  data() {
+    return { value: this.consumptions };
+  },
   methods: {
     addItem() {
       this.value.add(
@@ -67,7 +70,7 @@ export default {
     value: {
       deep: true,
       handler(val) {
-        this.$emit("input", val);
+        this.$emit("update:consumptions", val);
       }
     }
   }

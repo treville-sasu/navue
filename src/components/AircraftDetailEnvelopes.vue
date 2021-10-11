@@ -72,10 +72,13 @@ import BWeight from "@/components/buefy/BWeight";
 export default {
   name: "AircraftDetailEnvelopes",
   components: { BDistance, BWeight, BalanceChart },
-  props: ["value"],
+  props: ["envelopes"],
   mixins: [ChartSettings],
   data() {
-    return { activeTab: undefined };
+    return {
+      value: this.envelopes,
+      activeTab: undefined
+    };
   },
   computed: {
     datasets() {
@@ -96,7 +99,7 @@ export default {
   },
   methods: {
     addEnvelope() {
-      //FIXME : an erro pops in tabs when adding an envelope.
+      //FIXME : an error pops in tabs when adding an envelope.
       this.activeTab = this.value.add(new Store({ name: undefined })) - 1;
     },
     removeEnvelope(index) {
@@ -114,7 +117,7 @@ export default {
     value: {
       deep: true,
       handler(val) {
-        this.$emit("input", val);
+        this.$emit("update:envelopes", val);
       }
     }
   }

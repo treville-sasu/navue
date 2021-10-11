@@ -33,9 +33,10 @@ import BSpeed from "@/components/buefy/BSpeed";
 export default {
   name: "AircraftDetailPaces",
   components: { BSpeed },
-  props: ["value"],
+  props: ["paces"],
   data() {
     return {
+      value: this.paces,
       checkedRows: []
     };
   },
@@ -51,7 +52,7 @@ export default {
     value: {
       deep: true,
       handler(val) {
-        this.$emit("input", val);
+        this.$emit("update:paces", val);
       }
     }
   }

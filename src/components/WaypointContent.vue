@@ -3,9 +3,9 @@
     <header class="card-header">
       <p class="card-header-title">
         <b-field grouped>
-          <b-input v-model="value.name" placeholder="echo" expanded />
+          <b-input v-model="local.name" placeholder="echo" expanded />
           <b-altitude
-            v-model="value.altitude"
+            v-model="local.altitude"
             placeholder="alt."
             :controls="false"
           />
@@ -13,12 +13,12 @@
       </p>
     </header>
     <div class="card-content">
-      <b-notepad v-model="value.notes" :rows="2" />
+      <b-notepad v-model="local.notes" :rows="2" />
     </div>
     <footer class="card-footer">
       <b-field position="is-centered">
         <b-input
-          :value="value.point.toString()"
+          :value="local.point.toString()"
           icon="crosshairs-gps"
           readonly
         />
@@ -39,6 +39,11 @@ export default {
   name: "WaypointContent",
   props: {
     value: Object
+  },
+  data() {
+    return {
+      local: this.value
+    };
   }
 };
 </script>

@@ -54,14 +54,17 @@ import { Store } from "@/models/Base.js";
 export default {
   name: "AircraftDetailChecklists",
   props: {
-    value: {
+    checklists: {
       default() {
         return [];
       }
     }
   },
   data() {
-    return { activeTab: undefined };
+    return {
+      activeTab: undefined,
+      value: this.checklists
+    };
   },
   methods: {
     addList() {
@@ -91,7 +94,7 @@ export default {
     value: {
       deep: true,
       handler(val) {
-        this.$emit("input", val);
+        this.$emit("update:checklists", val);
       }
     }
   }

@@ -50,19 +50,21 @@
             </b-field>
           </b-tab-item>
           <b-tab-item label="Paces">
-            <AircraftDetailPaces :value.sync="aircraft.paces" />
+            <AircraftDetailPaces :paces.sync="aircraft.paces" />
           </b-tab-item>
           <b-tab-item label="Fuel">
-            <AircraftDetailConsumptions :value.sync="aircraft.consumptions" />
+            <AircraftDetailConsumptions
+              :consumptions.sync="aircraft.consumptions"
+            />
           </b-tab-item>
           <b-tab-item label="Balance & Weight">
-            <AircraftDetailBalance :value.sync="aircraft.balance" />
+            <AircraftDetailBalance :balance.sync="aircraft.balance" />
           </b-tab-item>
           <b-tab-item label="Envelopes">
-            <AircraftDetailEnvelopes :value.sync="aircraft.envelopes" />
+            <AircraftDetailEnvelopes :envelopes.sync="aircraft.envelopes" />
           </b-tab-item>
           <b-tab-item label="Checklists">
-            <AircraftDetailChecklists :value.sync="aircraft.checklists" />
+            <AircraftDetailChecklists :checklists.sync="aircraft.checklists" />
           </b-tab-item>
         </b-tabs>
       </div>
