@@ -49,9 +49,10 @@
         </b-tabs>
       </div>
       <div class="column">
-        <BalanceChart
-          :data="value"
-          :chart-data="datasets"
+        <chart-js
+          type="scatter"
+          :data="datasets"
+          :options="chartOptions"
           v-if="value.length > 0"
         />
       </div>
@@ -60,7 +61,7 @@
 </template>
 
 <script>
-import BalanceChart from "@/components/BalanceChart.vue";
+import ChartJs from "@/components/ChartJs.vue";
 import { ChartSettings } from "@/mixins/apputils";
 
 import { Store } from "@/models/Base.js";
@@ -71,7 +72,7 @@ import BWeight from "@/components/buefy/BWeight";
 
 export default {
   name: "AircraftDetailEnvelopes",
-  components: { BDistance, BWeight, BalanceChart },
+  components: { BDistance, BWeight, ChartJs },
   props: ["envelopes"],
   mixins: [ChartSettings],
   data() {
