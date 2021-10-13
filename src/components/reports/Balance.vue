@@ -56,14 +56,19 @@
             >Go, and set some</router-link
           >
         </div>
-        <BalanceChart :chart-data="datasets" v-else />
+        <chart-Js
+          type="scatter"
+          :data="datasets"
+          :options="chartOptions"
+          v-else
+        />
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import BalanceChart from "@/components/BalanceChart";
+import ChartJs from "@/components/ChartJs";
 import { ChartSettings } from "@/mixins/apputils";
 import { Store } from "@/models/Base";
 import { Moment } from "@/models/Moment";
@@ -71,7 +76,7 @@ import { Moment } from "@/models/Moment";
 export default {
   name: "Balance",
   components: {
-    BalanceChart
+    ChartJs
   },
   mixins: [ChartSettings],
   data() {

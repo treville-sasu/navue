@@ -1,6 +1,22 @@
+import c from "@/assets/colors.scss";
+
 export const ChartSettings = {
   data() {
     return {
+      chartOptions: {
+        elements: {
+          line: {
+            backgroundColor: [
+              c["primaryFade"],
+              c["successFade"],
+              c["infoFade"],
+              c["warningFade"]
+            ],
+            borderColor: [c["primary"], c["success"], c["info"], c["warning"]],
+            color: [c["primary"], c["success"], c["info"], c["warning"]]
+          }
+        }
+      },
       envelopesDataset: {
         showLines: true,
         showLine: true,
