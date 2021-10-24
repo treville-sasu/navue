@@ -15,11 +15,11 @@
   "dependencies": {
     "@creativebulma/bulma-divider": "^1.1.0",
     "@mdi/font": "^6.2.95",
+    "@turf/turf": "^6.5.0",
     "aeroweb": "^0.9.0",
     "buefy": "^0.9.7",
     "bulmaswatch": "github:jenil/bulmaswatch",
     "chart.js": "^3.5.1",
-    "geodesy": "^2.2.1",
     "leaflet": "^1.6.0",
     "leaflet-control-geocoder": "^2.3.0",
     "leaflet-geosearch": "^3.5.0",

@@ -1,5 +1,5 @@
 /* eslint-disable jest/no-hooks */
-import { Model, Store } from "@/models/Base.js";
+import { Model, Store } from "@/models/Base";
 
 describe("model", () => {
   it("create Model with any properties", () => {

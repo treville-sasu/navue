@@ -1,95 +1,118 @@
-import { Model, Store } from "@/models/Base.js";
-import { Waypoint } from "@/models/Waypoint.js";
+import { Journey, Branch } from "@/models/Journey";
+import { Waypoint } from "@/models/Waypoint";
 
-export class Navigation extends Model {
+import { segmentReduce } from "@turf/meta";
+import greatCircle from "@turf/great-circle";
+import distance from "@turf/distance";
+import bearing from "@turf/bearing";
+import { featureCollection, bearingToAzimuth, round } from "@turf/helpers";
+import truncate from "@turf/truncate";
+
+export class Navigation extends Journey {
   constructor({ name, notes, assets = {} } = {}, ...routes) {
-    routes = new Store({}, ...routes).keep(r => {
-      return r.keep(w => (w instanceof Waypoint ? w : undefined));
-    });
-    super({ name, notes, assets, routes });
+    let branches = routes;
+    super({ name, notes, assets }, ...branches);
   }
 
-  // TODO write specs
   get waypoints() {
+    // needed for navigations summary, get nextWaypoint
     return this.routes.items.map(r => r.items).flat();
   }
 
-  //TODO write specs
   get poi() {
-    return this.waypoints.map(wp => wp.name).filter(i => /^[A-Z]{4}$/.test(i));
+    return this.branches.flatMap(b =>
+      b
+        .map(p => p.properties.name)
+        .filter(n => /^[A-Z]{4}$/.test(n))
+        .flat()
+    );
   }
 
-  addRoute(...args) {
-    this.routes.add(new Store({}, ...args));
-    return this.routes.last;
+  addBranch(waypoints = [], properties) {
+    this.branches.push(new Branch(Waypoint, properties, ...waypoints));
+    return this;
   }
 
-  removeRoute(route) {
-    return this.routes.remove(route);
+  // needed after waypoint removal
+  // clearRoute(route) {
+  //   route = this.getRoute(route);
+  //   if (route && route.length == 0) {
+  //     this.removeBranch(route);
+  //     return true;
+  //   }
+  // }
+
+  // Should be able to insert waypoint before/after another
+  addWaypoint(wp, branchId, positionId) {
+    this.branches[branchId].insert(Waypoint.from(wp), positionId + 1);
+    // return
+  }
+  removeWaypoint(branchId, positionId) {
+    let branch = this.branches[branchId];
+    branch.remove(positionId);
+    if (branch.features.length == 0) return this.removeBranch(branch);
   }
 
-  clearRoute(route) {
-    route = this.getRoute(route);
-    if (route && route.length == 0) {
-      this.removeRoute(route);
-      return true;
-    }
-  }
-
-  addWaypoint({ insertBefore, ...wp } = {}, route) {
-    route = this.getRoute(route);
-    return route.add(Waypoint.from({ ...wp, type: "Waypoint" }), insertBefore);
-  }
-
-  removeWaypoint(wp, route) {
-    route = this.getRoute(route);
-    return Number.isInteger(wp)
-      ? route.remove(undefined, wp)
-      : route.remove(wp);
-  }
-
+  //require indexOf(indexOf())
   getNextWaypoint(wp) {
     const id = this.waypoints.indexOf(wp);
     return this.waypoints[id + 1];
   }
 
-  getRoute(objindex) {
-    if (objindex instanceof Store) return objindex;
-    else if (isFinite(objindex)) return this.routes.items[objindex];
-    else return this.last;
-  }
+  // getRoute(objindex) {
+  // could be private
+  //   if (objindex instanceof Store) return objindex;
+  //   else if (isFinite(objindex)) return this.routes.items[objindex];
+  //   else return this.last;
+  // }
 
-  getRouteId(objindex) {
-    if (objindex instanceof Store) return this.routes.indexOf(objindex);
-    else if (Number.isInteger(objindex)) return objindex;
-    else return this.routes.length - 1;
-  }
-
-  toBounds() {
-    return this.waypoints.reduce((bounds, { latitude, longitude }, index) => {
-      if (index == 0)
-        return [
-          [latitude, longitude],
-          [latitude, longitude]
-        ];
-      else
-        return [
-          [Math.min(latitude, bounds[0][0]), Math.min(longitude, bounds[0][1])],
-          [Math.max(latitude, bounds[1][0]), Math.max(longitude, bounds[1][1])]
-        ];
-    }, undefined);
-  }
-
-  static from({ type, routes, _id, _rev, ...properties } = {}) {
-    if (arguments[0] instanceof this) return arguments[0];
-    else if (type != this.name)
-      throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
-    else {
-      if (routes) routes = Store.from(routes, Store, Waypoint);
-
-      let imported = new this(properties, ...routes);
-      if (_id && _rev) Object.assign(imported, { _id, _rev });
-      return imported;
+  toGeoJSON(type) {
+    switch (type) {
+      case "Feature":
+      case "MultiLineString":
+        return segmentReduce(
+          super.toGeoJSON("MultiLineString"),
+          (legs, { geometry: { coordinates } }, f, m, g, s) => {
+            const [start, end] = coordinates;
+            legs.features.push(
+              truncate(
+                greatCircle(start, end, {
+                  npoints: 5,
+                  properties: {
+                    distance: round(distance(start, end)),
+                    bearings: [
+                      round(bearingToAzimuth(bearing(start, end))),
+                      round(bearingToAzimuth(bearing(start, end, true)))
+                    ],
+                    insertAfter: [m, s] // branch and waypoint indexes
+                  }
+                })
+              )
+            );
+            return legs;
+          },
+          featureCollection([])
+        );
+      // case "MultiPolygon":
+      //   return featureCollection(
+      //     this.branches.flatMap(b => b.toGeoJSON("MultiPolygon").features),
+      //     { bbox: this.bbox }
+      //   );
+      default:
+        return super.toGeoJSON(type);
     }
   }
+
+  // static from({ type, routes, _id, _rev, ...properties } = {}) {
+  //   if (arguments[0] instanceof this) return arguments[0];
+  //   else if (type != this.name)
+  //     throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
+  //   else {
+  //     if (routes) routes = Store.from(routes, Store, Waypoint);
+
+  //     let imported = new this(properties, ...routes);
+  //     if (_id && _rev) Object.assign(imported, { _id, _rev });
+  //     return imported;
+  //   }
+  // }
 }
