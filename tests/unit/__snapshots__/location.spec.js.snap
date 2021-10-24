@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`location imports from GeolocationPosition 1`] = `
+Object {
+  "geometry": Object {
+    "coordinates": Array [
+      0,
+      0,
+      10,
+    ],
+    "type": "Point",
+  },
+  "properties": Object {
+    "accuracy": Object {
+      "precision": 1,
+      "type": "Distance",
+      "unit": "m",
+      "value": 100,
+    },
+    "altitude": Object {
+      "accuracy": 10,
+      "precision": 1,
+      "reference": "WGS84",
+      "type": "Altitude",
+      "unit": "m",
+      "value": 10,
+    },
+    "heading": Object {
+      "precision": 2,
+      "type": "Azimuth",
+      "unit": "°",
+      "value": 270,
+    },
+    "speed": Object {
+      "precision": 1,
+      "type": "Speed",
+      "unit": "m/s",
+      "value": 10,
+    },
+    "timestamp": 1234567890,
+  },
+  "type": "Location",
+}
+`;
+
+exports[`location imports from literal 1`] = `
+Object {
+  "geometry": Object {
+    "coordinates": Array [
+      0,
+      43,
+      1000,
+    ],
+    "type": "Point",
+  },
+  "properties": Object {
+    "_id": "1620672163861",
+    "_rev": "1-ad4a6ac12faa5c391774a3120af8c39d",
+    "accuracy": Object {
+      "precision": 1,
+      "type": "Distance",
+      "unit": "m",
+      "value": 100,
+    },
+    "altitude": Object {
+      "accuracy": 50,
+      "precision": 1,
+      "reference": "WGS84",
+      "type": "Altitude",
+      "unit": "m",
+      "value": 1000,
+    },
+    "heading": Object {
+      "precision": 2,
+      "type": "Azimuth",
+      "unit": "°",
+      "value": 180,
+    },
+    "speed": Object {
+      "precision": 1,
+      "type": "Speed",
+      "unit": "m/s",
+      "value": 10,
+    },
+    "timestamp": 1620672163861,
+  },
+  "type": "Location",
+}
+`;
+
+exports[`location is instantiated 1`] = `
+Object {
+  "geometry": Object {
+    "coordinates": Array [
+      0,
+      0,
+      0,
+    ],
+    "type": "Point",
+  },
+  "properties": Object {
+    "accuracy": Object {
+      "precision": 1,
+      "type": "Distance",
+      "unit": "m",
+      "value": 20,
+    },
+    "altitude": Object {
+      "precision": 0,
+      "reference": undefined,
+      "type": "Altitude",
+      "unit": "m",
+      "value": 0,
+    },
+    "name": "Echo",
+    "notes": "Some note",
+    "timestamp": 1234567890,
+  },
+  "type": "Location",
+}
+`;
+
+exports[`location return a bounding box from accuracy 1`] = `
+Array [
+  -0.0001798640727449076,
+  -0.0001798640727449076,
+  0.0001798640727449076,
+  0.0001798640727449076,
+]
+`;
+
+exports[`location return a bounding box from radius 1`] = `
+Array [
+  -0.001798640727449076,
+  -0.001798640727449076,
+  0.001798640727449076,
+  0.001798640727449076,
+]
+`;
+
+exports[`location return a futur location in time (seconds later) 1`] = `
+Object {
+  "geometry": Object {
+    "coordinates": Array [
+      0.005396,
+      0,
+    ],
+    "type": "Point",
+  },
+  "properties": Object {},
+  "type": "Location",
+}
+`;

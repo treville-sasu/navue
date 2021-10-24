@@ -1,237 +1,82 @@
-import { Flight } from "@/models/Flight.js";
-import { Location } from "@/models/Waypoint.js";
-import { Model } from "../../src/models/Base";
-
-import theFlight from "../flight.json";
+import { Flight } from "@/models/Flight";
+import { Branch, Journey } from "@/models//Journey";
+import { Location } from "@/models/Location";
 
 describe("flight", () => {
-  it("extends Model", () => {
-    expect(Flight.prototype).toBeInstanceOf(Model);
-  });
-  it("create with defaults", () => {
-    expect(new Flight()).toHaveProperty("name", undefined);
-    expect(new Flight()).toHaveProperty("notes", undefined);
-    expect(new Flight()).toHaveProperty("checked", expect.any(Array));
-    expect(new Flight()).toHaveProperty(
-      "locations",
-      expect.arrayContaining([])
-    );
-    expect(new Flight()).toHaveProperty("milestones", expect.any(Array));
-  });
-  it("create with locations & without properties", () => {
-    expect(
-      new Flight(
-        {},
-        new Location(),
-        new Location(),
-        new Location(),
-        new Location()
-      )
-    ).toHaveProperty("locations", [
-      [new Location(), new Location(), new Location(), new Location()]
-    ]);
-    expect(
-      new Flight({}, [
-        new Location(),
-        new Location(),
-        new Location(),
-        new Location()
-      ])
-    ).toHaveProperty("locations", [
-      [new Location(), new Location(), new Location(), new Location()]
-    ]);
-    expect(
-      new Flight(
-        {},
-        [new Location(), new Location()],
-        [new Location(), new Location()]
-      )
-    ).toHaveProperty("locations", [
-      [new Location(), new Location()],
-      [new Location(), new Location()]
-    ]);
-  });
-
-  it("create with properties & rejects unvalid property", () => {
-    const flight = new Flight({
+  let emptyflight, flight;
+  beforeEach(() => {
+    emptyflight = new Flight({
       name: "test flight",
       notes: "model",
-      manufacturer: "some text", //not allowed
-      checked: [],
-      milestones: []
+      manufacturer: "not allowed",
+      checked: [1, 2],
+      milestones: ["a", "b"]
     });
-    expect(flight).toHaveProperty("name", "test flight");
-    expect(flight).toHaveProperty("notes", "model");
-    expect(flight).toHaveProperty("checked", []);
-    expect(flight).toHaveProperty("milestones", []);
-    expect(flight).toHaveProperty("locations");
-
-    expect(flight).not.toHaveProperty("manufacturer", "some text");
-  });
-
-  it("addLocation", () => {
-    expect(
-      new Flight({}, new Location(0, 0)).addLocation(new Location(1, 1))
-    ).toHaveProperty("locations", [[new Location(0, 0), new Location(1, 1)]]);
-  });
-
-  it("addTrace", () => {
-    expect(
-      new Flight().addTrace(new Location(0, 0), new Location(1, 1))
-    ).toHaveProperty("locations", [[new Location(0, 0), new Location(1, 1)]]);
-    expect(
-      new Flight().addTrace([new Location(0, 0), new Location(1, 1)])
-    ).toHaveProperty("locations", [[new Location(0, 0), new Location(1, 1)]]);
-  });
-
-  it("return trace as a multiArray of latitude, longitude, altitude", () => {
-    expect(
-      new Flight(
+    flight = new Flight(
+      {
+        name: "test flight"
+      },
+      new Branch(
+        Location,
         {},
-        [new Location(-1, 0, 0), new Location(0, 1, 1)],
-        [new Location(0, -1, 1), new Location(1, 1, 0)]
-      ).geom
-    ).toStrictEqual([
-      [
-        [-1, 0, 0],
-        [0, 1, 1]
-      ],
-      [
-        [0, -1, 1],
-        [1, 1, 0]
-      ]
-    ]);
-  });
-
-  it("return a GeoJSON object", () => {
-    let testFlight = new Flight({ name: "test flight", notes: "short one" }, [
-      [new Location(-1, 0, 0), new Location(0, 1, 1)],
-      [new Location(0, -1, 1), new Location(1, 1, 0)]
-    ]);
-    expect(testFlight.toGeoJSON("MultiPoint")).toMatchInlineSnapshot(`
-      Object {
-        "coordinates": Array [
-          Array [
-            -1,
-            0,
-            0,
-          ],
-          Array [
-            0,
-            1,
-            1,
-          ],
-          Array [
-            0,
-            -1,
-            1,
-          ],
-          Array [
-            1,
-            1,
-            0,
-          ],
-        ],
-        "type": "MultiPoint",
-      }
-    `);
-    expect(testFlight.toGeoJSON("MultiLineString")).toMatchInlineSnapshot(`
-      Object {
-        "coordinates": Array [
-          Array [
-            Array [
-              -1,
-              0,
-              0,
-            ],
-            Array [
-              0,
-              1,
-              1,
-            ],
-          ],
-          Array [
-            Array [
-              0,
-              -1,
-              1,
-            ],
-            Array [
-              1,
-              1,
-              0,
-            ],
-          ],
-        ],
-        "type": "MultiLineString",
-      }
-    `);
-    expect(testFlight.toGeoJSON("Feature")).toMatchInlineSnapshot(`
-      Object {
-        "geometry": Object {
-          "coordinates": Array [
-            Array [
-              Array [
-                -1,
-                0,
-                0,
-              ],
-              Array [
-                0,
-                1,
-                1,
-              ],
-            ],
-            Array [
-              Array [
-                0,
-                -1,
-                1,
-              ],
-              Array [
-                1,
-                1,
-                0,
-              ],
-            ],
-          ],
-          "type": "MultiLineString",
-        },
-        "properties": Object {
-          "checked": Array [],
-          "milestones": Array [],
-          "name": "test flight",
-          "notes": "short one",
-        },
-        "type": "Feature",
-      }
-    `);
-    expect(testFlight.toGeoJSON()).toStrictEqual(
-      testFlight.toGeoJSON("Feature")
+        new Location([-1, 0, 0], { timestamp: 1000 }),
+        new Location([0, 1, 1], { timestamp: 2000 })
+      ),
+      new Branch(
+        Location,
+        {},
+        new Location([0, -1, 1], { timestamp: 4000 }),
+        new Location([1, 1, 0], { timestamp: 6000 })
+      )
     );
   });
 
-  it("calculate bounds of trace", () => {
+  it("extends Journey", () => {
+    expect(Flight.prototype).toBeInstanceOf(Journey);
+  });
+
+  it("is instantiated", () => {
+    expect(new Flight()).toHaveProperty("properties.name", undefined);
+    expect(new Flight()).toHaveProperty("properties.notes", undefined);
+    expect(new Flight()).toHaveProperty(
+      "properties.checked",
+      expect.any(Array)
+    );
+    expect(new Flight()).toHaveProperty(
+      "properties.milestones",
+      expect.any(Array)
+    );
+
+    expect(new Flight()).toHaveProperty("branches", expect.any(Array));
+
+    expect(emptyflight).toHaveProperty("properties.name", "test flight");
+    expect(emptyflight).toHaveProperty("properties.notes", "model");
+    expect(emptyflight).toHaveProperty("properties.checked", [1, 2]);
+    expect(emptyflight).toHaveProperty("properties.milestones", ["a", "b"]);
+    expect(emptyflight).not.toHaveProperty("properties.manufacturer");
+
+    expect(flight).toHaveProperty(
+      "branches",
+      expect.arrayContaining([expect.any(Branch), expect.any(Branch)])
+    );
+  });
+
+  it.todo("test for call to super, in constructor");
+
+  it("add a branch with locations and properties after last one", () => {
     expect(
-      new Flight({ name: "test flight", notes: "short one" }, [
-        [new Location(-1, 0, 0), new Location(0, 1, 1)],
-        [new Location(0, -1, 1), new Location(1, 1, 0)]
-      ]).toBounds()
-    ).toStrictEqual([
-      [-1, -1],
-      [1, 1]
-    ]);
+      emptyflight.addBranch([new Location([0, 0]), new Location([1, 1])], {
+        a: 1
+      })
+    ).toBe(emptyflight);
+    expect(emptyflight.branches).toHaveLength(1);
+    expect(emptyflight).toHaveProperty(
+      "branches",
+      expect.arrayContaining([expect.any(Branch)])
+    );
   });
 
-  it.todo("duration");
-
-  it("create a Flight from literal", () => {
-    let anyFlight = new Flight();
-
-    expect(() => Flight.from({})).toThrow(
-      "Invalid data : 'type' should be 'Flight' got 'undefined'"
-    );
-    expect(Flight.from(anyFlight)).toBe(anyFlight);
-    expect(Flight.from(theFlight)).toMatchSnapshot();
+  it("return the cumulated duration of traces", () => {
+    expect(flight.duration).toEqual(3);
   });
 });

@@ -1,143 +1,93 @@
-import { Navigation } from "@/models/Navigation.js";
-import { Waypoint } from "@/models/Waypoint.js";
-import { Model, Store } from "../../src/models/Base";
+import { Navigation } from "@/models/Navigation";
+import { Waypoint } from "@/models/Waypoint";
+import { Branch, Journey } from "@/models/Journey";
 
 describe("navigation", () => {
-  it("extends Model", () => {
-    expect(Navigation.prototype).toBeInstanceOf(Model);
-  });
-  it("create with defaults", () => {
-    const nav = new Navigation();
-    expect(nav).toHaveProperty("name", undefined);
-    expect(nav).toHaveProperty("notes", undefined);
-    expect(nav).toHaveProperty("routes", expect.any(Store));
-  });
+  let emptynavigation, navigation;
+  beforeEach(() => {
+    emptynavigation = new Navigation({
+      name: "test navigation",
+      notes: "model",
+      manufacturer: "not allowed",
+      assets: { a: 1 }
+    });
 
-  it("create with properties & routes", () => {
-    const nav = new Navigation(
+    navigation = new Navigation(
       {
-        name: "test Nav",
-        notes: "some text"
+        name: "test navigation"
       },
-      new Store(
+      new Branch(
+        Waypoint,
         {},
-        new Waypoint(0, 0, 0, { name: "A" }),
-        new Waypoint(1, 1, 1, { name: "B" })
-      )
-    );
-    expect(nav).toHaveProperty("name", "test Nav");
-    expect(nav).toHaveProperty("notes", "some text");
-    expect(nav).toHaveProperty(
-      "routes",
-      new Store(
+        new Waypoint([0, 0, 10], { name: "A" }),
+        new Waypoint([1, 1, 20], { name: "Babababa" }),
+        new Waypoint([1, 2, 20], { name: "LFBA" })
+      ),
+      new Branch(
+        Waypoint,
         {},
-        new Store(
-          {},
-          new Waypoint(0, 0, 0, { name: "A" }),
-          new Waypoint(1, 1, 1, { name: "B" })
-        )
+        new Waypoint([2, 2, 20], { name: "C" }),
+        new Waypoint([3, 3, 10], { name: "Dadadadada" }),
+        new Waypoint([3, 4, 10], { name: "LFDE" })
       )
     );
   });
 
-  it("create a Navigation from literal", () => {
-    expect(() => Navigation.from({})).toThrow(
-      "Invalid data : 'type' should be 'Navigation' got 'undefined'"
-    );
-    let navigationLiteral = {
-      type: "Navigation",
-      name: "navigation name",
-      routes: {
-        type: "Store",
-        items: [
-          {
-            type: "Store",
-            items: [
-              {
-                type: "Waypoint",
-                name: "A",
-                latitude: 0,
-                longitude: 0
-              },
-              {
-                type: "Waypoint",
-                name: "B",
-                latitude: 1,
-                longitude: 1
-              }
-            ]
-          },
-          {
-            type: "Store",
-            items: [
-              {
-                type: "Waypoint",
-                name: "C",
-                latitude: 2,
-                longitude: 2
-              },
-              {
-                type: "Waypoint",
-                name: "D",
-                latitude: 3,
-                longitude: 3
-              }
-            ]
-          }
-        ]
-      }
-    };
+  it("extends Model", () => {
+    expect(Navigation.prototype).toBeInstanceOf(Journey);
+  });
 
-    expect(Navigation.from(navigationLiteral)).toStrictEqual(
-      new Navigation(
-        {
-          name: "navigation name"
-        },
-        new Store(
-          {},
-          new Waypoint(0, 0, undefined, { name: "A" }),
-          new Waypoint(1, 1, undefined, { name: "B" })
-        ),
-        new Store(
-          {},
-          new Waypoint(2, 2, undefined, { name: "C" }),
-          new Waypoint(3, 3, undefined, { name: "D" })
-        )
-      )
+  it("is instantiated", () => {
+    expect(new Navigation()).toHaveProperty("properties.name", undefined);
+    expect(new Navigation()).toHaveProperty("properties.notes", undefined);
+    expect(new Navigation()).toHaveProperty(
+      "properties.assets",
+      expect.any(Object)
+    );
+
+    expect(new Navigation()).toHaveProperty("branches", expect.any(Array));
+
+    expect(emptynavigation).toHaveProperty(
+      "properties.name",
+      "test navigation"
+    );
+    expect(emptynavigation).toHaveProperty("properties.notes", "model");
+    expect(emptynavigation).toHaveProperty("properties.assets", { a: 1 });
+    expect(emptynavigation).not.toHaveProperty("properties.manufacturer");
+
+    expect(navigation).toHaveProperty(
+      "branches",
+      expect.arrayContaining([expect.any(Branch), expect.any(Branch)])
     );
   });
 
-  it("add a new route", () => {
-    const nav = new Navigation();
-    expect(nav.addRoute()).toBeInstanceOf(Store);
-    expect(nav.routes).toHaveLength(1);
-    expect(nav.routes).toStrictEqual(new Store({}, new Store()));
+  it.todo("test for call to super, in constructor");
+  it.todo("waypoints");
+  it("hold a list of POI", () => {
+    expect(navigation.poi).toMatchSnapshot();
   });
 
-  it("remove a given route", () => {
-    const navigation = new Navigation();
-    const route = navigation.addRoute();
-    navigation.removeRoute(route);
-    expect(navigation.routes).toHaveLength(0);
+  it("add a new branch", () => {
+    expect(emptynavigation.addBranch()).toBe(emptynavigation);
+    expect(emptynavigation.branches).toHaveLength(1);
+    expect(emptynavigation).toHaveProperty(
+      "branches",
+      expect.arrayContaining([expect.any(Branch)])
+    );
   });
 
-  it.todo("clearRoute");
+  // it.todo("clearRoute");
   it.todo("addWaypoint");
+  it.todo("removeWaypoint");
   it.todo("getNextWaypoint");
-  it.todo("getRoute");
-  it.todo("getRouteId");
-  it.todo("toGeoJSON");
 
-  it("calculate bounds of navigation", () => {
-    expect(
-      new Navigation(
-        {},
-        new Store({}, new Waypoint(-1, 0), new Waypoint(0, 1)),
-        new Store({}, new Waypoint(0, -1), new Waypoint(1, 1))
-      ).toBounds()
-    ).toStrictEqual([
-      [-1, -1],
-      [1, 1]
-    ]);
+  it("export toGeoJSON as Great Circle", () => {
+    expect(navigation.toGeoJSON("MultiLineString")).toStrictEqual(
+      navigation.toGeoJSON("Feature")
+    );
+    expect(navigation.toGeoJSON("MultiLineString")).toMatchSnapshot();
   });
+
+  it.todo("test for call to super, in toGeoJSON");
+  it.todo("import from toGeoJSON");
 });

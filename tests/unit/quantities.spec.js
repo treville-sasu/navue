@@ -441,7 +441,7 @@ describe("altitude", () => {
       String(new Altitude(10000, "m", { reference: "QNE" }).as("FL"))
     ).toBe("FL330");
   });
-  it.todo("spec from object");
+
   it.todo("convert between references");
   it.todo("gives densityAltitude");
 });

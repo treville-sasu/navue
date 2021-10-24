@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`navigation export toGeoJSON as Great Circle 1`] = `
+Object {
+  "features": Array [
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            0,
+            0,
+          ],
+          Array [
+            0.249976,
+            0.250012,
+          ],
+          Array [
+            0.499962,
+            0.500019,
+          ],
+          Array [
+            0.749967,
+            0.750017,
+          ],
+          Array [
+            1,
+            1,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {
+        "bearings": Array [
+          45,
+          45,
+        ],
+        "distance": 157,
+        "insertAfter": Array [
+          0,
+          0,
+        ],
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            1,
+            1,
+          ],
+          Array [
+            1,
+            1.25,
+          ],
+          Array [
+            1,
+            1.5,
+          ],
+          Array [
+            1,
+            1.75,
+          ],
+          Array [
+            1,
+            2,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {
+        "bearings": Array [
+          0,
+          0,
+        ],
+        "distance": 111,
+        "insertAfter": Array [
+          0,
+          1,
+        ],
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            2,
+            2,
+          ],
+          Array [
+            2.249862,
+            2.250069,
+          ],
+          Array [
+            2.499809,
+            2.500095,
+          ],
+          Array [
+            2.749852,
+            2.750074,
+          ],
+          Array [
+            3,
+            3,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {
+        "bearings": Array [
+          45,
+          45,
+        ],
+        "distance": 157,
+        "insertAfter": Array [
+          1,
+          0,
+        ],
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            3,
+            3,
+          ],
+          Array [
+            3,
+            3.25,
+          ],
+          Array [
+            3,
+            3.5,
+          ],
+          Array [
+            3,
+            3.75,
+          ],
+          Array [
+            3,
+            4,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {
+        "bearings": Array [
+          0,
+          0,
+        ],
+        "distance": 111,
+        "insertAfter": Array [
+          1,
+          1,
+        ],
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`navigation hold a list of POI 1`] = `
+Array [
+  "LFBA",
+  "LFDE",
+]
+`;
