@@ -202,7 +202,7 @@ describe("quantity", () => {
     it("adds up two quantities", () => {
       class WithUnitsOtherType extends Quantity {
         static get units() {
-          return { l: 1, ml: 1000, hl: 0.001 };
+          return { l: 1, ml: 1000, hl: 0.01 };
         }
       }
       expect(() => {
@@ -288,6 +288,12 @@ describe("quantity", () => {
       expect(() =>
         QuantityWithUnits.from({ value: 100, unit: "dam" })
       ).not.toThrow("'not listed' is not an available unit");
+    });
+
+    it("return value from original as`newUnit`", () => {
+      expect(new QuantityWithUnits(1, "m").to("mm")).toBeCloseTo(1000);
+      expect(new QuantityWithUnits(1, "m").to("km")).toBeCloseTo(0.001);
+      expect(new QuantityWithUnits(1, "km").to("mm")).toBeCloseTo(1000000);
     });
 
     it("create a new Quantity from original as`newUnit`", () => {
