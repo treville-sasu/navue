@@ -1,6 +1,7 @@
-import { Location } from "@/models/Waypoint.js";
+import { Location } from "@/models/Location";
+import { Altitude } from "@/models/Quantities";
 import { UIHelpers } from "@/mixins/apputils";
-
+import { randomPosition } from "@turf/random";
 export const LocationHandler = {
   mixins: [UIHelpers],
   data() {
@@ -47,28 +48,28 @@ export const LocationHandler = {
 
     _locationFound(e) {
       let location = Location.fromGeolocationPosition(e);
-
       //////////////////
       if (process.env.NODE_ENV == "development") {
-        location = Location.fromLocate(
-          this._fakeLocation({
-            ...location,
-            accuracy: this.settings.maxAccuracy / 2
+        location = this._fakeLocation(location, {
+          accuracy: this.settings.maxAccuracy / 2,
+          altitude: Altitude.from({
+            value: 1000,
+            unit: "ft",
+            reference: "WGS84"
           })
-        );
+        });
       }
       ///////////////////
 
-      if (location.accuracy > this.settings.maxAccuracy) {
+      if (location.properties.accuracy > this.settings.maxAccuracy) {
         this._locationError({
           location,
           code: 99,
-          message: `Geolocation error: too low accuracy (${location.accuracy})`
+          message: `Geolocation error: too low accuracy (${location.properties.accuracy})`
         });
         return;
       }
 
-      // // now we have a location, let's polish it & use it.
       if (
         this.currentLocation instanceof Location &&
         location.distanceTo(this.currentLocation) <= this.settings.minDistance
@@ -76,14 +77,14 @@ export const LocationHandler = {
         return;
 
       if (
-        location.altitude &&
-        location.altitude.accuracy > this.settings.maxAccuracy
+        location.properties.altitude &&
+        location.properties.altitude.accuracy > this.settings.maxAccuracy
       )
-        location.altitude = undefined;
+        location.properties.altitude = undefined;
 
-      if (location.speed < this.settings.minSpeed) {
-        location.speed = undefined;
-        location.heading = undefined;
+      if (location.properties.speed < this.settings.minSpeed) {
+        location.properties.speed = undefined;
+        location.properties.heading = undefined;
       }
 
       this.lastError = undefined;
@@ -118,30 +119,27 @@ export const LocationHandler = {
       });
     },
 
-    _fakeLocation({
-      latitude = 0,
-      longitude = 0,
-      accuracy = 20,
-      altitude = 1000,
-      speed = 50,
-      heading = 0
-    }) {
+    _fakeLocation(location, properties) {
       console.debug("Faking around");
 
-      let rand = (s = 1) => {
-        return (Math.random() - 0.5) * s;
+      location.properties = {
+        timestamp: Date.now(),
+        ...location.properties,
+        ...properties
       };
+      location.geometry.coordinates = randomPosition(location.bbox);
 
-      return {
-        latitude: latitude + rand(0.3),
-        longitude: longitude + rand(0.3),
-        accuracy: accuracy + rand(),
-        altitude: altitude + rand(100),
-        altitudeAccuracy: accuracy + rand(),
-        heading: heading + rand(180),
-        speed: speed + rand(),
-        timestamp: Date.now()
-      };
+      if (this.currentLocation) {
+        location.properties = {
+          ...location.properties,
+          ...location.legFrom(this.currentLocation)
+        };
+      }
+
+      if (location.properties.altitude)
+        location.altitude = location.properties.altitude.value;
+
+      return location;
     }
   }
 };

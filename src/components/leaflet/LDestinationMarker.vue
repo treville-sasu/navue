@@ -1,14 +1,14 @@
 <template>
   <span v-if="from && to">
     <l-layer-group>
-      <l-marker :lat-lng="to.latlng" @contextmenu="$emit('update')">
+      <l-marker :lat-lng="to.lngLat" @contextmenu="$emit('update')">
         <l-icon class-name="leaflet-destination-icon">
           <div></div>
         </l-icon>
       </l-marker>
 
       <l-polyline
-        :lat-lngs="[from.latlng, to.latlng]"
+        :lat-lngs="[from.lngLat, to.lngLat]"
         className="destinationVector"
       >
         <!-- {{ bearing }} | {{ ETE | asDuration(1000) }} |
@@ -55,7 +55,7 @@ export default {
   mixins: [UnitSystem],
   computed: {
     destinationVector() {
-      return [this.from.latlng, this.to.latlng];
+      return [this.from.lngLat, this.to.lngLat];
     }
     // distance() {
     //   return this.from.distanceTo(this.to, { precision: 3 });

@@ -19,7 +19,7 @@
             location
             navigation
             aircraft
-            :flight="{ persistent: true, trace: traceDB }"
+            :flight="{ create: true, trace: traceDB }"
             :dropdown="{
               position: 'is-bottom-right',
               triggers: ['click', 'hover']
@@ -43,7 +43,11 @@
         />
       </l-control>
       <l-control position="topright">
-        <InstrumentsDisplay class="is-stackable" v-bind="currentLocation" />
+        <InstrumentsDisplay
+          class="is-stackable"
+          v-bind="currentLocation.properties"
+          v-if="currentLocation"
+        />
       </l-control>
       <l-control position="bottomright">
         <TimerToolbox @update:settings="updateSettings" />
@@ -52,12 +56,11 @@
       <l-base-layer-group />
 
       <l-location-marker
-        :v-if="currentLocation"
+        v-if="currentLocation"
         :value="currentLocation"
-        :unsure="!!lastError"
         :delay="settings.futurPositionDelay"
+        @[settings.setView&&`update:bounds`]="bestView"
       />
-
       <l-polyline :lat-lngs="trace" className="traceLine" />
 
       <l-route-layer-group
@@ -168,7 +171,7 @@ export default {
       return this.$store.state.currentNavigation;
     },
     routes() {
-      return this.navigation ? this.navigation.routes : [];
+      return this.navigation ? this.navigation.branches : [];
     },
     currentLocation: {
       get() {
@@ -188,9 +191,6 @@ export default {
     }
   },
   watch: {
-    "settings.setView": function(val) {
-      if (val && this.currentLocation) this.bestView(this.currentLocation);
-    },
     "settings.fullScreen": function(val) {
       this.toggleFullscreen(this.map.getContainer(), val);
     },
@@ -206,8 +206,7 @@ export default {
     },
     navigation(nav) {
       try {
-        let bounds = nav.toBounds();
-        this.map.flyToBounds(bounds, {
+        this.map.flyToBounds(nav.bbox, {
           padding: [25, 25]
         });
       } catch {
@@ -215,7 +214,6 @@ export default {
       }
     },
     currentLocation(location) {
-      if (location && this.settings.setView) this.bestView(location);
       if (location && this.settings.inFlight) this.addLocation(location);
       if (location && this.navigation) {
         let nextDestination = this.getDestination(location);
@@ -235,17 +233,18 @@ export default {
       this.map = e;
       if (this.settings.getLocation) this.startLocate();
     },
-    bestView(location) {
-      let bounds = location.toBounds(
-        location.speed
-          ? location.speed * this.settings.futurPositionDelay * 60 * 2
-          : location.accuracy
-      );
+    bestView(bounds) {
+      // To be removed when using vue-mapx
+      bounds = [
+        [bounds[1], bounds[0]],
+        [bounds[3], bounds[2]]
+      ];
+      //
       this.map.flyToBounds(bounds, { padding: [25, 25] });
     },
     addLocation(payload) {
       let asJSON = JSON.parse(JSON.stringify(payload));
-      asJSON._id = `${this.legStart}-${payload.timestamp}`;
+      asJSON._id = `${this.legStart}-${payload.properties.timestamp}`;
       return this.$pouch[this.traceDB].put(asJSON);
     },
     updateSettings(opts) {

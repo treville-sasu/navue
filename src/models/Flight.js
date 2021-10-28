@@ -33,25 +33,4 @@ export class Flight extends Journey {
       }, 0) / 1000
     );
   }
-
-  // static from({ type, locations, features, ...properties } = {}) {
-  //   if (arguments[0] instanceof this) return arguments[0];
-
-  //   switch (type) {
-  //     case this.name:
-  //       if (locations)
-  //         locations = locations.map(t => t.map(l => Location.from(l)));
-
-  //       break;
-  //     case "FeatureCollection":
-  //       locations = [features.map(l => Location.from(l))];
-  //       // properties = { ...properties };
-  //       break;
-
-  //     default:
-  //       throw `Invalid data : 'type' should be 'FeatureCollection' or '${this.name}' got '${type}'`;
-  //   }
-
-  //   return new this(properties, ...locations);
-  // }
 }

@@ -31,19 +31,40 @@ export const TraceHandler = {
           live: true,
           include_docs: true
         })
-        .on("change", ({ doc: { latitude, longitude } }) => {
-          if (this.trace[0] && latitude && longitude)
-            this.trace[0].unshift([latitude, longitude]);
-          else this.trace.unshift([]);
-        });
+        .on(
+          "change",
+          ({
+            doc: {
+              geometry: { coordinates }
+            }
+          }) => {
+            if (this.trace[0] && coordinates)
+              //FIXME:  To be removed when using vue-mapx
+              this.trace[0].unshift([
+                coordinates[1],
+                coordinates[0],
+                coordinates[2]
+              ]);
+            // reverse is for Mapbox vs leaflet coordinates order
+            // this.trace[0].unshift(coordinates);
+            else this.trace.unshift([]);
+          }
+        );
     },
     getTrace(db) {
       return db
         .query(
           {
-            map: ({ _id, latitude, longitude }, emit) => {
-              if (latitude && longitude)
-                emit(_id.split("-")[0], [latitude, longitude]);
+            map: ({ _id, geometry: { coordinates } }, emit) => {
+              //FIXME:  To be removed when using vue-mapx
+              if (coordinates)
+                emit(_id.split("-")[0], [
+                  coordinates[1],
+                  coordinates[0],
+                  coordinates[2]
+                ]);
+              // reverse is for Mapbox vs leaflet coordinates order
+              // if (coordinates) emit(_id.split("-")[0], coordinates);
             },
             reduce: (keys, values) => {
               return values;

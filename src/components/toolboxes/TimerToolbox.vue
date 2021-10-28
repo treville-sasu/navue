@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="flight" class="level is-mobile box">
+  <nav class="level is-mobile box">
     <div class="level-item has-text-centered">
       <div
         class="is-clickable"
@@ -34,7 +34,7 @@
         </p>
       </div>
     </div>
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" v-if="flight">
       <div
         class="is-clickable"
         @click.stop="addTime"
@@ -45,7 +45,10 @@
         </p>
         <div class="timelist">
           <ul>
-            <li v-for="(time, index) in flight.milestones" :key="index">
+            <li
+              v-for="(time, index) in flight.properties.milestones"
+              :key="index"
+            >
               {{ time | asDuration }}
             </li>
           </ul>
@@ -127,10 +130,10 @@ export default {
       this.chronoTime = undefined;
     },
     addTime() {
-      this.flight.milestones.unshift(new Date());
+      this.flight.properties.milestones.unshift(new Date());
     },
     removeTime() {
-      this.flight.milestones.shift();
+      this.flight.properties.milestones.shift();
     }
   }
 };
