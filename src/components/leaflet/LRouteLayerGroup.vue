@@ -3,7 +3,7 @@
     <LWaypointMarker
       v-for="(waypoint, wp_id) in value"
       :key="wp_id"
-      v-model="value[wp_id]"
+      :waypoint.sync="value[wp_id]"
       :draggable="active"
       @click="$emit('click-waypoint', wp_id)"
       @contextmenu="$emit('contextmenu-waypoint', wp_id)"

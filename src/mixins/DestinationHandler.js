@@ -13,7 +13,7 @@ export const DestinationHandler = {
   methods: {
     setDestination({ latlng, latitude, longitude, altitude } = {}) {
       this.currentDestination = Waypoint.from({
-        latlng,
+        lngLat: latlng,
         latitude,
         longitude,
         altitude,

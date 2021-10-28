@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 import { Navigation } from "@/models/Navigation.js";
 import { Aircraft } from "@/models/Aircraft.js";
-import { Location } from "@/models/Waypoint.js";
+import { Location } from "@/models/Location.js";
 import { Flight } from "@/models/Flight.js";
 
 Vue.use(Vuex);

@@ -21,8 +21,7 @@
         <slot name="header" :selected="selectedData" />
       </b-dropdown-item>
       <b-dropdown-item separator v-if="$slots.header || $scopedSlots.header" />
-
-      <template v-if="persistent">
+      <template v-if="create">
         <b-dropdown-item @click="buildFromLocal">
           <b-icon icon="cloud-upload-outline" type="is-warning" />
           Save
@@ -33,10 +32,10 @@
         </b-dropdown-item>
       </template>
       <template v-else-if="edit">
-        <!-- <b-dropdown-item @click="saveData">
+        <b-dropdown-item @click="saveData">
           <b-icon icon="cloud-upload-outline" type="is-warning" />
           Save
-        </b-dropdown-item> -->
+        </b-dropdown-item>
 
         <b-dropdown-item @click="exportData">
           <b-icon icon="download-outline" />
@@ -48,9 +47,7 @@
           Delete
         </b-dropdown-item>
       </template>
-      <b-dropdown-item
-        v-on="persistent ? { click: createData } : { click: discardData }"
-      >
+      <b-dropdown-item @click="discardData">
         <b-icon icon="selection-off" />
         Discard
       </b-dropdown-item>
@@ -73,7 +70,7 @@
         clear-on-select
         clearable
       >
-        <template #header v-if="edit">
+        <template #header v-if="create">
           <a @click="selectedData = new constructor({ name: search })">
             <span> Create {{ search }}</span>
           </a>
@@ -118,7 +115,7 @@ export default {
     return {
       constructor: Flight,
       storeKey: "currentFlight",
-      searchedProperty: "name"
+      searchedProperty: "properties.name"
     };
   },
   methods: {
@@ -136,15 +133,15 @@ export default {
               if (location.type == "Location")
                 emit(_id.split("-")[0], location);
             },
-            reduce: (keys, values) => {
-              return values;
-            }
+            reduce: (_, values) => values
           },
           { group: true }
         )
         .then(({ rows }) => {
-          return rows.map(row => {
-            this.selectedData.addTrace(row.value);
+          return rows.map(({ key, value }) => {
+            this.selectedData
+              .addBranch(value, { startedAt: Number(key) })
+              .last();
           });
         });
 

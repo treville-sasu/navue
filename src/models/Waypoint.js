@@ -29,8 +29,7 @@ export class Waypoint extends Model {
   }
 
   set altitude(val) {
-    this.geometry.coordinates[2] = round(Number(val));
-    this.properties.altitude = new Altitude(val, undefined, { precision: 1 });
+    this.geometry.coordinates[2] = round(val);
   }
 
   get lngLat() {
@@ -65,8 +64,8 @@ export class Waypoint extends Model {
   destinationPoint(distance, heading) {
     const coords = rhumbDestination(
       this.geometry.coordinates,
-      Number(distance),
-      Number(heading),
+      distance,
+      heading.to("°"),
       {
         units: "meters"
       }
