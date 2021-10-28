@@ -65,7 +65,7 @@ export class Quantity extends Model {
   }
 
   to(unit) {
-    return this._to(this.value, unit);
+    return this._to(this._value, unit);
   }
 
   as(unit, precision) {
