@@ -1,4 +1,5 @@
 import { Navigation } from "@/models/Navigation.js";
+import { Waypoint } from "../models/Waypoint";
 
 export const RouteHandler = {
   data() {
@@ -16,18 +17,14 @@ export const RouteHandler = {
   },
   computed: {
     inactiveRoutes() {
-      try {
-        return this.navigation.routes.items.filter(
-          rte => rte != this.currentRoute
-        );
-      } catch {
-        return [];
-      }
+      return this.navigation
+        ? this.navigation.branches.filter(rte => rte != this.currentRoute)
+        : [];
     },
     pointerVector() {
       return [
-        this.currentRoute && this.currentRoute.last
-          ? this.currentRoute.last.latlng
+        this.currentRoute && this.currentRoute.last()
+          ? this.currentRoute.last().lngLat
           : null,
         this.pointerPosition ? this.pointerPosition.latlng : null
       ];
@@ -89,13 +86,12 @@ export const RouteHandler = {
     selectRoute(id) {
       this.currentRoute = this.inactiveRoutes[id];
     },
-    addMarker({ latlng, insertBefore } = {}) {
-      this.navigation.addWaypoint({ latlng, insertBefore }, this.currentRoute);
+    addMarker({ latlng: { lng, lat }, insertBefore } = {}) {
+      this.currentRoute.insert(new Waypoint([lng, lat]), insertBefore);
+      return false;
     },
     removeMarker(id) {
-      this.navigation.removeWaypoint(id, this.currentRoute);
-      if (this.navigation.clearRoute(this.currentRoute))
-        this.currentRoute = null;
+      this.currentRoute = this.navigation.removeWaypoint(this.currentRoute, id);
     },
     updatePointer({ latlng, type } = {}) {
       this.pointerPosition = { latlng, type };
@@ -106,7 +102,6 @@ export const RouteHandler = {
       switch (oldTool) {
         case "route":
           this.map._container.style.cursor = null;
-          if (this.navigation) this.navigation.clearRoute(this.currentRoute);
           break;
         default:
           this.map._container.style.cursor = null;
@@ -115,14 +110,15 @@ export const RouteHandler = {
         case "route":
           if (!this.navigation) this.navigation = new Navigation();
           if (!this.currentRoute)
-            this.currentRoute = this.navigation.addRoute();
+            this.currentRoute = this.navigation.addBranch().last();
           this.map._container.style.cursor = "crosshair";
           break;
         case "select":
           this.isNavigationManagerActive = true;
           break;
         case "clear":
-          if (this.navigation) this.navigation.removeRoute(this.currentRoute);
+          if (this.currentRoute)
+            this.navigation.removeBranch(this.currentRoute);
           this.currentRoute = null;
           this.$nextTick(() => (this.tool = null));
           break;

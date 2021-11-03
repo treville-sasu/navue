@@ -71,7 +71,10 @@ export default {
     value: {
       type: Object,
       default: () => {
-        return { latlng: null, speed: null, heading: null, accuracy: null };
+        return {
+          lngLat: null,
+          properties: { speed: null, heading: null, accuracy: null }
+        };
       }
     },
     delay: {

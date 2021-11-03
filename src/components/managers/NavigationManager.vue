@@ -44,9 +44,7 @@
           Delete
         </b-dropdown-item>
       </template>
-      <b-dropdown-item
-        v-on="persistent ? { click: createData } : { click: discardData }"
-      >
+      <b-dropdown-item @click="discardData">
         <b-icon icon="selection-off" />
         Discard
       </b-dropdown-item>
@@ -113,7 +111,7 @@ export default {
     return {
       constructor: Navigation,
       storeKey: "currentNavigation",
-      searchedProperty: "name"
+      searchedProperty: "properties.name"
     };
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <l-marker v-bind="$attrs" v-on="$listeners" :lat-lng.sync="value.latlng">
+  <l-marker v-bind="$attrs" v-on="$listeners" :lat-lng.sync="value.lngLat">
     <l-icon
       :icon-anchor="[20, 16]"
       :icon-size="[40, 40]"
@@ -15,10 +15,10 @@
         maxWidth: '60vw'
       }"
     >
-      <WaypointContent v-model="value" />
+      <WaypointContent :value.sync="value" />
     </l-popup>
     <l-tooltip
-      v-else-if="value.name || value.altitude"
+      v-else-if="value.name || value.properties.altitude"
       :options="{
         className: 'waypointLabel',
         permanent: true,
@@ -26,8 +26,8 @@
       }"
     >
       {{ value.name }}
-      {{ value.name && value.altitude ? "|" : "" }}
-      {{ value.altitude && value.altitude.toString() }}
+      {{ value.name && value.properties.altitude ? "|" : "" }}
+      {{ value.properties.altitude && value.properties.altitude.toString() }}
     </l-tooltip>
   </l-marker>
 </template>
@@ -71,7 +71,7 @@
 
 <script>
 import { LMarker, LIcon, LPopup, LTooltip } from "vue2-leaflet";
-import WaypointContent from "@/components/WaypointContent.vue";
+import WaypointContent from "@/components/WaypointContent";
 
 export default {
   name: "LWaypointMarker",

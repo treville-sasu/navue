@@ -2,7 +2,7 @@
   <l-polyline
     v-bind="$attrs"
     v-on="$listeners"
-    :lat-lngs="[origin.latlng, destination.latlng]"
+    :lat-lngs="[origin.lngLat, destination.lngLat]"
   >
     <l-tooltip
       v-if="!active"
@@ -45,8 +45,6 @@
 </style>
 
 <script>
-//TODO : implement geodesic lines
-
 import { LPolyline, LTooltip } from "vue2-leaflet";
 import UnitSystem from "@/mixins/UnitSystem.js";
 
