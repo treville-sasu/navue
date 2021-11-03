@@ -1,5 +1,5 @@
 import { Flight } from "@/models/Flight";
-import { Branch, Journey } from "@/models//Journey";
+import { Branch, Journey } from "@/models/Journey";
 import { Location } from "@/models/Location";
 
 describe("flight", () => {

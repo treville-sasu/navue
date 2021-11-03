@@ -14,11 +14,6 @@ export class Navigation extends Journey {
     super({ name, notes, assets }, ...branches);
   }
 
-  get waypoints() {
-    // needed for navigations summary, get nextWaypoint
-    return this.routes.items.map(r => r.items).flat();
-  }
-
   get poi() {
     return this.branches.flatMap(b =>
       b
@@ -32,9 +27,8 @@ export class Navigation extends Journey {
     this.branches.push(new Branch(Waypoint, properties, ...waypoints));
     return this;
   }
-
   // needed after waypoint removal
-  // clearRoute(route) {
+  // clearBranch(route) {
   //   route = this.getRoute(route);
   //   if (route && route.length == 0) {
   //     this.removeBranch(route);
@@ -42,29 +36,42 @@ export class Navigation extends Journey {
   //   }
   // }
 
-  // Should be able to insert waypoint before/after another
-  addWaypoint(wp, branchId, positionId) {
-    this.branches[branchId].insert(Waypoint.from(wp), positionId + 1);
-    // return
-  }
-  removeWaypoint(branchId, positionId) {
-    let branch = this.branches[branchId];
-    branch.remove(positionId);
-    if (branch.features.length == 0) return this.removeBranch(branch);
+  getWaypoint(i, j) {
+    return this.branches[i] && this.branches[i].features[j];
+    // return this.branches[i]?.features[j];
   }
 
-  //require indexOf(indexOf())
-  getNextWaypoint(wp) {
-    const id = this.waypoints.indexOf(wp);
-    return this.waypoints[id + 1];
+  indexOf(wp) {
+    let j;
+    let i = this.branches.findIndex(b => {
+      return (j = b.features.indexOf(wp)) >= 0;
+    });
+    return i == -1 || j == -1 ? undefined : [i, j];
   }
 
-  // getRoute(objindex) {
-  // could be private
-  //   if (objindex instanceof Store) return objindex;
-  //   else if (isFinite(objindex)) return this.routes.items[objindex];
-  //   else return this.last;
+  //not used yet
+  // addWaypoint(wp, i, j) {
+  //   return this.branches[i].insert(Waypoint.from(wp), j);
   // }
+
+  removeWaypoint(i, j) {
+    let branch = this.getBranch(i);
+    if (!branch) throw `'${i}' can't be coerced as a Branch`;
+
+    if (branch.remove(j)) return branch;
+    else {
+      this.removeBranch(branch);
+      return undefined;
+    }
+    // return branch.remove(j) > 0 ? branch : this.removeBranch(branch);
+  }
+
+  getNextWaypoint(wp) {
+    const ij = this.indexOf(wp);
+    return ij
+      ? this.getWaypoint(ij[0], ij[1] + 1) || this.getWaypoint(ij[0] + 1, 0)
+      : undefined;
+  }
 
   toGeoJSON(type) {
     switch (type) {
@@ -102,17 +109,4 @@ export class Navigation extends Journey {
         return super.toGeoJSON(type);
     }
   }
-
-  // static from({ type, routes, _id, _rev, ...properties } = {}) {
-  //   if (arguments[0] instanceof this) return arguments[0];
-  //   else if (type != this.name)
-  //     throw `Invalid data : 'type' should be '${this.name}' got '${type}'`;
-  //   else {
-  //     if (routes) routes = Store.from(routes, Store, Waypoint);
-
-  //     let imported = new this(properties, ...routes);
-  //     if (_id && _rev) Object.assign(imported, { _id, _rev });
-  //     return imported;
-  //   }
-  // }
 }

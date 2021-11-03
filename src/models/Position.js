@@ -1,25 +1,13 @@
 import { Model } from "@/models/Base.js";
-import { Altitude, Distance, Azimuth } from "@/models/Quantities.js";
 
 import { point, round } from "@turf/helpers";
 import rhumbDistance from "@turf/rhumb-distance";
 import rhumbBearing from "@turf/rhumb-bearing";
 import rhumbDestination from "@turf/rhumb-destination";
 
-export class Waypoint extends Model {
-  constructor([longitude, latitude, altitude] = [], properties = {}) {
+export class Position extends Model {
+  constructor([longitude, latitude] = [], properties = {}) {
     const coordinates = [round(longitude, 6), round(latitude, 6)];
-
-    if (altitude !== undefined && !properties["altitude"]) {
-      properties["altitude"] = new Altitude(altitude, "m", {
-        reference: "WGS84"
-      });
-    } else if (properties["altitude"]) {
-      properties["altitude"] = Altitude.from(properties["altitude"]);
-      altitude = round(Number(altitude));
-    }
-
-    if (altitude) coordinates.push(round(Number(altitude)));
     super(point(coordinates, properties));
   }
 
@@ -31,49 +19,26 @@ export class Waypoint extends Model {
     this.geometry.coordinates[1] = round(val, 6);
   }
 
-  get altitude() {
-    return this.geometry.coordinates[2];
-  }
-
-  set altitude(val) {
-    this.geometry.coordinates[2] = round(val);
-    this.properties.altitude = val;
-  }
-
-  get lngLat() {
-    return {
-      lng: this.geometry.coordinates[0],
-      lat: this.geometry.coordinates[1]
-    };
-  }
-
-  set lngLat({ lng, lat }) {
-    this.longitude = lng;
-    this.latitude = lat;
-  }
-
-  distanceTo(wp) {
-    return new Distance(
-      round(
-        rhumbDistance(this.geometry.coordinates, wp.geometry.coordinates, {
-          units: "meters"
-        })
-      )
+  distanceTo(position) {
+    return round(
+      rhumbDistance(this.geometry.coordinates, position.geometry.coordinates, {
+        units: "meters"
+      })
     );
   }
 
-  bearingTo(wp) {
-    return new Azimuth(
-      rhumbBearing(this.geometry.coordinates, wp.geometry.coordinates),
-      "°"
+  bearingTo(position) {
+    return rhumbBearing(
+      this.geometry.coordinates,
+      position.geometry.coordinates
     );
   }
 
   destinationPoint(distance, heading) {
     const coords = rhumbDestination(
       this.geometry.coordinates,
-      new Distance(distance),
-      new Azimuth(heading).to("°"),
+      distance,
+      heading,
       {
         units: "meters"
       }
@@ -83,8 +48,6 @@ export class Waypoint extends Model {
 
   toGeoJSON(type) {
     switch (type) {
-      case "Position":
-        return this.geometry.coordinates;
       case "Point":
         return this.geometry;
       default:
@@ -123,9 +86,5 @@ export class Waypoint extends Model {
       ...otherProps,
       ...properties
     });
-  }
-
-  static fromEvent({ lngLat: { lng, lat } } = {}) {
-    return new this([lng, lat]);
   }
 }

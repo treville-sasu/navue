@@ -1,0 +1,276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`branch hold, geom, bbox & length 1`] = `
+Array [
+  Array [
+    0,
+    0,
+    1,
+  ],
+  Array [
+    1,
+    1,
+    0,
+  ],
+  Array [
+    -1,
+    -1,
+    2,
+  ],
+]
+`;
+
+exports[`branch hold, geom, bbox & length 2`] = `
+Array [
+  -1,
+  -1,
+  1,
+  1,
+]
+`;
+
+exports[`branch hold, geom, bbox & length 3`] = `
+Object {
+  "precision": 6,
+  "type": "Distance",
+  "unit": "m",
+  "value": 471749,
+}
+`;
+
+exports[`branch should export as GeoJSON 1`] = `
+Object {
+  "bbox": Array [
+    -1,
+    -1,
+    1,
+    1,
+  ],
+  "features": Array [
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          0,
+          0,
+          1,
+        ],
+      },
+      "properties": Object {
+        "altitude": 1,
+      },
+      "type": "Position",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          1,
+          1,
+          0,
+        ],
+      },
+      "properties": Object {
+        "altitude": 0,
+      },
+      "type": "Position",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          -1,
+          -1,
+          2,
+        ],
+      },
+      "properties": Object {
+        "altitude": 0,
+      },
+      "type": "Position",
+    },
+  ],
+  "properties": Object {
+    "a": 1,
+  },
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`branch should export as GeoJSON 2`] = `
+Object {
+  "bbox": Array [
+    -1,
+    -1,
+    1,
+    1,
+  ],
+  "geometry": Object {
+    "coordinates": Array [
+      Array [
+        0,
+        0,
+        1,
+      ],
+      Array [
+        1,
+        1,
+        0,
+      ],
+      Array [
+        -1,
+        -1,
+        2,
+      ],
+    ],
+    "type": "MultiLineString",
+  },
+  "properties": Object {
+    "a": 1,
+  },
+  "type": "Feature",
+}
+`;
+
+exports[`branch should export as GeoJSON 3`] = `
+Object {
+  "bbox": Array [
+    -1,
+    -1,
+    1,
+    1,
+  ],
+  "features": Array [
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            Array [
+              1.000095,
+              0.999905,
+            ],
+            Array [
+              1.000095,
+              1.000095,
+            ],
+            Array [
+              0.999905,
+              1.000095,
+            ],
+            Array [
+              -0.000095,
+              0.000095,
+            ],
+            Array [
+              -0.000095,
+              -0.000095,
+            ],
+            Array [
+              0.000095,
+              -0.000095,
+            ],
+            Array [
+              1.000095,
+              0.999905,
+            ],
+          ],
+        ],
+        "type": "Polygon",
+      },
+      "properties": Object {
+        "altitude": 1,
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            Array [
+              -1.000095,
+              -0.999905,
+            ],
+            Array [
+              -1.000095,
+              -1.000095,
+            ],
+            Array [
+              -0.999905,
+              -1.000095,
+            ],
+            Array [
+              1.000095,
+              0.999905,
+            ],
+            Array [
+              1.000095,
+              1.000095,
+            ],
+            Array [
+              0.999905,
+              1.000095,
+            ],
+            Array [
+              -1.000095,
+              -0.999905,
+            ],
+          ],
+        ],
+        "type": "Polygon",
+      },
+      "properties": Object {
+        "altitude": 0,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`branch should export as JSON 1`] = `
+Object {
+  "features": Array [
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          0,
+          0,
+          1,
+        ],
+      },
+      "properties": Object {
+        "altitude": 1,
+      },
+      "type": "Position",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          1,
+          1,
+          0,
+        ],
+      },
+      "properties": Object {
+        "altitude": 0,
+      },
+      "type": "Position",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          -1,
+          -1,
+          2,
+        ],
+      },
+      "properties": Object {
+        "altitude": 0,
+      },
+      "type": "Position",
+    },
+  ],
+  "properties": Object {
+    "a": 1,
+  },
+  "type": "Branch",
+}
+`;

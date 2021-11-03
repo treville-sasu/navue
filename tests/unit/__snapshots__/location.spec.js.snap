@@ -4,8 +4,8 @@ exports[`location imports from GeolocationPosition 1`] = `
 Object {
   "geometry": Object {
     "coordinates": Array [
-      0,
-      0,
+      1,
+      1,
       10,
     ],
     "type": "Point",
@@ -94,7 +94,6 @@ Object {
     "coordinates": Array [
       0,
       0,
-      0,
     ],
     "type": "Point",
   },
@@ -107,7 +106,7 @@ Object {
     },
     "altitude": Object {
       "precision": 0,
-      "reference": undefined,
+      "reference": "WGS84",
       "type": "Altitude",
       "unit": "m",
       "value": 0,
@@ -142,8 +141,8 @@ exports[`location return a futur location in time (seconds later) 1`] = `
 Object {
   "geometry": Object {
     "coordinates": Array [
-      0.005396,
-      0,
+      0.004824,
+      -0.002418,
     ],
     "type": "Point",
   },

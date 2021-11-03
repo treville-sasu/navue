@@ -96,8 +96,10 @@ describe("location", () => {
   it("imports from literal", () => {
     expect(
       Location.from({
-        longitude: 0,
-        latitude: 43,
+        geometry: {
+          type: "Point",
+          coordinates: [0, 43, 1000]
+        },
         altitude: {
           accuracy: 50,
           reference: "WGS84",
@@ -132,8 +134,8 @@ describe("location", () => {
     expect(
       Location.fromGeolocationPosition({
         coords: {
-          latitude: 0,
-          longitude: 0,
+          latitude: 1,
+          longitude: 1,
           altitude: 10,
           accuracy: 100,
           altitudeAccuracy: 10,
