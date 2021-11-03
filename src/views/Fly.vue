@@ -65,10 +65,10 @@
 
       <l-route-layer-group
         v-for="(route, id) in routes"
-        :value="route.items"
+        :value="route"
         :key="id"
         :active="false"
-        @contextmenu-waypoint="setDestination(route.items[$event])"
+        @contextmenu-waypoint="setDestination(route.features[$event])"
       />
       <l-destination-marker
         :to="currentDestination"
