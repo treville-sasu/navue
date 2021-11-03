@@ -11,14 +11,13 @@ export const DestinationHandler = {
     };
   },
   methods: {
-    setDestination({ latlng, latitude, longitude, altitude } = {}) {
-      this.currentDestination = Waypoint.from({
-        lngLat: latlng,
-        latitude,
-        longitude,
-        altitude,
-        type: "Waypoint"
-      });
+    setDestination({ latlng } = {}) {
+      if (arguments[0] instanceof Waypoint)
+        this.currentDestination = arguments[0];
+      else
+        this.currentDestination = Waypoint.fromEvent({
+          lngLat: latlng
+        });
     },
     getDestination(lastDestination) {
       //TODO : on route select, set a Next Destination
