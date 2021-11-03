@@ -9,7 +9,7 @@
                 Total Distance
               </p>
               <p class="title">
-                {{ navigationDistance(navigation) | as("NM", 2) }}
+                {{ navigation.length | as("NM", 2) }}
               </p>
             </div>
           </div>
@@ -19,35 +19,35 @@
                 Routes
               </p>
               <p class="title">
-                {{ navigation.routes.length }}
+                {{ navigation.branches.length }}
               </p>
             </div>
           </div>
           <div class="level-item has-text-centered">
             <div>
               <p class="heading">
-                Waypoints
+                Flight Time
               </p>
               <p class="title">
-                {{ navigation.waypoints.length }}
+                {{ (navigation.length * currentSpeed) | asDuration }}
               </p>
             </div>
           </div>
         </nav>
         <b-field label="Notes" label-position="on-border">
-          <b-notepad v-model="navigation.notes" />
+          <b-notepad v-model="navigation.properties.notes" />
         </b-field>
       </b-tab-item>
       <b-tab-item
-        v-for="(route, index) in navigation.routes"
+        v-for="(route, index) in navigation.branches"
         :key="index"
         :label="`${index + 1}`"
         icon="chevron-triple-right"
       >
         <waypoint-content
-          :value="wp"
+          v-for="(wp, index) in route.features"
+          :value.sync="route.features[index]"
           :key="index"
-          v-for="(wp, index) in route"
         />
       </b-tab-item>
     </b-tabs>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { Distance } from "@/models/Quantities";
+// import { Distance } from "@/models/Quantities";
 
 import UnitSystem from "@/mixins/UnitSystem";
 import BNotepad from "@/components/buefy/BNotepad.vue";
@@ -86,38 +86,6 @@ export default {
         this.$store.state.currentLocation.speed &&
         this.$store.state.currentLocation.speed.as("kt")
       );
-    }
-  },
-  methods: {
-    navigationDistance(navigation) {
-      return new Distance(
-        navigation.routes.items.reduce((dist, route) => {
-          return (dist += this.routeDistance(route));
-        }, 0)
-      );
-    },
-    routeDistance(route) {
-      let dist = 0;
-      route.items.reduce((last, wp) => {
-        if (last) dist += last.distanceTo(wp);
-        return wp;
-      }, null);
-      return new Distance(dist);
-    },
-    waypointPair(route, index) {
-      if (index + 1 >= route.length) return;
-      return [route.items[index], route.items[index + 1]];
-    },
-    legDistance(route, index) {
-      const [current, next] = this.waypointPair(route, index);
-      return current.distanceTo(next);
-    },
-    legBearing(route, index) {
-      const [current, next] = this.waypointPair(route, index);
-      return current.bearingTo(next);
-    },
-    legETE(route, index) {
-      return this.legDistance(route, index) / this.selectedPace;
     }
   }
 };

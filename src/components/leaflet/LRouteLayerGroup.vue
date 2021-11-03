@@ -1,9 +1,9 @@
 <template>
   <l-layer-group>
     <LWaypointMarker
-      v-for="(waypoint, wp_id) in value"
+      v-for="(waypoint, wp_id) in points"
       :key="wp_id"
-      :waypoint.sync="value[wp_id]"
+      :value.sync="points[wp_id]"
       :draggable="active"
       @click="$emit('click-waypoint', wp_id)"
       @contextmenu="$emit('contextmenu-waypoint', wp_id)"
@@ -27,11 +27,9 @@
 </template>
 
 <script>
-//TODO : implement geodesic lines and enable Midpoints.
-
 import { LLayerGroup, findRealParent } from "vue2-leaflet";
-import LWaypointMarker from "@/components/leaflet/LWaypointMarker.vue";
-import LTracePolyline from "@/components/leaflet/LTracePolyline.vue";
+import LWaypointMarker from "@/components/leaflet/LWaypointMarker";
+import LTracePolyline from "@/components/leaflet/LTracePolyline";
 
 export default {
   name: "LRouteLayerGroup",
@@ -41,28 +39,25 @@ export default {
     LTracePolyline
   },
   props: {
-    value: Array,
+    value: Object,
     active: Boolean
   },
   mounted() {
     this.map = findRealParent(this.$parent, true).mapObject;
   },
   computed: {
-    traceCoord() {
-      return this.value.map(wp => wp.latlng);
+    points() {
+      return this.value.features;
     },
     legs() {
       let legsArray = [];
-      this.value.reduce((previous, current, insertBefore) => {
-        if (previous) {
-          legsArray.push({
-            previous,
-            current,
-            insertBefore
-          });
-        }
-        return current;
-      }, null);
+      this.value.pairs((previous, current, insertBefore) => {
+        legsArray.push({
+          previous,
+          current,
+          insertBefore
+        });
+      });
       return legsArray;
     }
   }

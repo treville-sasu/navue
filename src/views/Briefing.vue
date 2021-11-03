@@ -41,7 +41,7 @@
 
       <l-route-layer-group
         v-if="currentRoute"
-        v-model="currentRoute.items"
+        v-model="currentRoute"
         :active="true"
         @contextmenu-waypoint="removeMarker"
         @click-trace="addMarker"
@@ -49,7 +49,7 @@
 
       <l-route-layer-group
         v-for="(route, id) in inactiveRoutes"
-        :value="route.items"
+        :value="route"
         :key="id"
         :active="false"
         @click-waypoint="selectRoute(id)"

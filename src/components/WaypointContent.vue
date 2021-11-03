@@ -3,9 +3,9 @@
     <header class="card-header">
       <p class="card-header-title">
         <b-field grouped>
-          <b-input v-model="local.name" placeholder="echo" expanded />
+          <b-input v-model="properties.name" placeholder="echo" expanded />
           <b-altitude
-            v-model="local.altitude"
+            v-model="properties.altitude"
             placeholder="alt."
             :controls="false"
           />
@@ -13,15 +13,11 @@
       </p>
     </header>
     <div class="card-content">
-      <b-notepad v-model="local.notes" :rows="2" />
+      <b-notepad v-model="properties.notes" :rows="2" />
     </div>
     <footer class="card-footer">
       <b-field position="is-centered">
-        <b-input
-          :value="local.point.toString()"
-          icon="crosshairs-gps"
-          readonly
-        />
+        <b-input :value="point.toString()" icon="crosshairs-gps" readonly />
         <p class="control">
           <span class="button is-static">WGS84</span>
         </p>
@@ -40,10 +36,13 @@ export default {
   props: {
     value: Object
   },
-  data() {
-    return {
-      local: this.value
-    };
+  computed: {
+    properties() {
+      return this.value.properties;
+    },
+    point() {
+      return this.value.geometry.coordinates;
+    }
   }
 };
 </script>
