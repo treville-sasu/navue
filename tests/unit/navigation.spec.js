@@ -3,9 +3,9 @@ import { Waypoint } from "@/models/Waypoint";
 import { Branch, Journey } from "@/models/Journey";
 
 describe("navigation", () => {
-  let emptynavigation, navigation;
+  let empty, navigation;
   beforeEach(() => {
-    emptynavigation = new Navigation({
+    empty = new Navigation({
       name: "test navigation",
       notes: "model",
       manufacturer: "not allowed",
@@ -47,13 +47,10 @@ describe("navigation", () => {
 
     expect(new Navigation()).toHaveProperty("branches", expect.any(Array));
 
-    expect(emptynavigation).toHaveProperty(
-      "properties.name",
-      "test navigation"
-    );
-    expect(emptynavigation).toHaveProperty("properties.notes", "model");
-    expect(emptynavigation).toHaveProperty("properties.assets", { a: 1 });
-    expect(emptynavigation).not.toHaveProperty("properties.manufacturer");
+    expect(empty).toHaveProperty("properties.name", "test navigation");
+    expect(empty).toHaveProperty("properties.notes", "model");
+    expect(empty).toHaveProperty("properties.assets", { a: 1 });
+    expect(empty).not.toHaveProperty("properties.manufacturer");
 
     expect(navigation).toHaveProperty(
       "branches",
@@ -62,24 +59,59 @@ describe("navigation", () => {
   });
 
   it.todo("test for call to super, in constructor");
-  it.todo("waypoints");
+
   it("hold a list of POI", () => {
     expect(navigation.poi).toMatchSnapshot();
   });
 
   it("add a new branch", () => {
-    expect(emptynavigation.addBranch()).toBe(emptynavigation);
-    expect(emptynavigation.branches).toHaveLength(1);
-    expect(emptynavigation).toHaveProperty(
+    expect(empty.addBranch()).toBe(empty);
+    expect(empty.branches).toHaveLength(1);
+    expect(empty).toHaveProperty(
       "branches",
       expect.arrayContaining([expect.any(Branch)])
     );
   });
 
-  // it.todo("clearRoute");
-  it.todo("addWaypoint");
-  it.todo("removeWaypoint");
-  it.todo("getNextWaypoint");
+  // it.todo("clearBranch");
+
+  it("getWaypoint return waypoints at indexes", () => {
+    expect(navigation.getWaypoint(1, 1)).toBe(
+      navigation.branches[1].features[1]
+    );
+    expect(navigation.getWaypoint(6, 6)).toBeUndefined();
+  });
+
+  it("indexOf returns an array of indexes", () => {
+    let w = navigation.getWaypoint(1, 1);
+    expect(navigation.indexOf(w)).toEqual([1, 1]);
+    expect(navigation.indexOf(new Waypoint([1, 1]))).toBeUndefined();
+  });
+
+  it("getNextWaypoint", () => {
+    expect(navigation.getNextWaypoint(navigation.getWaypoint(1, 1))).toBe(
+      navigation.branches[1].features[2]
+    );
+    expect(navigation.getNextWaypoint(navigation.getWaypoint(0, 2))).toBe(
+      navigation.branches[1].features[0]
+    );
+    expect(
+      navigation.getNextWaypoint(navigation.getWaypoint(2, 2))
+    ).toBeUndefined();
+  });
+
+  // it.todo("addWaypoint");
+
+  it("removeWaypoint", () => {
+    expect(navigation.removeWaypoint(0, 0)).toBe(navigation.branches[0]);
+    expect(navigation.removeWaypoint(0, 0)).toBe(navigation.branches[0]);
+    expect(navigation.removeWaypoint(0, 0)).toBeUndefined();
+    expect(navigation.removeWaypoint(0, 3)).toBe(navigation.branches[0]);
+
+    expect(() => navigation.removeWaypoint(6, 3)).toThrowError(
+      "'6' can't be coerced as a Branch"
+    );
+  });
 
   it("export toGeoJSON as Great Circle", () => {
     expect(navigation.toGeoJSON("MultiLineString")).toStrictEqual(

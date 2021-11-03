@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`waypoint get other from distance and bearing 1`] = `
+exports[`waypoint get destination waypoint from distance and bearing 1`] = `
 Object {
   "geometry": Object {
     "coordinates": Array [
@@ -14,7 +14,26 @@ Object {
 }
 `;
 
+exports[`waypoint is exported as GeoJSON Position, or Point & Feature 1`] = `
+Array [
+  1.123457,
+  1.123457,
+  1235,
+]
+`;
+
 exports[`waypoint is exported as GeoJSON Position, or Point & Feature 2`] = `
+Object {
+  "coordinates": Array [
+    1.123457,
+    1.123457,
+    1235,
+  ],
+  "type": "Point",
+}
+`;
+
+exports[`waypoint is exported as GeoJSON Position, or Point & Feature 3`] = `
 Object {
   "geometry": Object {
     "coordinates": Array [
@@ -27,7 +46,7 @@ Object {
   "properties": Object {
     "altitude": Object {
       "precision": 9,
-      "reference": undefined,
+      "reference": "WGS84",
       "type": "Altitude",
       "unit": "m",
       "value": 1234.56789,
@@ -52,100 +71,13 @@ Object {
   "properties": Object {
     "altitude": Object {
       "precision": 9,
-      "reference": undefined,
+      "reference": "WGS84",
       "type": "Altitude",
       "unit": "m",
       "value": 1234.56789,
     },
     "name": "Echo",
     "notes": "Some note",
-  },
-  "type": "Waypoint",
-}
-`;
-
-exports[`waypoint is imported from GeoJSON Position, Point & Feature, or plain Waypoint object 1`] = `
-Object {
-  "geometry": Object {
-    "coordinates": Array [
-      0,
-      0,
-      1,
-    ],
-    "type": "Point",
-  },
-  "properties": Object {
-    "altitude": Object {
-      "precision": 1,
-      "reference": undefined,
-      "type": "Altitude",
-      "unit": "m",
-      "value": 1,
-    },
-    "name": "null Island",
-  },
-  "type": "Waypoint",
-}
-`;
-
-exports[`waypoint is imported from GeoJSON Position, Point & Feature, or plain Waypoint object 2`] = `
-Object {
-  "geometry": Object {
-    "coordinates": Array [
-      0,
-      0,
-      1,
-    ],
-    "type": "Point",
-  },
-  "properties": Object {
-    "altitude": Object {
-      "precision": 1,
-      "reference": undefined,
-      "type": "Altitude",
-      "unit": "m",
-      "value": 1,
-    },
-  },
-  "type": "Waypoint",
-}
-`;
-
-exports[`waypoint is imported from GeoJSON Position, Point & Feature, or plain Waypoint object 3`] = `
-Object {
-  "geometry": Object {
-    "coordinates": Array [
-      0,
-      0,
-      1,
-    ],
-    "type": "Point",
-  },
-  "properties": Object {
-    "altitude": Object {
-      "precision": 1,
-      "reference": undefined,
-      "type": "Altitude",
-      "unit": "m",
-      "value": 1,
-    },
-    "name": "null Island",
-  },
-  "type": "Waypoint",
-}
-`;
-
-exports[`waypoint is imported from GeoJSON Position, Point & Feature, or plain Waypoint object 4`] = `
-Object {
-  "geometry": Object {
-    "coordinates": Array [
-      1,
-      1,
-    ],
-    "type": "Point",
-  },
-  "properties": Object {
-    "name": "null Island",
   },
   "type": "Waypoint",
 }

@@ -137,7 +137,7 @@ export const LocationHandler = {
       }
 
       if (location.properties.altitude)
-        location.altitude = location.properties.altitude.value;
+        location.altitude = location.properties.altitude;
 
       return location;
     }

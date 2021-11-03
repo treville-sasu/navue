@@ -1,21 +1,11 @@
-import { Journey } from "@/models/Journey";
+import { Journey, Branch } from "@/models/Journey";
 import { Location } from "@/models/Location";
-import { Branch } from "./Journey";
 
 export class Flight extends Journey {
   constructor(
     { name, notes, checked = [], milestones = [] } = {},
     ...locations
   ) {
-    // let branches;
-    // if (locations.every(a => a instanceof Location))
-    //   branches = [new Branch(Location, {}, ...locations)];
-    // else if (
-    //   locations.every(
-    //     a => a instanceof Array && a.every(b => b instanceof Branch)
-    //   )
-    // )
-    //   branches = locations.flat();
     let branches = locations;
     super({ name, notes, checked, milestones }, ...branches);
   }

@@ -69,30 +69,34 @@ export class Location extends Waypoint {
     return super.from({ accuracy, speed, heading, ...others });
   }
 
-  static fromGeolocationPosition(position) {
-    let altitude, speed, heading, accuracy;
-
-    if (position.coords.altitude)
-      altitude = new Altitude(position.coords.altitude, "m", {
+  static fromGeolocationPosition({
+    coords: {
+      latitude,
+      longitude,
+      altitude,
+      accuracy,
+      altitudeAccuracy,
+      heading,
+      speed
+    },
+    timestamp
+  }) {
+    if (altitude)
+      altitude = new Altitude(altitude, "m", {
         reference: "WGS84",
-        accuracy: position.coords.altitudeAccuracy
+        accuracy: altitudeAccuracy
       });
 
-    if (position.coords.accuracy)
-      accuracy = new Distance(position.coords.accuracy, "m");
-    if (position.coords.speed) speed = new Speed(position.coords.speed, "m/s");
-    if (position.coords.heading)
-      heading = new Azimuth(position.coords.heading, "°");
+    if (accuracy) accuracy = new Distance(accuracy, "m");
+    if (speed) speed = new Speed(speed, "m/s");
+    if (heading) heading = new Azimuth(heading, "°");
 
-    return this.from({
-      type: "Location",
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude,
+    return new this([longitude, latitude, altitude], {
       accuracy,
       altitude,
       speed,
       heading,
-      timestamp: position.timestamp
+      timestamp
     });
   }
 }
