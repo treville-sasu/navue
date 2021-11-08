@@ -1,5 +1,5 @@
 import { Location } from "@/models/Location";
-import { Altitude } from "@/models/Quantities";
+import { Altitude, Distance } from "@/models/Quantities";
 import { UIHelpers } from "@/mixins/apputils";
 import { randomPosition } from "@turf/random";
 export const LocationHandler = {
@@ -51,10 +51,8 @@ export const LocationHandler = {
       //////////////////
       if (process.env.NODE_ENV == "development") {
         location = this._fakeLocation(location, {
-          accuracy: this.settings.maxAccuracy / 2,
-          altitude: Altitude.from({
-            value: 1000,
-            unit: "ft",
+          accuracy: new Distance(this.settings.maxAccuracy / 2),
+          altitude: new Altitude(1000 + Math.random() * 200, "ft", {
             reference: "WGS84"
           })
         });

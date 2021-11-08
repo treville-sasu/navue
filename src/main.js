@@ -19,6 +19,11 @@ Vue.use(VuePouchdbLite, "navue");
 
 Vue.config.productionTip = false;
 
+import MxMap from "vue-mapx";
+import MapboxGL from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+Vue.use(MxMap, MapboxGL);
+
 new Vue({
   router,
   store,

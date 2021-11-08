@@ -115,45 +115,59 @@ Object {
 
 exports[`journey should export as GeoJSON 2`] = `
 Object {
-  "bbox": Array [
-    -1,
-    -1,
-    1,
-    1,
+  "features": Array [
+    Object {
+      "bbox": Array [
+        0,
+        -1,
+        1,
+        1,
+      ],
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            0,
+            -1,
+            1,
+          ],
+          Array [
+            1,
+            1,
+            0,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {},
+      "type": "Feature",
+    },
+    Object {
+      "bbox": Array [
+        -1,
+        0,
+        0,
+        1,
+      ],
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            -1,
+            0,
+            0,
+          ],
+          Array [
+            0,
+            1,
+            1,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {},
+      "type": "Feature",
+    },
   ],
-  "geometry": Object {
-    "coordinates": Array [
-      Array [
-        Array [
-          0,
-          -1,
-          1,
-        ],
-        Array [
-          1,
-          1,
-          0,
-        ],
-      ],
-      Array [
-        Array [
-          -1,
-          0,
-          0,
-        ],
-        Array [
-          0,
-          1,
-          1,
-        ],
-      ],
-    ],
-    "type": "MultiLineString",
-  },
-  "properties": Object {
-    "name": "test flight",
-  },
-  "type": "Feature",
+  "type": "FeatureCollection",
 }
 `;
 

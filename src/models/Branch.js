@@ -1,12 +1,7 @@
 import { Model } from "@/models/Base.js";
 import { Distance } from "@/models/Quantities.js";
 
-import {
-  multiLineString,
-  featureCollection,
-  round,
-  lineString
-} from "@turf/helpers";
+import { lineString, featureCollection, round } from "@turf/helpers";
 import bbox from "@turf/bbox";
 import length from "@turf/length";
 import buffer from "@turf/buffer";
@@ -95,8 +90,8 @@ export class Branch extends Model {
   toGeoJSON(type) {
     switch (type) {
       case "Feature":
-      case "MultiLineString":
-        return multiLineString(this.geom, this.properties, { bbox: this.bbox });
+      case "LineString":
+        return lineString(this.geom, this.properties, { bbox: this.bbox });
       case "MultiPolygon":
         return featureCollection(
           this.pairs((start, end) => {

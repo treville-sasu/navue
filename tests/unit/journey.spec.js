@@ -150,6 +150,7 @@ describe("journey", () => {
     );
     expect(fullJourney.toGeoJSON("Feature")).toMatchSnapshot();
     expect(fullJourney.toGeoJSON("MultiPolygon")).toMatchSnapshot();
+    // expect(fullJourney.toGeoJSON('MultiLineString', 'MultiPolygon')).toMatchSnapshot();
   });
 
   it("should import as JSON", () => {

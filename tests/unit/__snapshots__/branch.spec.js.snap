@@ -120,7 +120,7 @@ Object {
         2,
       ],
     ],
-    "type": "MultiLineString",
+    "type": "LineString",
   },
   "properties": Object {
     "a": 1,

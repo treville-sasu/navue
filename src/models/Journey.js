@@ -7,7 +7,7 @@ import bbox from "@turf/bbox";
 import length from "@turf/length";
 
 export { Branch };
-// FIXME: create branche if none exists
+// FIXME: create branch if none exists
 export class Journey extends Model {
   constructor(properties = {}, ...branches) {
     super({ properties, branches });
@@ -89,9 +89,11 @@ export class Journey extends Model {
       switch (types[0]) {
         case "Feature":
         case "MultiLineString":
-          return multiLineString(this.geom, this.properties, {
-            bbox: this.bbox
-          });
+          return featureCollection(
+            this.branches.flatMap(b => b.toGeoJSON("LineString"), {
+              bbox: this.bbox
+            })
+          );
         case "MultiPolygon":
           return featureCollection(
             this.branches.flatMap(b => b.toGeoJSON("MultiPolygon").features),

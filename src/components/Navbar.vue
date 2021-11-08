@@ -16,7 +16,7 @@
         >Briefing</b-navbar-item
       >
       <b-navbar-item tag="router-link" :to="{ name: 'Fly' }">Fly</b-navbar-item>
-      <b-navbar-item tag="router-link" :to="{ name: 'Debriefing' }" disabled
+      <b-navbar-item tag="router-link" :to="{ name: 'Debriefing' }"
         >Debriefing</b-navbar-item
       >
       <b-navbar-item tag="router-link" :to="{ name: 'Monitor' }"

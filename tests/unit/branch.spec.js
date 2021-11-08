@@ -136,7 +136,7 @@ describe("branch", () => {
     );
     expect(branch.toGeoJSON("FeatureCollection")).toMatchSnapshot();
 
-    expect(branch.toGeoJSON("MultiLineString")).toStrictEqual(
+    expect(branch.toGeoJSON("LineString")).toStrictEqual(
       branch.toGeoJSON("Feature")
     );
     expect(branch.toGeoJSON("Feature")).toMatchSnapshot();
@@ -156,9 +156,7 @@ describe("branch", () => {
     expect(Branch.from(branch.toGeoJSON(), Position)).toMatchObject(almost);
     expect(Branch.from(branch.toJSON(), Position)).toMatchObject(almost);
 
-    expect(() =>
-      Branch.from(Branch.from(branch.toGeoJSON("MultiLineString")))
-    ).toThrowError(
+    expect(() => Branch.from(branch.toGeoJSON("LineString"))).toThrowError(
       "Invalid data : 'type' should be 'Branch' or 'FeatureCollection' got 'Feature'"
     );
     expect(() => Branch.from({ type: "other" })).toThrowError(

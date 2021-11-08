@@ -27,7 +27,7 @@ const routes = [
   {
     path: "/debrief",
     name: "Debriefing",
-    component: () => import("../views/Wip.vue")
+    component: () => import("../views/Debriefing.vue")
   },
   {
     path: "/monitor",
