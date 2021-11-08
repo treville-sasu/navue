@@ -16,6 +16,21 @@
         />
       </mx-i-control>
 
+      <mx-i-control position="bottom-right" v-if="currentBranch">
+        <b-button
+          type="is-light"
+          :icon-right="
+            chartOpened ? 'arrow-bottom-right-thick' : 'arrow-top-left-thick'
+          "
+          @click="chartOpened = !chartOpened"
+        />
+        <ProfileChart
+          :geojson="currentBranch"
+          class="profil-chart pl-5"
+          v-if="chartOpened"
+        />
+      </mx-i-control>
+
       <mx-layer v-bind="mapSettings.sia" />
       <mx-layer v-bind="mapSettings.swisstopo" />
 
@@ -55,6 +70,7 @@ body,
 
 <script>
 import DataToolbox from "@/components/toolboxes/DataToolbox";
+import ProfileChart from "@/components/ProfileChart";
 import MapX from "@/mixins/MapX";
 
 export default {
@@ -62,6 +78,7 @@ export default {
   mixins: [MapX],
   components: {
     DataToolbox,
+    ProfileChart
   },
   data() {
     return {

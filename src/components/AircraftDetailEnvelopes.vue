@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import ChartJs from "@/components/ChartJs.vue";
+import ChartJs from "@/components/ChartJs";
 import { ChartSettings } from "@/mixins/apputils";
 
 import { Store } from "@/models/Base.js";

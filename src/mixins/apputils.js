@@ -12,8 +12,7 @@ export const ChartSettings = {
               c["infoFade"],
               c["warningFade"]
             ],
-            borderColor: [c["primary"], c["success"], c["info"], c["warning"]],
-            color: [c["primary"], c["success"], c["info"], c["warning"]]
+            borderColor: [c["primary"], c["success"], c["info"], c["warning"]]
           }
         }
       },

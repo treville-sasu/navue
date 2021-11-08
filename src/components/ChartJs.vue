@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      object: undefined
+      chart: undefined
     };
   },
   computed: {
@@ -38,10 +38,6 @@ export default {
         plugins: this.plugins
       };
 
-      // borderColor: Utils.CHART_COLORS.orange,
-      // backgroundColor: Utils.transparentize(Utils.CHART_COLORS.orange),
-      // color
-
       Object.keys(opts).forEach(name => {
         if (opts[name] === undefined) delete opts[name];
       });
@@ -51,26 +47,27 @@ export default {
   },
   watch: {
     data(n) {
-      if (this.object) {
-        this.object.data = n;
-        this.object.update("none");
+      if (this.chart) {
+        this.chart.data = n;
+        this.chart.update("none");
       }
     },
     options(n) {
-      if (this.object) {
-        this.object.options = n;
-        this.object.update("none");
+      if (this.chart) {
+        this.chart.options = n;
+        this.chart.update("none");
       }
     }
   },
   mounted() {
-    this.object = new Chart(this.$el, this.curatedOptions);
+    this.chart = new Chart(this.$el, this.curatedOptions);
+    this.$emit("load", this.chart);
   },
   render(h) {
     return h("canvas", { attrs: this.$attrs });
   },
   beforeDestroy() {
-    this.object.destroy();
+    this.chart.destroy();
   }
 };
 </script>

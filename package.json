@@ -20,6 +20,8 @@
     "buefy": "^0.9.7",
     "bulmaswatch": "github:jenil/bulmaswatch",
     "chart.js": "^3.5.1",
+    "chartjs-adapter-date-fns": "^2.0.0",
+    "date-fns": "^2.25.0",
     "leaflet": "^1.6.0",
     "leaflet-control-geocoder": "^2.3.0",
     "leaflet-geosearch": "^3.5.0",
