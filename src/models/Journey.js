@@ -88,14 +88,20 @@ export class Journey extends Model {
     } else
       switch (types[0]) {
         case "Feature":
-        case "MultiLineString":
-          return multiLineString(this.geom, this.properties, {
-            bbox: this.bbox
-          });
-        case "MultiPolygon":
+        case "LineString":
           return featureCollection(
-            this.branches.flatMap(b => b.toGeoJSON("MultiPolygon").features),
-            { bbox: this.bbox }
+            this.branches.flatMap(b => b.toGeoJSON("LineString"), {
+              bbox: this.bbox
+            })
+          );
+        case "MultiLineString":
+          return featureCollection(
+            this.branches.flatMap(
+              b => b.toGeoJSON("MultiLineString").features,
+              {
+                bbox: this.bbox
+              }
+            )
           );
         case "FeatureCollection":
         default:

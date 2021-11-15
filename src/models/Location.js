@@ -30,11 +30,12 @@ export class Location extends Waypoint {
     };
   }
 
-  willBeIn(delay) {
+  willBeIn(delay, properties) {
     if (this.properties.speed && this.properties.heading)
       return this.destinationPoint(
         this.properties.speed * delay,
-        this.properties.heading
+        this.properties.heading,
+        properties
       );
     else
       throw "cannot calculate futur position, speed & heading should be provided";

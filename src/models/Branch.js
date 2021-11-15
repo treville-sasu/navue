@@ -9,8 +9,6 @@ import {
 } from "@turf/helpers";
 import bbox from "@turf/bbox";
 import length from "@turf/length";
-import buffer from "@turf/buffer";
-import truncate from "@turf/truncate";
 
 export class Branch extends Model {
   constructor(member, properties = {}, ...features) {
@@ -95,28 +93,19 @@ export class Branch extends Model {
   toGeoJSON(type) {
     switch (type) {
       case "Feature":
+      case "LineString":
+        return lineString(this.geom, this.properties, { bbox: this.bbox });
       case "MultiLineString":
-        return multiLineString(this.geom, this.properties, { bbox: this.bbox });
-      case "MultiPolygon":
         return featureCollection(
-          this.pairs((start, end) => {
-            return truncate(
-              buffer(
-                // TODO : Should we create midpoints and average the properties ? let's see in real life
-                lineString(
-                  [start.geometry.coordinates, end.geometry.coordinates],
-                  start.properties
-                ),
-                Number(start.properties.accuracy) || 15,
-                {
-                  units: "meters",
-                  steps: 1
-                }
+          this.pairs(
+            (start, end, id) =>
+              lineString(
+                [start.geometry.coordinates, end.geometry.coordinates],
+                start.properties,
+                { id }
               ),
-              { mutate: true }
-            );
-          }),
-          { bbox: this.bbox }
+            { bbox: this.bbox }
+          )
         );
       case "FeatureCollection":
       default:

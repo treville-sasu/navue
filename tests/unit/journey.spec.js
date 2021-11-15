@@ -145,11 +145,11 @@ describe("journey", () => {
       fullJourney.toGeoJSON("FeatureCollection")
     );
     expect(fullJourney.toGeoJSON("FeatureCollection")).toMatchSnapshot();
-    expect(fullJourney.toGeoJSON("MultiLineString")).toStrictEqual(
+    expect(fullJourney.toGeoJSON("LineString")).toStrictEqual(
       fullJourney.toGeoJSON("Feature")
     );
     expect(fullJourney.toGeoJSON("Feature")).toMatchSnapshot();
-    expect(fullJourney.toGeoJSON("MultiPolygon")).toMatchSnapshot();
+    // expect(fullJourney.toGeoJSON('MultiLineString', 'MultiPolygon')).toMatchSnapshot();
   });
 
   it("should import as JSON", () => {

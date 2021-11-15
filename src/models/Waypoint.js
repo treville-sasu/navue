@@ -5,6 +5,8 @@ import { point, round } from "@turf/helpers";
 import rhumbDistance from "@turf/rhumb-distance";
 import rhumbBearing from "@turf/rhumb-bearing";
 import rhumbDestination from "@turf/rhumb-destination";
+import truncate from "@turf/truncate";
+import greatCircle from "@turf/great-circle";
 
 export class Waypoint extends Model {
   constructor([longitude, latitude, altitude] = [], properties = {}) {
@@ -69,7 +71,24 @@ export class Waypoint extends Model {
     );
   }
 
-  destinationPoint(distance, heading) {
+  greatCircleTo(wp, properties) {
+    let gc = truncate(
+      greatCircle(this.geometry.coordinates, wp.geometry.coordinates, {
+        npoints: 8,
+        properties
+      })
+    );
+
+    gc.properties = {
+      ...gc.properties,
+      distance: this.distanceTo(wp),
+      bearing: this.bearingTo(wp)
+    };
+
+    return gc;
+  }
+
+  destinationPoint(distance, heading, properties) {
     const coords = rhumbDestination(
       this.geometry.coordinates,
       new Distance(distance),
@@ -78,7 +97,8 @@ export class Waypoint extends Model {
         units: "meters"
       }
     ).geometry.coordinates;
-    return new this.constructor(coords);
+    if (this.geometry.coordinates[2]) coords[2] = this.geometry.coordinates[2];
+    return new this.constructor(coords, properties);
   }
 
   toGeoJSON(type) {
@@ -111,7 +131,7 @@ export class Waypoint extends Model {
           coordinates = geometry.coordinates;
         else
           throw `Invalid data : 'geometry.type' should be 'Point' got '${geometry &&
-            geometry.type}'`;
+          geometry.type}'`;
         break;
       case "Point":
         // coordinates = coordinates;
