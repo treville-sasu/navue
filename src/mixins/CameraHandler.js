@@ -20,7 +20,7 @@ export default {
       if (!this.timerCamera)
         if (camera instanceof this.$mapx.FreeCameraOptions)
           this.map.setFreeCameraOptions(camera, event);
-        else if (camera) this.map.flyTo(camera, event);
+        else if (camera) this.map.easeTo(camera, event);
     },
     buildCamera(course) {
       if (course.features.length < 2)

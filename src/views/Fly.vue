@@ -1,19 +1,13 @@
 <template>
-  <section style="height: 100%">
-    <l-map
-      ref="movingMap"
-      v-bind="settings.map"
-      @ready="setupMap"
+  <section class="mpx-map-wrapper">
+    <mx-map
+      v-bind="mapSettings.base"
+      @load="setupMap"
       @contextmenu="setDestination"
+      @movestart="inhibitCamera"
     >
-      <l-control position="topleft">
+      <mx-i-control position="top-left">
         <b-field class="is-stackable">
-          <MovingMapSettings
-            v-bind="settings"
-            @update:settings="updateSettings"
-            position="is-bottom-right"
-            :triggers="['click', 'hover']"
-          />
           <DataToolbox
             v-if="!settings.inFlight"
             location
@@ -22,15 +16,22 @@
             :flight="{ create: true, trace: traceDB }"
             :dropdown="{
               position: 'is-bottom-right',
-              triggers: ['click', 'hover']
+              triggers: ['click', 'hover'],
             }"
           />
+          <ViewManager
+            v-bind="settings"
+            @update:settings="updateSettings"
+            @update:camera="setCamera"
+            @show:poi="showPoint"
+          >
+            <template #header="{ selected }">
+              <b-input v-model="selected.name" placeholder="search location" />
+            </template>
+          </ViewManager>
         </b-field>
-      </l-control>
-
-      <l-control-zoom v-if="settings.zoomControl" position="topleft" />
-
-      <l-control position="bottomleft">
+      </mx-i-control>
+      <mx-i-control position="bottom-left">
         <ReportToolbox
           :tooltip="{ position: 'is-top' }"
           class="is-stackable"
@@ -41,28 +42,42 @@
           aip
           notepad
         />
-      </l-control>
-      <l-control position="topright">
+      </mx-i-control>
+      <mx-scale-control unit="nautical" />
+      <mx-i-control position="top-right" v-if="currentLocation">
         <InstrumentsDisplay
           class="is-stackable"
           v-bind="currentLocation.properties"
-          v-if="currentLocation"
         />
-      </l-control>
-      <l-control position="bottomright">
+      </mx-i-control>
+      <mx-i-control position="bottom-right">
         <TimerToolbox @update:settings="updateSettings" />
-      </l-control>
+      </mx-i-control>
+      <mx-layer v-bind="mapSettings.sia" />
+      <mx-layer v-bind="mapSettings.swisstopo" />
 
-      <l-base-layer-group />
-
-      <l-location-marker
-        v-if="currentLocation"
-        :value="currentLocation"
-        :delay="settings.futurPositionDelay"
-        @[settings.setView&&`update:bounds`]="bestView"
+      <mx-source type="geojson" id="vector" :data="flightVector">
+        <mx-layer
+          id="destination"
+          v-bind="style.destination"
+          @click="currentDestination = undefined"
       />
-      <l-polyline :lat-lngs="trace" className="traceLine" />
+        <mx-layer id="bestPath" v-bind="style.path" />
+        <mx-layer id="bestParameters" v-bind="style.parameters" />
+      </mx-source>
 
+      <mx-source
+        type="geojson"
+        id="course"
+        :data="flightCourse"
+        v-if="flightCourse"
+      >
+        <mx-layer id="location" v-bind="style.location" />
+        <mx-layer id="nextMinutes" v-bind="style.futurs" />
+        <mx-layer id="probablePath" v-bind="style.course" />
+      </mx-source>
+    </mx-map>
+  </section>
       <l-route-layer-group
         v-for="(route, id) in routes"
         :value="route"
@@ -70,100 +85,63 @@
         :active="false"
         @contextmenu-waypoint="setDestination(route.features[$event])"
       />
-      <l-destination-marker
-        :to="currentDestination"
-        :from="currentLocation"
-        @update="currentDestination = $event"
-      />
     </l-map>
-  </section>
+ 
 </template>
 
 <style lang="scss">
-@import "~bulmaswatch/flatly/_variables.scss";
-
 html,
 body,
 #app {
   height: 100%;
   width: 100%;
 }
-
-.traceLine {
-  stroke: $turquoise;
-  fill: none;
-  stroke-width: 5;
-  opacity: 0.8;
-}
 </style>
 
 <script>
-import "@/mixins/leaflet.patch";
-import "leaflet/dist/leaflet.css";
+import MapX from "@/mixins/MapX";
 
-import { LMap, LControlZoom, LControl, LPolyline } from "vue2-leaflet";
+import CameraHandler from "@/mixins/CameraHandler";
+import LocationHandler from "@/mixins/LocationHandler";
+import TraceHandler from "@/mixins/TraceHandler";
+import DestinationHandler from "@/mixins/DestinationHandler";
 
-import { LocationHandler } from "@/mixins/LocationHandler";
-import { TraceHandler } from "@/mixins/TraceHandler";
-import { DestinationHandler } from "@/mixins/DestinationHandler";
-
-import MovingMapSettings from "@/components/MovingMapSettings";
 import InstrumentsDisplay from "@/components/InstrumentsDisplay";
 
 import TimerToolbox from "@/components/toolboxes/TimerToolbox";
 import ReportToolbox from "@/components/toolboxes/ReportToolbox";
 import DataToolbox from "@/components/toolboxes/DataToolbox";
 
-import LBaseLayerGroup from "@/components/leaflet/LBaseLayerGroup";
-import LLocationMarker from "@/components/leaflet/LLocationMarker";
-import LDestinationMarker from "@/components/leaflet/LDestinationMarker";
-import LRouteLayerGroup from "@/components/leaflet/LRouteLayerGroup";
+import ViewManager from "@/components/managers/ViewManager";
 
 import { WakeLock } from "@/mixins/apputils";
 
 export default {
   name: "MovingMap",
   components: {
-    LMap,
-    LControlZoom,
-    LControl,
-    LPolyline,
-    MovingMapSettings,
     InstrumentsDisplay,
     TimerToolbox,
     ReportToolbox,
     DataToolbox,
-    LBaseLayerGroup,
-    LLocationMarker,
-    LRouteLayerGroup,
-    LDestinationMarker
+    ViewManager,
   },
-  mixins: [WakeLock, LocationHandler, TraceHandler, DestinationHandler],
+  mixins: [
+    MapX,
+    WakeLock,
+    CameraHandler,
+    LocationHandler,
+    TraceHandler,
+    DestinationHandler,
+  ],
   data() {
     return {
       legStart: undefined,
       map: undefined,
       settings: {
         getLocation: true,
-        setView: true,
         fullScreen: !!document.fullscreenElement,
-        zoomControl: false,
         inFlight: false,
-        map: {
-          zoom: 10,
-          center: { lat: 42.69597591582309, lng: 2.879308462142945 },
-          options: {
-            zoomSnap: 0.1,
-            zoomControl: false,
-            attributionControl: false
-          }
-        }
-      }
-    };
   },
-  provide: function() {
-    return {
-      getMap: this.getMap
     };
   },
   computed: {
@@ -191,13 +169,19 @@ export default {
     }
   },
   watch: {
-    "settings.fullScreen": function(val) {
+    "settings.viewMode"() {
+      this.flightCourse &&
+        this.setCamera(this.buildCamera(this.flightCourse), {
+          trigger: "viewMode",
+        });
+    },
+    "settings.fullScreen"(val) {
       this.toggleFullscreen(this.map.getContainer(), val);
     },
-    "settings.getLocation": function(val) {
+    "settings.getLocation"(val) {
       val ? this.startLocate() : this.stopLocate();
     },
-    "settings.inFlight": function(val) {
+    "settings.inFlight"(val) {
       if (val) {
         this.newLeg();
         this.addLocation(this.currentLocation);
@@ -205,42 +189,38 @@ export default {
       this.settings.fullScreen = val;
     },
     navigation(nav) {
-      try {
-        this.map.flyToBounds(nav.bbox, {
-          padding: [25, 25]
+      nav &&
+        this.setCamera({
+          ...this.map.cameraForBounds(nav.bbox, {
+            bearing: 0,
+            pitch: 0,
+          }),
         });
-      } catch {
-        /* continue regardless of error */
-      }
     },
     currentLocation(location) {
-      if (location && this.settings.inFlight) this.addLocation(location);
-      if (location && this.navigation) {
+      if (location) {
+        if (this.settings.inFlight) this.addLocation(location);
+        if (this.navigation) {
         let nextDestination = this.getDestination(location);
         if (nextDestination) this.setDestination(nextDestination);
       }
     }
+    },
+    flightCourse(val) {
+      val && this.setCamera(this.buildCamera(val), { trigger: "location" });
+    },
   },
   methods: {
-    getMap() {
-      return this.map;
-    },
     newLeg() {
-      this.trace.unshift([]);
+      this.flightTrace.unshift([]);
       this.legStart = Date.now();
     },
-    setupMap(e) {
-      this.map = e;
+    setupMap({ target }) {
+      this.map = target;
       if (this.settings.getLocation) this.startLocate();
     },
-    bestView(bounds) {
-      // To be removed when using vue-mapx
-      bounds = [
-        [bounds[1], bounds[0]],
-        [bounds[3], bounds[2]]
-      ];
-      //
-      this.map.flyToBounds(bounds, { padding: [25, 25] });
+    showPoint(point) {
+      point && this.setCamera(this.buildCamera([point]));
     },
     addLocation(payload) {
       let asJSON = JSON.parse(JSON.stringify(payload));
