@@ -76,7 +76,7 @@ Object {
         "distance": 111,
         "insertAfter": Array [
           0,
-          1,
+          0,
         ],
       },
       "type": "Feature",
@@ -154,7 +154,7 @@ Object {
         "distance": 111,
         "insertAfter": Array [
           0,
-          1,
+          0,
         ],
       },
       "type": "Feature",

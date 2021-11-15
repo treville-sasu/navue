@@ -13,54 +13,93 @@
       <b-autocomplete
         placeholder="location"
         :data="results"
-        field="label"
+        field="properties.display_name"
         @typing="searchLocation"
         :loading="isFetching"
         keep-first
         clear-on-select
-        @select="
-          ({ x, y }, e) => {
-            e.stopPropagation();
-            this.onLocationFound({ latitude: y, longitude: x });
-          }
-        "
+        @select="$emit('show:poi', $event)"
         icon="map-search"
       />
+      <!-- @select="
+          (q, e) => {
+            e.stopPropagation();
+            this.onPOIFound(q);
+          }
+        " -->
     </b-dropdown-item>
     <b-dropdown-item :disabled="!canLocate" @click="locate">
-      <b-icon icon="crosshairs-gps" />
+      <b-icon icon="crosshairs-question" />
       Locate with GNSS
     </b-dropdown-item>
-    <b-dropdown-item>
-      <b-icon icon="crosshairs" />
-      Center view
+    <b-dropdown-item :disabled="!canLocate" custom>
+      <b-switch
+        v-bind:value="getLocation"
+        @input="$emit('update:settings', { getLocation: $event })"
+        >Locate with GNSS</b-switch
+      >
     </b-dropdown-item>
-    <b-dropdown-item>
-      <b-icon icon="compass" />
-      Put north on top
+    <b-dropdown-item custom>
+      <b-field label="View mode">
+        <b-radio-button
+          v-bind:value="viewMode"
+          @input="$emit('update:settings', { viewMode: $event })"
+          native-value="north"
+        >
+          North up
+        </b-radio-button>
+        <b-radio-button
+          v-bind:value="viewMode"
+          @input="$emit('update:settings', { viewMode: $event })"
+          native-value="heading"
+        >
+          Heading up
+        </b-radio-button>
+        <b-radio-button
+          v-bind:value="viewMode"
+          @input="$emit('update:settings', { viewMode: $event })"
+          native-value="fpv"
+        >
+          Cockpit view
+        </b-radio-button>
+        <b-radio-button
+          v-bind:value="viewMode"
+          @input="$emit('update:settings', { viewMode: $event })"
+          :native-value="false"
+        >
+          Free
+        </b-radio-button>
+      </b-field>
+    </b-dropdown-item>
+    <b-dropdown-item @click="$emit('update:camera', { pitch: 0, bearing: 0 })">
+      <b-icon icon="refresh" />
+      Reset view
     </b-dropdown-item>
   </b-dropdown>
 </template>
 
 <script>
-import { OpenStreetMapProvider } from "leaflet-geosearch";
+import { Location } from "@/models/Location";
 
 export default {
   name: "ViewManager",
+  props: {
+    getLocation: Boolean,
+    centerView: Boolean,
+    viewMode: [Boolean, String]
+  },
   data() {
     return {
       canLocate: "geolocation" in navigator,
       isFetching: false,
-      results: [],
-      geosearch: new OpenStreetMapProvider(),
-      parentContainer: undefined
+      maxResults: 5,
+      results: []
     };
   },
-  inject: ["getMap"],
   methods: {
     locate() {
       navigator.geolocation.getCurrentPosition(
-        ({ coords }) => this.onLocationFound(coords),
+        this.onLocationFound,
         console.error,
         { enableHighAccuracy: true, maximumAge: 0 }
       );
@@ -68,14 +107,26 @@ export default {
     async searchLocation(str) {
       if (str.length >= 3) {
         this.isFetching = true;
-        this.results = await this.geosearch.search({ query: str });
+        this.results = await this._queryNominatim(str);
         this.isFetching = false;
       }
     },
-    onLocationFound({ latitude, longitude }) {
-      console.debug([latitude, longitude]);
-      this.$emit("update:center", [latitude, longitude]);
-      this.getMap().flyTo([latitude, longitude]);
+    onLocationFound(location) {
+      let loc = Location.fromGeolocationPosition(location);
+      loc.properties.display_name = `${loc.properties.accuracy} - ${loc.properties.altitude}`;
+      this.$emit("show:poi", loc);
+    },
+    async _queryNominatim(q) {
+      let url = new URL("https://nominatim.openstreetmap.org/search");
+      url.search = new URLSearchParams({
+        q,
+        format: "geojson",
+        limit: this.maxResults
+        // viewbox=<x1>,<y1>,<x2>,<y2>
+      });
+      const raw = await fetch(url, { method: "GET" });
+      const json = await raw.json();
+      return json.features || [];
     }
   }
 };

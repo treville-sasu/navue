@@ -6,10 +6,19 @@ Object {
     "coordinates": Array [
       0,
       1.414172,
+      1,
     ],
     "type": "Point",
   },
-  "properties": Object {},
+  "properties": Object {
+    "altitude": Object {
+      "precision": 1,
+      "reference": "WGS84",
+      "type": "Altitude",
+      "unit": "m",
+      "value": 1,
+    },
+  },
   "type": "Waypoint",
 }
 `;

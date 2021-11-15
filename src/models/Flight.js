@@ -23,4 +23,28 @@ export class Flight extends Journey {
       }, 0) / 1000
     );
   }
+
+  // toGeoJSON(type) {
+  //   switch (type) {
+  //     case "Feature":
+  //     case "LineString":
+  //       return featureCollection(
+  //         this.branches.flatMap(b => b.toGeoJSON("LineString"), {
+  //           bbox: this.bbox
+  //         })
+  //       );
+  //     case "MultiLineString":
+  //       return featureCollection(
+  //         this.branches.flatMap(b => b.toGeoJSON("MultiLineString").features, {
+  //           bbox: this.bbox
+  //         })
+  //       );
+  //     case "FeatureCollection":
+  //     default:
+  //       return featureCollection(
+  //         this.branches.flatMap(b => b.toGeoJSON("FeatureCollection").features),
+  //         { bbox: this.bbox }
+  //       );
+  //   }
+  // }
 }

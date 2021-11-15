@@ -141,86 +141,46 @@ Object {
     Object {
       "geometry": Object {
         "coordinates": Array [
-          Array [
-            Array [
-              1.000095,
-              0.999905,
-            ],
-            Array [
-              1.000095,
-              1.000095,
-            ],
-            Array [
-              0.999905,
-              1.000095,
-            ],
-            Array [
-              -0.000095,
-              0.000095,
-            ],
-            Array [
-              -0.000095,
-              -0.000095,
-            ],
-            Array [
-              0.000095,
-              -0.000095,
-            ],
-            Array [
-              1.000095,
-              0.999905,
-            ],
-          ],
+          0,
+          0,
+          1,
         ],
-        "type": "Polygon",
       },
       "properties": Object {
         "altitude": 1,
       },
-      "type": "Feature",
+      "type": "Position",
     },
     Object {
       "geometry": Object {
         "coordinates": Array [
-          Array [
-            Array [
-              -1.000095,
-              -0.999905,
-            ],
-            Array [
-              -1.000095,
-              -1.000095,
-            ],
-            Array [
-              -0.999905,
-              -1.000095,
-            ],
-            Array [
-              1.000095,
-              0.999905,
-            ],
-            Array [
-              1.000095,
-              1.000095,
-            ],
-            Array [
-              0.999905,
-              1.000095,
-            ],
-            Array [
-              -1.000095,
-              -0.999905,
-            ],
-          ],
+          1,
+          1,
+          0,
         ],
-        "type": "Polygon",
       },
       "properties": Object {
         "altitude": 0,
       },
-      "type": "Feature",
+      "type": "Position",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          -1,
+          -1,
+          2,
+        ],
+      },
+      "properties": Object {
+        "altitude": 0,
+      },
+      "type": "Position",
     },
   ],
+  "properties": Object {
+    "a": 1,
+  },
   "type": "FeatureCollection",
 }
 `;

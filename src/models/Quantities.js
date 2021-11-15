@@ -22,6 +22,27 @@ export class Quantity extends Model {
     }
   }
 
+  // constructor(value, _unit, { type, unit, precision, ...properties } = {}) {
+  //   if (arguments[0] instanceof Quantity) return arguments[0];
+
+  //   if (isNaN(arguments[0])) ({ value, _unit, ...properties } = arguments[0]);
+
+  //   super(properties);
+
+  //   if (_unit) this.unit = _unit;
+  //   else this._unit = undefined;
+
+  //   if (value || value === 0) this.value = value;
+  //   else {
+  //     this._value = undefined;
+  //     this.precision = undefined;
+  //   }
+
+  //   if (precision) this.precision = precision;
+
+  //   if (unit) this.unit = unit;
+  // }
+
   get value() {
     return this.constructor.significantValue(
       this._to(this._value),
@@ -100,14 +121,13 @@ export class Quantity extends Model {
 
   toString() {
     let sf = Math.max(1, Math.min(this.precision || 0, 21));
-    return `${
-      isNaN(this.value)
+    return `${isNaN(this.value)
         ? "-"
         : this.value.toLocaleString(undefined, {
-            minimumSignificantDigits: sf,
-            maximumSignificantDigits: sf
-          })
-    } ${this.unit}`;
+          minimumSignificantDigits: sf,
+          maximumSignificantDigits: sf
+        })
+      } ${this.unit}`;
   }
 
   toJSON() {

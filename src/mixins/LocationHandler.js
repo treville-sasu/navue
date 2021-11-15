@@ -2,7 +2,12 @@ import { Location } from "@/models/Location";
 import { Altitude, Distance } from "@/models/Quantities";
 import { UIHelpers } from "@/mixins/apputils";
 import { randomPosition } from "@turf/random";
-export const LocationHandler = {
+
+import { featureCollection, lineString } from "@turf/helpers";
+
+import c from "@/assets/colors.scss";
+
+export default {
   mixins: [UIHelpers],
   data() {
     return {
@@ -16,11 +21,77 @@ export const LocationHandler = {
         maxAccuracy: 150,
         minSpeed: 0.2,
         minDistance: 1
+      },
+      style: {
+        location: {
+          type: "symbol",
+          filter: [
+            "all",
+            ["==", ["geometry-type"], "Point"],
+            ["has", "timestamp"]
+          ],
+          layout: {
+            "icon-anchor": "center",
+            "icon-image": "za-provincial-2", // "it-motorway-2"
+            "text-field": ["get", "label"],
+            "text-offset": [0, 1.25],
+            "text-anchor": "center"
+          }
+        },
+        futurs: {
+          type: "symbol",
+          filter: [
+            "all",
+            ["==", ["geometry-type"], "Point"],
+            ["!", ["has", "timestamp"]]
+          ],
+          layout: {
+            "icon-anchor": "center",
+            "text-anchor": "center",
+            "text-justify": "center",
+            "icon-image": "circle-white-2",
+            "text-field": ["get", "label"]
+            // "icon-text-fit": "both"
+          }
+        },
+        course: {
+          type: "line",
+          filter: ["==", ["geometry-type"], "LineString"],
+          layout: {
+            "line-join": "round",
+            "line-cap": "round"
+          },
+          paint: {
+            "line-color": c["warning"],
+            "line-width": 6,
+            "line-opacity": 0.7
+            // "line-dasharray": [2, 4]
+          }
+        }
       }
     };
   },
   beforeDestroy() {
     this.stopLocate();
+  },
+  computed: {
+    flightCourse() {
+      if (this.currentLocation) {
+        let features = [];
+        features.push(this.currentLocation);
+        for (let i = 1; i <= this.settings.futurPositionDelay; i++)
+          //FIXME this dirty hack with a condition
+          try {
+            features.push(
+              this.currentLocation.willBeIn(2 ** i * 60, { label: 2 ** i })
+            );
+            // eslint-disable-next-line no-empty
+          } catch { }
+        if (features.length > 1)
+          features.push(lineString(features.map(f => f.geometry.coordinates)));
+        return featureCollection(features);
+      } else return undefined;
+    }
   },
   methods: {
     stopLocate() {
@@ -47,6 +118,7 @@ export const LocationHandler = {
     },
 
     _locationFound(e) {
+      console.time("location");
       let location = Location.fromGeolocationPosition(e);
       //////////////////
       if (process.env.NODE_ENV == "development") {
@@ -84,6 +156,14 @@ export const LocationHandler = {
         location.properties.speed = undefined;
         location.properties.heading = undefined;
       }
+
+      // location.properties.elevation = new Altitude(
+      //   this.map.queryTerrainElevation(location.lngLat),
+      //   "m",
+      //   {
+      //     reference: "WGS84"
+      //   }
+      // );
 
       this.lastError = undefined;
       this.currentLocation = location;

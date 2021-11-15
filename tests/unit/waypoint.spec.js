@@ -118,7 +118,7 @@ describe("waypoint", () => {
   });
   it("get destination waypoint from distance and bearing", () => {
     expect(
-      new Waypoint([0, 0]).destinationPoint(
+      new Waypoint([0, 0, 1]).destinationPoint(
         new Distance(157249),
         new Bearing(0)
       )
@@ -127,6 +127,7 @@ describe("waypoint", () => {
       new Waypoint([0, 0]).destinationPoint(157249, 0)
     );
   });
+  it.todo("return a Great Circle");
 
   it("is exported as JSON object", () => {
     expect(wp.toJSON()).toMatchSnapshot();
