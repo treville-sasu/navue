@@ -12,9 +12,9 @@
     </b-dropdown-item>
     <b-dropdown-item custom>
       <b-switch
-        v-bind:value="setView"
+        v-bind:value="centerView"
         :disabled="!getLocation"
-        @input="$emit('update:settings', { setView: $event })"
+        @input="$emit('update:settings', { centerView: $event })"
         >Keep view centered</b-switch
       >
     </b-dropdown-item>
@@ -23,13 +23,6 @@
         v-bind:value="fullScreen"
         @input="$emit('update:settings', { fullScreen: $event })"
         >Set Map Fullscreen</b-switch
-      >
-    </b-dropdown-item>
-    <b-dropdown-item custom>
-      <b-switch
-        v-bind:value="zoomControl"
-        @input="$emit('update:settings', { zoomControl: $event })"
-        >Display zoom control</b-switch
       >
     </b-dropdown-item>
     <b-dropdown-item separator />
@@ -125,9 +118,8 @@ export default {
   name: "MovingMapSettingsControl",
   props: {
     getLocation: Boolean,
-    setView: Boolean,
+    centerView: Boolean,
     fullScreen: Boolean,
-    zoomControl: Boolean,
     traceLength: Number,
     futurPositionDelay: Number,
     maxAccuracy: Number,

@@ -86,12 +86,8 @@ export class Navigation extends Journey {
                 greatCircle(start, end, {
                   npoints: 5,
                   properties: {
-                    distance: round(distance(start, end)),
-                    bearings: [
-                      round(bearingToAzimuth(bearing(start, end))),
-                      round(bearingToAzimuth(bearing(start, end, true)))
-                    ],
-                    insertAfter: [m, s] // branch and waypoint indexes
+                    distance: round(distance(start, end, { units: 'meters' })),
+                    bearing: round(bearingToAzimuth(bearing(start, end))),
                   }
                 })
               )

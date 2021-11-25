@@ -6,6 +6,13 @@
 </template>
 
 <style lang="scss">
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+}
+
 @import "bulmaswatch/flatly/_variables";
 @import "bulma/sass/utilities/initial-variables";
 $navbar-breakpoint: $tablet;

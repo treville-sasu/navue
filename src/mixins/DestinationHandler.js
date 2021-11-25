@@ -12,44 +12,45 @@ export default {
       },
       style: {
         destination: {
-          type: "symbol",
-          filter: ["==", ["geometry-type"], "Point"],
-          layout: {
-            "icon-anchor": "center",
-            "text-anchor": "center",
-            "text-justify": "center",
-            "icon-image": "br-state-2",
-            "text-field": ["get", "label"]
-          }
-        },
-        path: {
-          type: "line",
-          filter: ["==", ["geometry-type"], "LineString"],
-          layout: {
-            "line-join": "round",
-            "line-cap": "round"
+          point: {
+            type: "symbol",
+            filter: ["==", ["geometry-type"], "Point"],
+            layout: {
+              "icon-anchor": "center",
+              "text-anchor": "center",
+              "text-justify": "center",
+              "icon-image": "br-state-2",
+              "text-field": ["get", "label"]
+            }
           },
-          paint: {
-            "line-color": c["success"],
-            "line-width": 6,
-            "line-opacity": 0.7
-            // "line-dasharray": [2, 4]
-          }
-        },
-        parameters: {
-          type: "symbol",
-          // filter: ["==", ["geometry-type"], "Line"],
-          layout: {
-            "symbol-placement": "line",
-            "text-allow-overlap": true,
-            "text-pitch-alignment": "viewport",
-            "text-field": ["get", "label"],
-            "text-size": 24
+          path: {
+            type: "line",
+            filter: ["==", ["geometry-type"], "LineString"],
+            layout: {
+              "line-join": "round",
+              "line-cap": "round"
+            },
+            paint: {
+              "line-color": c["success"],
+              "line-width": 6,
+              "line-opacity": 0.7
+            }
           },
-          paint: {
-            "text-color": "#FFFFFF",
-            "text-halo-color": "#000000",
-            "text-halo-width": 1.25
+          parameters: {
+            type: "symbol",
+            filter: ["==", ["geometry-type"], "LineString"],
+            layout: {
+              "symbol-placement": "line",
+              "text-allow-overlap": true,
+              "text-pitch-alignment": "viewport",
+              "text-field": ["get", "label"],
+              "text-size": 24
+            },
+            paint: {
+              "text-color": "#FFFFFF",
+              "text-halo-color": "#000000",
+              "text-halo-width": 1.25
+            }
           }
         }
       }

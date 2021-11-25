@@ -13,6 +13,10 @@ export class Location extends Waypoint {
     );
   }
 
+  get moving() {
+    return this.properties.speed && this.properties.heading;
+  }
+
   bounds(radius) {
     return bbox(
       buffer(this.toGeoJSON(), radius, {
@@ -31,7 +35,7 @@ export class Location extends Waypoint {
   }
 
   willBeIn(delay, properties) {
-    if (this.properties.speed && this.properties.heading)
+    if (this.moving)
       return this.destinationPoint(
         this.properties.speed * delay,
         this.properties.heading,

@@ -24,48 +24,52 @@ export default {
       },
       style: {
         location: {
-          type: "symbol",
-          filter: [
-            "all",
-            ["==", ["geometry-type"], "Point"],
-            ["has", "timestamp"]
-          ],
-          layout: {
-            "icon-anchor": "center",
-            "icon-image": "za-provincial-2", // "it-motorway-2"
-            "text-field": ["get", "label"],
-            "text-offset": [0, 1.25],
-            "text-anchor": "center"
-          }
-        },
-        futurs: {
-          type: "symbol",
-          filter: [
-            "all",
-            ["==", ["geometry-type"], "Point"],
-            ["!", ["has", "timestamp"]]
-          ],
-          layout: {
-            "icon-anchor": "center",
-            "text-anchor": "center",
-            "text-justify": "center",
-            "icon-image": "circle-white-2",
-            "text-field": ["get", "label"]
-            // "icon-text-fit": "both"
-          }
-        },
-        course: {
-          type: "line",
-          filter: ["==", ["geometry-type"], "LineString"],
-          layout: {
-            "line-join": "round",
-            "line-cap": "round"
+          point: {
+            type: "symbol",
+            filter: [
+              "all",
+              ["==", ["geometry-type"], "Point"],
+              ["has", "timestamp"]
+            ],
+            layout: {
+              "icon-anchor": "center",
+              "icon-image": "za-provincial-2", // "it-motorway-2"
+              "text-field": ["get", "label"],
+              "text-offset": [0, 1.25],
+              "text-anchor": "center"
+            }
           },
-          paint: {
-            "line-color": c["warning"],
-            "line-width": 6,
-            "line-opacity": 0.7
+          futurs: {
+            type: "symbol",
+            filter: [
+              "all",
+              ["==", ["geometry-type"], "Point"],
+              ["!", ["has", "timestamp"]]
+            ],
+            layout: {
+              "icon-anchor": "center",
+              "text-anchor": "center",
+              "text-justify": "center",
+              "icon-image": "circle-white-2",
+              "text-field": ["get", "label"]
+              // "icon-text-fit": "both"
+            }
+          },
+          course: {
+            type: "line",
+            filter: ["==", ["geometry-type"], "LineString"],
+            layout: {
+              "line-join": "round",
+              "line-cap": "round"
+            },
+            paint: {
+              "line-color": c["warning"],
+              "line-width": 6,
+              "line-opacity": 0.7
+            }
           }
+        }
+      },
         }
       }
     };
@@ -78,14 +82,11 @@ export default {
       if (this.currentLocation) {
         let features = [];
         features.push(this.currentLocation);
-        for (let i = 1; i <= this.settings.futurPositionDelay; i++)
-          //FIXME this dirty hack with a condition
-          try {
+        if (this.currentLocation.moving)
+          for (let i = 1; i <= this.settings.futurPositionDelay; i++)
             features.push(
               this.currentLocation.willBeIn(2 ** i * 60, { label: 2 ** i })
             );
-            // eslint-disable-next-line no-empty
-          } catch { }
         if (features.length > 1)
           features.push(lineString(features.map(f => f.geometry.coordinates)));
         return featureCollection(features);
