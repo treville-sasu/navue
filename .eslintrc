@@ -19,6 +19,7 @@
   },
   "rules": {
     "compat/compat": "warn",
+    "vue/no-mutating-props": "warn",
     "no-console": "off",
     "no-debugger": "off",
     "jest/prefer-expect-assertions": [
