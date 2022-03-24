@@ -1,7 +1,12 @@
 import { Model } from "@/models/Base.js";
-import { Distance } from "@/models/Quantities.js";
+import { Distance, Azimuth } from "@/models/Quantities.js";
 
-import { lineString, featureCollection, round } from "@turf/helpers";
+import { lineString, featureCollection, round, bearingToAzimuth } from "@turf/helpers";
+import greatCircle from "@turf/great-circle";
+import distance from "@turf/distance";
+import bearing from "@turf/bearing";
+import midpoint from "@turf/midpoint"
+
 import bbox from "@turf/bbox";
 import length from "@turf/length";
 
@@ -12,6 +17,10 @@ export class Branch extends Model {
         arr[i] = member.from(f);
       });
     super({ ...featureCollection(features), properties, member });
+  }
+
+  [Symbol.iterator]() {
+    return this.features[Symbol.iterator]();
   }
 
   first() {
@@ -70,7 +79,8 @@ export class Branch extends Model {
   }
 
   get bbox() {
-    return bbox(lineString(this.geom));
+    return this.geom.length > 2 ?
+      bbox(lineString(this.geom)) : undefined;
   }
 
   get length() {
@@ -102,14 +112,37 @@ export class Branch extends Model {
             { bbox: this.bbox }
           )
         );
+      case "Geodesics":
+        return featureCollection(
+          this.pairs(
+            (start, end, id) =>
+              greatCircle(start.geometry.coordinates, end.geometry.coordinates, {
+                npoints: 10,
+                properties: {
+                  distance: new Distance(round(distance(start.geometry.coordinates, end.geometry.coordinates, { units: 'meters' })), "m", { unit: "NM" }).toString(),
+                  bearing: new Azimuth(round(bearingToAzimuth(bearing(start.geometry.coordinates, end.geometry.coordinates))), "°").toString(),
+                  id
+                }
+              }),
+            { bbox: this.bbox }
+          )
+        );
+      case "Midpoints":
+        return featureCollection(
+          this.pairs(
+            (start, end) =>
+              midpoint(start.geometry.coordinates, end.geometry.coordinates),
+            { bbox: this.bbox }
+          )
+        );
       case "FeatureCollection":
-      default:
         return {
           ...featureCollection(this.features, {
             bbox: this.bbox
           }),
           properties: this.properties
         };
+      default: return featureCollection([...this.toGeoJSON("FeatureCollection").features, ...this.toGeoJSON("Geodesics").features])
     }
   }
 
