@@ -6,14 +6,12 @@
   },
   "extends": [
     "plugin:compat/recommended",
-    "plugin:vue/essential",
+    "plugin:vue/recommended",
+    "plugin:jest/recommended",
     "eslint:recommended",
-    "@vue/prettier",
-    "plugin:jest/recommended"
+    "@vue/prettier"
   ],
-  "plugins": [
-    "jest"
-  ],
+  "plugins": ["jest"],
   "parserOptions": {
     "ecmaVersion": 2020
   },

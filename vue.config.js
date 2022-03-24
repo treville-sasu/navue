@@ -137,9 +137,6 @@ module.exports = {
     resolve: {
       symlinks: false
     },
-    externals: {
-      L: "leaflet"
-    },
     plugins: [
       new CreateFileWebpack({
         path: "./dist",
