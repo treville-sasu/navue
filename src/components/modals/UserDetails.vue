@@ -76,6 +76,7 @@ export default {
   mixins: [UserAccount, UIHelpers],
   data() {
     return {
+      value: this.user,
       newPassword: null,
       confirm: {
         deleteUser: {
@@ -93,7 +94,7 @@ export default {
       }
     };
   },
-  props: ["value"],
+  props: ["user"],
   computed: {
     metadata() {
       // eslint-disable-next-line no-unused-vars
@@ -107,7 +108,7 @@ export default {
       if (result)
         try {
           await this.remoteDB.deleteUser(this.value.name);
-          this.$emit("update-user");
+          this.$emit("update:user");
           this.$emit("close");
           this.openWarning({ message: "Account deleted." });
         } catch (e) {
@@ -117,7 +118,7 @@ export default {
     async updateMetadata(data) {
       try {
         await this.remoteDB.putUser(this.value.name, { metadata: data });
-        this.$emit("update-user");
+        this.$emit("update:user");
         this.$emit("close");
         this.openWarning({ message: "Account saved." });
       } catch (e) {

@@ -270,8 +270,8 @@ export default {
       this.modal = this.$buefy.modal.open({
         parent: this,
         component: UserDetails,
-        props: { value: this.currentUser },
-        events: { "update-user": this.checkSession },
+        props: { user: this.currentUser },
+        events: { "update:user": this.checkSession },
         hasModalCard: false,
         trapFocus: true,
         "append-to-body": true
