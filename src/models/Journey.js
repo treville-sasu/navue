@@ -13,6 +13,10 @@ export class Journey extends Model {
     super({ properties, branches });
   }
 
+  [Symbol.iterator]() {
+    return this.branches[Symbol.iterator]();
+  }
+
   get name() {
     return this.properties.name;
   }

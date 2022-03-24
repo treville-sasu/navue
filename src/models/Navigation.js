@@ -1,12 +1,7 @@
 import { Journey, Branch } from "@/models/Journey";
 import { Waypoint } from "@/models/Waypoint";
 
-import { segmentReduce } from "@turf/meta";
-import greatCircle from "@turf/great-circle";
-import distance from "@turf/distance";
-import bearing from "@turf/bearing";
-import { featureCollection, bearingToAzimuth, round } from "@turf/helpers";
-import truncate from "@turf/truncate";
+import { featureCollection } from "@turf/helpers";
 
 export class Navigation extends Journey {
   constructor({ name, notes, assets = {} } = {}, ...routes) {
@@ -77,34 +72,15 @@ export class Navigation extends Journey {
     switch (type) {
       case "Feature":
       case "MultiLineString":
-        return segmentReduce(
-          super.toGeoJSON("MultiLineString"),
-          (legs, { geometry: { coordinates } }, f, m, g, s) => {
-            const [start, end] = coordinates;
-            legs.features.push(
-              truncate(
-                greatCircle(start, end, {
-                  npoints: 5,
-                  properties: {
-                    distance: round(distance(start, end)),
-                    bearings: [
-                      round(bearingToAzimuth(bearing(start, end))),
-                      round(bearingToAzimuth(bearing(start, end, true)))
-                    ],
-                    insertAfter: [m, s] // branch and waypoint indexes
-                  }
-                })
-              )
-            );
-            return legs;
-          },
-          featureCollection([])
+        return featureCollection(
+          this.branches.flatMap(b => b.toGeoJSON("MultiLineString").features),
+          { bbox: this.bbox }
         );
-      // case "MultiPolygon":
-      //   return featureCollection(
-      //     this.branches.flatMap(b => b.toGeoJSON("MultiPolygon").features),
-      //     { bbox: this.bbox }
-      //   );
+      case "Geodesics":
+        return featureCollection(
+          this.branches.flatMap(b => b.toGeoJSON("Geodesics").features),
+          { bbox: this.bbox }
+        );
       default:
         return super.toGeoJSON(type);
     }
