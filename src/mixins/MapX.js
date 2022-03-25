@@ -5,7 +5,8 @@ export default {
     return {
       mapSettings: {
         base: {
-          mapStyle: "mapbox://styles/mabrenac/ckoleyexd2sem18pf9gmhzmgu",
+          mapStyle:
+            "mapbox://styles/mabrenac/ckoleyexd2sem18pf9gmhzmgu?optimize=true",
           zoom: 10,
           center: { lat: 42.69597591582309, lng: 2.879308462142945 } // le centre du Monde selon S. Dali
         },
@@ -41,19 +42,7 @@ export default {
           minzoom: 9
         },
         flight: {
-          locations: {
-            id: "flightLocations",
-            type: "symbol",
-            filter: ["==", ["geometry-type"], "Point"],
-            layout: {
-              "icon-image": "tw-provincial-expy-3",
-              "text-field": ["get", "timestamp"],
-              "text-offset": [0, 1.25],
-              "text-anchor": "top"
-            }
-          },
           path: {
-            id: "flightPath",
             type: "line",
             filter: ["==", ["geometry-type"], "LineString"],
             layout: {

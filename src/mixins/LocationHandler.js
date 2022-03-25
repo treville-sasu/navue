@@ -65,7 +65,6 @@ export default {
             "line-color": c["warning"],
             "line-width": 6,
             "line-opacity": 0.7
-            // "line-dasharray": [2, 4]
           }
         }
       }
@@ -118,7 +117,6 @@ export default {
     },
 
     _locationFound(e) {
-      console.time("location");
       let location = Location.fromGeolocationPosition(e);
       //////////////////
       if (process.env.NODE_ENV == "development") {
@@ -198,7 +196,7 @@ export default {
     },
 
     _fakeLocation(location, properties) {
-      console.debug("Faking around");
+      console.warn("Faking around");
 
       location.properties = {
         timestamp: Date.now(),
