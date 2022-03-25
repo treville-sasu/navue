@@ -20,9 +20,13 @@ export default class {
 
   async fetch(target, options = {}) {
     const response = await fetch(target, options);
+    const contentType = response.headers.get('Content-Type');
     if (!response.ok)
       throw { code: response.status, message: response.statusText };
-    else {
+    else if (contentType.includes("application/json")) {
+      return response.json();
+    }
+    else if (contentType.includes("text/html")) {
       const text = await response.text();
       return new DOMParser().parseFromString(text, "text/html");
     }

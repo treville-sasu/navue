@@ -1,4 +1,4 @@
-export const TraceHandler = {
+export default {
   data() {
     return {
       traceDB: "navue_trace",

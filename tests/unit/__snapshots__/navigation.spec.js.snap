@@ -2,6 +2,12 @@
 
 exports[`navigation export toGeoJSON as Great Circle 1`] = `
 Object {
+  "bbox": Array [
+    0,
+    0,
+    3,
+    4,
+  ],
   "features": Array [
     Object {
       "geometry": Object {
@@ -9,36 +15,26 @@ Object {
           Array [
             0,
             0,
-          ],
-          Array [
-            0.249976,
-            0.250012,
-          ],
-          Array [
-            0.499962,
-            0.500019,
-          ],
-          Array [
-            0.749967,
-            0.750017,
+            10,
           ],
           Array [
             1,
             1,
+            20,
           ],
         ],
         "type": "LineString",
       },
+      "id": 1,
       "properties": Object {
-        "bearings": Array [
-          45,
-          45,
-        ],
-        "distance": 157,
-        "insertAfter": Array [
-          0,
-          0,
-        ],
+        "altitude": Object {
+          "precision": 1,
+          "reference": "WGS84",
+          "type": "Altitude",
+          "unit": "m",
+          "value": 10,
+        },
+        "name": "A",
       },
       "type": "Feature",
     },
@@ -48,36 +44,26 @@ Object {
           Array [
             1,
             1,
-          ],
-          Array [
-            1,
-            1.25,
-          ],
-          Array [
-            1,
-            1.5,
-          ],
-          Array [
-            1,
-            1.75,
+            20,
           ],
           Array [
             1,
             2,
+            20,
           ],
         ],
         "type": "LineString",
       },
+      "id": 2,
       "properties": Object {
-        "bearings": Array [
-          0,
-          0,
-        ],
-        "distance": 111,
-        "insertAfter": Array [
-          0,
-          0,
-        ],
+        "altitude": Object {
+          "precision": 1,
+          "reference": "WGS84",
+          "type": "Altitude",
+          "unit": "m",
+          "value": 20,
+        },
+        "name": "Babababa",
       },
       "type": "Feature",
     },
@@ -87,36 +73,26 @@ Object {
           Array [
             2,
             2,
-          ],
-          Array [
-            2.249862,
-            2.250069,
-          ],
-          Array [
-            2.499809,
-            2.500095,
-          ],
-          Array [
-            2.749852,
-            2.750074,
+            20,
           ],
           Array [
             3,
             3,
+            10,
           ],
         ],
         "type": "LineString",
       },
+      "id": 1,
       "properties": Object {
-        "bearings": Array [
-          45,
-          45,
-        ],
-        "distance": 157,
-        "insertAfter": Array [
-          1,
-          0,
-        ],
+        "altitude": Object {
+          "precision": 1,
+          "reference": "WGS84",
+          "type": "Altitude",
+          "unit": "m",
+          "value": 20,
+        },
+        "name": "C",
       },
       "type": "Feature",
     },
@@ -126,36 +102,26 @@ Object {
           Array [
             3,
             3,
-          ],
-          Array [
-            3,
-            3.25,
-          ],
-          Array [
-            3,
-            3.5,
-          ],
-          Array [
-            3,
-            3.75,
+            10,
           ],
           Array [
             3,
             4,
+            10,
           ],
         ],
         "type": "LineString",
       },
+      "id": 2,
       "properties": Object {
-        "bearings": Array [
-          0,
-          0,
-        ],
-        "distance": 111,
-        "insertAfter": Array [
-          0,
-          0,
-        ],
+        "altitude": Object {
+          "precision": 1,
+          "reference": "WGS84",
+          "type": "Altitude",
+          "unit": "m",
+          "value": 10,
+        },
+        "name": "Dadadadada",
       },
       "type": "Feature",
     },

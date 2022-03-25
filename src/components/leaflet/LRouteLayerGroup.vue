@@ -18,8 +18,8 @@
       @contextmenu="$emit('contextmenu-trace')"
       @click="
         $emit('click-trace', {
-          latlng: $event.latlng,
-          insertBefore: leg.insertBefore
+          insertBefore: leg.insertBefore,
+          ...$event
         })
       "
     />

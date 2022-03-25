@@ -103,9 +103,9 @@ import "leaflet/dist/leaflet.css";
 
 import { LMap, LControlZoom, LControl, LPolyline } from "vue2-leaflet";
 
-import { LocationHandler } from "@/mixins/LocationHandler";
-import { TraceHandler } from "@/mixins/TraceHandler";
-import { DestinationHandler } from "@/mixins/DestinationHandler";
+import LocationHandler from "@/mixins/LocationHandler";
+import TraceHandler from "@/mixins/TraceHandler";
+import DestinationHandler from "@/mixins/DestinationHandler";
 
 import MovingMapSettings from "@/components/MovingMapSettings";
 import InstrumentsDisplay from "@/components/InstrumentsDisplay";
