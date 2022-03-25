@@ -62,12 +62,13 @@ export class Location extends Waypoint {
     return new Speed(this._climbFrom(other) / this._delayFrom(other));
   }
 
-  static from({ accuracy, speed, heading, ...others } = {}) {
+  static from({ accuracy, altitude, speed, heading, ...others } = {}) {
     if (arguments[0] instanceof this) return arguments[0];
     if (accuracy) accuracy = Distance.from(accuracy);
+    if (altitude) altitude = Altitude.from(altitude);
     if (speed) speed = Speed.from(speed);
     if (heading) heading = Azimuth.from(heading);
-    return super.from({ accuracy, speed, heading, ...others });
+    return super.from({ accuracy, altitude, speed, heading, ...others });
   }
 
   static fromGeolocationPosition({
