@@ -131,16 +131,19 @@ describe("branch", () => {
   });
 
   it("should export as GeoJSON", () => {
-    expect(branch.toGeoJSON()).toStrictEqual(
-      branch.toGeoJSON("FeatureCollection")
-    );
-    expect(branch.toGeoJSON("FeatureCollection")).toMatchSnapshot();
-
-    expect(branch.toGeoJSON("MultiLineString")).toStrictEqual(
+    expect(branch.toGeoJSON("LineString")).toStrictEqual(
       branch.toGeoJSON("Feature")
     );
     expect(branch.toGeoJSON("Feature")).toMatchSnapshot();
-    expect(branch.toGeoJSON("MultiPolygon")).toMatchSnapshot();
+
+
+    expect(branch.toGeoJSON("FeatureCollection")).toMatchSnapshot();
+
+    expect(branch.toGeoJSON("MultiLineString")).toMatchSnapshot();
+    expect(branch.toGeoJSON("Geodesics")).toMatchSnapshot();
+    expect(branch.toGeoJSON("Midpoints")).toMatchSnapshot();
+
+    expect(branch.toGeoJSON()).toMatchSnapshot();
   });
 
   it("should export as JSON", () => {
@@ -153,11 +156,11 @@ describe("branch", () => {
 
     // eslint-disable-next-line no-unused-vars
     let { member, ...almost } = branch;
-    expect(Branch.from(branch.toGeoJSON(), Position)).toMatchObject(almost);
+    expect(Branch.from(branch.toGeoJSON("FeatureCollection"), Position)).toMatchObject(almost);
     expect(Branch.from(branch.toJSON(), Position)).toMatchObject(almost);
 
     expect(() =>
-      Branch.from(Branch.from(branch.toGeoJSON("MultiLineString")))
+      Branch.from(Branch.from(branch.toGeoJSON("Feature")))
     ).toThrowError(
       "Invalid data : 'type' should be 'Branch' or 'FeatureCollection' got 'Feature'"
     );

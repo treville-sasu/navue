@@ -61,6 +61,9 @@ export default {
   async mounted() {
     this.retryCycle();
   },
+  destroyed() {
+    clearTimeout(this.error);
+  },
   methods: {
     async retryCycle() {
       try {

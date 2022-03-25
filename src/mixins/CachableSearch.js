@@ -42,7 +42,6 @@ export default {
         this.results = await this.search();
         this.error = false;
       } catch (e) {
-        console.debug(e);
         this.error = true;
       }
       this.isLoading = false;

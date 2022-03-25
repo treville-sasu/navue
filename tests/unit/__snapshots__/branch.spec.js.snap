@@ -46,6 +46,41 @@ Object {
     1,
     1,
   ],
+  "geometry": Object {
+    "coordinates": Array [
+      Array [
+        0,
+        0,
+        1,
+      ],
+      Array [
+        1,
+        1,
+        0,
+      ],
+      Array [
+        -1,
+        -1,
+        2,
+      ],
+    ],
+    "type": "LineString",
+  },
+  "properties": Object {
+    "a": 1,
+  },
+  "type": "Feature",
+}
+`;
+
+exports[`branch should export as GeoJSON 2`] = `
+Object {
+  "bbox": Array [
+    -1,
+    -1,
+    1,
+    1,
+  ],
   "features": Array [
     Object {
       "geometry": Object {
@@ -94,41 +129,6 @@ Object {
 }
 `;
 
-exports[`branch should export as GeoJSON 2`] = `
-Object {
-  "bbox": Array [
-    -1,
-    -1,
-    1,
-    1,
-  ],
-  "geometry": Object {
-    "coordinates": Array [
-      Array [
-        0,
-        0,
-        1,
-      ],
-      Array [
-        1,
-        1,
-        0,
-      ],
-      Array [
-        -1,
-        -1,
-        2,
-      ],
-    ],
-    "type": "MultiLineString",
-  },
-  "properties": Object {
-    "a": 1,
-  },
-  "type": "Feature",
-}
-`;
-
 exports[`branch should export as GeoJSON 3`] = `
 Object {
   "bbox": Array [
@@ -137,6 +137,214 @@ Object {
     1,
     1,
   ],
+  "features": Array [
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            0,
+            0,
+            1,
+          ],
+          Array [
+            1,
+            1,
+            0,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 1,
+      "properties": Object {
+        "altitude": 1,
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            1,
+            1,
+            0,
+          ],
+          Array [
+            -1,
+            -1,
+            2,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 2,
+      "properties": Object {
+        "altitude": 0,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`branch should export as GeoJSON 4`] = `
+Object {
+  "bbox": Array [
+    -1,
+    -1,
+    1,
+    1,
+  ],
+  "features": Array [
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            0,
+            0,
+          ],
+          Array [
+            0.11109996758272242,
+            0.11111668228438826,
+          ],
+          Array [
+            0.2222007708816593,
+            0.2222329467731329,
+          ],
+          Array [
+            0.3333032456256014,
+            0.3333483756595902,
+          ],
+          Array [
+            0.4444082275684918,
+            0.4444625511151164,
+          ],
+          Array [
+            0.5555165525019998,
+            0.5555750552780656,
+          ],
+          Array [
+            0.6666290562680938,
+            0.6666854702427893,
+          ],
+          Array [
+            0.7777465747716108,
+            0.7777933780486326,
+          ],
+          Array [
+            0.888869943992823,
+            0.8888983606689304,
+          ],
+          Array [
+            0.9999999999999998,
+            1,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {
+        "bearing": "45 °",
+        "distance": "84.908 NM",
+        "id": 1,
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            0.9999999999999998,
+            1,
+          ],
+          Array [
+            0.7777465747716109,
+            0.7777933780486326,
+          ],
+          Array [
+            0.5555165525019998,
+            0.5555750552780657,
+          ],
+          Array [
+            0.33330324562560154,
+            0.33334837565959047,
+          ],
+          Array [
+            0.11109996758272261,
+            0.11111668228438842,
+          ],
+          Array [
+            -0.11109996758272261,
+            -0.11111668228438842,
+          ],
+          Array [
+            -0.33330324562560126,
+            -0.3333483756595902,
+          ],
+          Array [
+            -0.5555165525019996,
+            -0.5555750552780653,
+          ],
+          Array [
+            -0.7777465747716108,
+            -0.7777933780486326,
+          ],
+          Array [
+            -0.9999999999999998,
+            -1,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {
+        "bearing": "225 °",
+        "distance": "169.816 NM",
+        "id": 2,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`branch should export as GeoJSON 5`] = `
+Object {
+  "bbox": Array [
+    -1,
+    -1,
+    1,
+    1,
+  ],
+  "features": Array [
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          0.4999619199226218,
+          0.5000190382261059,
+        ],
+        "type": "Point",
+      },
+      "properties": Object {},
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          -1.987846675914698e-16,
+          0,
+        ],
+        "type": "Point",
+      },
+      "properties": Object {},
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`branch should export as GeoJSON 6`] = `
+Object {
   "features": Array [
     Object {
       "geometry": Object {
@@ -177,10 +385,113 @@ Object {
       },
       "type": "Position",
     },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            0,
+            0,
+          ],
+          Array [
+            0.11109996758272242,
+            0.11111668228438826,
+          ],
+          Array [
+            0.2222007708816593,
+            0.2222329467731329,
+          ],
+          Array [
+            0.3333032456256014,
+            0.3333483756595902,
+          ],
+          Array [
+            0.4444082275684918,
+            0.4444625511151164,
+          ],
+          Array [
+            0.5555165525019998,
+            0.5555750552780656,
+          ],
+          Array [
+            0.6666290562680938,
+            0.6666854702427893,
+          ],
+          Array [
+            0.7777465747716108,
+            0.7777933780486326,
+          ],
+          Array [
+            0.888869943992823,
+            0.8888983606689304,
+          ],
+          Array [
+            0.9999999999999998,
+            1,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {
+        "bearing": "45 °",
+        "distance": "84.908 NM",
+        "id": 1,
+      },
+      "type": "Feature",
+    },
+    Object {
+      "geometry": Object {
+        "coordinates": Array [
+          Array [
+            0.9999999999999998,
+            1,
+          ],
+          Array [
+            0.7777465747716109,
+            0.7777933780486326,
+          ],
+          Array [
+            0.5555165525019998,
+            0.5555750552780657,
+          ],
+          Array [
+            0.33330324562560154,
+            0.33334837565959047,
+          ],
+          Array [
+            0.11109996758272261,
+            0.11111668228438842,
+          ],
+          Array [
+            -0.11109996758272261,
+            -0.11111668228438842,
+          ],
+          Array [
+            -0.33330324562560126,
+            -0.3333483756595902,
+          ],
+          Array [
+            -0.5555165525019996,
+            -0.5555750552780653,
+          ],
+          Array [
+            -0.7777465747716108,
+            -0.7777933780486326,
+          ],
+          Array [
+            -0.9999999999999998,
+            -1,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "properties": Object {
+        "bearing": "225 °",
+        "distance": "169.816 NM",
+        "id": 2,
+      },
+      "type": "Feature",
+    },
   ],
-  "properties": Object {
-    "a": 1,
-  },
   "type": "FeatureCollection",
 }
 `;

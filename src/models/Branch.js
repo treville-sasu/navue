@@ -108,9 +108,9 @@ export class Branch extends Model {
                 [start.geometry.coordinates, end.geometry.coordinates],
                 start.properties,
                 { id }
-              ),
-            { bbox: this.bbox }
-          )
+              )
+          ),
+          { bbox: this.bbox }
         );
       case "Geodesics":
         return featureCollection(
@@ -123,17 +123,18 @@ export class Branch extends Model {
                   bearing: new Azimuth(round(bearingToAzimuth(bearing(start.geometry.coordinates, end.geometry.coordinates))), "°").toString(),
                   id
                 }
-              }),
-            { bbox: this.bbox }
-          )
+              }
+              )
+          ),
+          { bbox: this.bbox }
         );
       case "Midpoints":
         return featureCollection(
           this.pairs(
             (start, end) =>
-              midpoint(start.geometry.coordinates, end.geometry.coordinates),
-            { bbox: this.bbox }
-          )
+              midpoint(start.geometry.coordinates, end.geometry.coordinates)
+          ),
+          { bbox: this.bbox }
         );
       case "FeatureCollection":
         return {
