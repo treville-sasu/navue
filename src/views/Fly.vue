@@ -19,16 +19,21 @@
               triggers: ['click', 'hover']
             }"
           />
-          <ViewManager
-            v-bind="settings"
-            @update:settings="updateSettings"
-            @update:camera="setCamera"
-            @show:poi="showPoint"
-          >
-            <template #header="{ selected }">
-              <b-input v-model="selected.name" placeholder="search location" />
-            </template>
-          </ViewManager>
+          <p class="control">
+            <ViewManager
+              v-bind="settings"
+              @update:settings="updateSettings"
+              @update:camera="setCamera"
+              @show:poi="showPoint"
+            >
+              <template #header="{ selected }">
+                <b-input
+                  v-model="selected.name"
+                  placeholder="search location"
+                />
+              </template>
+            </ViewManager>
+          </p>
         </b-field>
       </mx-i-control>
       <mx-i-control position="bottom-left">
@@ -44,11 +49,8 @@
         />
       </mx-i-control>
       <mx-scale-control unit="nautical" />
-      <mx-i-control position="top-right" v-if="currentLocation">
-        <InstrumentsDisplay
-          class="is-stackable"
-          v-bind="currentLocation.properties"
-        />
+      <mx-i-control v-if="currentLocation" position="top-right">
+        <InstrumentsDisplay class="is-stackable" :location="currentLocation" />
       </mx-i-control>
       <mx-i-control position="bottom-right">
         <TimerToolbox @update:settings="updateSettings" />
@@ -67,10 +69,15 @@
       </mx-source>
 
       <mx-source
-        type="geojson"
-        id="course"
-        :data="flightCourse"
         v-if="flightCourse"
+        id="course"
+        type="geojson"
+        :data="flightCourse"
+      >
+        <mx-layer id="location" v-bind="style.location.point" />
+        <mx-layer id="nextMinutes" v-bind="style.location.futurs" />
+        <mx-layer id="probablePath" v-bind="style.location.course" />
+      </mx-source>
       >
         <mx-layer id="location" v-bind="style.location" />
         <mx-layer id="nextMinutes" v-bind="style.futurs" />
@@ -79,15 +86,6 @@
     </mx-map>
   </section>
 </template>
-
-<style lang="scss">
-html,
-body,
-#app {
-  height: 100%;
-  width: 100%;
-}
-</style>
 
 <script>
 import MapX from "@/mixins/MapX";
@@ -114,7 +112,7 @@ export default {
     TimerToolbox,
     ReportToolbox,
     DataToolbox,
-    ViewManager
+    ViewManager,
   },
   mixins: [
     MapX,
@@ -122,7 +120,7 @@ export default {
     CameraHandler,
     LocationHandler,
     TraceHandler,
-    DestinationHandler
+    DestinationHandler,
   ],
   data() {
     return {
@@ -131,24 +129,14 @@ export default {
       settings: {
         getLocation: true,
         fullScreen: !!document.fullscreenElement,
-        inFlight: false
-      }
+        inFlight: false,
+      },
+      currentLocation: undefined,
     };
   },
   computed: {
     navigation() {
       return this.$store.state.currentNavigation;
-    },
-    routes() {
-      return this.navigation ? this.navigation.branches : [];
-    },
-    currentLocation: {
-      get() {
-        return this.$store.state.currentLocation;
-      },
-      set(data) {
-        this.$store.commit("currentLocation", data);
-      }
     },
     flight: {
       get() {
@@ -156,14 +144,14 @@ export default {
       },
       set(data) {
         this.$store.commit("currentFlight", data);
-      }
-    }
+      },
+    },
   },
   watch: {
     "settings.viewMode"() {
       this.flightCourse &&
-        this.setCamera(this.buildCamera(this.flightCourse), {
-          trigger: "viewMode"
+        this.setCamera(this.flightCourse, {
+          trigger: "viewMode",
         });
     },
     "settings.fullScreen"(val) {
@@ -190,20 +178,20 @@ export default {
     },
     currentLocation(location) {
       if (location) {
-        if (this.settings.inFlight) this.addLocation(location);
         if (this.navigation) {
           let nextDestination = this.getDestination(location);
           if (nextDestination) this.setDestination(nextDestination);
         }
+        if (this.settings.inFlight) this.addLocation(location);
       }
     },
     flightCourse(val) {
-      val && this.setCamera(this.buildCamera(val), { trigger: "location" });
-    }
+      val && this.setCamera(val, { trigger: "location" });
+    },
   },
   methods: {
     newLeg() {
-      this.flightTrace.unshift([]);
+      this.flightTrace.geometry.coordinates.unshift([]);
       this.legStart = Date.now();
     },
     setupMap({ target }) {
@@ -211,7 +199,7 @@ export default {
       if (this.settings.getLocation) this.startLocate();
     },
     showPoint(point) {
-      point && this.setCamera(this.buildCamera([point]));
+      point && this.setCamera({ features: [point] });
     },
     addLocation(payload) {
       let asJSON = JSON.parse(JSON.stringify(payload));
@@ -227,7 +215,7 @@ export default {
         else document.exitFullscreen();
       else if (force) element.requestFullscreen();
       else document.exitFullscreen();
-    }
-  }
+    },
+  },
 };
 </script>

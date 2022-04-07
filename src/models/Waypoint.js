@@ -1,5 +1,5 @@
 import { Model } from "@/models/Base.js";
-import { Altitude, Distance, Azimuth } from "@/models/Quantities.js";
+import { Angle } from "@/models/Quantities.js";
 
 import { point, round } from "@turf/helpers";
 import rhumbDistance from "@turf/rhumb-distance";
@@ -10,19 +10,13 @@ import greatCircle from "@turf/great-circle";
 
 export class Waypoint extends Model {
   constructor([longitude, latitude, altitude] = [], properties = {}) {
-    const coordinates = [round(longitude, 6), round(latitude, 6)];
-
-    if (altitude !== undefined && !properties["altitude"]) {
-      properties["altitude"] = new Altitude(altitude, "m", {
-        reference: "WGS84"
-      });
-    } else if (properties["altitude"]) {
-      properties["altitude"] = Altitude.from(properties["altitude"]);
+    if (altitude !== undefined) {
+      properties.altitudeReference || (properties.altitudeReference = "WGS84");
       altitude = round(Number(altitude));
     }
-
-    if (altitude) coordinates.push(round(Number(altitude)));
-    super(point(coordinates, properties));
+    super(
+      point([round(longitude, 6), round(latitude, 6), altitude], properties)
+    );
   }
 
   set longitude(val) {
@@ -39,7 +33,6 @@ export class Waypoint extends Model {
 
   set altitude(val) {
     this.geometry.coordinates[2] = round(val);
-    this.properties.altitude = val;
   }
 
   get lngLat() {
@@ -55,20 +48,15 @@ export class Waypoint extends Model {
   }
 
   distanceTo(wp) {
-    return new Distance(
-      round(
-        rhumbDistance(this.geometry.coordinates, wp.geometry.coordinates, {
-          units: "meters"
-        })
-      )
+    return round(
+      rhumbDistance(this.geometry.coordinates, wp.geometry.coordinates, {
+        units: "meters"
+      })
     );
   }
 
   bearingTo(wp) {
-    return new Azimuth(
-      rhumbBearing(this.geometry.coordinates, wp.geometry.coordinates),
-      "°"
-    );
+    return rhumbBearing(this.geometry.coordinates, wp.geometry.coordinates);
   }
 
   greatCircleTo(wp, properties) {
@@ -91,8 +79,8 @@ export class Waypoint extends Model {
   destinationPoint(distance, heading, properties) {
     const coords = rhumbDestination(
       this.geometry.coordinates,
-      new Distance(distance),
-      new Azimuth(heading).to("°"),
+      distance,
+      Angle.wrap180(heading),
       {
         units: "meters"
       }

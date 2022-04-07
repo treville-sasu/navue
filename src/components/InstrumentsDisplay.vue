@@ -25,17 +25,38 @@ export default {
   name: "InstrumentsDisplay",
   mixins: [UnitSystem],
   props: {
-    speed: Speed,
-    heading: Azimuth,
-    altitude: Altitude
+    location: {
+      type: Object,
+      default() {
+        return { properties: {} };
+      },
+    },
   },
   data() {
     return {
       linkStatus: undefined,
       linkHealth: undefined,
       goodBandwidth: 10,
-      stepsBandwith: 4
+      stepsBandwith: 4,
     };
+  },
+  computed: {
+    speed() {
+      return new Speed(this.location.properties.speed);
+    },
+    heading() {
+      return new Azimuth(this.location.properties.heading);
+    },
+    altitude() {
+      if (this.location.properties.elevation)
+        return new Altitude(this.location.properties.elevation, "m", {
+          reference: this.location.properties.elevationReference,
+        });
+      else
+        return new Altitude(this.location.altitude, "m", {
+          reference: this.location.properties.altitudeReference,
+        });
+    },
   },
   /* eslint-disable compat/compat */
   mounted() {
@@ -55,7 +76,7 @@ export default {
           this.goodBandwidth) *
           this.stepsBandwith
       );
-    }
-  }
+    },
+  },
 };
 </script>

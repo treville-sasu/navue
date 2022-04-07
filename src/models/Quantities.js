@@ -289,12 +289,23 @@ export class Weight extends Quantity {
 export class Angle extends Quantity {
   static get units() {
     return {
-      rad: 1,
-      "°": 180 / Math.PI,
-      gon: 200 / Math.PI,
+      "°": 1,
+      rad: Math.PI / 180,
+      gon: 200 / 180,
       rev: 1 / 2 / Math.PI,
-      "₥": 6400 / 2 / Math.PI
+      "₥": (1000 * Math.PI) / 180,
     };
+  }
+
+  static wrap180(angle) {
+    angle = (angle + 360) % 360;
+    return angle > 180 ? angle - 360 : angle;
+  }
+
+  static wrap360(angle) {
+    // turfjs bearingToAzimuth
+    angle %= 360;
+    return angle < 0 ? angle + 360 : angle;
   }
 }
 

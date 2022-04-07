@@ -22,7 +22,7 @@ export class Journey extends Model {
   }
 
   set name(val) {
-    return (this.properties.name = val);
+    this.properties.name = val;
   }
 
   last() {
@@ -67,7 +67,7 @@ export class Journey extends Model {
   }
 
   get geom() {
-    return this.map(b => b.geom);
+    return this.map((b) => b.geom);
   }
 
   get bbox() {
@@ -84,7 +84,7 @@ export class Journey extends Model {
   toGeoJSON(...types) {
     if (types.length > 1) {
       return featureCollection(
-        types.flatMap(type => {
+        types.flatMap((type) => {
           let feat = this.toGeoJSON(type);
           return feat.features ? feat.features : feat;
         })
@@ -94,16 +94,16 @@ export class Journey extends Model {
         case "Feature":
         case "LineString":
           return featureCollection(
-            this.branches.flatMap(b => b.toGeoJSON("LineString"), {
-              bbox: this.bbox
+            this.branches.flatMap((b) => b.toGeoJSON("LineString"), {
+              bbox: this.bbox,
             })
           );
         case "MultiLineString":
           return featureCollection(
             this.branches.flatMap(
-              b => b.toGeoJSON("MultiLineString").features,
+              (b) => b.toGeoJSON("MultiLineString").features,
               {
-                bbox: this.bbox
+                bbox: this.bbox,
               }
             )
           );
@@ -111,7 +111,7 @@ export class Journey extends Model {
         default:
           return featureCollection(
             this.branches.flatMap(
-              b => b.toGeoJSON("FeatureCollection").features
+              (b) => b.toGeoJSON("FeatureCollection").features
             ),
             { bbox: this.bbox }
           );

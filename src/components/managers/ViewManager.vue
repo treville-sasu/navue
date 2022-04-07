@@ -11,22 +11,16 @@
     </template>
     <b-dropdown-item custom>
       <b-autocomplete
+        icon="map-search"
         placeholder="location"
         :data="results"
         field="properties.display_name"
-        @typing="searchLocation"
         :loading="isFetching"
-        keep-first
         clear-on-select
+        keep-first
+        @typing="searchLocation"
         @select="$emit('show:poi', $event)"
-        icon="map-search"
       />
-      <!-- @select="
-          (q, e) => {
-            e.stopPropagation();
-            this.onPOIFound(q);
-          }
-        " -->
     </b-dropdown-item>
     <b-dropdown-item :disabled="!canLocate" @click="locate">
       <b-icon icon="crosshairs-question" />
@@ -34,7 +28,7 @@
     </b-dropdown-item>
     <b-dropdown-item :disabled="!canLocate" custom>
       <b-switch
-        v-bind:value="getLocation"
+        :value="getLocation"
         @input="$emit('update:settings', { getLocation: $event })"
         >Locate with GNSS</b-switch
       >
@@ -42,36 +36,46 @@
     <b-dropdown-item custom>
       <b-field label="View mode">
         <b-radio-button
-          v-bind:value="viewMode"
-          @input="$emit('update:settings', { viewMode: $event })"
+          :value="viewMode"
           native-value="north"
+          @input="$emit('update:settings', { viewMode: $event })"
         >
           North up
         </b-radio-button>
         <b-radio-button
-          v-bind:value="viewMode"
-          @input="$emit('update:settings', { viewMode: $event })"
+          :value="viewMode"
           native-value="heading"
+          @input="$emit('update:settings', { viewMode: $event })"
         >
           Heading up
         </b-radio-button>
         <b-radio-button
-          v-bind:value="viewMode"
-          @input="$emit('update:settings', { viewMode: $event })"
+          :value="viewMode"
           native-value="fpv"
+          @input="$emit('update:settings', { viewMode: $event })"
         >
           Cockpit view
         </b-radio-button>
         <b-radio-button
-          v-bind:value="viewMode"
-          @input="$emit('update:settings', { viewMode: $event })"
+          :value="viewMode"
           :native-value="false"
+          @input="$emit('update:settings', { viewMode: $event })"
         >
           Free
         </b-radio-button>
       </b-field>
     </b-dropdown-item>
-    <b-dropdown-item @click="$emit('update:camera', { pitch: 0, bearing: 0 })">
+    <b-dropdown-item
+      @click="
+        $emit(
+          'update:camera',
+          { pitch: 0, bearing: 0 },
+          {
+            trigger: 'viewMode',
+          }
+        )
+      "
+    >
       <b-icon icon="refresh" />
       Reset view
     </b-dropdown-item>
@@ -86,14 +90,14 @@ export default {
   props: {
     getLocation: Boolean,
     centerView: Boolean,
-    viewMode: [Boolean, String]
+    viewMode: [Boolean, String],
   },
   data() {
     return {
       canLocate: "geolocation" in navigator,
       isFetching: false,
       maxResults: 5,
-      results: []
+      results: [],
     };
   },
   methods: {
@@ -121,13 +125,12 @@ export default {
       url.search = new URLSearchParams({
         q,
         format: "geojson",
-        limit: this.maxResults
-        // viewbox=<x1>,<y1>,<x2>,<y2>
+        limit: this.maxResults,
       });
-      const raw = await fetch(url, { method: "GET" });
+      const raw = await fetch(url.toString(), { method: "GET" });
       const json = await raw.json();
       return json.features || [];
-    }
-  }
+    },
+  },
 };
 </script>

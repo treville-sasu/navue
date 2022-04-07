@@ -3,8 +3,8 @@ export default {
     return {
       settings: {
         viewMode: "north",
-        preventCamera: 10000
-      }
+        preventCamera: 10000,
+      },
     };
   },
   methods: {
@@ -16,55 +16,55 @@ export default {
         }, this.settings.preventCamera);
       }
     },
-    setCamera(camera, event) {
-      if (!this.timerCamera)
+    setCamera({ features, ...camera }, event) {
+      if (features) camera = this.buildCamera(features);
+
+      if (!this.timerCamera || event.trigger == "viewMode") {
         if (camera instanceof this.$mapx.FreeCameraOptions)
           this.map.setFreeCameraOptions(camera, event);
         else if (camera) this.map.easeTo(camera, event);
+      }
     },
-    buildCamera(course) {
-      if (course.features.length < 2)
+    buildCamera(features) {
+      let len = features.length;
+      if (len < 2)
         return {
-          ...this.map.cameraForBounds(course.features[0].bbox, {
+          ...this.map.cameraForBounds(features[0].bbox, {
             bearing: 0,
             pitch: 0,
-            padding: 20
-          })
+            padding: 20,
+          }),
         };
-
-      const center = this.$mapx.LngLat.convert(course.features[0].lngLat),
-        futur = this.$mapx.LngLat.convert(
-          course.features[course.features.length - 2].lngLat
-        );
 
       switch (this.settings.viewMode) {
         case "heading":
           return this.map.cameraForBounds(
-            new this.$mapx.LngLatBounds(center, futur),
+            [features[0].lngLat, features[len - 2].lngLat],
             {
-              bearing:
-                course.features[0].properties.heading &&
-                course.features[0].properties.heading.value,
+              bearing: features[0].properties.heading,
               pitch: 0,
-              padding: 20
+              padding: { top: 50, bottom: 50 },
             }
           );
-        case "north":
+        case "north": {
+          const center = this.$mapx.LngLat.convert(features[0].lngLat);
+          const futur = this.$mapx.LngLat.convert(features[len - 2].lngLat);
           return this.map.cameraForBounds(
             center.toBounds(center.distanceTo(futur)),
             { bearing: 0, padding: 20 }
           );
+        }
         case "fpv":
           // eslint-disable-next-line no-case-declarations
           const camera = new this.$mapx.FreeCameraOptions(
             this.$mapx.MercatorCoordinate.fromLngLat(
-              center,
-              course.features[0].altitude
+              features[0].lngLat,
+              features[0].altitude
             )
           );
-          camera.lookAtPoint(futur);
+          camera.lookAtPoint(features[1].lngLat);
           return camera;
       }
-    }
-  }
+    },
+  },
 };

@@ -1,7 +1,5 @@
 import { Location } from "@/models/Location";
-import { Altitude, Distance } from "@/models/Quantities";
 import { UIHelpers } from "@/mixins/apputils";
-import { randomPosition } from "@turf/random";
 
 import { featureCollection, lineString } from "@turf/helpers";
 
@@ -24,50 +22,51 @@ export default {
       },
       style: {
         location: {
-          type: "symbol",
-          filter: [
-            "all",
-            ["==", ["geometry-type"], "Point"],
-            ["has", "timestamp"]
-          ],
-          layout: {
-            "icon-anchor": "center",
-            "icon-image": "za-provincial-2", // "it-motorway-2"
-            "text-field": ["get", "label"],
-            "text-offset": [0, 1.25],
-            "text-anchor": "center"
-          }
-        },
-        futurs: {
-          type: "symbol",
-          filter: [
-            "all",
-            ["==", ["geometry-type"], "Point"],
-            ["!", ["has", "timestamp"]]
-          ],
-          layout: {
-            "icon-anchor": "center",
-            "text-anchor": "center",
-            "text-justify": "center",
-            "icon-image": "circle-white-2",
-            "text-field": ["get", "label"]
-            // "icon-text-fit": "both"
-          }
-        },
-        course: {
-          type: "line",
-          filter: ["==", ["geometry-type"], "LineString"],
-          layout: {
-            "line-join": "round",
-            "line-cap": "round"
+          point: {
+            type: "symbol",
+            filter: [
+              "all",
+              ["==", ["geometry-type"], "Point"],
+              ["has", "timestamp"],
+            ],
+            layout: {
+              "icon-anchor": "center",
+              "icon-image": "za-provincial-2", // "it-motorway-2"
+              "text-field": ["get", "label"],
+              "text-offset": [0, 1.25],
+              "text-anchor": "center",
+            },
           },
-          paint: {
-            "line-color": c["warning"],
-            "line-width": 6,
-            "line-opacity": 0.7
-          }
-        }
-      }
+          futurs: {
+            type: "symbol",
+            filter: [
+              "all",
+              ["==", ["geometry-type"], "Point"],
+              ["!", ["has", "timestamp"]],
+            ],
+            layout: {
+              "icon-anchor": "center",
+              "text-anchor": "center",
+              "text-justify": "center",
+              "icon-image": "circle-white-2",
+              "text-field": ["get", "label"],
+            },
+          },
+          course: {
+            type: "line",
+            filter: ["==", ["geometry-type"], "LineString"],
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            paint: {
+              "line-color": c["warning"],
+              "line-width": 6,
+              "line-opacity": 0.7,
+            },
+          },
+        },
+      },
     };
   },
   beforeDestroy() {
@@ -78,33 +77,31 @@ export default {
       if (this.currentLocation) {
         let features = [];
         features.push(this.currentLocation);
-        for (let i = 1; i <= this.settings.futurPositionDelay; i++)
-          //FIXME this dirty hack with a condition
-          try {
+        if (this.currentLocation.moving)
+          for (let i = 1; i <= this.settings.futurPositionDelay; i++)
             features.push(
               this.currentLocation.willBeIn(2 ** i * 60, { label: 2 ** i })
             );
-            // eslint-disable-next-line no-empty
-          } catch { }
         if (features.length > 1)
-          features.push(lineString(features.map(f => f.geometry.coordinates)));
+          features.push(
+            lineString(features.map(({ geometry: { coordinates } }) => coordinates))
+          );
         return featureCollection(features);
       } else return undefined;
-    }
+    },
   },
   methods: {
     stopLocate() {
       this.currentLocation = undefined;
 
-      if (navigator.geolocation && navigator.geolocation.clearWatch) {
+      if (navigator.geolocation && navigator.geolocation.clearWatch)
         navigator.geolocation.clearWatch(this._locationWatchId);
-      }
     },
     startLocate() {
       if (!("geolocation" in navigator)) {
         this._locationError({
           code: 0,
-          message: "Geolocation not supported by your device."
+          message: "Geolocation not supported by your device.",
         });
         return this;
       }
@@ -118,50 +115,44 @@ export default {
 
     _locationFound(e) {
       let location = Location.fromGeolocationPosition(e);
-      //////////////////
-      if (process.env.NODE_ENV == "development") {
-        location = this._fakeLocation(location, {
-          accuracy: new Distance(this.settings.maxAccuracy / 2),
-          altitude: new Altitude(1000 + Math.random() * 200, "ft", {
-            reference: "WGS84"
-          })
-        });
-      }
+
+      ////////////////// strip this for production
+      if (process.env.NODE_ENV == "development")
+        location = this._fakeLocation(location);
       ///////////////////
 
       if (location.properties.accuracy > this.settings.maxAccuracy) {
         this._locationError({
           location,
           code: 99,
-          message: `Geolocation error: too low accuracy (${location.properties.accuracy})`
+          message: `Geolocation error: too low accuracy (${location.properties.accuracy})`,
         });
         return;
       }
 
       if (
-        this.currentLocation instanceof Location &&
-        location.distanceTo(this.currentLocation) <= this.settings.minDistance
-      )
-        return;
-
-      if (
-        location.properties.altitude &&
-        location.properties.altitude.accuracy > this.settings.maxAccuracy
-      )
-        location.properties.altitude = undefined;
-
-      if (location.properties.speed < this.settings.minSpeed) {
+        location.properties.speed < this.settings.minSpeed ||
+        (this.currentLocation instanceof Location &&
+          location.distanceTo(this.currentLocation) <=
+          this.settings.minDistance)
+      ) {
         location.properties.speed = undefined;
         location.properties.heading = undefined;
       }
 
-      // location.properties.elevation = new Altitude(
-      //   this.map.queryTerrainElevation(location.lngLat),
-      //   "m",
-      //   {
-      //     reference: "WGS84"
-      //   }
-      // );
+      if (
+        location.properties.altitude &&
+        location.properties.altitudeAccuracy > this.settings.maxAccuracy
+      ) {
+        location.properties.altitude = undefined;
+        location.properties.altitudeAccuracy = undefined;
+      }
+
+      location.properties.elevation = this.map.queryTerrainElevation(
+        location.lngLat
+      );
+      location.properties.elevationReference = "AGL";
+      // location.properties.label = ``
 
       this.lastError = undefined;
       this.currentLocation = location;
@@ -191,31 +182,50 @@ export default {
       this.openWarning({
         message,
         actionText: "Stop GNSS",
-        onAction: () => (this.settings.getLocation = false)
+        onAction: () => (this.settings.getLocation = false),
       });
     },
 
-    _fakeLocation(location, properties) {
-      console.warn("Faking around");
-
-      location.properties = {
-        timestamp: Date.now(),
-        ...location.properties,
-        ...properties
-      };
-      location.geometry.coordinates = randomPosition(location.bbox);
-
-      if (this.currentLocation) {
-        location.properties = {
-          ...location.properties,
-          ...location.legFrom(this.currentLocation)
-        };
+    _fakeLocation(location) {
+      function randomAround(center, spread = 0.05) {
+        return center * (1 + spread * (2 * Math.random() - 1));
       }
 
-      if (location.properties.altitude)
-        location.altitude = location.properties.altitude;
+      const defaults = {
+        altitude: 1000,
+        speed: 51,
+        heading: 180,
+      };
 
+      console.warn("Faking around");
+
+      if (this.currentLocation) {
+        let heading = randomAround(
+          this.currentLocation.properties.heading || defaults.heading
+        );
+        let speed = randomAround(
+          this.currentLocation.properties.speed || defaults.speed
+        );
+        let distance =
+          ((location.properties.timestamp -
+            this.currentLocation.properties.timestamp) /
+            1000) *
+          speed;
+        location = this.currentLocation.destinationPoint(distance, heading, {
+          ...location.properties,
+          heading,
+          speed,
+        });
+      }
+
+      location.properties.accuracy = randomAround(
+        this.settings.maxAccuracy / 2
+      );
+      location.altitude = randomAround(defaults.altitude);
+      location.properties.altitudeAccuracy = randomAround(
+        this.settings.maxAccuracy / 2
+      );
       return location;
-    }
-  }
+    },
+  },
 };

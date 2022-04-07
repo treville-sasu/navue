@@ -1,11 +1,18 @@
 <template>
   <div id="app">
-    <Navbar class=" is-hidden-printer" />
+    <Navbar class="is-hidden-printer" />
     <router-view />
   </div>
 </template>
 
 <style lang="scss">
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+}
+
 @import "bulmaswatch/flatly/_variables";
 @import "bulma/sass/utilities/initial-variables";
 $navbar-breakpoint: $tablet;
@@ -132,6 +139,6 @@ $modal-z: $navbar-fixed-z + 100;
 import Navbar from "@/components/Navbar.vue";
 
 export default {
-  components: { Navbar }
+  components: { Navbar },
 };
 </script>
