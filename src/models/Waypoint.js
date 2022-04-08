@@ -38,7 +38,7 @@ export class Waypoint extends Model {
   get lngLat() {
     return {
       lng: this.geometry.coordinates[0],
-      lat: this.geometry.coordinates[1]
+      lat: this.geometry.coordinates[1],
     };
   }
 
@@ -50,7 +50,7 @@ export class Waypoint extends Model {
   distanceTo(wp) {
     return round(
       rhumbDistance(this.geometry.coordinates, wp.geometry.coordinates, {
-        units: "meters"
+        units: "meters",
       })
     );
   }
@@ -82,7 +82,7 @@ export class Waypoint extends Model {
       distance,
       Angle.wrap180(heading),
       {
-        units: "meters"
+        units: "meters",
       }
     ).geometry.coordinates;
     if (this.geometry.coordinates[2]) coords[2] = this.geometry.coordinates[2];
@@ -98,7 +98,7 @@ export class Waypoint extends Model {
       default:
         return {
           ...this,
-          type: "Feature"
+          type: "Feature",
         };
     }
   }
@@ -118,8 +118,9 @@ export class Waypoint extends Model {
         if (geometry && geometry.type == "Point")
           coordinates = geometry.coordinates;
         else
-          throw `Invalid data : 'geometry.type' should be 'Point' got '${geometry &&
-          geometry.type}'`;
+          throw `Invalid data : 'geometry.type' should be 'Point' got '${
+            geometry && geometry.type
+          }'`;
         break;
       case "Point":
         // coordinates = coordinates;
@@ -129,7 +130,7 @@ export class Waypoint extends Model {
     }
     return new this(coordinates, {
       ...otherProps,
-      ...properties
+      ...properties,
     });
   }
 

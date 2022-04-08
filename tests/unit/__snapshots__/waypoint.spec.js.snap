@@ -11,13 +11,7 @@ Object {
     "type": "Point",
   },
   "properties": Object {
-    "altitude": Object {
-      "precision": 1,
-      "reference": "WGS84",
-      "type": "Altitude",
-      "unit": "m",
-      "value": 1,
-    },
+    "altitudeReference": "WGS84",
   },
   "type": "Waypoint",
 }
@@ -53,13 +47,7 @@ Object {
     "type": "Point",
   },
   "properties": Object {
-    "altitude": Object {
-      "precision": 9,
-      "reference": "WGS84",
-      "type": "Altitude",
-      "unit": "m",
-      "value": 1234.56789,
-    },
+    "altitudeReference": "WGS84",
     "name": "Echo",
     "notes": "Some note",
   },
@@ -78,13 +66,7 @@ Object {
     "type": "Point",
   },
   "properties": Object {
-    "altitude": Object {
-      "precision": 9,
-      "reference": "WGS84",
-      "type": "Altitude",
-      "unit": "m",
-      "value": 1234.56789,
-    },
+    "altitudeReference": "WGS84",
     "name": "Echo",
     "notes": "Some note",
   },

@@ -11,7 +11,7 @@ describe("location", () => {
       accuracy: new Distance(20),
       timestamp: 1234567890,
       name: "Echo",
-      notes: "Some note"
+      notes: "Some note",
     });
   });
 
@@ -56,7 +56,7 @@ describe("location", () => {
   it("retun a leg from other position", () => {
     const prevLocation = new Location([1, 1, 1], {
       accuracy: new Distance(20),
-      timestamp: 1234567890
+      timestamp: 1234567890,
     });
 
     expect(() => location.legFrom(prevLocation)).toThrow(
@@ -67,30 +67,10 @@ describe("location", () => {
 
     expect(location.legFrom(prevLocation)).toMatchInlineSnapshot(`
       Object {
-        "distance": Object {
-          "precision": 5,
-          "type": "Distance",
-          "unit": "m",
-          "value": 157250,
-        },
-        "heading": Object {
-          "precision": 16,
-          "type": "Azimuth",
-          "unit": "°",
-          "value": 224.9985454851105,
-        },
-        "speed": Object {
-          "precision": 5,
-          "type": "Speed",
-          "unit": "m/s",
-          "value": 15725,
-        },
-        "verticalSpeed": Object {
-          "precision": 1,
-          "type": "Speed",
-          "unit": "m/s",
-          "value": -0.1,
-        },
+        "distance": 157250,
+        "heading": -135.0014545148895,
+        "speed": 15725,
+        "verticalSpeed": -0.1,
       }
     `);
   });
@@ -100,34 +80,34 @@ describe("location", () => {
       Location.from({
         geometry: {
           type: "Point",
-          coordinates: [0, 43, 1000]
+          coordinates: [0, 43, 1000],
         },
         altitude: {
           accuracy: 50,
           reference: "WGS84",
           value: 1000,
           unit: "m",
-          type: "Altitude"
+          type: "Altitude",
         },
         accuracy: {
           value: 100,
           unit: "m",
-          type: "Distance"
+          type: "Distance",
         },
         speed: {
           value: 10,
           unit: "m/s",
-          type: "Speed"
+          type: "Speed",
         },
         heading: {
           value: 180,
           unit: "°",
-          type: "Azimuth"
+          type: "Azimuth",
         },
         timestamp: 1620672163861,
         type: "Location",
         _id: "1620672163861",
-        _rev: "1-ad4a6ac12faa5c391774a3120af8c39d"
+        _rev: "1-ad4a6ac12faa5c391774a3120af8c39d",
       })
     ).toMatchSnapshot();
   });
@@ -142,9 +122,9 @@ describe("location", () => {
           accuracy: 100,
           altitudeAccuracy: 10,
           heading: 270,
-          speed: 10
+          speed: 10,
         },
-        timestamp: 1234567890
+        timestamp: 1234567890,
       })
     ).toMatchSnapshot();
   });

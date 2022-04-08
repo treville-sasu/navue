@@ -9,15 +9,15 @@ expect.extend({
     if (pass) {
       return {
         message: () => `expected ${actual} not to be close ${expected}`,
-        pass: true
+        pass: true,
       };
     } else {
       return {
         message: () => `expected ${actual} to be close ${expected}`,
-        pass: false
+        pass: false,
       };
     }
-  }
+  },
 });
 
 describe("waypoint", () => {
@@ -25,7 +25,7 @@ describe("waypoint", () => {
   beforeEach(() => {
     wp = new Waypoint([1.123456789, 1.123456789, 1234.56789], {
       name: "Echo",
-      notes: "Some note"
+      notes: "Some note",
     });
   });
   it("extends Model", () => {
@@ -46,13 +46,7 @@ describe("waypoint", () => {
           "type": "Point",
         },
         "properties": Object {
-          "altitude": Object {
-            "precision": 9,
-            "reference": "WGS84",
-            "type": "Altitude",
-            "unit": "m",
-            "value": 1234.56789,
-          },
+          "altitudeReference": "WGS84",
           "name": "Echo",
           "notes": "Some note",
         },
@@ -88,33 +82,18 @@ describe("waypoint", () => {
   });
 
   it("handles altitude (with rounding, 1m)", () => {
-    const alt = new Altitude(1.123456789);
-    wp.altitude = alt;
+    wp.altitude = 1.123456789;
     expect(wp.geometry.coordinates[2]).toBe(1);
     expect(wp.altitude).toBe(wp.geometry.coordinates[2]);
-    expect(wp.properties.altitude).toBe(alt);
   });
 
   it("get distance to other", () => {
-    expect(wp.distanceTo(new Waypoint([1, 1]))).toMatchInlineSnapshot(`
-      Object {
-        "precision": 5,
-        "type": "Distance",
-        "unit": "m",
-        "value": 19412,
-      }
-    `);
+    expect(wp.distanceTo(new Waypoint([1, 1]))).toMatchInlineSnapshot(`19412`);
   });
   it("get a bearing to other", () => {
-    expect(new Waypoint([0, 0]).bearingTo(new Waypoint([0, 1])))
-      .toMatchInlineSnapshot(`
-      Object {
-        "precision": 0,
-        "type": "Azimuth",
-        "unit": "°",
-        "value": 0,
-      }
-    `);
+    expect(
+      new Waypoint([0, 0]).bearingTo(new Waypoint([0, 1]))
+    ).toMatchInlineSnapshot(`0`);
   });
   it("get destination waypoint from distance and bearing", () => {
     expect(
@@ -153,7 +132,7 @@ describe("waypoint", () => {
     expect(
       Waypoint.fromEvent({
         type: "click",
-        lngLat: { lng: 1.123456789, lat: 1.123456789 }
+        lngLat: { lng: 1.123456789, lat: 1.123456789 },
       })
     ).toMatchObject(wp);
   });

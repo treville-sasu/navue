@@ -48,8 +48,8 @@ export class Location extends Waypoint {
     return (this.properties.timestamp - timestamp) / 1000;
   }
 
-  _climbFrom({ properties: { altitude } }) {
-    return this.properties.altitude - altitude;
+  _climbFrom({ altitude }) {
+    return this.altitude - altitude;
   }
 
   _speedFrom(other) {
@@ -61,7 +61,6 @@ export class Location extends Waypoint {
   _verticalSpeedFrom(other) {
     if (this._delayFrom(other) == 0)
       throw "Teleportation is not yet a possibility";
-
     return this._climbFrom(other) / this._delayFrom(other);
   }
 

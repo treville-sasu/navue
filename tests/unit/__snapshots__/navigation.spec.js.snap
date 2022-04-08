@@ -27,13 +27,7 @@ Object {
       },
       "id": 1,
       "properties": Object {
-        "altitude": Object {
-          "precision": 1,
-          "reference": "WGS84",
-          "type": "Altitude",
-          "unit": "m",
-          "value": 10,
-        },
+        "altitudeReference": "WGS84",
         "name": "A",
       },
       "type": "Feature",
@@ -56,13 +50,7 @@ Object {
       },
       "id": 2,
       "properties": Object {
-        "altitude": Object {
-          "precision": 1,
-          "reference": "WGS84",
-          "type": "Altitude",
-          "unit": "m",
-          "value": 20,
-        },
+        "altitudeReference": "WGS84",
         "name": "Babababa",
       },
       "type": "Feature",
@@ -85,13 +73,7 @@ Object {
       },
       "id": 1,
       "properties": Object {
-        "altitude": Object {
-          "precision": 1,
-          "reference": "WGS84",
-          "type": "Altitude",
-          "unit": "m",
-          "value": 20,
-        },
+        "altitudeReference": "WGS84",
         "name": "C",
       },
       "type": "Feature",
@@ -114,13 +96,7 @@ Object {
       },
       "id": 2,
       "properties": Object {
-        "altitude": Object {
-          "precision": 1,
-          "reference": "WGS84",
-          "type": "Altitude",
-          "unit": "m",
-          "value": 10,
-        },
+        "altitudeReference": "WGS84",
         "name": "Dadadadada",
       },
       "type": "Feature",
