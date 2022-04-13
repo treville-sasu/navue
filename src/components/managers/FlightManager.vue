@@ -17,18 +17,16 @@
     </template>
 
     <template v-if="selectedData">
-      <b-dropdown-item custom v-if="$slots.header || $scopedSlots.header">
-        <slot name="header" :selected="selectedData" />
+      <b-dropdown-item custom>
+        <slot name="header" :selected="selectedData">
+          <b-input v-model="selectedData.name" placeholder="Flight n°" />
+        </slot>
       </b-dropdown-item>
-      <b-dropdown-item separator v-if="$slots.header || $scopedSlots.header" />
+      <b-dropdown-item separator />
       <template v-if="create">
         <b-dropdown-item @click="buildFromLocal">
           <b-icon icon="cloud-upload-outline" type="is-warning" />
           Save
-        </b-dropdown-item>
-        <b-dropdown-item @click="deleteLocations" v-if="trace">
-          <b-icon icon="map-marker-remove-outline" type="is-danger" />Delete
-          trace
         </b-dropdown-item>
       </template>
       <template v-else-if="edit">
@@ -54,50 +52,55 @@
     </template>
 
     <template v-else>
-      <b-autocomplete
-        placeholder="Open Flight"
-        v-model="search"
-        :data="availableData || []"
-        @select="
-          (data, e) => {
-            e.stopPropagation();
-            this.selectedData = data;
-          }
-        "
-        :field="searchedProperty"
-        open-on-focus
-        keep-first
-        clear-on-select
-        clearable
-      >
-        <template #header v-if="create">
-          <a @click="selectedData = new constructor({ name: search })">
-            <span> Create {{ search }}</span>
-          </a>
-        </template>
-        <template #footer v-if="edit">
-          <b-field class="file is-primary">
-            <b-upload
-              class="file-label"
-              v-model="upload"
-              accept="application/json"
-              @input="importData"
-            >
-              <span class="file-cta">
-                <b-icon icon="upload" />
-                <span>Import from file</span>
-              </span>
-            </b-upload>
-          </b-field>
-        </template>
-        <template #empty v-if="!edit && search">
-          <i>{{ search }}</i> not found
-        </template>
-        <template #empty v-else>
-          No Flight recorded
-        </template>
-      </b-autocomplete>
+      <b-dropdown-item custom>
+        <b-autocomplete
+          v-model="search"
+          placeholder="Open Flight"
+          :data="availableData || []"
+          :field="searchedProperty"
+          open-on-focus
+          keep-first
+          clear-on-select
+          clearable
+          @select="
+            (data, e) => {
+              e.stopPropagation();
+              this.selectedData = data;
+            }
+          "
+        >
+          <template #header v-if="create">
+            <a @click="selectedData = new constructor({ name: search })">
+              <span> Create {{ search }}</span>
+            </a>
+          </template>
+          <template #footer v-if="edit">
+            <b-field class="file is-primary">
+              <b-upload
+                v-model="upload"
+                class="file-label"
+                accept="application/json"
+                @input="importData"
+              >
+                <span class="file-cta">
+                  <b-icon icon="upload" />
+                  <span>Import from file</span>
+                </span>
+              </b-upload>
+            </b-field>
+          </template>
+          <template #empty v-if="!edit && search">
+            <i>{{ search }}</i> not found
+          </template>
+          <template #empty v-else> No Flight recorded </template>
+        </b-autocomplete>
+      </b-dropdown-item>
     </template>
+
+    <b-dropdown-item separator />
+    <b-dropdown-item :disabled="!trace" @click="deleteLocations">
+      <b-icon icon="map-marker-remove-outline" type="is-danger" />Delete trace
+    </b-dropdown-item>
   </b-dropdown>
 </template>
 
@@ -109,13 +112,13 @@ export default {
   name: "FlightManager",
   mixins: [DataManager],
   props: {
-    trace: String
+    trace: String,
   },
   data() {
     return {
       constructor: Flight,
       storeKey: "currentFlight",
-      searchedProperty: "properties.name"
+      searchedProperty: "properties.name",
     };
   },
   methods: {
@@ -133,7 +136,7 @@ export default {
               if (location.type == "Location")
                 emit(_id.split("-")[0], location);
             },
-            reduce: (_, values) => values
+            reduce: (_, values) => values,
           },
           { group: true }
         )
@@ -150,7 +153,7 @@ export default {
     async deleteLocations() {
       await this.$pouch[this.trace].viewCleanup();
       return await this.$pouch[this.trace].destroy();
-    }
-  }
+    },
+  },
 };
 </script>

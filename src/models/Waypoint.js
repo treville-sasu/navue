@@ -60,20 +60,12 @@ export class Waypoint extends Model {
   }
 
   greatCircleTo(wp, properties) {
-    let gc = truncate(
+    return truncate(
       greatCircle(this.geometry.coordinates, wp.geometry.coordinates, {
         npoints: 8,
-        properties
+        properties,
       })
     );
-
-    gc.properties = {
-      ...gc.properties,
-      distance: this.distanceTo(wp),
-      bearing: this.bearingTo(wp)
-    };
-
-    return gc;
   }
 
   destinationPoint(distance, heading, properties) {

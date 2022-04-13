@@ -13,12 +13,12 @@ export default {
       geoOptions: {
         enableHighAccuracy: true,
         timeout: 5000,
-        maximumAge: 1000
+        maximumAge: 1000,
       },
       settings: {
         maxAccuracy: 150,
         minSpeed: 0.2,
-        minDistance: 1
+        minDistance: 1,
       },
       style: {
         location: {
@@ -74,20 +74,26 @@ export default {
   },
   computed: {
     flightCourse() {
+      let features = [];
       if (this.currentLocation) {
-        let features = [];
         features.push(this.currentLocation);
-        if (this.currentLocation.moving)
+
+        if (
+          this.currentLocation.properties.speed &&
+          this.currentLocation.properties.heading
+        )
           for (let i = 1; i <= this.settings.futurPositionDelay; i++)
             features.push(
               this.currentLocation.willBeIn(2 ** i * 60, { label: 2 ** i })
             );
-        if (features.length > 1)
-          features.push(
-            lineString(features.map(({ geometry: { coordinates } }) => coordinates))
-          );
-        return featureCollection(features);
-      } else return undefined;
+      }
+      if (features.length > 1)
+        features.push(
+          lineString(
+            features.map(({ geometry: { coordinates } }) => coordinates)
+          )
+        );
+      return featureCollection(features);
     },
   },
   methods: {
@@ -134,7 +140,7 @@ export default {
         location.properties.speed < this.settings.minSpeed ||
         (this.currentLocation instanceof Location &&
           location.distanceTo(this.currentLocation) <=
-          this.settings.minDistance)
+            this.settings.minDistance)
       ) {
         location.properties.speed = undefined;
         location.properties.heading = undefined;
@@ -182,7 +188,7 @@ export default {
       this.openWarning({
         message,
         actionText: "Stop GNSS",
-        onAction: () => (this.settings.getLocation = false),
+        onAction: () => (this.settings.followMode = ""),
       });
     },
 

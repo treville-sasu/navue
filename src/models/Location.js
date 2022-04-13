@@ -12,10 +12,6 @@ export class Location extends Waypoint {
     );
   }
 
-  get moving() {
-    return this.properties.speed && this.properties.heading;
-  }
-
   bounds(radius) {
     return bbox(
       buffer(this.toGeoJSON(), radius, {
@@ -34,14 +30,11 @@ export class Location extends Waypoint {
   }
 
   willBeIn(delay, properties) {
-    if (this.moving)
-      return this.destinationPoint(
-        this.properties.speed * delay,
-        this.properties.heading,
-        properties
-      );
-    else
-      throw "cannot calculate futur position, speed & heading should be provided";
+    return this.destinationPoint(
+      this.properties.speed * delay,
+      this.properties.heading,
+      properties
+    );
   }
 
   _delayFrom({ properties: { timestamp } }) {

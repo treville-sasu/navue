@@ -17,10 +17,12 @@
     </template>
 
     <template v-if="selectedData">
-      <b-dropdown-item custom v-if="$slots.header || $scopedSlots.header">
-        <slot name="header" :selected="selectedData" />
+      <b-dropdown-item custom>
+        <slot name="header" :selected="selectedData">
+          <b-input v-model="selectedData.name" placeholder="from > to" />
+        </slot>
       </b-dropdown-item>
-      <b-dropdown-item separator v-if="$slots.header || $scopedSlots.header" />
+      <b-dropdown-item separator />
 
       <template v-if="edit">
         <b-dropdown-item @click="saveData">
@@ -71,9 +73,7 @@
           <template #empty v-if="search">
             <i>{{ search }}</i> not found
           </template>
-          <template #empty v-else>
-            No navigation prepared
-          </template>
+          <template #empty v-else> No navigation prepared </template>
         </b-autocomplete>
       </b-dropdown-item>
       <b-dropdown-item @click="createData" v-if="create">
@@ -92,8 +92,9 @@
       </b-dropdown-item>
     </template>
 
-    <b-dropdown-item has-link v-if="$route.name != 'Briefing'">
+    <b-dropdown-item v-if="$route.name != 'Briefing'" has-link>
       <router-link :to="{ name: 'Briefing' }">
+        <b-icon icon="pencil" />
         Edit Navigation
       </router-link>
     </b-dropdown-item>
@@ -111,8 +112,8 @@ export default {
     return {
       constructor: Navigation,
       storeKey: "currentNavigation",
-      searchedProperty: "properties.name"
+      searchedProperty: "properties.name",
     };
-  }
+  },
 };
 </script>

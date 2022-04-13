@@ -2,14 +2,19 @@ export default {
   data() {
     return {
       settings: {
-        viewMode: "north",
+        followMode: "north",
         preventCamera: 10000,
       },
     };
   },
   methods: {
-    inhibitCamera({ trigger }) {
-      if (!trigger) {
+    showPoint(point) {
+      //FIXME: inhibitCamera for location display ?!
+      point &&
+        this.setCamera({ features: [point] }, { followMode: "location" });
+    },
+    inhibitCamera({ followMode }) {
+      if (!followMode) {
         clearTimeout(this.timerCamera);
         this.timerCamera = setTimeout(() => {
           this.timerCamera = undefined;
@@ -17,15 +22,15 @@ export default {
       }
     },
     setCamera({ features, ...camera }, event) {
-      if (features) camera = this.buildCamera(features);
-
-      if (!this.timerCamera || event.trigger == "viewMode") {
+      if (features && features.length)
+        camera = this.buildCamera(features, event.followMode);
+      if (!this.timerCamera && event.followMode) {
         if (camera instanceof this.$mapx.FreeCameraOptions)
           this.map.setFreeCameraOptions(camera, event);
         else if (camera) this.map.easeTo(camera, event);
       }
     },
-    buildCamera(features) {
+    buildCamera(features, mode) {
       let len = features.length;
       if (len < 2)
         return {
@@ -36,7 +41,7 @@ export default {
           }),
         };
 
-      switch (this.settings.viewMode) {
+      switch (mode) {
         case "heading":
           return this.map.cameraForBounds(
             [features[0].lngLat, features[len - 2].lngLat],
@@ -54,8 +59,7 @@ export default {
             { bearing: 0, padding: 20 }
           );
         }
-        case "fpv":
-          // eslint-disable-next-line no-case-declarations
+        case "fpv": {
           const camera = new this.$mapx.FreeCameraOptions(
             this.$mapx.MercatorCoordinate.fromLngLat(
               features[0].lngLat,
@@ -64,6 +68,7 @@ export default {
           );
           camera.lookAtPoint(features[1].lngLat);
           return camera;
+        }
       }
     },
   },

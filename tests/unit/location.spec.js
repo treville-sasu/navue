@@ -33,8 +33,6 @@ describe("location", () => {
     expect(location.bounds(200)).toMatchSnapshot();
   });
 
-  it.todo("isMoving");
-
   it("return a futur location in time (seconds later)", () => {
     expect(() => {
       location.willBeIn(60);

@@ -8,34 +8,31 @@
     >
       <mx-i-control position="top-left">
         <b-field class="is-stackable">
-          <DataToolbox
-            v-if="!settings.inFlight"
-            location
-            navigation
-            aircraft
-            :flight="{ create: true, trace: traceDB }"
-            :dropdown="{
-              position: 'is-bottom-right',
-              triggers: ['click', 'hover']
-            }"
-          />
+          <p v-if="!settings.inFlight" class="control">
+            <NavigationManager append-to-body>
+              <template #header="{ selected }">
+                <span>
+                  {{ selected.name }}
+                </span>
+              </template>
+            </NavigationManager>
+          </p>
+          <p v-if="!settings.inFlight" class="control">
+            <FlightManager append-to-body persistent edit :trace="traceDB" />
+          </p>
           <p class="control">
             <ViewManager
-              v-bind="settings"
+              :mode="settings.followMode"
+              follow
+              append-to-body
               @update:settings="updateSettings"
               @update:camera="setCamera"
               @show:poi="showPoint"
-            >
-              <template #header="{ selected }">
-                <b-input
-                  v-model="selected.name"
-                  placeholder="search location"
-                />
-              </template>
-            </ViewManager>
+            />
           </p>
         </b-field>
       </mx-i-control>
+      <mx-scale-control position="bottom-left" unit="nautical" />
       <mx-i-control position="bottom-left">
         <ReportToolbox
           :tooltip="{ position: 'is-top' }"
@@ -48,7 +45,6 @@
           notepad
         />
       </mx-i-control>
-      <mx-scale-control unit="nautical" />
       <mx-i-control v-if="currentLocation" position="top-right">
         <InstrumentsDisplay class="is-stackable" :location="currentLocation" />
       </mx-i-control>
@@ -58,14 +54,14 @@
       <mx-layer v-bind="mapSettings.sia" />
       <mx-layer v-bind="mapSettings.swisstopo" />
 
-      <mx-source type="geojson" id="vector" :data="flightVector">
+      <mx-source id="vector" type="geojson" :data="flightVector">
         <mx-layer
           id="destination"
-          v-bind="style.destination"
-          @click="currentDestination = undefined"
+          v-bind="style.destination.point"
+          @contextmenu="currentDestination = undefined"
         />
-        <mx-layer id="bestPath" v-bind="style.path" />
-        <mx-layer id="bestParameters" v-bind="style.parameters" />
+        <mx-layer id="destPath" v-bind="style.destination.path" />
+        <mx-layer id="destParameters" v-bind="style.destination.parameters" />
       </mx-source>
 
       <mx-source
@@ -78,10 +74,29 @@
         <mx-layer id="nextMinutes" v-bind="style.location.futurs" />
         <mx-layer id="probablePath" v-bind="style.location.course" />
       </mx-source>
+
+      <mx-source
+        v-if="navigationCourse"
+        id="navigation"
+        type="geojson"
+        :data="navigationCourse"
       >
-        <mx-layer id="location" v-bind="style.location" />
-        <mx-layer id="nextMinutes" v-bind="style.futurs" />
-        <mx-layer id="probablePath" v-bind="style.course" />
+        <mx-layer id="navPath" v-bind="style.navigation.path" />
+        <mx-layer id="navParameters" v-bind="style.navigation.parameters" />
+        <mx-layer
+          id="navPoints"
+          v-bind="style.navigation.point"
+          @click="setDestination"
+          @contextmenu="currentDestination = undefined"
+        />
+      </mx-source>
+      <mx-source
+        v-if="flightTrace"
+        id="trace"
+        type="geojson"
+        :data="flightTrace"
+      >
+        <mx-layer id="flightPath" v-bind="style.trace.path" />
       </mx-source>
     </mx-map>
   </section>
@@ -94,13 +109,15 @@ import CameraHandler from "@/mixins/CameraHandler";
 import LocationHandler from "@/mixins/LocationHandler";
 import TraceHandler from "@/mixins/TraceHandler";
 import DestinationHandler from "@/mixins/DestinationHandler";
+import NavigationHandler from "@/mixins/NavigationHandler";
 
 import InstrumentsDisplay from "@/components/InstrumentsDisplay";
 
 import TimerToolbox from "@/components/toolboxes/TimerToolbox";
 import ReportToolbox from "@/components/toolboxes/ReportToolbox";
-import DataToolbox from "@/components/toolboxes/DataToolbox";
 
+import NavigationManager from "@/components/managers/NavigationManager";
+import FlightManager from "@/components/managers/FlightManager";
 import ViewManager from "@/components/managers/ViewManager";
 
 import { WakeLock } from "@/mixins/apputils";
@@ -111,7 +128,8 @@ export default {
     InstrumentsDisplay,
     TimerToolbox,
     ReportToolbox,
-    DataToolbox,
+    NavigationManager,
+    FlightManager,
     ViewManager,
   },
   mixins: [
@@ -121,13 +139,14 @@ export default {
     LocationHandler,
     TraceHandler,
     DestinationHandler,
+    NavigationHandler,
   ],
   data() {
     return {
       legStart: undefined,
       map: undefined,
       settings: {
-        getLocation: true,
+        followMode: "north",
         fullScreen: !!document.fullscreenElement,
         inFlight: false,
       },
@@ -148,17 +167,17 @@ export default {
     },
   },
   watch: {
-    "settings.viewMode"() {
-      this.flightCourse &&
-        this.setCamera(this.flightCourse, {
-          trigger: "viewMode",
-        });
+    "settings.followMode"(val, old) {
+      if (val) {
+        if (!old) this.startLocate();
+        this.flightCourse &&
+          this.setCamera(this.flightCourse, {
+            followMode: val,
+          });
+      } else this.stopLocate();
     },
     "settings.fullScreen"(val) {
       this.toggleFullscreen(this.map.getContainer(), val);
-    },
-    "settings.getLocation"(val) {
-      val ? this.startLocate() : this.stopLocate();
     },
     "settings.inFlight"(val) {
       if (val) {
@@ -169,12 +188,15 @@ export default {
     },
     navigation(nav) {
       nav &&
-        this.setCamera({
-          ...this.map.cameraForBounds(nav.bbox, {
-            bearing: 0,
-            pitch: 0
-          })
-        });
+        this.setCamera(
+          {
+            ...this.map.cameraForBounds(nav.bbox, {
+              bearing: 0,
+              pitch: 0,
+            }),
+          },
+          { followMode: "location" }
+        );
     },
     currentLocation(location) {
       if (location) {
@@ -186,20 +208,17 @@ export default {
       }
     },
     flightCourse(val) {
-      val && this.setCamera(val, { trigger: "location" });
+      val && this.setCamera(val, { followMode: this.settings.followMode });
     },
   },
   methods: {
+    setupMap({ target }) {
+      this.map = target;
+      if (this.settings.followMode) this.startLocate();
+    },
     newLeg() {
       this.flightTrace.geometry.coordinates.unshift([]);
       this.legStart = Date.now();
-    },
-    setupMap({ target }) {
-      this.map = target;
-      if (this.settings.getLocation) this.startLocate();
-    },
-    showPoint(point) {
-      point && this.setCamera({ features: [point] });
     },
     addLocation(payload) {
       let asJSON = JSON.parse(JSON.stringify(payload));

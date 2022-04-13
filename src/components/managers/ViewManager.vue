@@ -23,45 +23,55 @@
       />
     </b-dropdown-item>
     <b-dropdown-item :disabled="!canLocate" @click="locate">
-      <b-icon icon="crosshairs-question" />
+      <b-icon icon="crosshairs-gps" />
       Locate with GNSS
     </b-dropdown-item>
-    <b-dropdown-item :disabled="!canLocate" custom>
-      <b-switch
-        :value="getLocation"
-        @input="$emit('update:settings', { getLocation: $event })"
-        >Locate with GNSS</b-switch
+    <b-dropdown-item v-if="follow" :disabled="!canLocate" :focusable="false">
+      <b-field
+        label="Follow mode"
+        position="is-centered"
+        grouped
+        group-multiline
       >
-    </b-dropdown-item>
-    <b-dropdown-item custom>
-      <b-field label="View mode">
         <b-radio-button
-          :value="viewMode"
+          :value="mode"
           native-value="north"
-          @input="$emit('update:settings', { viewMode: $event })"
+          size="is-small"
+          @input="updateMode"
         >
-          North up
+          North
         </b-radio-button>
         <b-radio-button
-          :value="viewMode"
+          :value="mode"
           native-value="heading"
-          @input="$emit('update:settings', { viewMode: $event })"
+          size="is-small"
+          @input="updateMode"
         >
-          Heading up
+          Heading
         </b-radio-button>
         <b-radio-button
-          :value="viewMode"
+          :value="mode"
           native-value="fpv"
-          @input="$emit('update:settings', { viewMode: $event })"
+          size="is-small"
+          @input="updateMode"
         >
-          Cockpit view
+          Cockpit
         </b-radio-button>
         <b-radio-button
-          :value="viewMode"
-          :native-value="false"
-          @input="$emit('update:settings', { viewMode: $event })"
+          :value="mode"
+          native-value="free"
+          size="is-small"
+          @input="updateMode"
         >
           Free
+        </b-radio-button>
+        <b-radio-button
+          :value="mode"
+          native-value=""
+          size="is-small"
+          @input="updateMode"
+        >
+          No follow
         </b-radio-button>
       </b-field>
     </b-dropdown-item>
@@ -71,7 +81,7 @@
           'update:camera',
           { pitch: 0, bearing: 0 },
           {
-            trigger: 'viewMode',
+            followMode: 'reset',
           }
         )
       "
@@ -88,9 +98,8 @@ import { Location } from "@/models/Location";
 export default {
   name: "ViewManager",
   props: {
-    getLocation: Boolean,
-    centerView: Boolean,
-    viewMode: [Boolean, String],
+    follow: Boolean,
+    mode: String,
   },
   data() {
     return {
@@ -101,6 +110,9 @@ export default {
     };
   },
   methods: {
+    updateMode(e) {
+      this.$emit("update:settings", { followMode: e });
+    },
     locate() {
       navigator.geolocation.getCurrentPosition(
         this.onLocationFound,
